@@ -1,0 +1,70 @@
+{
+  "test":[
+    ["A character", "BLAH BLAH BLAH"],
+    ["A character", "Insightful text here, or something. I mean, what the heck should I say?"]
+  ],
+  "intro_to_game": [
+    ["Tutorial", "<< PLACEHOLDER - WILL BE SET BY ROUNDS_CONFIG >>"]
+  ],
+  "scripted_sequence_player_hat_sequence": [
+    ["Special event!", "<< PLACEHOLDER - WILL BE SET BY ROUNDS_CONFIG >>"]
+  ],
+  "scripted_sequence_player_necklace_sequence": [
+    ["Special event!", "<< PLACEHOLDER - WILL BE SET BY ROUNDS_CONFIG >>"]
+  ],
+  "scripted_sequence_player_birthday_sequence": [
+    ["Special event!", "<< PLACEHOLDER - WILL BE SET BY ROUNDS_CONFIG >>"]
+  ],
+  "scripted_sequence_ingroup_necklace_sequence": [
+    ["Special event!", "<< PLACEHOLDER - WILL BE SET BY ROUNDS_CONFIG >>"]
+  ],
+  "scripted_sequence_group_market_passive_player_sequence": [
+    ["Group gathering", "<< PLACEHOLDER - WILL BE SET BY ROUNDS_CONFIG >>"]
+  ],
+  "scripted_sequence_group_market_active_player_sequence": [
+    ["Group gathering", "<< PLACEHOLDER - WILL BE SET BY ROUNDS_CONFIG >>"]
+  ],
+  "scripted_sequence_buy_tomato": [
+    ["Group gathering", "The group has decided to sell tomato!"]
+  ],
+  "scripted_sequence_buy_corn": [
+    ["Group gathering", "The group has decided to sell corn!"]
+  ],
+  "label_not_available":[
+    ["Sign", "label not available"],
+    ["Sign", "check map tmx, Interactions layer, custom property: label"]
+  ],
+  "to_trader_up":[
+    ["Sign", "/\\\t\t\t\t\t\t\t | |  go up to the Trader"]
+  ],
+  "to_farm_up":[
+    ["Sign", "/\\\t\t\t\t\t\t\t | |  go up to the Farm"]
+  ],
+  "to_minigame_up":[
+    ["Sign", "/\\\t\t\t\t\t\t\t | |  go up to the Mini game"]
+  ],
+  "to_bath_down":[
+    ["Sign", "| |\t\t\t\t\t\t\t\\/ go down to the Bathhouse"]
+  ],
+  "to_forest_down":[
+    ["Sign", "| |\t\t\t\t\t\t\t\\/ go down to the Forest"]
+  ],
+  "to_town_down":[
+    ["Sign", "| |\t\t\t\t\t\t\t\\/ go down to the Town"]
+  ],
+  "to_bath_right":[
+    ["Sign", "=> go right to the Bathhouse"]
+  ],
+  "to_forest_right":[
+    ["Sign", "=> go right to the Forest"]
+  ],
+  "to_town_left":[
+    ["Sign", "<= go left to the Town"]
+  ],
+  "to_town":[
+    ["Sign", "<= go left to the 'in group'\t\t\t\t\t=> go right to the Forest\t\t\t\t\t | |\t\t\t\t\t\t\t\\/ go down to the Town"]
+  ],
+  "to_forest":[
+    ["Sign", "=> go right to the 'out group'\t\t\t\t\t<= go left to the Town\t\t\t\t\t | |\t\t\t\t\t\t\t\\/ go down to the Forest"]
+  ]
+}

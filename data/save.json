@@ -1,0 +1,19 @@
+{
+  "__FarmingTool__": [
+    "current_tool",
+    "current_seed"
+  ],
+  "tutorial_status": false,
+  "current_tool": "hoe",
+  "current_seed": "tomato_seed",
+  "group": 1,
+  "goggles_status": false,
+  "necklace_status": null,
+  "horn_status": false,
+  "outgroup_skin_status": false,
+  "inventory": {
+    "__InventoryResource__": [
+    ]
+  },
+  "soil_data": []
+}
