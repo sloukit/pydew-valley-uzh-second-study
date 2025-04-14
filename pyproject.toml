@@ -1,0 +1,96 @@
+# pyproject.toml boilerplate for a video game project
+# https://github.com/pypa/sampleproject/blob/main/setup.cfg
+
+
+[project]
+name = "pydew-valley-uzh"
+version = "0.1.0"
+authors = [
+  { name = "Sophie Kittelberger", email = "s.kittelberger@psychologie.uzh.ch" },
+  { name = "larsbutler" },
+  { name = "bromeon" },
+  { name = "novial" },
+  { name = "fortwoone" },
+  { name = "richkdev" },
+  { name = "pmp-p" },
+  { name = "bydariogamer" },
+  { name = "Brody Epstein" },
+  { name = "Danilo Saiu" },
+  { name = "TMN-SGR" },
+  { name = "Adrienne Bradley" },
+  { name = "farg-eh" },
+  { name = "nteinert2005" },
+  { name = "Evelin Toth" },
+  { name = "Leon" },
+  { name = "MortalCoder" },
+  { name = "asterli6" },
+  { name = "dee-a-go" },
+]
+description = "A game based on Pydeew Valley by ClearCode, used by the University of Zurich in an experimental study in psychology."
+dependencies = [
+    "requests>=2.32.3",
+]
+
+# Use Ruff to replace Black, isort, and Flake8
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+  "E", # pycodestyle errors
+  "W", # pycodestyle warnings
+  "F", # pyflakes
+  "C", # flake8-comprehensions
+  "B", # flake8-bugbear
+]
+ignore = [
+  "E501", # line too long, handled by ruff format
+  "B008", # do not perform function calls in argument defaults
+  "B028", # No explicit `stacklevel` keyword argument found (?)
+  "C901", # too complex
+]
+
+unfixable = ["B"] # Don't bother trying to fix flake8-bugbear
+
+# Ignore `E402` (import violations) in all `__init__.py` files, and in select subdirectories.
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402"]
+"**/{tests,docs,tools}/*" = ["E402"]
+
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+minversion = 4.16.0
+envlist = py312,format,lint,tests
+
+[testenv]
+skip_install = True
+install_command = pip install -U {opts} {packages}
+setenv = VIRTUAL_ENV={envdir}
+deps = -r{toxinidir}/requirements.txt
+       -r{toxinidir}/requirements-test.txt
+       -r{toxinidir}/requirements-dev.txt
+
+[testenv:tests]
+deps =
+    {[testenv]deps}
+    pytest
+commands = pytest src --doctest-modules --cov=src
+
+[testenv:format]
+deps = ruff
+commands = ruff format --check .
+
+[testenv:lint]
+deps = ruff
+commands = ruff check .
+
+[testenv:ruff]
+description = Run Ruff for linting and formatting
+deps = ruff
+commands =
+    ruff format --check .
+    ruff check .
+"""
