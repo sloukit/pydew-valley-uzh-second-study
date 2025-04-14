@@ -1,0 +1,64 @@
+name: Project Enhancement
+description: Suggest an enhancement to the project overall.
+title: "Enha: "
+labels: ["type: enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to make your suggestion!
+  - type: input
+    id: enhancement-title
+    attributes:
+      label: What would you like to see changed in one sentence?
+    validations:
+      required: true
+  - type: textarea
+    id: enhancement-body
+    attributes:
+      label: Elaborate on your suggestion above as needed.
+      placeholder: Tell us why this change is needed!
+      value: |
+        ...
+
+        <!-- Use the checklist below to track the progress of your enhancement.
+        Some entries may also become separate GitHub issues. -->
+        <!-- #### Checklist
+         - [ ] ...
+         - [ ] ...
+         -->
+    validations:
+      required: true
+  - type: dropdown
+    id: aspect
+    attributes:
+      label: Which aspect(s) of the project is this enhancement affecting?
+      description: See [this wiki page](https://github.com/sloukit/pydew-valley-uzh/wiki/How-to-choose-labels) for more information on how to choose labels.
+      multiple: true
+      options:
+        - "area: ci"
+        - "area: code quality"
+        - "area: dependencies"
+        - "area: documentation"
+        - "area: publishing"
+        - "area: testing"
+        - game-art
+        - game-audio       
+        - game-design      
+        - game-level-design
+        - game-ui          
+        - game-gameplay          
+        - game-playtesting     
+        - game-ai          
+        - game-help        
+        - game-story 
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct.
+      options:
+        - label: I agree to follow this project's Code of Conduct.
+          required: true
