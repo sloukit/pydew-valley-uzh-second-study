@@ -18,6 +18,7 @@ class SceneAnimation:
         self.current_pos = pygame.Vector2(targets[0].pos if targets else (0, 0))
         self.rect.center = self.current_pos
         self.active = False
+        self.zoom_allowed = None
         self.pause_start_time = None
         self.is_end_condition_met: Callable[[], bool] = lambda: True
 
@@ -70,6 +71,9 @@ class SceneAnimation:
         elapsed_pause_time = time.time() - self.pause_start_time
         pause_duration = self.targets[self.current_index].pause
         return elapsed_pause_time < pause_duration
+
+    def force_to_next(self):
+        self.pause_start_time = time.time() - self.targets[self.current_index].pause
 
     def reset_pause(self):
         self.pause_start_time = None

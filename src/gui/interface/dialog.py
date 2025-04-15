@@ -15,10 +15,10 @@ class TextBox(Sprite):
     """Text box sprite that contains a part of text."""
 
     _TXT_SURF_EXTREMITIES: tuple[pygame.Rect, pygame.Rect] = (
-        pygame.Rect(0, 0, 14, 202),
-        pygame.Rect(373, 0, 18, 202),
+        pygame.Rect(0, 0, 14, 302),
+        pygame.Rect(473, 0, 18, 302),
     )
-    _TXT_SURF_REGULAR_AREA: pygame.Rect = pygame.Rect(14, 0, 1, 202)
+    _TXT_SURF_REGULAR_AREA: pygame.Rect = pygame.Rect(24, 0, 1, 302)
     _CNAME_SURF_RECT: pygame.Rect = pygame.Rect(8, 0, 212, 67)
     _TXT_SURF_RECT: pygame.Rect = pygame.Rect(0, 64, TB_SIZE[0], TB_SIZE[1] - 64)
     _TB_IMAGE: pygame.Surface | None = None
@@ -33,13 +33,13 @@ class TextBox(Sprite):
         start = txt_surf.subsurface(cls._TXT_SURF_EXTREMITIES[0])
         regular = txt_surf.subsurface(cls._TXT_SURF_REGULAR_AREA)
         end = txt_surf.subsurface(cls._TXT_SURF_EXTREMITIES[1])
-        txt_part_top = 64
+        txt_part_top = 74
         blit_list = [
             (start, pygame.Rect(0, txt_part_top, *start.get_size())),
-            (end, pygame.Rect(373, txt_part_top, *end.get_size())),
+            (end, pygame.Rect(473, txt_part_top, *end.get_size())),
             *(
                 (regular, pygame.Rect(x, txt_part_top, *regular.get_size()))
-                for x in range(start.get_width(), 373)
+                for x in range(start.get_width(), 473)
             ),
             (cname_surf, cls._CNAME_SURF_RECT),
         ]
@@ -115,7 +115,7 @@ class TextBox(Sprite):
         text_surf = self.font.render(
             self.text[: self._chr_index], True, color=pygame.Color("black")
         )
-        text_rect = text_surf.get_rect(topleft=(15, 80))
+        text_rect = text_surf.get_rect(topleft=(15, 90))
         blit_list = [(self._tmp_img, (0, 0)), (text_surf, text_rect)]
         self.image.fblits(blit_list)
         self._txt_needs_rerender = False
@@ -134,7 +134,7 @@ class TextBox(Sprite):
         cname = self.font.render(self.name, True, color=pygame.Color("black"))
         cname_rect = cname.get_rect(center=self._CNAME_SURF_RECT.center)
         text_surf = self.font.render(self.text, True, color=pygame.Color("black"))
-        text_rect = text_surf.get_rect(topleft=(15, 80))
+        text_rect = text_surf.get_rect(topleft=(15, 90))
         blit_list = [
             (self._TB_IMAGE, (0, 0)),
             (cname, cname_rect),
@@ -219,7 +219,11 @@ class DialogueManager:
         self._purge_tb_list()
         self._showing_dialogue = False
 
-    def advance(self):
+    @property
+    def current_tb_finished_advancing(self):
+        return self._get_current_tb().finished_advancing
+
+    def advance(self, allow_skip_to_next_msg=True):
         """Show the next part of the current dialogue, or forces the current textbox to display
         the whole text before it finishes typing.
         If the end of the dialogue is reached, clears the textboxes away
@@ -227,6 +231,8 @@ class DialogueManager:
         if not self._get_current_tb().finished_advancing:
             # Textbox is still animating, forcing it to skip to the end
             self._get_current_tb().finished_advancing = True
+            return
+        if not allow_skip_to_next_msg:
             return
         self._msg_index += 1
         if self._msg_index >= len(self._tb_list):
