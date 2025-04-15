@@ -1194,6 +1194,25 @@ class Level:
 
     def update(self, dt: float, move_things: bool = True):
         # update
+        if self.map_transition:
+            self.map_transition.update()
+            self.game_time.last_time = pygame.time.get_ticks()
+
+            if self.cutscene_animation.active:
+                target = self.cutscene_animation
+            elif (
+                type(self.current_minigame) is CowHerding
+                and self.current_minigame.running
+            ):
+                target = self.current_minigame.camera_target
+            else:
+                target = self.player
+
+            self.camera.update(target)
+
+            self.draw(dt, move_things)
+            return
+
         self.handle_controls()
 
         self.game_time.update()
