@@ -10,9 +10,19 @@ def setup_gui():
         support.resource_path("images/ui/textbox.png")
     ).convert_alpha()
     tb_cname_base_surf = _tb_base.subsurface(pygame.Rect(0, 0, 212, 67))
-    tb_main_text_base_surf = _tb_base.subsurface(pygame.Rect(0, 74, 391, 202))
+    tb_main_text_base_surf = _tb_base.subsurface(pygame.Rect(0, 74, 491, 302))
 
     dialog.prepare_tb_image(tb_cname_base_surf, tb_main_text_base_surf)
+
+    _gvt_tb_base = pygame.image.load(
+        support.resource_path("images/ui/gvt_textbox.png")
+    ).convert_alpha()
+
+    _gvt_portrait = pygame.image.load(
+        support.resource_path("images/ui/gvt_textbox_portrait.png")
+    )
+    dialog.GvtTextBox._prepare_base_tb_image(_gvt_portrait, _gvt_tb_base)
+
     # endregion
 
     # region Emotes

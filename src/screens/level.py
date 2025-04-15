@@ -602,16 +602,16 @@ class Level:
                 self.player.has_horn = True
                 self.finish_become_outgroup = True
             # after 2 minutes player gets the same color as outgroup
-            elif delta_time > 120_000 and delta_time < 180_000:
+            elif 120_000 < delta_time < 180_000:
                 self.player.image_alpha = 255
             # after 1 minute player looses hat, fade in outgroup body
-            elif delta_time > 60_000 and delta_time < 120_000:
+            elif 60_000 < delta_time < 120_000:
                 self.player.has_hat = False
                 self.player.has_outgroup_skin = True
                 self.player.image_alpha = 35 + 220 * ((delta_time - 60_000) / 60_000)
             # during first minute fade out ingroup body
             elif delta_time < 60_000:
-                self.player.image_alpha = 35 + 220 * (1 - (delta_time) / 60_000)
+                self.player.image_alpha = 35 + 220 * (1 - delta_time / 60_000)
 
     def handle_event(self, event: pygame.event.Event) -> bool:
         if self.current_minigame and self.current_minigame.running:
@@ -704,7 +704,7 @@ class Level:
                 self.show_pf_overlay = not self.show_pf_overlay
 
             if self.controls.DEBUG_SHOW_DIALOG.click:
-                post_event(DIALOG_SHOW, dial="test")
+                post_event(DIALOG_SHOW, dial="test", is_gvt=True)
 
             if self.controls.DEBUG_SHOW_SHOP.click:
                 self.switch_screen(GameState.SHOP)

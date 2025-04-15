@@ -36,10 +36,6 @@ class PersistentSpriteGroup(pygame.sprite.Group):
         super().empty()
 
 
-# TODO : we could replace this with pygame.sprite.LayeredUpdates, as that
-#  is a subclass of pygame.sprite.Group that natively supports layers
-
-
 class AllSprites(PersistentSpriteGroup):
     def __init__(self, *sprites):
         super().__init__(*sprites)
