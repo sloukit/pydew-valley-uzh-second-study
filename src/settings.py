@@ -128,6 +128,7 @@ APPLE_POS = {
 
 CHARS_PER_LINE = 45
 TB_SIZE = (491, 376)
+GVT_TB_SIZE = (607, 276)
 
 # tutorial and intro text box position
 TUTORIAL_TB_LEFT = SCREEN_WIDTH - TB_SIZE[0]

@@ -704,7 +704,7 @@ class Level:
                 self.show_pf_overlay = not self.show_pf_overlay
 
             if self.controls.DEBUG_SHOW_DIALOG.click:
-                post_event(DIALOG_SHOW, dial="test")
+                post_event(DIALOG_SHOW, dial="test", is_gvt=True)
 
             if self.controls.DEBUG_SHOW_SHOP.click:
                 self.switch_screen(GameState.SHOP)

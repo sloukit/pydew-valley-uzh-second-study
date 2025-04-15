@@ -59,6 +59,7 @@ from src.settings import (
     RANDOM_SEED,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
+    GVT_TB_SIZE,
     TB_SIZE,
     TUTORIAL_TB_LEFT,
     TUTORIAL_TB_TOP,
@@ -261,6 +262,8 @@ class Game:
         # dialogue text box positions
         self.msg_left = SCREEN_WIDTH / 2 - TB_SIZE[0] / 2
         self.msg_top = SCREEN_HEIGHT - TB_SIZE[1]
+        self.gvt_msg_left = SCREEN_WIDTH / 2 - GVT_TB_SIZE[0] / 2
+        self.gvt_msg_top = SCREEN_HEIGHT - GVT_TB_SIZE[1]
 
         # screens
         self.menus = {
@@ -647,8 +650,11 @@ class Game:
             return True
         elif event.type == DIALOG_SHOW:
             if self.dialogue_manager.showing_dialogue:
-                pass
+                return True
             else:
+                if getattr(event, "is_gvt", False):
+                    self.dialogue_manager.open_gvt_dialogue(event.dial, self.gvt_msg_left, self.gvt_msg_top)
+                    return True
                 self.dialogue_manager.open_dialogue(
                     event.dial, self.msg_left, self.msg_top
                 )
