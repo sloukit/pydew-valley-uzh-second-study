@@ -4,6 +4,8 @@ PyDew Valley is a project originally created by ClearCode in Python using pygame
 
 This expanded version will be used by the [University of Zurich's Department of Psychology](https://www.psychologie.uzh.ch/en.html) in an experimental study in social psychology. 
 
+This particular repository covers the versions of the game used for the second part of the study.
+
 For more information, please contact s.kittelberger[at]psychologie.uzh.ch.
 
 ## Setup Instructions
@@ -12,7 +14,7 @@ This project requires Python 3.12 or above.
 
 1. **Clone this repository:**
     ```
-    git clone https://github.com/sloukit/pydew-valley-uzh.git
+    git clone https://github.com/sloukit/pydew-valley-uzh-second-study.git
     ```
 
 2. **Create and activate a virtual environment:**
