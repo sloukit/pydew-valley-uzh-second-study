@@ -1,15 +1,16 @@
 import textwrap
-from abc import ABCMeta, ABC, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod
 from operator import attrgetter
 
 import pygame
 
 from src import utils
 from src.enums import Layer
-from src.settings import TB_SIZE, GVT_TB_SIZE
+from src.settings import GVT_TB_SIZE, TB_SIZE
 from src.sprites.base import Sprite
 from src.support import resource_path
 from src.timer import Timer
+
 
 class AbstractTextBoxMeta(ABCMeta, type(Sprite)):
     pass
@@ -22,7 +23,9 @@ class AbstractTextBox(ABC, metaclass=AbstractTextBoxMeta):
 
     @classmethod
     @abstractmethod
-    def _prepare_base_tb_image(cls, cname_surf: pygame.Surface, txt_surf: pygame.Surface):
+    def _prepare_base_tb_image(
+        cls, cname_surf: pygame.Surface, txt_surf: pygame.Surface
+    ):
         pass
 
     @classmethod
@@ -65,7 +68,9 @@ class AbstractTextBox(ABC, metaclass=AbstractTextBoxMeta):
         self.font = font
         self.name = character_name
         max_text_width = self._get_max_txt_width()
-        estimated_character_width = self.font.size("M")[0]  # Get width of a normal character
+        estimated_character_width = self.font.size("M")[
+            0
+        ]  # Get width of a normal character
         # Adjust dynamically
         adjusted_chars_per_line = max_text_width // estimated_character_width
 
@@ -105,12 +110,18 @@ class TBBase(Sprite, AbstractTextBox):
         pass
 
     @classmethod
-    def _prepare_base_tb_image(cls, cname_surf: pygame.Surface, txt_surf: pygame.Surface):
+    def _prepare_base_tb_image(
+        cls, cname_surf: pygame.Surface, txt_surf: pygame.Surface
+    ):
         pass
 
-    def __init__(self, character_name: str, text: str, font: pygame.Font, left: int, top: int):
+    def __init__(
+        self, character_name: str, text: str, font: pygame.Font, left: int, top: int
+    ):
         AbstractTextBox.__init__(self, character_name, text, font)
-        Sprite.__init__(self, (left, top), self.image, (), z=Layer.TEXT_BOX, name=character_name)
+        Sprite.__init__(
+            self, (left, top), self.image, (), z=Layer.TEXT_BOX, name=character_name
+        )
 
     def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
         display_surface.blit(self.image, self.rect)
@@ -207,9 +218,10 @@ def prepare_tb_image(cname_surf: pygame.Surface, txt_surf: pygame.Surface):
 
 
 class GvtTextBox(TBBase):
-
     @classmethod
-    def _prepare_base_tb_image(cls, cname_surf: pygame.Surface, txt_surf: pygame.Surface):
+    def _prepare_base_tb_image(
+        cls, cname_surf: pygame.Surface, txt_surf: pygame.Surface
+    ):
         if cls._TB_IMAGE is not None:
             return
         cls._TB_IMAGE = txt_surf.copy()
@@ -236,7 +248,9 @@ class GvtTextBox(TBBase):
         ]
         self.image.fblits(blit_list)
 
-    def __init__(self, character_name: str, text: str, font: pygame.Font, left: int, top: int):
+    def __init__(
+        self, character_name: str, text: str, font: pygame.Font, left: int, top: int
+    ):
         """Create a government text box.
 
         :param character_name: The character meant to speak using this text box.
@@ -253,6 +267,7 @@ class GvtTextBox(TBBase):
     @classmethod
     def _get_tb_size(cls):
         return GVT_TB_SIZE
+
 
 class DialogueManager:
     """Dialogue manager object.

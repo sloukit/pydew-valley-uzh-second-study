@@ -56,10 +56,10 @@ from src.settings import (
     DEBUG_MODE_VERSION,
     EMOTE_SIZE,
     GAME_LANGUAGE,
+    GVT_TB_SIZE,
     RANDOM_SEED,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
-    GVT_TB_SIZE,
     TB_SIZE,
     TUTORIAL_TB_LEFT,
     TUTORIAL_TB_TOP,
@@ -653,7 +653,9 @@ class Game:
                 return True
             else:
                 if getattr(event, "is_gvt", False):
-                    self.dialogue_manager.open_gvt_dialogue(event.dial, self.gvt_msg_left, self.gvt_msg_top)
+                    self.dialogue_manager.open_gvt_dialogue(
+                        event.dial, self.gvt_msg_left, self.gvt_msg_top
+                    )
                     return True
                 self.dialogue_manager.open_dialogue(
                     event.dial, self.msg_left, self.msg_top
