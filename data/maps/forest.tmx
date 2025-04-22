@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="31" nextobjectid="400">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="31" nextobjectid="405">
  <tileset firstgid="1" source="../tilesets/Darker_Grass_Tile_Layers.tsx"/>
  <tileset firstgid="78" source="../tilesets/Bush_Tiles.tsx"/>
  <tileset firstgid="199" source="../tilesets/Darker_Grass_Hills_Tiles_v2.tsx"/>
@@ -139,7 +139,7 @@
 13,13,13,13,13,13,13,70,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,56,13,13,13,13,57,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,
 13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,68,13,13,13,13,61,13,13,13,13,61,13,70,13,71,13,13,13,13,13,13,13,13,13,13,67,13,13,13,13,70,13,
 13,13,13,13,13,13,69,60,13,13,13,13,13,13,13,57,13,13,13,13,13,13,13,13,13,13,13,61,13,13,13,13,68,69,13,13,13,13,13,71,13,13,67,13,60,13,13,13,56,13,
-13,57,13,13,13,13,13,13,13,13,13,13,13,13,13,56,13,13,13,13,69,13,13,13,13,70,13,13,13,13,13,72,13,67,13,13,58,13,13,56,13,13,13,13,13,13,13,13,13,59,
+13,57,13,13,13,13,13,13,13,13,13,13,13,13,13,56,13,13,13,13,69,13,13,13,13,211,13,13,13,13,13,72,13,67,13,13,58,13,13,56,13,13,13,13,13,13,13,13,13,59,
 13,59,13,13,67,13,13,13,13,13,13,13,13,13,13,13,70,13,13,13,13,13,13,13,13,67,13,13,13,13,13,13,13,13,13,67,69,13,13,61,13,13,13,13,60,13,13,13,13,57,
 13,13,13,13,13,13,13,13,13,13,71,13,13,13,61,13,13,58,13,13,13,13,13,13,13,59,13,13,13,13,13,69,13,56,72,13,13,13,68,13,13,13,13,13,13,13,13,13,13,13,
 69,72,13,13,13,13,13,13,13,13,13,13,13,13,69,59,13,13,13,13,67,13,13,13,13,13,13,13,13,13,13,13,13,70,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,70,
@@ -464,6 +464,8 @@
   <object id="89" gid="2147484174" x="508" y="525" width="24" height="31"/>
   <object id="93" gid="510" x="389" y="124.333" width="14" height="30"/>
   <object id="91" gid="525" x="179.333" y="73.3333" width="44" height="48"/>
+  <object id="400" gid="554" x="352.818" y="542.273" width="14" height="28"/>
+  <object id="401" gid="554" x="401.455" y="542.909" width="14" height="28"/>
  </objectgroup>
  <objectgroup id="17" name="Vegetation">
   <object id="17" gid="524" x="169.333" y="148.667" width="30" height="12"/>
@@ -493,6 +495,8 @@
   <object id="78" gid="522" x="111" y="454.667" width="26" height="16"/>
   <object id="90" gid="520" x="683" y="178.333" width="10" height="10"/>
   <object id="92" gid="515" x="184.667" y="102.333" width="13" height="12"/>
+  <object id="403" gid="544" x="368.182" y="526.636" width="16" height="10"/>
+  <object id="404" gid="544" x="384" y="526.636" width="16" height="10"/>
  </objectgroup>
  <objectgroup id="19" name="Decorative">
   <object id="95" gid="543" x="115" y="105" width="11" height="8"/>
@@ -833,8 +837,7 @@
   <object id="369" x="204" y="106" width="16" height="6"/>
   <object id="385" x="545" y="381" width="14" height="19"/>
   <object id="386" x="597" y="384" width="11" height="16"/>
-  <object id="398" gid="610" x="577.545" y="507" width="26" height="22"/>
-  <object id="399" gid="610" x="657.667" y="109" width="26" height="22"/>
+  <object id="398" gid="610" x="370.545" y="558" width="26" height="22"/>
  </objectgroup>
  <objectgroup id="26" name="Camera Targets">
   <object id="385" name="CAMTARGET_0" x="125.667" y="92">

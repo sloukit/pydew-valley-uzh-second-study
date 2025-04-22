@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="436">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="442">
  <tileset firstgid="1" source="../tilesets/grass_tileset.tsx"/>
  <tileset firstgid="78" source="../tilesets/Interaction.tsx"/>
  <tileset firstgid="80" source="../tilesets/fence_tileset.tsx"/>
@@ -484,6 +484,10 @@
   <object id="243" gid="549" x="1070.67" y="400.333" width="24" height="30"/>
   <object id="259" gid="549" x="935.333" y="120.333" width="24" height="30"/>
   <object id="260" gid="533" x="545.5" y="212.334" width="14" height="30"/>
+  <object id="436" gid="539" x="961.909" y="173.455" width="23" height="14"/>
+  <object id="437" gid="539" x="933" y="172.364" width="23" height="14"/>
+  <object id="439" gid="540" x="278" y="174.273" width="23" height="14"/>
+  <object id="440" gid="540" x="305.091" y="173.273" width="23" height="14"/>
  </objectgroup>
  <objectgroup id="20" name="Vegetation">
   <object id="13" gid="548" x="99.5" y="188" width="44" height="48"/>
@@ -1162,6 +1166,8 @@
   <object id="367" x="917.5" y="89.5" width="5.5" height="171.833"/>
   <object id="373" x="865.019" y="475.938" width="13.875" height="12.125"/>
   <object id="434" gid="245" x="290.25" y="155.25" width="26" height="22"/>
-  <object id="435" gid="245" x="947.75" y="171.25" width="26" height="22"/>
+  <object id="435" gid="245" x="960.568" y="157.614" width="26" height="22"/>
+  <object id="438" x="923.273" y="158.364" width="63.8182" height="15.5455"/>
+  <object id="441" x="277.455" y="158.364" width="62" height="17.4545"/>
  </objectgroup>
 </map>
