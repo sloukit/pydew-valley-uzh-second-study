@@ -592,6 +592,8 @@ class GameMap:
                 if props.get("type") == "hidden_sign":
                     # layer = Layer.HIDDEN_SIGN
                     name = "hidden_sign"
+                elif props.get("type") == "goggles_sign":
+                    name = "goggles_sign"
                 else:
                     name = None
 
