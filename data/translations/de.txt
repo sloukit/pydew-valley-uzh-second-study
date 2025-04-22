@@ -94,6 +94,12 @@ Other group's inventory:@@An die Hornlinge:
 
 OK@@OK
 Notification@@Benachrichtigung
+New Crop@@Hurra! Du kannst jetzt {crop} pflanzen!
+Beetroot (New)@@rote Beete
+Carrot (New)@@Karotten
+Eggplant (New)@@Auberginen
+Pumpkin (New)@@Kürbis
+Parsnip (New)@@Pastinaken
 
 # src/screens/self_assessment_menu.py
 

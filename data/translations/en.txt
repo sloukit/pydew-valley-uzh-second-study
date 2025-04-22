@@ -92,6 +92,12 @@ Other group's inventory:@@Other group's inventory:
 
 OK@@OK
 Notification@@Notification
+New Crop@@You can now plant {crop}!
+Beetroot (New)@@beetroots
+Carrot (New)@@carrots
+Eggplant (New)@@eggplants
+Pumpkin (New)@@pumpkins
+Parsnip (New)@@parsnips
 
 # src/screens/self_assessment_menu.py
 
