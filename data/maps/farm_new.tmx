@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="434">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="436">
  <tileset firstgid="1" source="../tilesets/grass_tileset.tsx"/>
  <tileset firstgid="78" source="../tilesets/Interaction.tsx"/>
  <tileset firstgid="80" source="../tilesets/fence_tileset.tsx"/>
@@ -1161,5 +1161,7 @@
   <object id="366" x="836.5" y="261" width="86.3333" height="6.5"/>
   <object id="367" x="917.5" y="89.5" width="5.5" height="171.833"/>
   <object id="373" x="865.019" y="475.938" width="13.875" height="12.125"/>
+  <object id="434" gid="245" x="290.25" y="155.25" width="26" height="22"/>
+  <object id="435" gid="245" x="947.75" y="171.25" width="26" height="22"/>
  </objectgroup>
 </map>

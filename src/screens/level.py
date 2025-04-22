@@ -273,9 +273,17 @@ class Level:
                     gr.remove(sprite)
                     sprite.kill()
 
+    def hide_goggles_signs(self):
+        if not self.round_config.get("goggles_signs", False):
+            for spr in self.collision_sprites:
+                if spr.name == "goggles_sign":
+                    self.collision_sprites.remove(spr)
+                    spr.kill()
+
     def round_config_changed(self, round_config: dict[str, Any]) -> None:
         self.round_config = round_config
         self.hide_bath_signs()
+        self.hide_goggles_signs()
         self.player.round_config_changed(round_config)
         self.overlay.round_config = round_config
         self.overlay.is_debug_mode_version = (
@@ -428,6 +436,7 @@ class Level:
             )
             self.load_map(map_name, from_map=self.current_map)
             self.hide_bath_signs()
+            self.hide_goggles_signs()
             self.game_map.process_npc_round_config()
 
         else:

@@ -130,6 +130,7 @@ class Game:
         self._cursor_img: pygame.Surface | None = None
 
         self.save_file = SaveFile.load()
+        self.save_file.is_tutorial_completed = True
 
         # main setup
         self.running = True
