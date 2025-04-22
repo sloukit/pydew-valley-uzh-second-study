@@ -293,6 +293,9 @@
   </objectgroup>
  </tile>
  <tile id="79">
+  <properties>
+   <property name="type" value="goggles_sign"/>
+  </properties>
   <image source="../../images/objects/Signpost_Emoji_New.png" width="26" height="22"/>
   <objectgroup draworder="index" id="2">
    <object id="1" x="4.97668" y="15.9677" width="15.9387" height="5"/>
