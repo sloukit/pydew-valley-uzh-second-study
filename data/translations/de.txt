@@ -89,6 +89,7 @@ Take out:@@Lösche:
 You have received@@Du erhältst
 Your group's inventory:@@An die Rothüte:
 Other group's inventory:@@An die Hornlinge:
+Distribute as you wish@@Verteile sie frei! {item_specific}
 
 # src/screens/menu_notification.py
 

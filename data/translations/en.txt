@@ -47,6 +47,12 @@ carrot@@carrot
 eggplant@@eggplant
 pumpkin@@pumpkin
 parsnip@@parsnip
+cabbage@@cabbage
+bean@@bean
+cauliflower@@cauliflower
+blue cabbage@@blue cabbage
+wheat@@wheat
+broccoli@@broccoli
 corn seed@@corn seed
 tomato seed@@tomato seed
 beetroot seed@@beetroot seed
@@ -87,6 +93,23 @@ Take out:@@Take out:
 You have received@@You have received
 Your group's inventory:@@Your group's inventory:
 Other group's inventory:@@Other group's inventory:
+Distribute as you wish@@Distribute the items as you wish! {item_specific}
+Gloves@@Gloves help the wearer with harvesting.
+Boots@@Boots allow their wearer to walk unimpeded in the rain.
+Jeans@@Jeans let their wearer chop wood faster.
+Weather Protection@@{item} protect their wearer from {weather}.
+Shirts@@Shirts
+Coats@@Coats
+Cold@@the cold
+Rain@@the rain
+Aprons@@Aprons prevent their wearer from getting dirty while cooking.
+Flashlight@@Flashlights let their user see in the dark.
+Thimbles@@Thimbles protect their user from stiches.
+Rain barrels@@Rain barrels can help saving more water.
+Socks@@Socks
+Cap@@Caps
+Sun@@the sun
+Blankets@@Blankets protect from the cold while their wearer is sleeping.
 
 # src/screens/menu_notification.py
 
@@ -97,7 +120,7 @@ Beetroot (New)@@beetroots
 Carrot (New)@@carrots
 Eggplant (New)@@eggplants
 Pumpkin (New)@@pumpkins
-Parsnip (New)@@parsnips
+Parsnip (New)@@parsnip
 
 # src/screens/self_assessment_menu.py
 
@@ -188,3 +211,15 @@ social identity assessment right info@@Very much
 social identity assessment q1@@Ich gehöre zur Gruppe der Rothüte
 social identity assessment q2@@Ich gehöre zur Gruppe der Hornlinge.
 social identity assessment q3@@Ich identifiziere mich mit Mika [Name]
+
+# Tutorial
+
+welcome@@Welcome!
+chara_intro@@Welcome to the city of Mikhausen on the planet Mikana! You are a Mika, as the local beings are called. Your name is {initials}. You live here in Mikhausen together with other Mikas.
+clan_intro_family@@This is your family's clan: the Red Hats.
+membership_explanation@@You are not a full member of the Red Hats from the start. Currently, you are a Mini Red Hat. As time passes, you will be promoted to Junior Red Hat, and afterwards to full member of the clan. As a full member, you receive privileges and responsibilities. You can recognise a full member by their hat and blue necklace.
+junior@@This is a Junior Red Hat, recognisable by the hat, and can already buy and sell things at the market. But only with a hat and necklace will you be considered a full member of the Red Hats and have all the privileges and responsibilities.
+narrative@@Your family clan urgently needs money: a volcano is raging not far away and you have to leave as soon as possible. There's just one problem: leaving the island will cost a lot of money, since there's a lot of people to ferry away. As a result, the more money you earn, the safer you get! You can earn money by selling crops, wood and fruit, or winning cow-herding competitions against the Hornlings...
+outgroup_intro@@...which are the other community living in Mikhausen.
+
+# Scripted sequences
