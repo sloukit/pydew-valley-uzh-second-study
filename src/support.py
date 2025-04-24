@@ -55,6 +55,23 @@ def load_translations(lang: str = None) -> dict[str, str]:
         "..",
         "data",
         "translations",
+        f"{game_language}.json",
+    )
+    with open(path, "r") as file:
+        return json.load(file)
+
+
+def load_translations_old(lang: str = None) -> dict[str, str]:  # noqa
+    if lang:
+        game_language = lang
+    else:
+        game_language = GAME_LANGUAGE
+
+    path = os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "data",
+        "translations",
         f"{game_language}.txt",
     )
     with open(path, "r") as file:

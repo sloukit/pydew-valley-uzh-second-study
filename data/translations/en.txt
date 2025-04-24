@@ -50,7 +50,7 @@ parsnip@@parsnip
 cabbage@@cabbage
 bean@@bean
 cauliflower@@cauliflower
-blue cabbage@@blue cabbage
+red cabbage@@red cabbage
 wheat@@wheat
 broccoli@@broccoli
 corn seed@@corn seed
@@ -60,6 +60,11 @@ carrot seed@@carrot seed
 eggplant seed@@eggplant seed
 pumpkin seed@@pumpkin seed
 parsnip seed@@parsnip seed
+cabbage seed@@cabbage seed
+cauliflower seed@@cauliflower seed
+red cabbage seed@@red cabbage seed
+wheat seed@@wheat seed
+broccoli seed@@broccoli seed
 
 # pause menu
 
@@ -121,6 +126,12 @@ Carrot (New)@@carrots
 Eggplant (New)@@eggplants
 Pumpkin (New)@@pumpkins
 Parsnip (New)@@parsnip
+Cabbage (New)@@some cabbage
+Bean (New)@@beans
+Cauliflower (New)@@cauliflowers
+Red Cabbage (New)@@some red cabbage
+Wheat (New)@@some wheat
+Broccoli (New)@@some broccoli
 
 # src/screens/self_assessment_menu.py
 
@@ -186,8 +197,6 @@ Herd the cows into the barn!@@Herd the cows into the barn!
 Blaukappen (ingroup) progress:@@Blaukappen (ingroup) progress:
 Hornlinge (outgroup) progress:@@Hornlinge (outgroup) progress:
 Cows in the barn@@Cows in the barn
-[cheering group]@@[cheering group]
-[disappointed group]@@[disappointed group]
 [money win]@@You won 200$
 [money lost]@@You lost 200$
 
@@ -217,9 +226,24 @@ social identity assessment q3@@Ich identifiziere mich mit Mika [Name]
 welcome@@Welcome!
 chara_intro@@Welcome to the city of Mikhausen on the planet Mikana! You are a Mika, as the local beings are called. Your name is {initials}. You live here in Mikhausen together with other Mikas.
 clan_intro_family@@This is your family's clan: the Red Hats.
+clan_intro_friends@@You and your group of friends live as a group of farmers, the Red Hats.
+clan_intro_solo@@These Mikas are called the Red Hats.
 membership_explanation@@You are not a full member of the Red Hats from the start. Currently, you are a Mini Red Hat. As time passes, you will be promoted to Junior Red Hat, and afterwards to full member of the clan. As a full member, you receive privileges and responsibilities. You can recognise a full member by their hat and blue necklace.
+membership_explanation_solo@@The first Mikas founded Mikhausen thousands of years ago.
 junior@@This is a Junior Red Hat, recognisable by the hat, and can already buy and sell things at the market. But only with a hat and necklace will you be considered a full member of the Red Hats and have all the privileges and responsibilities.
-narrative@@Your family clan urgently needs money: a volcano is raging not far away and you have to leave as soon as possible. There's just one problem: leaving the island will cost a lot of money, since there's a lot of people to ferry away. As a result, the more money you earn, the safer you get! You can earn money by selling crops, wood and fruit, or winning cow-herding competitions against the Hornlings...
+junior_solo@@Mikas living in Mikhausen specialised in agriculture.
+narrative_family@@Your family clan urgently needs money: a volcano is raging not far away and you have to leave as soon as possible. There's just one problem: leaving the island will cost a lot of money, since there's a lot of people to ferry away. As a result, the more money you earn, the safer you get! You can earn money by selling crops, wood and fruit, or winning cow-herding competitions against the Hornlings...
+narrative_friends@@You and your friends are in desperate need of money: a volcano is threatening to erupt not far away, and you have to leave the island as soon as possible. The problem is, leaving the island will be expensive due to the sheer amount of people to ferry away. As a result, the more money you earn, the safer you get! You can earn money by selling crops, wood and fruit or winning cow-herding competitions against the Hornlings...
+narrative_solo@@A volcano nearby is threatening to erupt, so everybody is trying to get as much money as possible to escape before it does erupt. You can earn money by selling crops, wood and fruit, or by competing in cow herding events.
 outgroup_intro@@...which are the other community living in Mikhausen.
+outgroup_intro_solo@@The Red Hats aren't the only Mika community living in Mikhausen. Another group has split off long ago. Its members are called the Hornlings.
+
 
 # Scripted sequences
+
+hat_get_family@@You are promoted to Junior Red Hat! Your family clan gives you the hat as a proof of your membership. As a result, you can now buy and sell things in the market! Press Space to continue.
+hat_get_friend@@You are promoted to Junior Red Hat! Your full member friends award you the hat as a proof of your membership. As a result, you can now buy and sell things in the market! Press Space to continue.
+npc_necklace_get@@A Junior Red Hat is awarded the necklace and becomes a full member. With it, they can take part in group discussions, in addition to buying and selling in the market as usual. Press Space to continue.
+ply_necklace_get_family@@Your family clan awards you the necklace. Now you are a full member of the Red Hats! From now on, you can take part in the group discussions. Press Space to continue.
+ply_necklace_get_friends@@Your friends give you the necklace. You are now a full member of the Red Hats! From now on, you are allowed to partake in group discussions. Press Space to continue.
+ply_birthday_solo@@Everyone wishes you a happy birthday! Press Space to continue.
