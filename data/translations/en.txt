@@ -82,8 +82,9 @@ Settings@@Settings
 Reset@@Reset
 
 # round end menu
-
-Round %d has ended. You currently have $%d, and:@@Round %d has ended. You currently have $%d, and:
+round_end_info@@Round {round_no} has ended. You currently have ${money}, and:
+temp_finish@@Thanks for playing, you are done for the day. You currently have ${money}, and:
+whole_finish@@Thanks for playing, you are done with the whole game. At the end, you had ${money}, and:
 continue to next round@@continue to next round
 
 # task (items allocation) menu
@@ -115,6 +116,18 @@ Socks@@Socks
 Cap@@Caps
 Sun@@the sun
 Blankets@@Blankets protect from the cold while their wearer is sleeping.
+r1@@6 pairs of gloves
+r2@@2 pairs of boots
+r3@@4 pairs of jeans
+r4@@8 shirts
+r5@@6 raincoats
+r6@@10 aprons
+r7@@6 flashlights
+r8@@2 thimbles
+r9@@4 rain barrels
+r10@@8 pairs of socks
+r11@@6 caps
+r12@@10 blankets
 
 # src/screens/menu_notification.py
 
@@ -185,7 +198,7 @@ Cow Herding@@Cow Herding
 Return to Town@@Return to Town
 Minigame complete!@@Minigame complete!
 seconds needed@@seconds needed
-Hornlinge needed %.2f seconds@@Hornlinge needed %.2f seconds
+Hornlinge needed %.2f seconds@@The Hornlings needed %.2f seconds
 cows herded in@@cows herded in
 Ready?@@Ready?
 GO!@@GO!
@@ -194,8 +207,8 @@ Herd the cows into the barn@@Herd the cows into the barn
 as fast as possible!@@as fast as possible!
 Objective:@@Objective:
 Herd the cows into the barn!@@Herd the cows into the barn!
-Blaukappen (ingroup) progress:@@Blaukappen (ingroup) progress:
-Hornlinge (outgroup) progress:@@Hornlinge (outgroup) progress:
+Blaukappen (ingroup) progress:@@Red Hats' progress:
+Hornlinge (outgroup) progress:@@Hornlings' progress:
 Cows in the barn@@Cows in the barn
 [money win]@@You won 200$
 [money lost]@@You lost 200$
@@ -247,3 +260,7 @@ npc_necklace_get@@A Junior Red Hat is awarded the necklace and becomes a full me
 ply_necklace_get_family@@Your family clan awards you the necklace. Now you are a full member of the Red Hats! From now on, you can take part in the group discussions. Press Space to continue.
 ply_necklace_get_friends@@Your friends give you the necklace. You are now a full member of the Red Hats! From now on, you are allowed to partake in group discussions. Press Space to continue.
 ply_birthday_solo@@Everyone wishes you a happy birthday! Press Space to continue.
+market_inactive_family@@Your family clan gathers for the daily meeting on what to buy. You cannot join them as you aren't a full Red Hat yet. Press Space to continue.
+market_inactive_friends@@Your friends gather for the daily meeting on what to buy. You cannot join them since you aren't a full Red Hat yet. Press Space to continue.
+market_active_family@@Your family clan gathers for the daily meeting on what to buy. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
+market_active_friends@@Your friends gather for the daily meeting on what to buy. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.

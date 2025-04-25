@@ -94,11 +94,11 @@ TR: dict[str, str] = load_translations()
 def get_translated_string(text: str) -> str:
     """
     this method can be imported anyway in the code to get translated text:
-    `from src.support import get_translated_string as _`
+    `from src.support import get_translated_string as get_translation`
     then, replace strings that needs to be translated from this:
     `print("This is hardcoded messages")`
     to this:
-    `print(_("This is hardcoded messages"))`
+    `print(get_translation("This is hardcoded messages"))`
     next run this script with python file name as parameter, eg:
     `./extract_translations.sh src/screens/inventory.py`
 
