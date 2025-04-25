@@ -194,17 +194,17 @@ SFX@@SFX
 
 # src/screens/minigames/cow_herding_overlay.py
 
-Cow Herding@@Cow Herding
-Return to Town@@Return to Town
+cow_herding_title@@Cow Herding
+return_to_town@@Return to Town
 Minigame complete!@@Minigame complete!
-seconds needed@@seconds needed
-Hornlinge needed %.2f seconds@@The Hornlings needed %.2f seconds
+self_time@@seconds needed
+outgroup_time@@The Hornlings needed {:.2f} seconds
 cows herded in@@cows herded in
-Ready?@@Ready?
-GO!@@GO!
-Cow Herding Minigame@@Cow Herding Minigame
-Herd the cows into the barn@@Herd the cows into the barn
-as fast as possible!@@as fast as possible!
+ready@@Ready?
+go@@GO!
+cow_minigame_desc@@Cow Herding Minigame
+cow_minigame_desc_l1@@Herd the cows into the barn
+cow_minigame_desc_l2@@as fast as possible!
 Objective:@@Objective:
 Herd the cows into the barn!@@Herd the cows into the barn!
 Blaukappen (ingroup) progress:@@Red Hats' progress:
