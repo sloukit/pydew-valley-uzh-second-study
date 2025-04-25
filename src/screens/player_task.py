@@ -14,7 +14,7 @@ from src.screens.minigames.gui import (
     _ReturnButton,
 )
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 from src.support import import_font
 
 """
@@ -29,13 +29,15 @@ class PlayerTask(AbstractMenu):
     """Run the item allocation task."""
 
     def __init__(self, send_resource_allocation: Callable[[dict[str, Any]], None]):
-        super().__init__(title=_("Task"), size=(SCREEN_WIDTH, SCREEN_HEIGHT))
+        super().__init__(
+            title=get_translated_msg("task"), size=(SCREEN_WIDTH, SCREEN_HEIGHT)
+        )
         self.display_surface: pygame.Surface = pygame.display.get_surface()
         self.title_font: pygame.Font = import_font(38, "font/LycheeSoda.ttf")
         self.text_font: pygame.Font = import_font(32, "font/LycheeSoda.ttf")
         self.input_field_font: pygame.font.Font = import_font(38, "font/LycheeSoda.ttf")
-        self.confirm_button_text: str = _("Confirm")
-        self.allocations_text: str = _("Distribute them")
+        self.confirm_button_text: str = get_translated_msg("confirm")
+        self.allocations_text: str = get_translated_msg("share_items")
         self.send_resource_allocation = send_resource_allocation
         self.buttons = []
         self.button_setup()
@@ -82,7 +84,9 @@ class PlayerTask(AbstractMenu):
         self.allocations = [0, 0]
 
     def draw_title(self) -> None:
-        text = Text(Linebreak((0, 2)), TextChunk(_("Task"), self.title_font))
+        text = Text(
+            Linebreak((0, 2)), TextChunk(get_translated_msg("task"), self.title_font)
+        )
         _draw_box(
             self.display_surface,
             (SCREEN_WIDTH / 2, 0),
@@ -122,13 +126,13 @@ class PlayerTask(AbstractMenu):
                 button.draw(self.display_surface)
 
     def draw_info(self) -> None:
-        not_enough_items: str = _("You have not allocated all of the items yet!")
-        too_many_items: str = _("You don't have that many items to distribute.")
-        items_missing: str = _("Items missing:")
+        not_enough_items: str = get_translated_msg("items_unalloc")
+        too_many_items: str = get_translated_msg("too_few_to_give")
+        items_missing: str = get_translated_msg("missing_itms")
         missing_items: str = (
             f"{items_missing} {self.total_items - sum(self.allocations)}"
         )
-        take_out = _("Take out:")
+        take_out = get_translated_msg("take_out")
         overstock_items: str = f"{take_out} {sum(self.allocations) - self.total_items}"
 
         if sum(self.allocations) < self.total_items:
@@ -167,7 +171,7 @@ class PlayerTask(AbstractMenu):
         box_center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)
         button_area_height = self.confirm_button.rect.height
 
-        you_have_received = _("You have received")
+        you_have_received = get_translated_msg("you_have_received")
         text = Text(
             Linebreak((0, 12)),
             TextChunk(
@@ -177,9 +181,9 @@ class PlayerTask(AbstractMenu):
             Linebreak(),
             TextChunk(self.allocations_text, self.text_font),
             Linebreak((0, 18)),
-            TextChunk(_("Your group's inventory:"), self.text_font),
+            TextChunk(get_translated_msg("ingroup_inventory"), self.text_font),
             Linebreak((0, 18)),
-            TextChunk(_("Other group's inventory:"), self.text_font),
+            TextChunk(get_translated_msg("outgroup_inventory"), self.text_font),
             Linebreak((0, 12)),
         )
         box_min_width = 400

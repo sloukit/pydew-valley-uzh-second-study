@@ -55,10 +55,6 @@ class _SerialisableEnum(IntEnum):
         # We keep that method separate from the actual str dunder, so we can still get the original repr when debugging
         return self._SERIALISABLE_STRINGS[self]  # noqa
 
-    def as_user_friendly_string(self):
-        text = self.as_serialised_string()
-        return text.replace("_", " ")
-
     @classmethod
     def from_serialised_string(cls, val: str):
         """Return an enum member from a serialised string.

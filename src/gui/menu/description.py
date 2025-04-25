@@ -5,7 +5,7 @@ from pygame.math import Vector2 as vector
 
 from src.controls import Controls
 from src.gui.menu.components import Button, KeySetup, Slider
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 from src.support import load_data, resource_path, save_data
 
 
@@ -107,7 +107,9 @@ class KeybindsDescription(Description):
         reset_btn_rect = pygame.Rect(0, 0, 130, 50)
         reset_btn_rect.bottomright = self.rect.bottomleft - vector(10, 0)
 
-        self.reset_button = Button(_("Reset"), reset_btn_rect, self.font)
+        self.reset_button = Button(
+            get_translated_msg("Reset"), reset_btn_rect, self.font
+        )
 
     def save_data(self):
         for key in self.keys_group:
@@ -370,10 +372,12 @@ class VolumeDescription(Description):
         offset = vector(0, 20)
 
         self.sound_slider.draw(self.description_slider_surface)
-        self.draw_text(_("Music"), self.sound_slider.rect.topleft + offset)
+        self.draw_text(
+            get_translated_msg("Music"), self.sound_slider.rect.topleft + offset
+        )
 
         self.sfx_slider.draw(self.description_slider_surface)
-        self.draw_text(_("SFX"), self.sfx_slider.rect.topleft + offset)
+        self.draw_text(get_translated_msg("SFX"), self.sfx_slider.rect.topleft + offset)
 
     def draw(self):
         self.make_surface_transparent()

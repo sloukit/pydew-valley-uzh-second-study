@@ -71,7 +71,7 @@ from src.settings import (
     # SERVER_URL,
 )
 from src.sprites.setup import setup_entity_assets
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 from src.tutorial.tutorial import Tutorial
 
 # memory cleaning settings
@@ -108,7 +108,7 @@ class Game:
 
         screen_size = (SCREEN_WIDTH, SCREEN_HEIGHT)
         self.display_surface = pygame.display.set_mode(screen_size)
-        pygame.display.set_caption(_("Clear Skies"))
+        pygame.display.set_caption(get_translated_msg("Clear Skies"))
 
         # frames
         self.level_frames: dict | None = None
@@ -130,6 +130,7 @@ class Game:
         self._cursor_img: pygame.Surface | None = None
 
         self.save_file = SaveFile.load()
+        self.save_file.is_tutorial_completed = True
 
         # main setup
         self.running = True

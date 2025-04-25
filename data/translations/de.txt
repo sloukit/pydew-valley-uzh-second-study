@@ -4,32 +4,31 @@ Clear Skies@@Der Acker ruft!
 
 # main menu
 
-Enter play token:@@Bitte Token eingeben:
-Enter authentication data@@Anmelden
-Play@@Spiel starten
-Quit@@Spiel verlassen
-Enter a Token to Play@@Klicken um Token einzugeben
-Enter player's name:@@Name für deine Spielfigur:
-Main Menu@@Hauptmenü
+prompt_token@@Bitte Token eingeben:
+prompt_auth_data@@Anmelden
+play@@Spiel starten
+quit@@Spiel verlassen
+prompt_plyname@@Name für deine Spielfigur:
+title_screen@@Hauptmenü
 
 # Inventory
 
-Resources@@Ernte und Samen
-Inventory@@Lager
-Tools@@Werkzeuge
-Equipment@@Ausrüstung
+resources@@Ernte und Samen
+inventory@@Lager
+tools@@Werkzeuge
+equipment@@Ausrüstung
 goggles@@Brille
 hat@@Hut
 necklace@@Kette
 horn@@Horn
-No equipment@@Keine Werkzeuge
+no_equip@@Keine Werkzeuge
 
 # shop menu
 
-buy one@@Kaufen
-sell one@@Verkaufen
-Welcome to the shop!@@Willkommen auf dem Markt!
-Your money:@@Verfügbares Geld:
+buy_one@@Kaufen
+sell_one@@Verkaufen
+shop_welcome@@Willkommen auf dem Markt!
+ply_money@@Verfügbares Geld:
 Amount  Value@@Anzahl  Preis
 none@@Keine
 wood@@Holz
@@ -47,28 +46,28 @@ carrot@@Karotten
 eggplant@@Auberginen
 pumpkin@@Kürbis
 parsnip@@Pastinaken
-corn seed@@Mais: Samen
-tomato seed@@Tomaten: Samen
-beetroot seed@@Rote Beete: Samen
-carrot seed@@Karotten: Samen
-eggplant seed@@Aubergine: Samen
-pumpkin seed@@Kürbis: Samen
-parsnip seed@@Pastinaken: Samen
+corn_seed@@Mais: Samen
+tomato_seed@@Tomaten: Samen
+beetroot_seed@@Rote Beete: Samen
+carrot_seed@@Karotten: Samen
+eggplant_seed@@Aubergine: Samen
+pumpkin_seed@@Kürbis: Samen
+parsnip_seed@@Pastinaken: Samen
 
 # pause menu
 
-Resume@@Spiel fortsetzen
-Options@@Optionen
-Save and Resume@@Spiel speichern und fortsetzen
-Pause Menu@@Pause
+resume@@Spiel fortsetzen
+options@@Optionen
+save_resume@@Spiel speichern und fortsetzen
+pause_menu@@Pause
 
 # options menu
 
-Keybinds@@Tastenkombinationen
-Volume@@Lautstärke
-Back@@Zurück
-Settings@@Einstellungen
-Reset@@Standard
+keybinds@@Tastenkombinationen
+volume@@Lautstärke
+back@@Zurück
+settings@@Einstellungen
+reset@@Standard
 
 # round end menu
 
@@ -79,22 +78,22 @@ continue to next round@@Weiter in die nächste Runde
 
 # task (items allocation) menu
 
-Task@@Aufgabe
-Confirm@@Bestätigen
-Distribute them@@Wem möchtest du wie viel geben?
-You have not allocated all of the items yet!@@Du hast noch nicht alles verteilt.
-You don't have that many items to distribute.@@Du hast nichts mehr zum verteilen.
-Items missing:@@Noch ausstehend:
-Take out:@@Lösche:
-You have received@@Du erhältst
-Your group's inventory:@@An die Rothüte:
-Other group's inventory:@@An die Hornlinge:
+task@@Aufgabe
+confirm@@Bestätigen
+share_items@@Wem möchtest du wie viel geben?
+items_unalloc@@Du hast noch nicht alles verteilt.
+too_few_to_give@@Du hast nichts mehr zum verteilen.
+missing_itms@@Noch ausstehend:
+take_out@@Lösche:
+you_have_received@@Du erhältst
+ingroup_inventory@@An die Rothüte:
+outgroup_inventory@@An die Hornlinge:
 Distribute as you wish@@Verteile sie frei! {item_specific}
 
 # src/screens/menu_notification.py
 
-OK@@OK
-Notification@@Benachrichtigung
+ok@@OK
+notification@@Benachrichtigung
 New Crop@@Hurra! Du kannst jetzt {crop} pflanzen!
 Beetroot (New)@@rote Beete
 Carrot (New)@@Karotten
@@ -104,8 +103,8 @@ Parsnip (New)@@Pastinaken
 
 # src/screens/self_assessment_menu.py
 
-How do you feel right now?@@Wie fühlst du dich jetzt gerade?
-Continue@@Weiter
+prompt_feeling@@Wie fühlst du dich jetzt gerade?
+continue@@Weiter
 
 # src/overlay/fast_forward.py
 
@@ -161,11 +160,11 @@ go@@Los!
 cow_minigame_desc@@Kuh-in-den-Stall Spiel
 cow_minigame_desc_l1@@Treibe die Kühe in den Stall
 cow_minigame_desc_l2@@so schnell wie möglich!
-Objective:@@Aufgabe:
-Herd the cows into the barn!@@Treibe die Kühe in den Stall!
-Rothüte:@@Rothüte:
-Hornlinge:@@Hornlinge: 
-Cows in the barn@@Kühe im Stall
+goal@@Aufgabe:
+ch_goal@@Treibe die Kühe in den Stall!
+ingroup_score@@Rothüte:
+outgroup_score@@Hornlinge:
+cow_count@@Kühe im Stall
 [cheering group]@@Die Rothüte sind stolz!
 [disappointed group]@@Die Rothüte sind enttäuscht
 [money win]@@Du hast 200$ gewonnen

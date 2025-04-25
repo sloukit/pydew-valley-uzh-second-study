@@ -9,7 +9,7 @@ from src.settings import (
     SCREEN_WIDTH,
 )
 from src.sprites.entities.player import Player
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 from src.support import parse_crop_types
 
 # TODO: Refactor this class
@@ -29,8 +29,8 @@ class ShopMenu:
     ):
         # general setup
 
-        self.buy_text = font.render(_("buy one"), False, "Black")
-        self.sell_text = font.render(_("sell one"), False, "Black")
+        self.buy_text = font.render(get_translated_msg("buy_one"), False, "Black")
+        self.sell_text = font.render(get_translated_msg("sell_one"), False, "Black")
         self.main_rect = None
         self.player = player
         self.switch_screen = switch_screen
@@ -71,7 +71,7 @@ class ShopMenu:
         self.setup()
 
     def display_labels(self):
-        label = _("Welcome to the shop!")
+        label = get_translated_msg("shop_welcome")
         header1_surf = self.font.render(f"{label} ", False, "Black")
         box_rect = pygame.Rect(
             SCREEN_WIDTH / 2 - self.width / 2,
@@ -82,7 +82,7 @@ class ShopMenu:
 
         header1_rect = header1_surf.get_frect(midtop=(SCREEN_WIDTH / 2, 45))
 
-        label = _("Amount  Value")
+        label = get_translated_msg("Amount  Value")
         header2_surf = self.font.render(f"{label} ", False, "Black")
         header2_rect = header2_surf.get_frect(midright=(SCREEN_WIDTH / 2 + 300, 95))
 
@@ -91,7 +91,7 @@ class ShopMenu:
         self.display_surface.blit(header2_surf, header2_rect)
 
         # Amount Value
-        label = _("Your money:")
+        label = get_translated_msg("ply_money")
         footer_surf = self.font.render(f"{label} ${self.player.money}", False, "Black")
         footer_rect = footer_surf.get_frect(
             midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 20)
@@ -109,7 +109,7 @@ class ShopMenu:
 
         # create the text surfaces
         for item in self.options:
-            text = _(item.as_user_friendly_string())
+            text = get_translated_msg(item.as_serialised_string())
             text_surf = self.font.render(text, False, "Black")
             self.text_surfs.append(text_surf)
             self.total_height += text_surf.get_height() + (self.padding * 2)

@@ -20,7 +20,7 @@ from src.settings import (
     SOCIAL_IDENTITY_ASSESSMENT_BORDER_SIZE,
 )
 from src.sprites.entities.player import Player
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 from src.support import import_font, resource_path
 
 
@@ -145,7 +145,7 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
         self._selected_scale = None
 
         self._continue_button = None
-        self._continue_button_text = _("Continue")
+        self._continue_button_text = get_translated_msg("Continue")
 
         self._social_identity_assessment_buttons: list[
             _SocialIdentityAssessmentButton
@@ -236,7 +236,9 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
 
             text_key: str = translations_map[i] if i in translations_map.keys() else ""
             if text_key:
-                text_surf = self.font.render(f"{_(text_key)}", False, "Black")
+                text_surf = self.font.render(
+                    f"{get_translated_msg(text_key)}", False, "Black"
+                )
                 half_width_of_text = text_surf.get_rect().width / 2
                 current_button_bottom_left = current_button.rect.midbottom
                 self._surface.blit(
@@ -251,7 +253,7 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
         return Text(TextChunk(self.get_question_by_selection(), self.font_title))
 
     def get_question_by_selection(self):
-        description: str = _(
+        description: str = get_translated_msg(
             f"social identity assessment q{self._selection[self.current_dimension_index] + 1}"
         )
         return description.replace(

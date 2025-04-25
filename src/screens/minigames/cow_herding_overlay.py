@@ -14,7 +14,7 @@ from src.screens.minigames.gui import (
 )
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 from src.support import get_outline, import_font
-from src.support import get_translated_string as get_translation
+from src.support import get_translated_string as get_translated_msg
 
 
 class _CowHerdingScoreboard(AbstractMenu):
@@ -32,14 +32,14 @@ class _CowHerdingScoreboard(AbstractMenu):
 
     def __init__(self, return_func: Callable[[], None]):
         super().__init__(
-            title=get_translation("cow_herding_title"),
+            title=get_translated_msg("cow_herding_title"),
             size=(SCREEN_WIDTH, SCREEN_HEIGHT),
         )
 
         self._return_func = return_func
 
         self._return_button = None
-        self._return_button_text = get_translation("return_to_town")
+        self._return_button_text = get_translated_msg("return_to_town")
 
         self._surface = None
 
@@ -61,26 +61,27 @@ class _CowHerdingScoreboard(AbstractMenu):
         button_area_height = self._return_button.rect.height + button_top_margin
 
         text = Text(
-            TextChunk(get_translation("Minigame complete!"), self.font_title),
+            TextChunk(get_translated_msg("Minigame complete!"), self.font_title),
             Linebreak(),
             TextChunk(f"{time_needed:.2f} ", self.font_number),
-            TextChunk(get_translation("self_time"), self.font_description),
+            TextChunk(get_translated_msg("self_time"), self.font_description),
             Linebreak(),
             TextChunk(
-                get_translation("outgroup_time").format(opp_time), self.font_description
-            ),
-            Linebreak(),
-            TextChunk(
-                get_translation("[cheering group]")
-                if opp_time > time_needed
-                else get_translation("[disappointed group]"),
+                get_translated_msg("outgroup_time").format(opp_time),
                 self.font_description,
             ),
             Linebreak(),
             TextChunk(
-                get_translation("[money win]")
+                get_translated_msg("[cheering group]")
                 if opp_time > time_needed
-                else get_translation("[money lost]"),
+                else get_translated_msg("[disappointed group]"),
+                self.font_description,
+            ),
+            Linebreak(),
+            TextChunk(
+                get_translated_msg("[money win]")
+                if opp_time > time_needed
+                else get_translated_msg("[money lost]"),
                 self.font_description,
             ),
         )
@@ -186,7 +187,7 @@ class _CowHerdingOverlay:
         current_fraction = current_time - current_time_int
 
         if current_time_int < ready_up_duration:
-            rendered_text = self._render_countdown_text(get_translation("ready"))
+            rendered_text = self._render_countdown_text(get_translated_msg("ready"))
             if ready_up_duration - 0.5 < current_time:
                 rendered_text = pygame.transform.scale_by(
                     rendered_text,
@@ -216,7 +217,7 @@ class _CowHerdingOverlay:
                 rendered_text.set_alpha(max(0, int(alpha * 255)))
 
         else:
-            rendered_text = self._render_countdown_text(get_translation("go"))
+            rendered_text = self._render_countdown_text(get_translated_msg("go"))
 
             if current_fraction <= 1 / 4:
                 rendered_text = pygame.transform.scale_by(
@@ -238,14 +239,16 @@ class _CowHerdingOverlay:
         box_center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
 
         text = Text(
-            TextChunk(get_translation("cow_minigame_desc"), self.font_description),
+            TextChunk(get_translated_msg("cow_minigame_desc"), self.font_description),
             Linebreak(),
             Linebreak((0, 24)),
             TextChunk(
-                get_translation("cow_minigame_desc_l1"), self.font_description
+                get_translated_msg("cow_minigame_desc_l1"), self.font_description
             ),
             Linebreak(),
-            TextChunk(get_translation("cow_minigame_desc_l2"), self.font_description),
+            TextChunk(
+                get_translated_msg("cow_minigame_desc_l2"), self.font_description
+            ),
         )
 
         _draw_box(self.display_surface, box_center, text.surface_rect.size)
@@ -271,25 +274,23 @@ class _CowHerdingOverlay:
         padding = 12
 
         text = Text(
-            TextChunk(get_translation("Objective:"), self.font_description),
+            TextChunk(get_translated_msg("goal"), self.font_description),
             Linebreak(),
-            TextChunk(
-                get_translation("Herd the cows into the barn!"), self.font_objective
-            ),
+            TextChunk(get_translated_msg("ch_goal"), self.font_objective),
             Linebreak((0, 32)),
-            TextChunk(get_translation("Rothüte:"), self.font_objective),
+            TextChunk(get_translated_msg("ingroup_score"), self.font_objective),
             Linebreak(),
             TextChunk(
                 f"({own_cows_herded_in}/{own_cows_total}) "
-                + get_translation("Cows in the barn"),
+                + get_translated_msg("Cows in the barn"),
                 self.font_objective,
             ),
             Linebreak((0, 32)),
-            TextChunk(get_translation("Hornlinge:"), self.font_objective),
+            TextChunk(get_translated_msg("outgroup_score"), self.font_objective),
             Linebreak(),
             TextChunk(
                 f"({opp_cows_herded_in}/{opp_cows_total}) "
-                + get_translation("Cows in the barn"),
+                + get_translated_msg("cow_count"),
                 self.font_objective,
             ),
         )

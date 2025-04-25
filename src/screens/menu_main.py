@@ -13,7 +13,7 @@ from src.settings import (
     SCREEN_WIDTH,
     # USE_SERVER,
 )
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 
 _SCREEN_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 # MAX_TOKEN_LEN = 3
@@ -28,8 +28,12 @@ class MainMenu(GeneralMenu):
         set_token: Callable[[dict[str, Any]], None],
         set_players_name: Callable[[dict[str, Any]], None],
     ) -> None:
-        options = [_("Play"), _("Quit"), _("Enter authentication data")]
-        title = _("Main Menu")
+        options = [
+            get_translated_msg("play"),
+            get_translated_msg("quit"),
+            get_translated_msg("prompt_auth_data"),
+        ]
+        title = get_translated_msg("title_screen")
         size = (400, 400)
         super().__init__(title, options, switch_screen, size)
         # This function references a method of the main `Game` object.
@@ -113,14 +117,14 @@ class MainMenu(GeneralMenu):
             self.draw_input_box(
                 self.input_box,
                 self.input_text,
-                _("Enter play token:"),
+                get_translated_msg("prompt_token"),
                 self.input_active,
             )
         if self.players_name_active:
             self.draw_input_box(
                 self.players_name_box,
                 self.players_name_text,
-                _("Enter player's name:"),
+                get_translated_msg("prompt_plyname"),
                 self.players_name_active,
             )
 
@@ -144,7 +148,7 @@ class MainMenu(GeneralMenu):
             self.players_name_active = True
             self.set_players_name("")
             self.play_button_enabled = True
-            self.remove_button(_("Enter authentication data"))
+            self.remove_button(get_translated_msg("prompt_auth_data"))
             self.draw()
         self.input_text = ""
 
@@ -153,13 +157,13 @@ class MainMenu(GeneralMenu):
         client.authn(token, self.post_login_callback)
 
     def button_action(self, text) -> None:
-        if text == _("Play") and self.play_button_enabled:
+        if text == get_translated_msg("play") and self.play_button_enabled:
             post_event(SET_CURSOR, cursor=CustomCursor.ARROW)
             self.switch_screen(GameState.PLAY)
-        elif text == _("Enter authentication data"):
+        elif text == get_translated_msg("prompt_auth_data"):
             self.input_active = True
             self.token = ""  # Reset token each time we re-enter
-        elif text == _("Quit"):
+        elif text == get_translated_msg("quit"):
             self.quit_game()
 
     def handle_event(self, event: pygame.event.Event) -> bool:
@@ -201,7 +205,7 @@ class MainMenu(GeneralMenu):
                         #     else:
                         #         self.set_players_name("")
                         #         self.play_button_enabled = True
-                        #         self.remove_button(_("Enter authentication data"))
+                        #         self.remove_button(get_translated_msg("Enter authentication data"))
                         #         self.draw()
                         #     self.input_text = ""
                         return True
@@ -222,7 +226,7 @@ class MainMenu(GeneralMenu):
                         self.set_players_name(self.players_name)
                         self.play_button_enabled = True
                         self.players_name_active = False
-                        self.remove_button(_("Enter authentication data"))
+                        self.remove_button(get_translated_msg("prompt_auth_data"))
                         self.draw()
                     return True
                 elif event.key == pygame.K_ESCAPE:
@@ -238,12 +242,12 @@ class MainMenu(GeneralMenu):
             if not self.input_active and not self.players_name_active:
                 if event.key in [pygame.K_RETURN, pygame.K_KP_ENTER]:
                     if not self.token and not self.players_name:
-                        self.button_action(_("Enter authentication data"))
+                        self.button_action(get_translated_msg("prompt_auth_data"))
                         return True
                     elif self.play_button_enabled:
-                        self.button_action(_("Play"))
+                        self.button_action(get_translated_msg("play"))
                         return True
                 elif event.key == pygame.K_ESCAPE:
-                    self.button_action(_("Quit"))
+                    self.button_action(get_translated_msg("quit"))
                     return True
         return False
