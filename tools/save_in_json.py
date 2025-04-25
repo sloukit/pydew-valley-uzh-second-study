@@ -3,6 +3,7 @@
 import json
 import os.path
 
+
 def load_translations_old(lang: str) -> dict[str, str]:  # noqa
     path = os.path.join(
         os.path.dirname(__file__),
@@ -23,6 +24,7 @@ def load_translations_old(lang: str) -> dict[str, str]:  # noqa
     ]
     return dict(pairs)
 
+
 lang_dicts = {}
 key_sets = {}
 
@@ -40,5 +42,9 @@ for lang in ("en", "de"):
 
     key_sets[lang] = set(lang_dicts[lang].keys())
 
-print(f"Entries in English left untranslated in German: {key_sets["en"].difference(key_sets["de"])}")
-print(f"Entries in German left untranslated in English: {key_sets["de"].difference(key_sets["en"])}")
+print(
+    f"Entries in English left untranslated in German: {key_sets['en'].difference(key_sets['de'])}"
+)
+print(
+    f"Entries in German left untranslated in English: {key_sets['de'].difference(key_sets['en'])}"
+)

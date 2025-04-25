@@ -193,8 +193,7 @@ class RoundMenu(GeneralMenu):
             self.get_round() % 2 == 0
         ):  # 2, 4, 6 (this corresponds to level 1, 3, 5 ends)
             self.title = get_translation("round_end_info").format(
-                round_no=self.get_round() - 1,
-                money=self.player.money
+                round_no=self.get_round() - 1, money=self.player.money
             )
             title_box_width = 650
             title_box_height = 50
@@ -202,9 +201,13 @@ class RoundMenu(GeneralMenu):
             if (
                 self.get_round() in {1, 7}
             ):  # corresponsds to last level, config overflows in some cases, this is why we have 1 in here
-                self.title = get_translation("whole_finish").format(money=self.player.money)
+                self.title = get_translation("whole_finish").format(
+                    money=self.player.money
+                )
             else:  # daily task completion
-                self.title = get_translation("temp_finish").format(money=self.player.money)
+                self.title = get_translation("temp_finish").format(
+                    money=self.player.money
+                )
             title_box_width = 1020
             title_box_height = 90
 
