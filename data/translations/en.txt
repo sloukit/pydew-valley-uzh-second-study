@@ -1,6 +1,6 @@
 # Game name
 
-Clear Skies@@Clear Skies
+game_title@@Clear Skies
 
 # main menu
 
@@ -29,7 +29,7 @@ buy_one@@buy one
 sell_one@@sell one
 shop_welcome@@Welcome to the shop!
 ply_money@@Your money:
-Amount  Value@@Amount  Value
+amount_price@@Amount  Worth
 none@@none
 wood@@wood
 apple@@apple
@@ -98,23 +98,23 @@ take_out@@Take out:
 you_have_received@@You have received
 ingroup_inventory@@Your group's inventory:
 outgroup_inventory@@Other group's inventory:
-Distribute as you wish@@Distribute the items as you wish! {item_specific}
-Gloves@@Gloves help the wearer with harvesting.
-Boots@@Boots allow their wearer to walk unimpeded in the rain.
-Jeans@@Jeans let their wearer chop wood faster.
-Weather Protection@@{item} protect their wearer from {weather}.
-Shirts@@Shirts
-Coats@@Coats
-Cold@@the cold
-Rain@@the rain
-Aprons@@Aprons prevent their wearer from getting dirty while cooking.
-Flashlight@@Flashlights let their user see in the dark.
-Thimbles@@Thimbles protect their user from stiches.
-Rain barrels@@Rain barrels can help saving more water.
-Socks@@Socks
-Cap@@Caps
-Sun@@the sun
-Blankets@@Blankets protect from the cold while their wearer is sleeping.
+share@@Distribute the items as you wish! {item_specific}
+gloves@@Gloves help the wearer with harvesting.
+boots@@Boots allow their wearer to walk unimpeded in the rain.
+jeans@@Jeans let their wearer chop wood faster.
+weather_protection@@{item} protect their wearer from {weather}.
+shirts@@Shirts
+coats@@Coats
+cold@@the cold
+rain@@the rain
+aprons@@Aprons prevent their wearer from getting dirty while cooking.
+flashlights@@Flashlights let their user see in the dark.
+thimbles@@Thimbles protect their user from stiches.
+rain_barrels@@Rain barrels can help saving more water.
+socks@@Socks
+cap@@Caps
+sun@@the sun
+blankets@@Blankets protect from the cold while their wearer is sleeping.
 r1@@6 pairs of gloves
 r2@@2 pairs of boots
 r3@@4 pairs of jeans
@@ -132,18 +132,18 @@ r12@@10 blankets
 
 ok@@OK
 notification@@Notification
-New Crop@@You can now plant {crop}!
-Beetroot (New)@@beetroots
-Carrot (New)@@carrots
-Eggplant (New)@@eggplants
-Pumpkin (New)@@pumpkins
-Parsnip (New)@@parsnip
-Cabbage (New)@@some cabbage
-Bean (New)@@beans
-Cauliflower (New)@@cauliflowers
-Red Cabbage (New)@@some red cabbage
-Wheat (New)@@some wheat
-Broccoli (New)@@some broccoli
+new_crop@@You can now plant {crop}!
+beetroot_new_crop@@beetroots
+carrot_new_crop@@carrots
+eggplant_new_crop@@eggplants
+pumpkin_new_crop@@pumpkins
+parsnip_new_crop@@parsnip
+cabbage_new_crop@@some cabbage
+bean_new_crop@@beans
+cauliflower_new_crop@@cauliflowers
+red_cabbage_new_crop@@some red cabbage
+wheat_new_crop@@some wheat
+broccoli_new_crop@@some broccoli
 
 # src/screens/self_assessment_menu.py
 
@@ -188,14 +188,14 @@ Show Shop@@Show Shop
 
 # src/gui/menu/description.py
 
-Music@@Music
-SFX@@SFX
+music@@Music
+sfx@@SFX
 
 # src/screens/minigames/cow_herding_overlay.py
 
 cow_herding_title@@Cow Herding
 return_to_town@@Return to Town
-Minigame complete!@@Minigame complete!
+finished_minigame@@Minigame complete!
 self_time@@seconds needed
 outgroup_time@@The Hornlings needed {:.2f} seconds
 cows herded in@@cows herded in
@@ -226,12 +226,12 @@ box info esc@@Pause
 box info player task@@How to make money:|Digging the soil, planting seeds,|watering plants|Harvesting after sleeping|Collecting wood and|fruit in the forest|Selling the harvest, wood and|fruit at the market|Winning money at the|'cow-in-the-stable' event
 
 
-social identity assessment left info@@Not at all
-social identity assessment right info@@Very much
+social_identity_assessment_left_info@@Not at all
+social_identity_assessment_right_info@@Very much
 
-social identity assessment q1@@Ich gehöre zur Gruppe der Rothüte
-social identity assessment q2@@Ich gehöre zur Gruppe der Hornlinge.
-social identity assessment q3@@Ich identifiziere mich mit Mika [Name]
+social_identity_assessment_q1@@I am closer to the Red Hats.
+social_identity_assessment_q2@@I am closer to the Hornlings.
+social_identity_assessment_q3@@I identify myself to the Mika {name}.
 
 # Tutorial
 

@@ -82,7 +82,7 @@ class ShopMenu:
 
         header1_rect = header1_surf.get_frect(midtop=(SCREEN_WIDTH / 2, 45))
 
-        label = get_translated_msg("Amount  Value")
+        label = get_translated_msg("amount_price")
         header2_surf = self.font.render(f"{label} ", False, "Black")
         header2_rect = header2_surf.get_frect(midright=(SCREEN_WIDTH / 2 + 300, 95))
 

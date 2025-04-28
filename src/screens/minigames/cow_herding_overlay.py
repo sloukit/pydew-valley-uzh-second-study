@@ -61,7 +61,7 @@ class _CowHerdingScoreboard(AbstractMenu):
         button_area_height = self._return_button.rect.height + button_top_margin
 
         text = Text(
-            TextChunk(get_translated_msg("Minigame complete!"), self.font_title),
+            TextChunk(get_translated_msg("finished_minigame"), self.font_title),
             Linebreak(),
             TextChunk(f"{time_needed:.2f} ", self.font_number),
             TextChunk(get_translated_msg("self_time"), self.font_description),

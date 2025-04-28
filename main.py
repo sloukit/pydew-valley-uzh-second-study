@@ -108,7 +108,7 @@ class Game:
 
         screen_size = (SCREEN_WIDTH, SCREEN_HEIGHT)
         self.display_surface = pygame.display.set_mode(screen_size)
-        pygame.display.set_caption(get_translated_msg("Clear Skies"))
+        pygame.display.set_caption(get_translated_msg("game_title"))
 
         # frames
         self.level_frames: dict | None = None
@@ -291,9 +291,59 @@ class Game:
         self.last_intro_txt_rendered = False
         self.switched_to_tutorial = False
 
+    def _empty_round_config_notify(self, cfg_id: str):
+        self.round_config[f"notify_{cfg_id}_text"] = ""
+        self.round_config[f"notify_{cfg_id}_timestamp"] = []
+
+    def _can_notify_new_crop(self):
+        return (
+            self.round_config.get("notify_new_crop_text", "")
+            and self.round_config["notify_new_crop_timestamp"]
+            and self.round_end_timer > self.round_config["notify_new_crop_timestamp"][0]
+        )
+
+    def _can_notify_questionnaire(self):
+        return (
+            self.round_config.get("notify_questionnaire_text", "")
+            and self.round_config["notify_questionnaire_timestamp"]
+            and self.round_end_timer
+            > self.round_config["notify_questionnaire_timestamp"][0]
+        )
+
+    def _can_notify_outgroup_money_income(self):
+        return (
+            self.round_config.get("notify_round_end_outgroup_text", "")
+            and self.round_config["notify_round_end_outgroup_timestamp"]
+            and self.round_end_timer
+            > self.round_config["notify_round_end_outgroup_timestamp"][0]
+        )
+
+    def _notify(self, message: str, id_to_empty: str):
+        self.notification_menu.message = message
+        self.switch_state(GameState.NOTIFICATION_MENU)
+        # set to empty to not repeat
+        self._empty_round_config_notify(id_to_empty)
+
     def check_hat_condition(self):
-        if self.round > 2 and self.game_version in {1, 2}:
+        if self.round > 2 and 0 < self.game_version < 3:
             self.player.has_hat = True
+
+    def _get_alloc_text(self, alloc_id: str):
+        potential_alloc_ids = alloc_id.split(";")
+        if len(potential_alloc_ids) > 1:
+            if GAME_LANGUAGE == "de":
+                txt_to_add = get_translated_msg(potential_alloc_ids[1])
+            elif potential_alloc_ids[0].startswith("weather_protection"):
+                params = potential_alloc_ids[0][potential_alloc_ids[0].find('('): -1].split(",")
+                txt_to_add = get_translated_msg("weather_protection").format(
+                    item=get_translated_msg(params[0]),
+                    weather=get_translated_msg(params[1])
+                )
+            else:
+                txt_to_add = get_translated_msg(potential_alloc_ids[0])
+        else:
+            txt_to_add = get_translated_msg(potential_alloc_ids[0])
+        return txt_to_add
 
     def get_world_time(self) -> tuple[int, int]:
         min = round(self.round_end_timer) // 60
@@ -721,45 +771,24 @@ class Game:
                         self.send_telemetry("round_end", {})
                         self.round_end_timer = 0.0
                         self.switch_state(GameState.ROUND_END)
-                    elif (
-                        self.round_config.get("notify_new_crop_text", "")
-                        and self.round_config["notify_new_crop_timestamp"]
-                        and self.round_end_timer
-                        > self.round_config["notify_new_crop_timestamp"][0]
-                    ):
-                        # make a copy of a string
-                        message = self.round_config["notify_new_crop_text"][:]
+                    elif self._can_notify_new_crop():
+                        msg_id = self.round_config["notify_new_crop_text"]
+                        message = get_translated_msg("new_crop").format(
+                            crop=get_translated_msg(f"{msg_id}_new_crop")
+                        )
                         self.notification_menu.message = message
                         self.switch_state(GameState.NOTIFICATION_MENU)
                         # set to empty to not repeat
-                        self.round_config["notify_new_crop_text"] = ""
-                        self.round_config["notify_new_crop_timestamp"] = []
-                    elif (
-                        self.round_config.get("notify_questionnaire_text", "")
-                        and self.round_config["notify_questionnaire_timestamp"]
-                        and self.round_end_timer
-                        > self.round_config["notify_questionnaire_timestamp"][0]
-                    ):
-                        # make a copy of a string
-                        message = self.round_config["notify_questionnaire_text"][:]
+                        self._empty_round_config_notify("new_crop")
+                    elif self._can_notify_questionnaire():
+                        message = self.round_config["notify_questionnaire_text"]
                         self.notification_menu.message = message
                         self.switch_state(GameState.NOTIFICATION_MENU)
                         # set to empty to not repeat
-                        self.round_config["notify_questionnaire_text"] = ""
-                        self.round_config["notify_questionnaire_timestamp"] = []
-                    elif (
-                        self.round_config.get("notify_round_end_outgroup_text", "")
-                        and self.round_config["notify_round_end_outgroup_timestamp"]
-                        and self.round_end_timer
-                        > self.round_config["notify_round_end_outgroup_timestamp"][0]
-                    ):
-                        # make a copy of a string
-                        message = self.round_config["notify_round_end_outgroup_text"][:]
-                        self.notification_menu.message = message
-                        self.switch_state(GameState.NOTIFICATION_MENU)
-                        # set to empty to not repeat
-                        self.round_config["notify_round_end_outgroup_text"] = ""
-                        self.round_config["notify_round_end_outgroup_timestamp"] = []
+                        self._empty_round_config_notify("questionnaire")
+                    elif self._can_notify_outgroup_money_income():
+                        message = self.round_config["notify_round_end_outgroup_text"]
+                        self._notify(message, "round_end_outgroup")
                     elif (
                         len(self.round_config.get("self_assessment_timestamp", [])) > 0
                         and self.round_end_timer
@@ -901,12 +930,13 @@ class Game:
                         and self.round_end_timer
                         > self.round_config["resource_allocation_timestamp"][0]
                     ):
-                        # make a copy of a string
-                        allocations_text = self.round_config[
+                        allocations_id = self.round_config[
                             "resource_allocation_text"
-                        ][:]
-                        # self.allocation_task.title = message
-                        self.allocation_task.allocations_text = allocations_text
+                        ]
+                        txt_to_add = self._get_alloc_text(allocations_id)
+                        self.allocation_task.allocations_text = get_translated_msg("share").format(
+                            item_specific=txt_to_add
+                        )
                         self.allocation_task.parse_allocation_items(
                             self.round_config["resource_allocation_item_text"]
                         )

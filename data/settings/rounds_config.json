@@ -39,7 +39,7 @@
             "resource_allocation_timestamp": [
                 540
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Handschuhe helfen beim Ernten.",
+            "resource_allocation_text": "gloves",
             "resource_allocation_item_text": "6 Paar Handschuhe",
             "character_introduction_timestamp": [
                 0
@@ -91,7 +91,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt rote Beete pflanzen!",
+            "notify_new_crop_text": "beetroot",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
@@ -122,7 +122,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Stiefel helfen bei Regen.",
+            "resource_allocation_text": "boots",
             "resource_allocation_item_text": "2 Paar Stiefel",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -172,7 +172,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Karotten pflanzen!",
+            "notify_new_crop_text": "carrot",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
@@ -202,7 +202,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Jeans helfen beim B\u00e4ume f\u00e4llen.",
+            "resource_allocation_text": "jeans",
             "resource_allocation_item_text": "4 Paar Jeans",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -250,7 +250,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Auberginen pflanzen!",
+            "notify_new_crop_text": "eggplant",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
@@ -283,7 +283,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Hemden helfen bei K\u00e4lte.",
+            "resource_allocation_text": "weather_protection(shirts,cold);shirts",
             "resource_allocation_item_text": "8 Hemden",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -331,7 +331,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt K\u00fcrbis pflanzen!",
+            "notify_new_crop_text": "pumpkin",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
@@ -363,7 +363,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die M\u00e4ntel helfen bei Regen.",
+            "resource_allocation_text": "weather_protection(coats,rain);coats",
             "resource_allocation_item_text": "6 Regenm\u00e4ntel",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -413,7 +413,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Pastinaken pflanzen!",
+            "notify_new_crop_text": "parsnip",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
@@ -448,7 +448,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Sch\u00fctzen helfen beim Kochen.",
+            "resource_allocation_text": "aprons",
             "resource_allocation_item_text": "10 Sch\u00fcrzen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -494,13 +494,22 @@
             "bathtub_signs": true,
             "sign_interaction": true,
             "notify_new_crop_timestamp": [],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "cabbage",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
             "notify_round_end_outgroup_text": "",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -518,12 +527,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "flashlights",
+            "resource_allocation_item_text": "6 Taschenlampen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                660,
+                780
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -546,8 +560,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                180
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 8",
@@ -562,15 +578,25 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "bean",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
                 5
             ],
-            "notify_round_end_outgroup_text": "",
+            "notify_round_end_outgroup_text": "Die Hornlinge haben letzte Runde 3.345$ verdient.",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -586,12 +612,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "thimbles",
+            "resource_allocation_item_text": "2 Fingerh\u00fcte",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -614,8 +645,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 9",
@@ -630,13 +663,24 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "cauliflower",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
             "notify_round_end_outgroup_text": "",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -652,12 +696,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "rain_barrels",
+            "resource_allocation_item_text": "4 Regentonnen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -680,8 +729,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 10",
@@ -696,15 +747,27 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "red_cabbage",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
                 5
             ],
-            "notify_round_end_outgroup_text": "",
+            "notify_round_end_outgroup_text": "Die Hornlinge haben letzte Runde 5.455$ verdient.",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower",
+                "red_cabbage"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -720,12 +783,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "socks",
+            "resource_allocation_item_text": "8 Paar Socken",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -748,8 +816,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 11",
@@ -764,13 +834,26 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "wheat",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
             "notify_round_end_outgroup_text": "",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower",
+                "red_cabbage",
+                "wheat"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -786,12 +869,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "weather_protection(cap,sun);cap",
+            "resource_allocation_item_text": "6 Kappen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -814,8 +902,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 12",
@@ -830,15 +920,29 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "broccoli",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
                 5
             ],
-            "notify_round_end_outgroup_text": "",
+            "notify_round_end_outgroup_text": "Die Hornlinge haben letzte Runde 4.985$ verdient.",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower",
+                "red_cabbage",
+                "wheat",
+                "broccoli"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -854,12 +958,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "blankets",
+            "resource_allocation_item_text": "10 Decken",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -882,8 +991,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         }
     ],
     [
@@ -927,7 +1038,7 @@
             "resource_allocation_timestamp": [
                 540
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Handschuhe helfen beim Ernten.",
+            "resource_allocation_text": "gloves",
             "resource_allocation_item_text": "6 Paar Handschuhe",
             "character_introduction_timestamp": [
                 0
@@ -979,7 +1090,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt rote Beete pflanzen!",
+            "notify_new_crop_text": "beetroot",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
@@ -1011,7 +1122,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Stiefel helfen bei Regen.",
+            "resource_allocation_text": "boots",
             "resource_allocation_item_text": "2 Paar Stiefel",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -1061,7 +1172,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Karotten pflanzen!",
+            "notify_new_crop_text": "carrot",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
@@ -1092,7 +1203,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Jeans helfen beim B\u00e4ume f\u00e4llen.",
+            "resource_allocation_text": "jeans",
             "resource_allocation_item_text": "4 Paar Jeans",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -1140,7 +1251,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Auberginen pflanzen!",
+            "notify_new_crop_text": "eggplant",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
@@ -1174,7 +1285,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Hemden helfen bei K\u00e4lte.",
+            "resource_allocation_text": "weather_protection(shirts,cold);shirts",
             "resource_allocation_item_text": "8 Hemden",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -1222,7 +1333,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt K\u00fcrbis pflanzen!",
+            "notify_new_crop_text": "pumpkin",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
@@ -1255,7 +1366,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die M\u00e4ntel helfen bei Regen.",
+            "resource_allocation_text": "weather_protection(coats,rain);coats",
             "resource_allocation_item_text": "6 Regenm\u00e4ntel",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -1305,7 +1416,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Pastinaken pflanzen!",
+            "notify_new_crop_text": "parsnip",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
@@ -1341,7 +1452,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Sch\u00fctzen helfen beim Kochen.",
+            "resource_allocation_text": "aprons",
             "resource_allocation_item_text": "10 Sch\u00fcrzen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -1387,13 +1498,22 @@
             "bathtub_signs": true,
             "sign_interaction": true,
             "notify_new_crop_timestamp": [],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "cabbage",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
             "notify_round_end_outgroup_text": "",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -1412,12 +1532,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "flashlights",
+            "resource_allocation_item_text": "6 Taschenlampen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                660,
+                780
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -1440,8 +1565,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                180
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 8",
@@ -1456,15 +1583,25 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "bean",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
                 5
             ],
-            "notify_round_end_outgroup_text": "",
+            "notify_round_end_outgroup_text": "Die Hornlinge haben letzte Runde 3.345$ verdient.",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -1481,12 +1618,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "thimbles",
+            "resource_allocation_item_text": "2 Fingerh\u00fcte",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -1509,8 +1651,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 9",
@@ -1525,13 +1669,24 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "cauliflower",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
             "notify_round_end_outgroup_text": "",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -1548,12 +1703,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "rain_barrels",
+            "resource_allocation_item_text": "4 Regentonnen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -1576,8 +1736,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 10",
@@ -1592,15 +1754,27 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "red_cabbage",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
                 5
             ],
-            "notify_round_end_outgroup_text": "",
+            "notify_round_end_outgroup_text": "Die Hornlinge haben letzte Runde 5.455$ verdient.",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower",
+                "red_cabbage"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -1617,12 +1791,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "socks",
+            "resource_allocation_item_text": "8 Paar Socken",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -1645,8 +1824,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 11",
@@ -1661,13 +1842,26 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "wheat",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
             "notify_round_end_outgroup_text": "",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower",
+                "red_cabbage",
+                "wheat"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -1684,12 +1878,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "weather_protection(cap,sun);cap",
+            "resource_allocation_item_text": "6 Kappen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -1712,8 +1911,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         },
         {
             "level_name_text": "Level 12",
@@ -1728,15 +1929,29 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "broccoli",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
                 5
             ],
-            "notify_round_end_outgroup_text": "",
+            "notify_round_end_outgroup_text": "Die Hornlinge haben letzte Runde 4.985$ verdient.",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower",
+                "red_cabbage",
+                "wheat",
+                "broccoli"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -1753,12 +1968,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "blankets",
+            "resource_allocation_item_text": "10 Decken",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -1781,8 +2001,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": ""
+            "group_market_active_player_sequence_timestamp": [
+                120
+            ],
+            "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren."
         }
     ],
     [
@@ -1826,7 +2048,7 @@
             "resource_allocation_timestamp": [
                 540
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Handschuhe helfen beim Ernten.",
+            "resource_allocation_text": "gloves",
             "resource_allocation_item_text": "6 Paar Handschuhe",
             "character_introduction_timestamp": [
                 0
@@ -1874,7 +2096,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt rote Beete pflanzen!",
+            "notify_new_crop_text": "beetroot",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
@@ -1904,7 +2126,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Stiefel helfen bei Regen.",
+            "resource_allocation_text": "boots",
             "resource_allocation_item_text": "2 Paar Stiefel",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -1950,7 +2172,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Karotten pflanzen!",
+            "notify_new_crop_text": "carrot",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
@@ -1981,7 +2203,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Jeans helfen beim B\u00e4ume f\u00e4llen.",
+            "resource_allocation_text": "jeans",
             "resource_allocation_item_text": "4 Paar Jeans",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -2029,7 +2251,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Auberginen pflanzen!",
+            "notify_new_crop_text": "eggplant",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
@@ -2061,7 +2283,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Hemden helfen bei K\u00e4lte.",
+            "resource_allocation_text": "weather_protection(shirts,cold);shirts",
             "resource_allocation_item_text": "8 Hemden",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -2107,7 +2329,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt K\u00fcrbis pflanzen!",
+            "notify_new_crop_text": "pumpkin",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
@@ -2140,7 +2362,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die M\u00e4ntel helfen bei Regen.",
+            "resource_allocation_text": "weather_protection(coats,rain);coats",
             "resource_allocation_item_text": "6 Regenm\u00e4ntel",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -2186,7 +2408,7 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Pastinaken pflanzen!",
+            "notify_new_crop_text": "parsnip",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
@@ -2220,7 +2442,7 @@
             "resource_allocation_timestamp": [
                 720
             ],
-            "resource_allocation_text": "Verteile sie frei! Die Sch\u00fctzen helfen beim Kochen.",
+            "resource_allocation_text": "aprons",
             "resource_allocation_item_text": "10 Sch\u00fcrzen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
@@ -2264,13 +2486,22 @@
             "bathtub_signs": true,
             "sign_interaction": true,
             "notify_new_crop_timestamp": [],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "cabbage",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
             "notify_round_end_outgroup_text": "",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -2289,12 +2520,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "flashlights",
+            "resource_allocation_item_text": "6 Taschenlampen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                660,
+                780
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -2333,15 +2569,25 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "bean",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
                 5
             ],
-            "notify_round_end_outgroup_text": "",
+            "notify_round_end_outgroup_text": "Die Hornlinge haben letzte Runde 3.345$ verdient.",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -2358,12 +2604,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "thimbles",
+            "resource_allocation_item_text": "2 Fingerh\u00fcte",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -2402,13 +2653,24 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "cauliflower",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
             "notify_round_end_outgroup_text": "",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -2425,12 +2687,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "rain_barrels",
+            "resource_allocation_item_text": "4 Regentonnen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -2469,15 +2736,27 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "red_cabbage",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
                 5
             ],
-            "notify_round_end_outgroup_text": "",
+            "notify_round_end_outgroup_text": "Die Hornlinge haben letzte Runde 5.455$ verdient.",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower",
+                "red_cabbage"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -2494,12 +2773,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "socks",
+            "resource_allocation_item_text": "8 Paar Socken",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -2538,13 +2822,26 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "wheat",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [],
             "notify_round_end_outgroup_text": "",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower",
+                "red_cabbage",
+                "wheat"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -2561,12 +2858,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "weather_protection(cap,sun);cap",
+            "resource_allocation_item_text": "6 Kappen",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895
@@ -2605,15 +2907,29 @@
             "notify_new_crop_timestamp": [
                 15
             ],
-            "notify_new_crop_text": "",
+            "notify_new_crop_text": "broccoli",
             "notify_questionnaire_timestamp": [],
             "notify_questionnaire_text": "",
             "notify_round_end_outgroup_timestamp": [
                 5
             ],
-            "notify_round_end_outgroup_text": "",
+            "notify_round_end_outgroup_text": "Die Hornlinge haben letzte Runde 4.985$ verdient.",
             "round_end_screen": true,
-            "crop_types_list": [],
+            "crop_types_list": [
+                "tomato",
+                "corn",
+                "beetroot",
+                "carrot",
+                "eggplant",
+                "pumpkin",
+                "parsnip",
+                "cabbage",
+                "bean",
+                "cauliflower",
+                "red_cabbage",
+                "wheat",
+                "broccoli"
+            ],
             "playable_outgroup": true,
             "healthbar": true,
             "accessible_bathhouse": true,
@@ -2630,12 +2946,17 @@
             "market": true,
             "emote_wheel": true,
             "government_statistics": true,
-            "resource_allocation_timestamp": [],
-            "resource_allocation_text": "",
-            "resource_allocation_item_text": "",
+            "resource_allocation_timestamp": [
+                720
+            ],
+            "resource_allocation_text": "blankets",
+            "resource_allocation_item_text": "10 Decken",
             "character_introduction_timestamp": [],
             "character_introduction_text": "",
-            "self_assessment_timestamp": [],
+            "self_assessment_timestamp": [
+                180,
+                660
+            ],
             "self_assessment_menu": true,
             "social_identity_assessment_timestamp": [
                 895

@@ -1,6 +1,6 @@
 # Game name
 
-Clear Skies@@Der Acker ruft!
+game_title@@Der Acker ruft!
 
 # main menu
 
@@ -29,7 +29,7 @@ buy_one@@Kaufen
 sell_one@@Verkaufen
 shop_welcome@@Willkommen auf dem Markt!
 ply_money@@Verfügbares Geld:
-Amount  Value@@Anzahl  Preis
+amount_price@@Anzahl  Preis
 none@@Keine
 wood@@Holz
 apple@@Apfel
@@ -88,18 +88,36 @@ take_out@@Lösche:
 you_have_received@@Du erhältst
 ingroup_inventory@@An die Rothüte:
 outgroup_inventory@@An die Hornlinge:
-Distribute as you wish@@Verteile sie frei! {item_specific}
+share@@Verteile sie frei! {item_specific}
+gloves@@Die Handschuhe helfen beim Ernten.
+boots@@Die Stiefel helfen bei Regen.
+jeans@@Die Jeans helfen beim Bäume fällen.
+shirts@@Die Hemden helfen bei Kälte.
+coats@@Die Mäntel helfen bei Regen.
+aprons@@Die Schürzen helfen beim Kochen.
+flashlights@@Die Taschenlampen helfen im Dunkeln.
+thimbles@@Die Fingerhüte schützen vor Stichen.
+rain_barrels@@Die Regentonnen helfen beim Wasser sparen.
+socks@@Die Socken helfen bei Kälte.
+cap@@Die Kappen schützen vor der Sonne.
+blankets@@Die Decken helfen bei Kälte.
 
 # src/screens/menu_notification.py
 
 ok@@OK
 notification@@Benachrichtigung
-New Crop@@Hurra! Du kannst jetzt {crop} pflanzen!
-Beetroot (New)@@rote Beete
-Carrot (New)@@Karotten
-Eggplant (New)@@Auberginen
-Pumpkin (New)@@Kürbis
-Parsnip (New)@@Pastinaken
+new_crop@@Hurra! Du kannst jetzt {crop} pflanzen!
+beetroot_new_crop@@rote Beete
+carrot_new_crop@@Karotten
+eggplant_new_crop@@Auberginen
+pumpkin_new_crop@@Kürbis
+parsnip_new_crop@@Pastinaken
+cabbage_new_crop@@Kohl
+bean_new_crop@@Bohnen
+cauliflower_new_crop@@Blumenkohl
+red_cabbage_new_crop@@Rotkohl
+wheat_new_crop@@Weizen
+broccoli_new_crop@@Brokkoli
 
 # src/screens/self_assessment_menu.py
 
@@ -144,14 +162,14 @@ Show Shop@@EN: Show Shop
 
 # src/gui/menu/description.py
 
-Music@@Musik
-SFX@@SFX
+music@@Musik
+sfx@@SFX
 
 # src/screens/minigames/cow_herding_overlay.py
 
 cow_herding_title@@Kühe treiben
 return_to_town@@Zurück in die Stadt
-Minigame complete!@@Spiel beendet!
+finished_minigame@@Spiel beendet!
 self_time@@Sekunden gebraucht
 outgroup_time@@Hornlinge: %.2f Sekunden
 cows herded in@@Kühe im Stall
@@ -183,8 +201,8 @@ box info e@@Interagieren
 box info esc@@Pause
 box info player task@@So macht man Geld:|-Erde umgraben, Samen setzen,|  Pflanzen giessen|-Nach dem Schlafen Ernten|-Im Wald Holz und Früchte|sammeln|-Ernte, Holz und Früchte auf|  dem Markt verkaufen|-Bei 'Kuh-in-den-Stall' Geld|gewinnen
 
-social identity assessment left info@@Gar nicht
-social identity assessment right info@@Sehr
-social identity assessment q1@@Ich gehöre zur Gruppe der Rothüte.
-social identity assessment q2@@Ich gehöre zur Gruppe der Hornlinge.
-social identity assessment q3@@Ich identifiziere mich mit Mika [Name].
+social_identity_assessment_left_info@@Gar nicht
+social_identity_assessment_right_info@@Sehr
+social_identity_assessment_q1@@Ich gehöre zur Gruppe der Rothüte.
+social_identity_assessment_q2@@Ich gehöre zur Gruppe der Hornlinge.
+social_identity_assessment_q3@@Ich identifiziere mich mit Mika {name}.
