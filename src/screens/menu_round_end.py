@@ -77,7 +77,7 @@ class RoundMenu(GeneralMenu):
         self.round_config = round_config
         self.item_frames: dict[str, pygame.Surface] = frames["items"]
         self.title = ""
-        options = [get_translated_msg("continue to next round")]
+        options = [get_translated_msg("next_round")]
         size = (650, 400)
 
         self.allowed_crops = []
@@ -120,7 +120,7 @@ class RoundMenu(GeneralMenu):
             if item.as_serialised_string() not in self.allowed_crops:
                 continue
             rect = pygame.Rect(basicRect)
-            itemName = get_translated_msg(item.as_user_friendly_string())
+            itemName = get_translated_msg(item.as_serialised_string())
             frame_name = item.as_serialised_string()
             icon = self.item_frames[frame_name]
             icon = pygame.transform.scale_by(icon, 0.5)
@@ -163,7 +163,7 @@ class RoundMenu(GeneralMenu):
             gc.collect()
 
     def button_action(self, text: str):
-        if text == get_translated_msg("continue to next round"):
+        if text == get_translated_msg("next_round"):
             self.close()
 
     def handle_event(self, event: pygame.event.Event) -> bool:

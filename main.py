@@ -94,6 +94,42 @@ _COSMETIC_SUBSURF_AREAS = {
     "necklace": pygame.Rect(0, 16, 21, 22),
     "hat": pygame.Rect(24, 16, 20, 11),
 }
+_CAMERA_TARGET_TO_TEXT = (
+    "character_introduction_text",
+    "ingroup_introduction_text",
+    "ingroup_hat_necklace_introduction_text",
+    "ingroup_hat_introduction_text",
+    "outgroup_introduction_text",
+    "narrative_text",
+)
+
+
+def _get_alloc_text(alloc_id: str):
+    potential_alloc_ids = alloc_id.split(";")
+    if len(potential_alloc_ids) > 1:
+        if GAME_LANGUAGE == "de":
+            txt_to_add = get_translated_msg(potential_alloc_ids[1])
+        elif potential_alloc_ids[0].startswith("weather_protection"):
+            params = potential_alloc_ids[0][
+                potential_alloc_ids[0].find("(") : -1
+            ].split(",")
+            txt_to_add = get_translated_msg("weather_protection").format(
+                item=get_translated_msg(params[0]),
+                weather=get_translated_msg(params[1]),
+            )
+        else:
+            txt_to_add = get_translated_msg(potential_alloc_ids[0])
+    else:
+        txt_to_add = get_translated_msg(potential_alloc_ids[0])
+    return txt_to_add
+
+
+def _get_outgroup_income(money: str):
+    actual_money = money
+    if GAME_LANGUAGE == "en":
+        # English currency formatting works like the German one, but with commas instead of colons.
+        actual_money = money.replace(".", ",")
+    return get_translated_msg("outgroup_income_round_end").format(money=actual_money)
 
 
 class Game:
@@ -130,7 +166,7 @@ class Game:
         self._cursor_img: pygame.Surface | None = None
 
         self.save_file = SaveFile.load()
-        self.save_file.is_tutorial_completed = True
+        # self.save_file.is_tutorial_completed = True
 
         # main setup
         self.running = True
@@ -295,6 +331,7 @@ class Game:
         self.round_config[f"notify_{cfg_id}_text"] = ""
         self.round_config[f"notify_{cfg_id}_timestamp"] = []
 
+    @property
     def _can_notify_new_crop(self):
         return (
             self.round_config.get("notify_new_crop_text", "")
@@ -302,6 +339,7 @@ class Game:
             and self.round_end_timer > self.round_config["notify_new_crop_timestamp"][0]
         )
 
+    @property
     def _can_notify_questionnaire(self):
         return (
             self.round_config.get("notify_questionnaire_text", "")
@@ -310,12 +348,95 @@ class Game:
             > self.round_config["notify_questionnaire_timestamp"][0]
         )
 
+    @property
     def _can_notify_outgroup_money_income(self):
         return (
             self.round_config.get("notify_round_end_outgroup_text", "")
             and self.round_config["notify_round_end_outgroup_timestamp"]
             and self.round_end_timer
             > self.round_config["notify_round_end_outgroup_timestamp"][0]
+        )
+
+    @property
+    def _can_start_self_assessment_sequence(self):
+        return (
+            len(self.round_config.get("self_assessment_timestamp", [])) > 0
+            and self.round_end_timer > self.round_config["self_assessment_timestamp"][0]
+        )
+
+    @property
+    def _can_start_social_assessment_seq(self):
+        return (
+            len(self.round_config.get("social_identity_assessment_timestamp", [])) > 0
+            and self.round_end_timer
+            > self.round_config["social_identity_assessment_timestamp"][0]
+        )
+
+    @property
+    def _can_start_hat_sequence(self):
+        return (
+            len(self.round_config.get("player_hat_sequence_timestamp", [])) > 0
+            and self.round_end_timer
+            > self.round_config["player_hat_sequence_timestamp"][0]
+        )
+
+    @property
+    def _can_start_npc_necklace_sequence(self):
+        return (
+            len(self.round_config.get("ingroup_necklace_sequence_timestamp", [])) > 0
+            and self.round_end_timer
+            > self.round_config["ingroup_necklace_sequence_timestamp"][0]
+        )
+
+    @property
+    def _can_start_necklace_sequence(self):
+        return (
+            len(self.round_config.get("player_necklace_sequence_timestamp", [])) > 0
+            and self.round_end_timer
+            > self.round_config["player_necklace_sequence_timestamp"][0]
+        )
+
+    @property
+    def _can_start_birthday_sequence(self):
+        return (
+            len(self.round_config.get("player_birthday_sequence_timestamp", [])) > 0
+            and self.round_end_timer
+            > self.round_config["player_birthday_sequence_timestamp"][0]
+        )
+
+    @property
+    def _can_start_market_inactive_seq(self):
+        return (
+            len(
+                self.round_config.get(
+                    "group_market_passive_player_sequence_timestamp", []
+                )
+            )
+            > 0
+            and self.round_end_timer
+            > self.round_config["group_market_passive_player_sequence_timestamp"][0]
+        )
+
+    @property
+    def _can_start_active_market_seq(self):
+        return (
+            len(
+                self.round_config.get(
+                    "group_market_active_player_sequence_timestamp", []
+                )
+            )
+            > 0
+            and self.round_end_timer
+            > self.round_config["group_market_active_player_sequence_timestamp"][0]
+        )
+
+    @property
+    def _can_prompt_allocation(self):
+        return (
+            self.round_config.get("resource_allocation_text", "")
+            and self.round_config["resource_allocation_timestamp"]
+            and self.round_end_timer
+            > self.round_config["resource_allocation_timestamp"][0]
         )
 
     def _notify(self, message: str, id_to_empty: str):
@@ -327,23 +448,6 @@ class Game:
     def check_hat_condition(self):
         if self.round > 2 and 0 < self.game_version < 3:
             self.player.has_hat = True
-
-    def _get_alloc_text(self, alloc_id: str):
-        potential_alloc_ids = alloc_id.split(";")
-        if len(potential_alloc_ids) > 1:
-            if GAME_LANGUAGE == "de":
-                txt_to_add = get_translated_msg(potential_alloc_ids[1])
-            elif potential_alloc_ids[0].startswith("weather_protection"):
-                params = potential_alloc_ids[0][potential_alloc_ids[0].find('('): -1].split(",")
-                txt_to_add = get_translated_msg("weather_protection").format(
-                    item=get_translated_msg(params[0]),
-                    weather=get_translated_msg(params[1])
-                )
-            else:
-                txt_to_add = get_translated_msg(potential_alloc_ids[0])
-        else:
-            txt_to_add = get_translated_msg(potential_alloc_ids[0])
-        return txt_to_add
 
     def get_world_time(self) -> tuple[int, int]:
         min = round(self.round_end_timer) // 60
@@ -448,8 +552,8 @@ class Game:
 
         return self.round_config
 
-    def set_round(self, round: int) -> None:
-        self.round = round
+    def set_round(self, round_no: int) -> None:
+        self.round = round_no
         # if config for given round number not found, use first one as fall back
         # TODO: fix volcano eruption (`m`) debug which switched round to not existing value of 7
         if self.game_version < 0:
@@ -460,11 +564,11 @@ class Game:
         if self.round_menu:
             self.round_menu.round_config_changed(self.round_config)
 
-        if round <= len(self.rounds_config[self.game_version]):
-            self.round_config = self.rounds_config[self.game_version][round - 1]
+        if round_no <= len(self.rounds_config[self.game_version]):
+            self.round_config = self.rounds_config[self.game_version][round_no - 1]
         else:
             print(
-                f"ERROR: No config found for round {round}! Using config for round 1."
+                f"ERROR: No config found for round {round_no}! Using config for round 1."
             )
             self.round_config = self.rounds_config[self.game_version][0]
         self.level.round_config_changed(self.round_config)
@@ -601,22 +705,14 @@ class Game:
                     # get previous dialog text
                     intro_text = self.dialogue_manager.dialogues["intro_to_game"][0][1]
 
-                    CAMERA_TARGET_TO_TEXT = {
-                        0: "character_introduction_text",
-                        1: "ingroup_introduction_text",
-                        2: "ingroup_hat_necklace_introduction_text",
-                        3: "ingroup_hat_introduction_text",
-                        4: "outgroup_introduction_text",
-                        5: "narrative_text",
-                    }
                     if self.level.cutscene_animation.active:
                         # start of intro - camera at home location
                         index = self.level.cutscene_animation.current_index
-                        if index in CAMERA_TARGET_TO_TEXT:
-                            if self.round_config.get(CAMERA_TARGET_TO_TEXT[index], ""):
-                                intro_text = self.round_config[
-                                    CAMERA_TARGET_TO_TEXT[index]
-                                ]
+                        if index < len(_CAMERA_TARGET_TO_TEXT):
+                            if self.round_config.get(_CAMERA_TARGET_TO_TEXT[index], ""):
+                                intro_text = get_translated_msg(
+                                    self.round_config[_CAMERA_TARGET_TO_TEXT[index]]
+                                )
                         # # end of intro - camera is over the home location
                         elif index == len(self.level.cutscene_animation.targets) - 1:
                             if self.dialogue_manager.showing_dialogue:
@@ -624,7 +720,7 @@ class Game:
 
                             self.last_intro_txt_rendered = True
 
-                    intro_text = intro_text.replace("[Initialen]", self.player.name)
+                    intro_text = intro_text.format(initials=self.player.name)
 
                     if (
                         self.dialogue_manager.dialogues["intro_to_game"][0][1]
@@ -771,7 +867,7 @@ class Game:
                         self.send_telemetry("round_end", {})
                         self.round_end_timer = 0.0
                         self.switch_state(GameState.ROUND_END)
-                    elif self._can_notify_new_crop():
+                    elif self._can_notify_new_crop:
                         msg_id = self.round_config["notify_new_crop_text"]
                         message = get_translated_msg("new_crop").format(
                             crop=get_translated_msg(f"{msg_id}_new_crop")
@@ -780,35 +876,24 @@ class Game:
                         self.switch_state(GameState.NOTIFICATION_MENU)
                         # set to empty to not repeat
                         self._empty_round_config_notify("new_crop")
-                    elif self._can_notify_questionnaire():
+                    elif self._can_notify_questionnaire:
                         message = self.round_config["notify_questionnaire_text"]
                         self.notification_menu.message = message
                         self.switch_state(GameState.NOTIFICATION_MENU)
                         # set to empty to not repeat
                         self._empty_round_config_notify("questionnaire")
-                    elif self._can_notify_outgroup_money_income():
-                        message = self.round_config["notify_round_end_outgroup_text"]
+                    elif self._can_notify_outgroup_money_income:
+                        message = _get_outgroup_income(
+                            self.round_config["notify_round_end_outgroup_text"]
+                        )
                         self._notify(message, "round_end_outgroup")
-                    elif (
-                        len(self.round_config.get("self_assessment_timestamp", [])) > 0
-                        and self.round_end_timer
-                        > self.round_config["self_assessment_timestamp"][0]
-                    ):
+                    elif self._can_start_self_assessment_sequence:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["self_assessment_timestamp"] = (
                             self.round_config["self_assessment_timestamp"][1:]
                         )
                         self.switch_state(GameState.SELF_ASSESSMENT)
-                    elif (
-                        len(
-                            self.round_config.get(
-                                "social_identity_assessment_timestamp", []
-                            )
-                        )
-                        > 0
-                        and self.round_end_timer
-                        > self.round_config["social_identity_assessment_timestamp"][0]
-                    ):
+                    elif self._can_start_social_assessment_seq:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["social_identity_assessment_timestamp"] = (
                             self.round_config["social_identity_assessment_timestamp"][
@@ -816,12 +901,7 @@ class Game:
                             ]
                         )
                         self.switch_state(GameState.SOCIAL_IDENTITY_ASSESSMENT)
-                    elif (
-                        len(self.round_config.get("player_hat_sequence_timestamp", []))
-                        > 0
-                        and self.round_end_timer
-                        > self.round_config["player_hat_sequence_timestamp"][0]
-                    ):
+                    elif self._can_start_hat_sequence:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["player_hat_sequence_timestamp"] = (
                             self.round_config["player_hat_sequence_timestamp"][1:]
@@ -829,16 +909,7 @@ class Game:
                         self.level.start_scripted_sequence(
                             ScriptedSequenceType.PLAYER_HAT_SEQUENCE
                         )
-                    elif (
-                        len(
-                            self.round_config.get(
-                                "ingroup_necklace_sequence_timestamp", []
-                            )
-                        )
-                        > 0
-                        and self.round_end_timer
-                        > self.round_config["ingroup_necklace_sequence_timestamp"][0]
-                    ):
+                    elif self._can_start_npc_necklace_sequence:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["ingroup_necklace_sequence_timestamp"] = (
                             self.round_config["ingroup_necklace_sequence_timestamp"][1:]
@@ -846,16 +917,7 @@ class Game:
                         self.level.start_scripted_sequence(
                             ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE
                         )
-                    elif (
-                        len(
-                            self.round_config.get(
-                                "player_necklace_sequence_timestamp", []
-                            )
-                        )
-                        > 0
-                        and self.round_end_timer
-                        > self.round_config["player_necklace_sequence_timestamp"][0]
-                    ):
+                    elif self._can_start_necklace_sequence:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["player_necklace_sequence_timestamp"] = (
                             self.round_config["player_necklace_sequence_timestamp"][1:]
@@ -863,16 +925,7 @@ class Game:
                         self.level.start_scripted_sequence(
                             ScriptedSequenceType.PLAYER_NECKLACE_SEQUENCE
                         )
-                    elif (
-                        len(
-                            self.round_config.get(
-                                "player_birthday_sequence_timestamp", []
-                            )
-                        )
-                        > 0
-                        and self.round_end_timer
-                        > self.round_config["player_birthday_sequence_timestamp"][0]
-                    ):
+                    elif self._can_start_birthday_sequence:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["player_birthday_sequence_timestamp"] = (
                             self.round_config["player_birthday_sequence_timestamp"][1:]
@@ -880,18 +933,7 @@ class Game:
                         self.level.start_scripted_sequence(
                             ScriptedSequenceType.PLAYER_BIRTHDAY_SEQUENCE
                         )
-                    elif (
-                        len(
-                            self.round_config.get(
-                                "group_market_passive_player_sequence_timestamp", []
-                            )
-                        )
-                        > 0
-                        and self.round_end_timer
-                        > self.round_config[
-                            "group_market_passive_player_sequence_timestamp"
-                        ][0]
-                    ):
+                    elif self._can_start_market_inactive_seq:
                         # remove first timestamp from list after transition to Town ends not to repeat infinitely
                         if self.level.current_map == Map.TOWN:
                             self.round_config[
@@ -902,18 +944,7 @@ class Game:
                         self.level.start_scripted_sequence(
                             ScriptedSequenceType.GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE
                         )
-                    elif (
-                        len(
-                            self.round_config.get(
-                                "group_market_active_player_sequence_timestamp", []
-                            )
-                        )
-                        > 0
-                        and self.round_end_timer
-                        > self.round_config[
-                            "group_market_active_player_sequence_timestamp"
-                        ][0]
-                    ):
+                    elif self._can_start_active_market_seq:
                         # remove first timestamp from list after transition to Town ends not to repeat infinitely
                         if self.level.current_map == Map.TOWN:
                             self.round_config[
@@ -924,19 +955,12 @@ class Game:
                         self.level.start_scripted_sequence(
                             ScriptedSequenceType.GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE
                         )
-                    elif (
-                        self.round_config.get("resource_allocation_text", "")
-                        and self.round_config["resource_allocation_timestamp"]
-                        and self.round_end_timer
-                        > self.round_config["resource_allocation_timestamp"][0]
-                    ):
-                        allocations_id = self.round_config[
-                            "resource_allocation_text"
-                        ]
-                        txt_to_add = self._get_alloc_text(allocations_id)
-                        self.allocation_task.allocations_text = get_translated_msg("share").format(
-                            item_specific=txt_to_add
-                        )
+                    elif self._can_prompt_allocation:
+                        allocations_id = self.round_config["resource_allocation_text"]
+                        txt_to_add = _get_alloc_text(allocations_id)
+                        self.allocation_task.allocations_text = get_translated_msg(
+                            "share"
+                        ).format(item_specific=txt_to_add)
                         self.allocation_task.parse_allocation_items(
                             self.round_config["resource_allocation_item_text"]
                         )
