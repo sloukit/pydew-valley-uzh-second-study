@@ -2,7 +2,7 @@ import pygame
 
 from src.settings import OVERLAY_POSITIONS
 from src.sprites.entities.player import Player
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 from src.support import import_font, import_image
 
 
@@ -36,7 +36,7 @@ class BoxKeybindingsLabel:
         pad_y = 2
 
         box_keybindings_label_surf = self.font.render(
-            f"{_('box info label')}", False, foreground_color
+            f"{get_translated_msg('box info label')}", False, foreground_color
         )
         box_keybindings_label_rect = box_keybindings_label_surf.get_frect(
             midright=(self.rect.right - 20, self.rect.centery + pad_y)
@@ -170,7 +170,7 @@ class BoxKeybindings:
         }
 
     def get_text(self, key):
-        translation = _(key)
+        translation = get_translated_msg(key)
         return translation.split("|") if "|" in translation else [translation]
 
     def load_and_scale_image(self, img_name, target_size):

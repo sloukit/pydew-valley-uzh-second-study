@@ -14,7 +14,7 @@ from src.screens.minigames.gui import (
 )
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 from src.support import get_outline, import_font
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 
 
 class _CowHerdingScoreboard(AbstractMenu):
@@ -31,12 +31,15 @@ class _CowHerdingScoreboard(AbstractMenu):
     font_button: pygame.Font
 
     def __init__(self, return_func: Callable[[], None]):
-        super().__init__(title=_("Cow Herding"), size=(SCREEN_WIDTH, SCREEN_HEIGHT))
+        super().__init__(
+            title=get_translated_msg("cow_herding_title"),
+            size=(SCREEN_WIDTH, SCREEN_HEIGHT),
+        )
 
         self._return_func = return_func
 
         self._return_button = None
-        self._return_button_text = _("Return to Town")
+        self._return_button_text = get_translated_msg("return_to_town")
 
         self._surface = None
 
@@ -58,24 +61,27 @@ class _CowHerdingScoreboard(AbstractMenu):
         button_area_height = self._return_button.rect.height + button_top_margin
 
         text = Text(
-            TextChunk(_("Minigame complete!"), self.font_title),
+            TextChunk(get_translated_msg("finished_minigame"), self.font_title),
             Linebreak(),
             TextChunk(f"{time_needed:.2f} ", self.font_number),
-            TextChunk(_("seconds needed"), self.font_description),
+            TextChunk(get_translated_msg("self_time"), self.font_description),
             Linebreak(),
             TextChunk(
-                _("Hornlinge needed %.2f seconds") % opp_time, self.font_description
-            ),
-            Linebreak(),
-            TextChunk(
-                _("[cheering group]")
-                if opp_time > time_needed
-                else _("[disappointed group]"),
+                get_translated_msg("outgroup_time").format(opp_time),
                 self.font_description,
             ),
             Linebreak(),
             TextChunk(
-                _("[money win]") if opp_time > time_needed else _("[money lost]"),
+                get_translated_msg("[cheering group]")
+                if opp_time > time_needed
+                else get_translated_msg("[disappointed group]"),
+                self.font_description,
+            ),
+            Linebreak(),
+            TextChunk(
+                get_translated_msg("[money win]")
+                if opp_time > time_needed
+                else get_translated_msg("[money lost]"),
                 self.font_description,
             ),
         )
@@ -148,7 +154,7 @@ class _CowHerdingOverlay:
         self.font_description = import_font(32, "font/LycheeSoda.ttf")
         self.font_objective = import_font(24, "font/LycheeSoda.ttf")
 
-        # maps all chars in "01234567890.:" to pygame surfaces rendered with font_timer
+        # maps all chars in "0123456789.:" to pygame surfaces rendered with font_timer
         self.timer_chars = {
             char: self.font_timer.render(char, True, SL_ORANGE_BRIGHTEST)
             for char in "0123456789.:"
@@ -181,7 +187,7 @@ class _CowHerdingOverlay:
         current_fraction = current_time - current_time_int
 
         if current_time_int < ready_up_duration:
-            rendered_text = self._render_countdown_text(_("Ready?"))
+            rendered_text = self._render_countdown_text(get_translated_msg("ready"))
             if ready_up_duration - 0.5 < current_time:
                 rendered_text = pygame.transform.scale_by(
                     rendered_text,
@@ -211,7 +217,7 @@ class _CowHerdingOverlay:
                 rendered_text.set_alpha(max(0, int(alpha * 255)))
 
         else:
-            rendered_text = self._render_countdown_text(_("GO!"))
+            rendered_text = self._render_countdown_text(get_translated_msg("go"))
 
             if current_fraction <= 1 / 4:
                 rendered_text = pygame.transform.scale_by(
@@ -233,12 +239,16 @@ class _CowHerdingOverlay:
         box_center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
 
         text = Text(
-            TextChunk(_("Cow Herding Minigame"), self.font_description),
+            TextChunk(get_translated_msg("cow_minigame_desc"), self.font_description),
             Linebreak(),
             Linebreak((0, 24)),
-            TextChunk(_("Herd the cows into the barn"), self.font_description),
+            TextChunk(
+                get_translated_msg("cow_minigame_desc_l1"), self.font_description
+            ),
             Linebreak(),
-            TextChunk(_("as fast as possible!"), self.font_description),
+            TextChunk(
+                get_translated_msg("cow_minigame_desc_l2"), self.font_description
+            ),
         )
 
         _draw_box(self.display_surface, box_center, text.surface_rect.size)
@@ -264,21 +274,23 @@ class _CowHerdingOverlay:
         padding = 12
 
         text = Text(
-            TextChunk(_("Objective:"), self.font_description),
+            TextChunk(get_translated_msg("goal"), self.font_description),
             Linebreak(),
-            TextChunk(_("Herd the cows into the barn!"), self.font_objective),
+            TextChunk(get_translated_msg("ch_goal"), self.font_objective),
             Linebreak((0, 32)),
-            TextChunk(_("Rothüte:"), self.font_objective),
+            TextChunk(get_translated_msg("ingroup_score"), self.font_objective),
             Linebreak(),
             TextChunk(
-                f"({own_cows_herded_in}/{own_cows_total}) " + _("Cows in the barn"),
+                f"({own_cows_herded_in}/{own_cows_total}) "
+                + get_translated_msg("Cows in the barn"),
                 self.font_objective,
             ),
             Linebreak((0, 32)),
-            TextChunk(_("Hornlinge:"), self.font_objective),
+            TextChunk(get_translated_msg("outgroup_score"), self.font_objective),
             Linebreak(),
             TextChunk(
-                f"({opp_cows_herded_in}/{opp_cows_total}) " + _("Cows in the barn"),
+                f"({opp_cows_herded_in}/{opp_cows_total}) "
+                + get_translated_msg("cow_count"),
                 self.font_objective,
             ),
         )

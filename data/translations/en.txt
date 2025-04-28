@@ -1,36 +1,35 @@
 # Game name
 
-Clear Skies@@Clear Skies
+game_title@@Clear Skies
 
 # main menu
 
-Enter play token:@@Please enter token:
-Enter authentication data@@Enter authentication data
-Play@@Play
-Quit@@Quit
-Enter a Token to Play@@Enter a Token to Play
-Enter player's name:@@Enter player's name:
-Main Menu@@Main Menu
+prompt_token@@Please enter token:
+prompt_auth_data@@Enter authentication data
+play@@Play
+quit@@Quit
+prompt_plyname@@Enter player's name:
+title_screen@@Main Menu
 
 # Inventory
 
-Resources@@Resources
-Inventory@@Inventory
-Tools@@Tools
-Equipment@@Equipment
+resources@@Resources
+inventory@@Inventory
+tools@@Tools
+equipment@@Equipment
 goggles@@goggles
 hat@@hat
 necklace@@necklace
 horn@@horn
-No equipment@@No equipment
+no_equip@@No equipment
 
 # shop menu
 
-buy one@@buy one
-sell one@@sell one
-Welcome to the shop!@@Welcome to the shop!
-Your money:@@Your money:
-Amount  Value@@Amount  Value
+buy_one@@buy one
+sell_one@@sell one
+shop_welcome@@Welcome to the shop!
+ply_money@@Your money:
+amount_price@@Amount  Worth
 none@@none
 wood@@wood
 apple@@apple
@@ -47,56 +46,110 @@ carrot@@carrot
 eggplant@@eggplant
 pumpkin@@pumpkin
 parsnip@@parsnip
-corn seed@@corn seed
-tomato seed@@tomato seed
-beetroot seed@@beetroot seed
-carrot seed@@carrot seed
-eggplant seed@@eggplant seed
-pumpkin seed@@pumpkin seed
-parsnip seed@@parsnip seed
+cabbage@@cabbage
+bean@@bean
+cauliflower@@cauliflower
+red_cabbage@@red cabbage
+wheat@@wheat
+broccoli@@broccoli
+corn_seed@@corn seed
+tomato_seed@@tomato seed
+beetroot_seed@@beetroot seed
+carrot_seed@@carrot seed
+eggplant_seed@@eggplant seed
+pumpkin_seed@@pumpkin seed
+parsnip_seed@@parsnip seed
+cabbage_seed@@cabbage seed
+cauliflower_seed@@cauliflower seed
+red_cabbage_seed@@red cabbage seed
+wheat_seed@@wheat seed
+broccoli_seed@@broccoli seed
 
 # pause menu
 
-Resume@@Resume
-Options@@Options
-Save and Resume@@Save and Resume
-Pause Menu@@Pause Menu
+resume@@Resume
+options@@Options
+save_resume@@Save and Resume
+pause_menu@@Pause Menu
 
 # options menu
 
-Keybinds@@Keybinds
-Volume@@Volume
-Back@@Back
-Settings@@Settings
-Reset@@Reset
+keybinds@@Keybinds
+volume@@Volume
+back@@Back
+settings@@Settings
+reset@@Reset
 
 # round end menu
-
-Round %d has ended. You currently have $%d, and:@@Round %d has ended. You currently have $%d, and:
-continue to next round@@continue to next round
+round_end_info@@Round {round_no} has ended. You currently have ${money}, and:
+temp_finish@@Thanks for playing, you are done for the day. You currently have ${money}, and:
+whole_finish@@Thanks for playing, you are done with the whole game. At the end, you had ${money}, and:
+next_round@@continue to next round
+outgroup_income_round_end@@The Hornlings earned ${money} in the last round.
 
 # task (items allocation) menu
 
-Task@@Task
-Confirm@@Confirm
-Distribute them@@Distribute them
-You have not allocated all of the items yet!@@You have not allocated all of the items yet!
-You don't have that many items to distribute.@@You don't have that many items to distribute.
-Items missing:@@Items missing:
-Take out:@@Take out:
-You have received@@You have received
-Your group's inventory:@@Your group's inventory:
-Other group's inventory:@@Other group's inventory:
+task@@Task
+confirm@@Confirm
+share_items@@Distribute them
+items_unalloc@@You have not allocated all of the items yet!
+too_few_to_give@@You don't have that many items to distribute.
+missing_itms@@Items missing:
+take_out@@Take out:
+you_have_received@@You have received
+ingroup_inventory@@Your group's inventory:
+outgroup_inventory@@Other group's inventory:
+share@@Distribute the items as you wish! {item_specific}
+gloves@@Gloves help the wearer with harvesting.
+boots@@Boots allow their wearer to walk unimpeded in the rain.
+jeans@@Jeans let their wearer chop wood faster.
+weather_protection@@{item} protect their wearer from {weather}.
+shirts@@Shirts
+coats@@Coats
+cold@@the cold
+rain@@the rain
+aprons@@Aprons prevent their wearer from getting dirty while cooking.
+flashlights@@Flashlights let their user see in the dark.
+thimbles@@Thimbles protect their user from stiches.
+rain_barrels@@Rain barrels can help saving more water.
+socks@@Socks
+cap@@Caps
+sun@@the sun
+blankets@@Blankets protect from the cold while their wearer is sleeping.
+alloc_r1@@6 pairs of gloves
+alloc_r2@@2 pairs of boots
+alloc_r3@@4 pairs of jeans
+alloc_r4@@8 shirts
+alloc_r5@@6 raincoats
+alloc_r6@@10 aprons
+alloc_r7@@6 flashlights
+alloc_r8@@2 thimbles
+alloc_r9@@4 rain barrels
+alloc_r10@@8 pairs of socks
+alloc_r11@@6 caps
+alloc_r12@@10 blankets
 
 # src/screens/menu_notification.py
 
-OK@@OK
-Notification@@Notification
+ok@@OK
+notification@@Notification
+new_crop@@You can now plant {crop}!
+beetroot_new_crop@@beetroots
+carrot_new_crop@@carrots
+eggplant_new_crop@@eggplants
+pumpkin_new_crop@@pumpkins
+parsnip_new_crop@@parsnip
+cabbage_new_crop@@some cabbage
+bean_new_crop@@beans
+cauliflower_new_crop@@cauliflowers
+red_cabbage_new_crop@@some red cabbage
+wheat_new_crop@@some wheat
+broccoli_new_crop@@some broccoli
 
 # src/screens/self_assessment_menu.py
 
-How do you feel right now?@@How do you feel right now?
-Continue@@Continue
+prompt_feeling@@How do you feel right now?
+continue@@Continue
 
 # src/overlay/fast_forward.py
 
@@ -136,29 +189,27 @@ Show Shop@@Show Shop
 
 # src/gui/menu/description.py
 
-Music@@Music
-SFX@@SFX
+music@@Music
+sfx@@SFX
 
 # src/screens/minigames/cow_herding_overlay.py
 
-Cow Herding@@Cow Herding
-Return to Town@@Return to Town
-Minigame complete!@@Minigame complete!
-seconds needed@@seconds needed
-Hornlinge needed %.2f seconds@@Hornlinge needed %.2f seconds
+cow_herding_title@@Cow Herding
+return_to_town@@Return to Town
+finished_minigame@@Minigame complete!
+self_time@@seconds needed
+outgroup_time@@The Hornlings needed {:.2f} seconds
 cows herded in@@cows herded in
-Ready?@@Ready?
-GO!@@GO!
-Cow Herding Minigame@@Cow Herding Minigame
-Herd the cows into the barn@@Herd the cows into the barn
-as fast as possible!@@as fast as possible!
-Objective:@@Objective:
-Herd the cows into the barn!@@Herd the cows into the barn!
-Blaukappen (ingroup) progress:@@Blaukappen (ingroup) progress:
-Hornlinge (outgroup) progress:@@Hornlinge (outgroup) progress:
-Cows in the barn@@Cows in the barn
-[cheering group]@@[cheering group]
-[disappointed group]@@[disappointed group]
+ready@@Ready?
+go@@GO!
+cow_minigame_desc@@Cow Herding Minigame
+cow_minigame_desc_l1@@Herd the cows into the barn
+cow_minigame_desc_l2@@as fast as possible!
+goal@@Objective:
+ch_goal@@Herd the cows into the barn!
+ingroup_score@@Red Hats' progress:
+outgroup_score@@Hornlings' progress:
+cow_count@@Cows in the barn
 [money win]@@You won 200$
 [money lost]@@You lost 200$
 
@@ -176,9 +227,42 @@ box info esc@@Pause
 box info player task@@How to make money:|Digging the soil, planting seeds,|watering plants|Harvesting after sleeping|Collecting wood and|fruit in the forest|Selling the harvest, wood and|fruit at the market|Winning money at the|'cow-in-the-stable' event
 
 
-social identity assessment left info@@Not at all
-social identity assessment right info@@Very much
+social_identity_assessment_left_info@@Not at all
+social_identity_assessment_right_info@@Very much
 
-social identity assessment q1@@Ich gehöre zur Gruppe der Rothüte
-social identity assessment q2@@Ich gehöre zur Gruppe der Hornlinge.
-social identity assessment q3@@Ich identifiziere mich mit Mika [Name]
+social_identity_assessment_q1@@I am closer to the Red Hats.
+social_identity_assessment_q2@@I am closer to the Hornlings.
+social_identity_assessment_q3@@I identify myself to the Mika {name}.
+
+# Tutorial
+
+welcome@@Welcome!
+chara_intro@@Welcome to the city of Mikhausen on the planet Mikana! You are a Mika, as the local beings are called. Your name is {initials}. You live here in Mikhausen together with other Mikas.
+clan_intro_family@@This is your family's clan: the Red Hats.
+clan_intro_friends@@You and your group of friends live as a group of farmers, the Red Hats.
+clan_intro_solo@@These Mikas are called the Red Hats.
+membership_explanation@@You are not a full member of the Red Hats from the start. Currently, you are a Mini Red Hat. As time passes, you will be promoted to Junior Red Hat, and afterwards to full member of the clan. As a full member, you receive privileges and responsibilities. You can recognise a full member by their hat and blue necklace.
+membership_explanation_solo@@The first Mikas founded Mikhausen thousands of years ago.
+junior@@This is a Junior Red Hat, recognisable by the hat, and can already buy and sell things at the market. But only with a hat and necklace will you be considered a full member of the Red Hats and have all the privileges and responsibilities.
+junior_solo@@Mikas living in Mikhausen specialised in agriculture.
+narrative_family@@Your family clan urgently needs money: a volcano is raging not far away and you have to leave as soon as possible. There's just one problem: leaving the island will cost a lot of money, since there's a lot of people to ferry away. As a result, the more money you earn, the safer you get! You can earn money by selling crops, wood and fruit, or winning cow-herding competitions against the Hornlings...
+narrative_friends@@You and your friends are in desperate need of money: a volcano is threatening to erupt not far away, and you have to leave the island as soon as possible. The problem is, leaving the island will be expensive due to the sheer amount of people to ferry away. As a result, the more money you earn, the safer you get! You can earn money by selling crops, wood and fruit or winning cow-herding competitions against the Hornlings...
+narrative_solo@@A volcano nearby is threatening to erupt, so everybody is trying to get as much money as possible to escape before it does erupt. You can earn money by selling crops, wood and fruit, or by competing in cow herding events.
+outgroup_intro@@...which are the other community living in Mikhausen.
+outgroup_intro_solo@@The Red Hats aren't the only Mika community living in Mikhausen. Another group has split off long ago. Its members are called the Hornlings.
+
+
+# Scripted sequences
+
+hat_get_family@@You are promoted to Junior Red Hat! Your family clan gives you the hat as a proof of your membership. As a result, you can now buy and sell things in the market! Press Space to continue.
+hat_get_friend@@You are promoted to Junior Red Hat! Your full member friends award you the hat as a proof of your membership. As a result, you can now buy and sell things in the market! Press Space to continue.
+npc_necklace_get@@A Junior Red Hat is awarded the necklace and becomes a full member. With it, they can take part in group discussions, in addition to buying and selling in the market as usual. Press Space to continue.
+ply_necklace_get_family@@Your family clan awards you the necklace. Now you are a full member of the Red Hats! From now on, you can take part in the group discussions. Press Space to continue.
+ply_necklace_get_friends@@Your friends give you the necklace. You are now a full member of the Red Hats! From now on, you are allowed to partake in group discussions. Press Space to continue.
+ply_birthday_solo@@Everyone wishes you a happy birthday! Press Space to continue.
+market_inactive_family@@Your family clan gathers for the daily meeting on what to buy. You cannot join them as you aren't a full Red Hat yet. Press Space to continue.
+market_inactive_friends@@Your friends gather for the daily meeting on what to buy. You cannot join them since you aren't a full Red Hat yet. Press Space to continue.
+market_active_family@@Your family clan gathers for the daily meeting on what to buy. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
+market_active_post_eruption_family@@Your family clan gathers for the daily meeting on how to deal with the new rules. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
+market_active_friends@@Your friends gather for the daily meeting on what to buy. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
+market_active_post_eruption_friends@@Your friends gather for the daily meeting on how to deal with the new rules. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.

@@ -589,8 +589,6 @@ class GameMap:
                 self._setup_bush(pos, obj, object_type)
 
             else:
-                if props.get("type") is not None:
-                    print(props.get("type"))
                 if props.get("type") == "hidden_sign":
                     # layer = Layer.HIDDEN_SIGN
                     name = "hidden_sign"

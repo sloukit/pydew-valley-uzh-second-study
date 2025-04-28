@@ -1,36 +1,35 @@
 # Game name
 
-Clear Skies@@Der Acker ruft!
+game_title@@Der Acker ruft!
 
 # main menu
 
-Enter play token:@@Bitte Token eingeben:
-Enter authentication data@@Anmelden
-Play@@Spiel starten
-Quit@@Spiel verlassen
-Enter a Token to Play@@Klicken um Token einzugeben
-Enter player's name:@@Name für deine Spielfigur:
-Main Menu@@Hauptmenü
+prompt_token@@Bitte Token eingeben:
+prompt_auth_data@@Anmelden
+play@@Spiel starten
+quit@@Spiel verlassen
+prompt_plyname@@Name für deine Spielfigur:
+title_screen@@Hauptmenü
 
 # Inventory
 
-Resources@@Ernte und Samen
-Inventory@@Lager
-Tools@@Werkzeuge
-Equipment@@Ausrüstung
+resources@@Ernte und Samen
+inventory@@Lager
+tools@@Werkzeuge
+equipment@@Ausrüstung
 goggles@@Brille
 hat@@Hut
 necklace@@Kette
 horn@@Horn
-No equipment@@Keine Werkzeuge
+no_equip@@Keine Werkzeuge
 
 # shop menu
 
-buy one@@Kaufen
-sell one@@Verkaufen
-Welcome to the shop!@@Willkommen auf dem Markt!
-Your money:@@Verfügbares Geld:
-Amount  Value@@Anzahl  Preis
+buy_one@@Kaufen
+sell_one@@Verkaufen
+shop_welcome@@Willkommen auf dem Markt!
+ply_money@@Verfügbares Geld:
+amount_price@@Anzahl  Preis
 none@@Keine
 wood@@Holz
 apple@@Apfel
@@ -47,58 +46,107 @@ carrot@@Karotten
 eggplant@@Auberginen
 pumpkin@@Kürbis
 parsnip@@Pastinaken
-corn seed@@Mais: Samen
-tomato seed@@Tomaten: Samen
-beetroot seed@@Rote Beete: Samen
-carrot seed@@Karotten: Samen
-eggplant seed@@Aubergine: Samen
-pumpkin seed@@Kürbis: Samen
-parsnip seed@@Pastinaken: Samen
+cabbage@@Kohl
+bean@@Bohnen
+cauliflower@@Blumenkohl
+red_cabbage@@Rotkohl
+wheat@@Weizen
+broccoli@@Brokkoli
+corn_seed@@Mais: Samen
+tomato_seed@@Tomaten: Samen
+beetroot_seed@@Rote Beete: Samen
+carrot_seed@@Karotten: Samen
+eggplant_seed@@Aubergine: Samen
+pumpkin_seed@@Kürbis: Samen
+parsnip_seed@@Pastinaken: Samen
+cabbage_seed@@Kohl: Samen
+cauliflower_seed@@Blumenkohl: Samen
+red_cabbage_seed@@Rotkohl: Samen
+wheat_seed@@Weizen: Samen
+broccoli_seed@@Brokkoli: Samen
 
 # pause menu
 
-Resume@@Spiel fortsetzen
-Options@@Optionen
-Save and Resume@@Spiel speichern und fortsetzen
-Pause Menu@@Pause
+resume@@Spiel fortsetzen
+options@@Optionen
+save_resume@@Spiel speichern und fortsetzen
+pause_menu@@Pause
 
 # options menu
 
-Keybinds@@Tastenkombinationen
-Volume@@Lautstärke
-Back@@Zurück
-Settings@@Einstellungen
-Reset@@Standard
+keybinds@@Tastenkombinationen
+volume@@Lautstärke
+back@@Zurück
+settings@@Einstellungen
+reset@@Standard
 
 # round end menu
 
-Round %d has ended. You currently have $%d, and:@@Runde %d ist fertig. Besitz der Rothüte: $%d und:
-Thanks for playing, you are done for the day. You currently have $%d, and:@@Für heute ist das Spiel beendet. Morgen geht es weiter - wir schicken Ihnen wieder eine E-Mail mit dem Link zum Spiel. Sie können das Fenster jetzt schliessen. Besitz der Rothüte: $%d und:
-Thanks for playing, you are done with the whole game. At the end, you had $%d, and:@@Das Spiel ist abgeschlossen! Bitte öffnen Sie jetzt den Fragebogen aus der heutigen E-Mail. Sie können das Fenster jetzt schliessen. Besitz der Rothüte am Ende: $%d und:
-continue to next round@@Weiter in die nächste Runde
+round_end_info@@Runde {round_no} ist fertig. Besitz der Rothüte: ${money} und:
+temp_finish@@Für heute ist das Spiel beendet. Morgen geht es weiter - wir schicken Ihnen wieder eine E-Mail mit dem Link zum Spiel. Sie können das Fenster jetzt schliessen. Besitz der Rothüte: ${money} und:
+whole_finish@@Das Spiel ist abgeschlossen! Bitte öffnen Sie jetzt den Fragebogen aus der heutigen E-Mail. Sie können das Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
+next_round@@Weiter in die nächste Runde
+outgroup_income_round_end@@Die Hornlinge haben letzte Runde {money}$ verdient.
 
 # task (items allocation) menu
 
-Task@@Aufgabe
-Confirm@@Bestätigen
-Distribute them@@Wem möchtest du wie viel geben?
-You have not allocated all of the items yet!@@Du hast noch nicht alles verteilt.
-You don't have that many items to distribute.@@Du hast nichts mehr zum verteilen.
-Items missing:@@Noch ausstehend:
-Take out:@@Lösche:
-You have received@@Du erhältst
-Your group's inventory:@@An die Rothüte:
-Other group's inventory:@@An die Hornlinge:
+task@@Aufgabe
+confirm@@Bestätigen
+share_items@@Wem möchtest du wie viel geben?
+items_unalloc@@Du hast noch nicht alles verteilt.
+too_few_to_give@@Du hast nichts mehr zum verteilen.
+missing_itms@@Noch ausstehend:
+take_out@@Lösche:
+you_have_received@@Du erhältst
+ingroup_inventory@@An die Rothüte:
+outgroup_inventory@@An die Hornlinge:
+share@@Verteile sie frei! {item_specific}
+gloves@@Die Handschuhe helfen beim Ernten.
+boots@@Die Stiefel helfen bei Regen.
+jeans@@Die Jeans helfen beim Bäume fällen.
+shirts@@Die Hemden helfen bei Kälte.
+coats@@Die Mäntel helfen bei Regen.
+aprons@@Die Schürzen helfen beim Kochen.
+flashlights@@Die Taschenlampen helfen im Dunkeln.
+thimbles@@Die Fingerhüte schützen vor Stichen.
+rain_barrels@@Die Regentonnen helfen beim Wasser sparen.
+socks@@Die Socken helfen bei Kälte.
+cap@@Die Kappen schützen vor der Sonne.
+blankets@@Die Decken helfen bei Kälte.
+alloc_r1@@6 Paar Handschuhe
+alloc_r2@@2 Paar Stiefel
+alloc_r3@@4 Paar Jeans
+alloc_r4@@8 Hemden
+alloc_r5@@6 Regenmäntel
+alloc_r6@@10 Schürzen
+alloc_r7@@6 Taschenlampen
+alloc_r8@@2 Fingerhüte
+alloc_r9@@4 Regentonnen
+alloc_r10@@8 Paar Socken
+alloc_r11@@6 Kappen
+alloc_r12@@10 Decken
 
 # src/screens/menu_notification.py
 
-OK@@OK
-Notification@@Benachrichtigung
+ok@@OK
+notification@@Benachrichtigung
+new_crop@@Hurra! Du kannst jetzt {crop} pflanzen!
+beetroot_new_crop@@rote Beete
+carrot_new_crop@@Karotten
+eggplant_new_crop@@Auberginen
+pumpkin_new_crop@@Kürbis
+parsnip_new_crop@@Pastinaken
+cabbage_new_crop@@Kohl
+bean_new_crop@@Bohnen
+cauliflower_new_crop@@Blumenkohl
+red_cabbage_new_crop@@Rotkohl
+wheat_new_crop@@Weizen
+broccoli_new_crop@@Brokkoli
 
 # src/screens/self_assessment_menu.py
 
-How do you feel right now?@@Wie fühlst du dich jetzt gerade?
-Continue@@Weiter
+prompt_feeling@@Wie fühlst du dich jetzt gerade?
+continue@@Weiter
 
 # src/overlay/fast_forward.py
 
@@ -138,27 +186,27 @@ Show Shop@@EN: Show Shop
 
 # src/gui/menu/description.py
 
-Music@@Musik
-SFX@@SFX
+music@@Musik
+sfx@@SFX
 
 # src/screens/minigames/cow_herding_overlay.py
 
-Cow Herding@@Kühe treiben
-Return to Town@@Zurück in die Stadt
-Minigame complete!@@Spiel beendet!
-seconds needed@@Sekunden gebraucht
-Hornlinge needed %.2f seconds@@Hornlinge: %.2f Sekunden
+cow_herding_title@@Kühe treiben
+return_to_town@@Zurück in die Stadt
+finished_minigame@@Spiel beendet!
+self_time@@Sekunden gebraucht
+outgroup_time@@Hornlinge: %.2f Sekunden
 cows herded in@@Kühe im Stall
-Ready?@@Fertig?
-GO!@@Los!
-Cow Herding Minigame@@Kuh-in-den-Stall Spiel
-Herd the cows into the barn@@Treibe die Kühe in den Stall
-as fast as possible!@@so schnell wie möglich!
-Objective:@@Aufgabe:
-Herd the cows into the barn!@@Treibe die Kühe in den Stall!
-Rothüte:@@Rothüte:
-Hornlinge:@@Hornlinge: 
-Cows in the barn@@Kühe im Stall
+ready@@Fertig?
+go@@Los!
+cow_minigame_desc@@Kuh-in-den-Stall Spiel
+cow_minigame_desc_l1@@Treibe die Kühe in den Stall
+cow_minigame_desc_l2@@so schnell wie möglich!
+goal@@Aufgabe:
+ch_goal@@Treibe die Kühe in den Stall!
+ingroup_score@@Rothüte:
+outgroup_score@@Hornlinge:
+cow_count@@Kühe im Stall
 [cheering group]@@Die Rothüte sind stolz!
 [disappointed group]@@Die Rothüte sind enttäuscht
 [money win]@@Du hast 200$ gewonnen
@@ -177,8 +225,40 @@ box info e@@Interagieren
 box info esc@@Pause
 box info player task@@So macht man Geld:|-Erde umgraben, Samen setzen,|  Pflanzen giessen|-Nach dem Schlafen Ernten|-Im Wald Holz und Früchte|sammeln|-Ernte, Holz und Früchte auf|  dem Markt verkaufen|-Bei 'Kuh-in-den-Stall' Geld|gewinnen
 
-social identity assessment left info@@Gar nicht
-social identity assessment right info@@Sehr
-social identity assessment q1@@Ich gehöre zur Gruppe der Rothüte.
-social identity assessment q2@@Ich gehöre zur Gruppe der Hornlinge.
-social identity assessment q3@@Ich identifiziere mich mit Mika [Name].
+social_identity_assessment_left_info@@Gar nicht
+social_identity_assessment_right_info@@Sehr
+social_identity_assessment_q1@@Ich gehöre zur Gruppe der Rothüte.
+social_identity_assessment_q2@@Ich gehöre zur Gruppe der Hornlinge.
+social_identity_assessment_q3@@Ich identifiziere mich mit Mika {name}.
+
+# Tutorial
+
+welcome@@Wilkommen!
+chara_intro@@Willkommen in der Stadt Mikhausen auf dem Planeten Mikana! Das bist du: Ein Mika, wie die auf Mikana lebenden Wesen genannt werden. Dein Name ist {initials}. Du lebst zusammen mit anderen Mikas hier in Mikhausen.
+clan_intro_family@@Das ist dein Familienclan: Ihr seid die Rothüte.
+clan_intro_friends@@Das ist deine Freundesfarm: Ihr seid die Rothüte.
+clan_intro_solo@@Diese Mikas sind Rothüte.
+membership_explanation@@Man ist nicht von Anfang an ein Vollmitglied der Rothüte. Erst ist man Mini-Rothut, dann Junior-Rothut und erst dann Vollmitglied. Als Vollmitglied erhält man Privilegien und Verantwortung. Ein Vollmitglied erkennst du am Hut und der blauen Kette.
+membership_explanation_solo@@Die ersten Mikas haben Mikahausen schon vor tausenden Jahren besiedelt.
+junior@@Dies ist ein Junior-Rothut, erkennbar am Hut, und hat schon die Verantwortung, auf dem Markt zu kaufen und verkaufen. Aber erst mit Hut und Kette ist man ein Vollmitglied der Rothüte und hat alle Privilegien und Verantwortungen.
+junior_solo@@Die Mikas in Mikahausen haben sich auf den Ackerbau spezialisiert.
+narrative_family@@Dein Familienclan braucht dringend Geld: unweit tobt ein Vulkan und ihr müsst umziehen. Das ist teuer. Daher: je mehr Geld ihr verdient, desto sicherer seid ihr! Verkauft Ernte, Holz und Früchte, verdient Münzen beim Wettstreit 'Kuh-in-den-Stall' gegen die Hornlinge.
+narrative_friends@@Deine Freundesfarm braucht dringend Geld: unweit tobt ein Vulkan und ihr müsst umziehen. Das ist teuer. Daher: je mehr Geld ihr verdient, desto sicherer seid ihr! Verkauft Ernte, Holz und Früchte, verdient Münzen beim Wettstreit 'Kuh-in-den-Stall' gegen die Hornlinge.
+narrative_solo@@Unweit von Mikahausen tobt ein Vulkan und alle müssen umziehen. Das ist teuer. Daher: je mehr Geld man verdient, desto sicherer ist man. Man verkauft dazu Ernte, Holz und Früchte und verdient Münzen beim Spiel 'Kuh-in-den-Stall'.
+outgroup_intro@@Es gibt auch eine andere in Mikhausen lebende Gruppe: Die Hornlinge.
+outgroup_intro_solo@@Diese Mikas sind Hornlinge.
+
+# Scripted sequences
+
+hat_get_family@@Du wirst zum Junior-Rothut: Dein Familienclan verleiht dir den Hut als Zeichen deiner Zugehörigkeit! Du darfst jetzt für die Rothüte auf dem Markt kaufen und verkaufen. Drücke die Leertaste, um fortzufahren.
+hat_get_friend@@Du wirst zum Junior-Rothut: Deine Freundesfarm verleiht dir den Hut als Zeichen deiner Zugehörigkeit! Du darfst jetzt für die Rothüte auf dem Markt kaufen und verkaufen. Drücke die Leertaste, um fortzufahren.
+npc_necklace_get@@Ein Junior-Rothut bekommt die Kette verliehen und wird so zum Vollmitglied. Mit der Kette darf man auf dem Markt kaufen und verkaufen und darf an Abstimmungen teilnehmen. Drücke die Leertaste, um fortzufahren.
+ply_necklace_get_family@@Dein Familienclan verleiht Dir die Kette. Jetzt bist Du Vollmitglied der Rothüte! Du darfst jetzt auch an den Abstimmungen teilnehmen. Drücke die Leertaste, um fortzufahren.
+ply_necklace_get_friends@@Deine Freundesfarm verleiht dir die Kette. Jetzt bist du Vollmitglied der Rothüte! Du darfst jetzt auch an den Abstimmungen teilnehmen. Drücke die Leertaste, um fortzufahren.
+ply_birthday_solo@@Die Rothüte gratulieren dir zum Geburtstag! Drücke die Leertaste, um fortzufahren.
+market_inactive_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Du darfst noch nicht mitentscheiden, da du noch kein Vollmitglied bist. Drücke die Leertaste, um fortzufahren.
+market_inactive_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Du darfst noch nicht mitentscheiden, da du noch kein Vollmitglied bist. Drücke die Leertaste, um fortzufahren.
+market_active_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+market_active_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+market_active_post_eruption_friends@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.

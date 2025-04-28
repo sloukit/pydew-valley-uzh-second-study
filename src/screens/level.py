@@ -56,7 +56,15 @@ from src.sprites.entities.character import Character
 from src.sprites.entities.player import Player
 from src.sprites.particle import ParticleSprite
 from src.sprites.setup import ENTITY_ASSETS
-from src.support import load_data, map_coords_to_tile, resource_path, save_data
+from src.support import (
+    get_translated_string as get_translated_msg,
+)
+from src.support import (
+    load_data,
+    map_coords_to_tile,
+    resource_path,
+    save_data,
+)
 
 _TO_PLAYER_SPEED_INCREASE_THRESHOLD = 200
 
@@ -723,7 +731,7 @@ class Level:
     ) -> None:
         dialogue_key = f"scripted_sequence_{sequence_type.value}"
         config_key = f"{sequence_type.value}_text"
-        new_text = self.round_config[config_key]
+        new_text = get_translated_msg(self.round_config[config_key])
         self.dialogue_manager.dialogues[dialogue_key][0][1] = new_text
 
     def start_scripted_sequence(self, sequence_type: ScriptedSequenceType):
@@ -1210,7 +1218,7 @@ class Level:
             if self.cutscene_animation.active:
                 target = self.cutscene_animation
             elif (
-                type(self.current_minigame) is CowHerding
+                isinstance(self.current_minigame, CowHerding)
                 and self.current_minigame.running
             ):
                 target = self.current_minigame.camera_target
@@ -1251,7 +1259,7 @@ class Level:
             if self.cutscene_animation.active:
                 target = self.cutscene_animation
             elif (
-                type(self.current_minigame) is CowHerding
+                isinstance(self.current_minigame, CowHerding)
                 and self.current_minigame.running
             ):
                 target = self.current_minigame.camera_target

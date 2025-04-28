@@ -20,7 +20,7 @@ from src.settings import (
     SOCIAL_IDENTITY_ASSESSMENT_BORDER_SIZE,
 )
 from src.sprites.entities.player import Player
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 from src.support import import_font, resource_path
 
 
@@ -145,7 +145,7 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
         self._selected_scale = None
 
         self._continue_button = None
-        self._continue_button_text = _("Continue")
+        self._continue_button_text = get_translated_msg("continue")
 
         self._social_identity_assessment_buttons: list[
             _SocialIdentityAssessmentButton
@@ -214,8 +214,8 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
         )
 
         translations_map: dict[int, str] = {
-            0: "social identity assessment left info",
-            6: "social identity assessment right info",
+            0: "social_identity_assessment_left_info",
+            6: "social_identity_assessment_right_info",
         }
 
         for i in range(len(self._social_identity_assessment_buttons)):
@@ -236,7 +236,9 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
 
             text_key: str = translations_map[i] if i in translations_map.keys() else ""
             if text_key:
-                text_surf = self.font.render(f"{_(text_key)}", False, "Black")
+                text_surf = self.font.render(
+                    get_translated_msg(text_key), False, "Black"
+                )
                 half_width_of_text = text_surf.get_rect().width / 2
                 current_button_bottom_left = current_button.rect.midbottom
                 self._surface.blit(
@@ -251,12 +253,10 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
         return Text(TextChunk(self.get_question_by_selection(), self.font_title))
 
     def get_question_by_selection(self):
-        description: str = _(
-            f"social identity assessment q{self._selection[self.current_dimension_index] + 1}"
+        description: str = get_translated_msg(
+            f"social_identity_assessment_q{self._selection[self.current_dimension_index] + 1}"
         )
-        return description.replace(
-            "[Name]", self._player.name if self._player.name else ""
-        )
+        return description.format(name=self._player.name or "")
 
     @staticmethod
     def _load_social_identity_assessment_img(dim: str, i: int) -> pygame.Surface:

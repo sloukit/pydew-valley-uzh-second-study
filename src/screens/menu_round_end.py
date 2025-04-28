@@ -9,7 +9,7 @@ from src.gui.menu.components import Button
 from src.gui.menu.general_menu import GeneralMenu
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 from src.sprites.entities.player import Player
-from src.support import get_translated_string as _
+from src.support import get_translated_string as get_translated_msg
 from src.support import parse_crop_types
 
 
@@ -77,7 +77,7 @@ class RoundMenu(GeneralMenu):
         self.round_config = round_config
         self.item_frames: dict[str, pygame.Surface] = frames["items"]
         self.title = ""
-        options = [_("continue to next round")]
+        options = [get_translated_msg("next_round")]
         size = (650, 400)
 
         self.allowed_crops = []
@@ -120,7 +120,7 @@ class RoundMenu(GeneralMenu):
             if item.as_serialised_string() not in self.allowed_crops:
                 continue
             rect = pygame.Rect(basicRect)
-            itemName = _(item.as_user_friendly_string())
+            itemName = get_translated_msg(item.as_serialised_string())
             frame_name = item.as_serialised_string()
             icon = self.item_frames[frame_name]
             icon = pygame.transform.scale_by(icon, 0.5)
@@ -163,7 +163,7 @@ class RoundMenu(GeneralMenu):
             gc.collect()
 
     def button_action(self, text: str):
-        if text == _("continue to next round"):
+        if text == get_translated_msg("next_round"):
             self.close()
 
     def handle_event(self, event: pygame.event.Event) -> bool:
@@ -192,9 +192,8 @@ class RoundMenu(GeneralMenu):
         if (
             self.get_round() % 2 == 0
         ):  # 2, 4, 6 (this corresponds to level 1, 3, 5 ends)
-            self.title = _("Round %d has ended. You currently have $%d, and:") % (
-                self.get_round() - 1,
-                self.player.money,
+            self.title = get_translated_msg("round_end_info").format(
+                round_no=self.get_round() - 1, money=self.player.money
             )
             title_box_width = 650
             title_box_height = 50
@@ -202,13 +201,13 @@ class RoundMenu(GeneralMenu):
             if (
                 self.get_round() in {1, 7}
             ):  # corresponsds to last level, config overflows in some cases, this is why we have 1 in here
-                self.title = _(
-                    "Thanks for playing, you are done with the whole game. At the end, you had $%d, and:"
-                ) % (self.player.money,)
+                self.title = get_translated_msg("whole_finish").format(
+                    money=self.player.money
+                )
             else:  # daily task completion
-                self.title = _(
-                    "Thanks for playing, you are done for the day. You currently have $%d, and:"
-                ) % (self.player.money,)
+                self.title = get_translated_msg("temp_finish").format(
+                    money=self.player.money
+                )
             title_box_width = 1020
             title_box_height = 90
 
