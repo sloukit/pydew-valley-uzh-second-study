@@ -322,6 +322,7 @@ class Game:
         self.tutorial = Tutorial(
             self.all_sprites, self.player, self.level, self.round_config
         )
+        self._has_displayed_goggles_tutorial = False
 
         # intro to game and in-group msg.
         self.last_intro_txt_rendered = False
@@ -438,6 +439,10 @@ class Game:
             and self.round_end_timer
             > self.round_config["resource_allocation_timestamp"][0]
         )
+
+    @property
+    def _can_notify_goggles_tutorial(self):
+        return self.round == 7 and not self._has_displayed_goggles_tutorial and self.round_end_timer > 15000
 
     def _notify(self, message: str, id_to_empty: str):
         self.notification_menu.message = message
@@ -876,6 +881,9 @@ class Game:
                         self.switch_state(GameState.NOTIFICATION_MENU)
                         # set to empty to not repeat
                         self._empty_round_config_notify("new_crop")
+                    elif self._can_notify_goggles_tutorial:
+                        self.notification_menu.message = get_translated_msg("goggles_tutorial")
+                        self.switch_state(GameState.NOTIFICATION_MENU)
                     elif self._can_notify_questionnaire:
                         message = self.round_config["notify_questionnaire_text"]
                         self.notification_menu.message = message

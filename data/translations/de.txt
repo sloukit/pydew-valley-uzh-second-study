@@ -262,3 +262,7 @@ market_active_family@@Dein Familienclan versammelt sich zur täglichen Abstimmun
 market_active_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 market_active_post_eruption_friends@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+
+# Goggles tutorial
+
+goggles_tutorial@@Ab sofort ist es möglich, die von der Regierung empfohlene Brille anzuziehen. Klicke auf den neuen Button, u, die Brille an- und auszuziehen. Der Button erscheint, sobald diese Nachricht beendet ist.

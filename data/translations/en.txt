@@ -266,3 +266,7 @@ market_active_family@@Your family clan gathers for the daily meeting on what to 
 market_active_post_eruption_family@@Your family clan gathers for the daily meeting on how to deal with the new rules. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
 market_active_friends@@Your friends gather for the daily meeting on what to buy. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
 market_active_post_eruption_friends@@Your friends gather for the daily meeting on how to deal with the new rules. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
+
+# Goggles tutorial
+
+goggles_tutorial@@You can now choose whether or not you want to wear the goggles recommended by the government. To do so, you need to click on the button with a goggles icon which will appear as soon as this notification closes. You can also remove the goggles by clicking again on this very button. Try it!
