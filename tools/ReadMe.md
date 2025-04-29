@@ -56,3 +56,12 @@ Quotes are necessary when the path contains spaces. The filename is case-sensiti
 
 The tool will list any formatting/validation errors.
 Output file will be written to `tools/output/levels.json`.
+
+## Translation conversion tool
+
+This script (`save_in_json.py`) automatically converts the old translation text files into proper JSON files. Edit the text files and then 
+run the script like so:
+
+```bash
+python tools/save_in_json.py
+```

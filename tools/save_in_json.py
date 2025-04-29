@@ -1,4 +1,4 @@
-# Use this tool to transfer info from the old format into JSON files.
+# Use this tool to transfer info from the old translation format into JSON files.
 # TODO: remove the old text files once all entries are translated.
 import json
 import os.path
