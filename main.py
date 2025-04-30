@@ -102,6 +102,8 @@ _CAMERA_TARGET_TO_TEXT = (
     "outgroup_introduction_text",
     "narrative_text",
 )
+_GOGGLES_TUT_TSTAMP = 15
+_BLUR_FACTOR = 1
 
 
 def _get_alloc_text(alloc_id: str):
@@ -166,7 +168,7 @@ class Game:
         self._cursor_img: pygame.Surface | None = None
 
         self.save_file = SaveFile.load()
-        # self.save_file.is_tutorial_completed = True
+        self.save_file.is_tutorial_completed = True
 
         # main setup
         self.running = True
@@ -322,6 +324,7 @@ class Game:
         self.tutorial = Tutorial(
             self.all_sprites, self.player, self.level, self.round_config
         )
+        self._has_displayed_goggles_tutorial = False
 
         # intro to game and in-group msg.
         self.last_intro_txt_rendered = False
@@ -329,7 +332,9 @@ class Game:
 
     def _empty_round_config_notify(self, cfg_id: str):
         self.round_config[f"notify_{cfg_id}_text"] = ""
-        self.round_config[f"notify_{cfg_id}_timestamp"] = []
+        tstamp = f"notify_{cfg_id}_timestamp"
+        if tstamp in self.round_config:
+            self.round_config[tstamp] = []
 
     @property
     def _can_notify_new_crop(self):
@@ -439,8 +444,16 @@ class Game:
             > self.round_config["resource_allocation_timestamp"][0]
         )
 
+    @property
+    def _can_notify_goggles_tutorial(self):
+        return (
+            self.round == 7
+            and not self._has_displayed_goggles_tutorial
+            and self.round_end_timer > _GOGGLES_TUT_TSTAMP
+        )
+
     def _notify(self, message: str, id_to_empty: str):
-        self.notification_menu.message = message
+        self.notification_menu.set_message(message)
         self.switch_state(GameState.NOTIFICATION_MENU)
         # set to empty to not repeat
         self._empty_round_config_notify(id_to_empty)
@@ -872,16 +885,19 @@ class Game:
                         message = get_translated_msg("new_crop").format(
                             crop=get_translated_msg(f"{msg_id}_new_crop")
                         )
-                        self.notification_menu.message = message
+                        self.notification_menu.set_message(message)
                         self.switch_state(GameState.NOTIFICATION_MENU)
                         # set to empty to not repeat
                         self._empty_round_config_notify("new_crop")
+                    elif self._can_notify_goggles_tutorial:
+                        self._has_displayed_goggles_tutorial = True
+                        self.notification_menu.set_message(
+                            get_translated_msg("goggles_tutorial")
+                        )
+                        self.switch_state(GameState.NOTIFICATION_MENU)
                     elif self._can_notify_questionnaire:
                         message = self.round_config["notify_questionnaire_text"]
-                        self.notification_menu.message = message
-                        self.switch_state(GameState.NOTIFICATION_MENU)
-                        # set to empty to not repeat
-                        self._empty_round_config_notify("questionnaire")
+                        self._notify(message, "questionnaire")
                     elif self._can_notify_outgroup_money_income:
                         message = _get_outgroup_income(
                             self.round_config["notify_round_end_outgroup_text"]
@@ -989,7 +1005,7 @@ class Game:
 
             # Apply blur effect only if the player has goggles equipped
             if self.player.has_goggles and self.current_state == GameState.PLAY:
-                surface = pygame.transform.box_blur(self.display_surface, 3)
+                surface = pygame.transform.box_blur(self.display_surface, _BLUR_FACTOR)
                 self.display_surface.blit(surface, (0, 0))
 
             # Into and Tutorial

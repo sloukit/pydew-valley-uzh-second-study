@@ -1234,7 +1234,12 @@ class Level:
 
         self.game_time.update()
         self.check_map_exit()
-        self.check_outgroup_logic()
+        if move_things:
+            # Don't check the outgroup logic if anything ends up interrupting (e.g. goggles notification).
+            self.check_outgroup_logic()
+        elif self.outgroup_farm_time_entered is not None:
+            # If there IS an interruption and the player actually IS in the farm, just reset the timer instead.
+            self.outgroup_farm_time_entered = pygame.time.get_ticks()
 
         # show intro scripted sequence only once
         if not self.intro_shown.get(self.current_map, False):
