@@ -269,4 +269,4 @@ market_active_post_eruption_friends@@Your friends gather for the daily meeting o
 
 # Goggles tutorial
 
-goggles_tutorial@@You can now choose whether or not you want to wear the goggles recommended by the government. To do so, you need to click on the button with a goggles icon which will appear as soon as this notification closes. You can also remove the goggles by clicking again on this very button. Try it!
+goggles_tutorial@@You can now choose whether or not you want to wear the goggles recommended by the government. To do so, you need to click on the button with a goggles icon in the inventory menu. You can also remove the goggles by clicking again on this very button. Try it!

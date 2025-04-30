@@ -265,4 +265,4 @@ market_active_post_eruption_friends@@Dein Familienclan versammelt sich zur tägl
 
 # Goggles tutorial
 
-goggles_tutorial@@Ab sofort ist es möglich, die von der Regierung empfohlene Brille anzuziehen. Klicke auf den neuen Button, u, die Brille an- und auszuziehen. Der Button erscheint, sobald diese Nachricht beendet ist.
+goggles_tutorial@@Ab sofort ist es möglich, die von der Regierung empfohlene Brille anzuziehen. Klicke auf den neuen Button in das Lager, u, die Brille an- und auszuziehen.

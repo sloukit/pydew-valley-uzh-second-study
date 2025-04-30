@@ -44,8 +44,12 @@ class Tutorial:
             4: self.water_crop,
             5: self.go_to_bed,
             6: self.go_to_forest_and_hit_tree,
-            7: self.go_to_market_and_buy_sell_something_v1_v2 if GAME_LANGUAGE == "de" else self.en_go_to_market,
-            8: self.go_to_market_and_buy_sell_something_v3 if GAME_LANGUAGE == "de" else self.en_go_to_market,
+            7: self.go_to_market_and_buy_sell_something_v1_v2
+            if GAME_LANGUAGE == "de"
+            else self.en_go_to_market,
+            8: self.go_to_market_and_buy_sell_something_v3
+            if GAME_LANGUAGE == "de"
+            else self.en_go_to_market,
             9: self.go_to_minigame_map_and_play,
             10: self.interact_with_outgroup_member,
             11: self.walk_around_outgroup_farm_and_switch_to_outgroup,
@@ -90,7 +94,9 @@ class Tutorial:
         )
 
     def en_go_to_market(self):
-        self.dialogue_manager.open_dialogue("Go_to_market_and_buy/sell_something", self.left_pos, self.top_pos)
+        self.dialogue_manager.open_dialogue(
+            "Go_to_market_and_buy/sell_something", self.left_pos, self.top_pos
+        )
 
     def go_to_minigame_map_and_play(self):
         self.dialogue_manager.open_dialogue(
