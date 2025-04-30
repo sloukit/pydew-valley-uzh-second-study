@@ -90,6 +90,12 @@ class InventoryResource(_SerialisableEnum):
             "eggplant",
             "pumpkin",
             "parsnip",
+            "cabbage",
+            "bean",
+            "cauliflower",
+            "red_cabbage",
+            "wheat",
+            "broccoli",
             "corn_seed",
             "tomato_seed",
             "beetroot_seed",
@@ -97,6 +103,11 @@ class InventoryResource(_SerialisableEnum):
             "eggplant_seed",
             "pumpkin_seed",
             "parsnip_seed",
+            "cabbage_seed",
+            "cauliflower_seed",
+            "red_cabbage_seed",
+            "wheat_seed",
+            "broccoli_seed",
         )
     )
     # All item worths in the game. When traders buy things off you, they pay you for half the worth.
@@ -118,6 +129,12 @@ class InventoryResource(_SerialisableEnum):
             14,  # EGGPLANT
             20,  # PUMPKIN
             32,  # PARSNIP
+            10,  # CABBAGE
+            5,  # BEAN
+            11,  # CAULIFLOWER
+            16,  # RED_CABBAGE
+            6,  # WHEAT
+            20,  # BROCCOLI
             4,  # CORN_SEED
             5,  # TOMATO_SEED
             6,  # BEETROOT_SEED
@@ -125,6 +142,11 @@ class InventoryResource(_SerialisableEnum):
             6,  # EGGPLANT_SEED
             7,  # PUMPKIN_SEED
             10,  # PARSNIP_SEED
+            10,  # CABBAGE_SEED
+            10,  # CAULIFLOWER_SEED
+            10,  # RED_CABBAGE_SEED
+            10,  # WHEAT_SEED
+            10,  # BROCCOLI_SEED
         )
     )
 
@@ -144,21 +166,33 @@ class InventoryResource(_SerialisableEnum):
     EGGPLANT = 12
     PUMPKIN = 13
     PARSNIP = 14
+    CABBAGE = 15
+    BEAN = 16
+    CAULIFLOWER = 17
+    RED_CABBAGE = 18
+    WHEAT = 18
+    BROCCOLI = 19
 
-    CORN_SEED = 15
-    TOMATO_SEED = 16
+    CORN_SEED = 20
+    TOMATO_SEED = 21
 
-    BEETROOT_SEED = 17
-    CARROT_SEED = 18
-    EGGPLANT_SEED = 19
-    PUMPKIN_SEED = 20
-    PARSNIP_SEED = 21
+    BEETROOT_SEED = 22
+    CARROT_SEED = 23
+    EGGPLANT_SEED = 24
+    PUMPKIN_SEED = 25
+    PARSNIP_SEED = 26
+    CABBAGE_SEED = 27
+    CAULIFLOWER_SEED = 28
+    RED_CABBAGE_SEED = 29
+    WHEAT_SEED = 30
+    BROCCOLI_SEED = 31
 
     def get_worth(self):
         return self._ITEM_WORTHS[self]  # noqa
 
     def is_seed(self):
-        return self >= self.CORN_SEED
+        # Beans can also be used as seeds, and thus do not need their own seed type.
+        return self >= self.CORN_SEED or self == self.BEAN
 
     def is_fruit(self):
         return self.APPLE <= self <= self.PEAR
