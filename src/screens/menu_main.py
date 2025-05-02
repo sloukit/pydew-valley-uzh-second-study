@@ -7,6 +7,7 @@ from pygame.mouse import get_pressed as mouse_buttons
 from src import client, xplat
 from src.enums import CustomCursor, GameState
 from src.events import SET_CURSOR, post_event
+from src.gui.display_error import DisplayError
 from src.gui.menu.general_menu import GeneralMenu
 from src.settings import (
     SCREEN_HEIGHT,
@@ -51,6 +52,9 @@ class MainMenu(GeneralMenu):
         self.players_name_box = pygame.Rect(100, 390, 200, 50)
         self.input_text = ""
         self.players_name_text = ""
+
+        # Error
+        self.display_error = DisplayError()
 
         # Cursor blinking
         self.cursor_visible = True
@@ -127,6 +131,7 @@ class MainMenu(GeneralMenu):
                 get_translated_msg("prompt_plyname"),
                 self.players_name_active,
             )
+        self.display_error.display()
 
     def post_login_callback(self, login_response: dict) -> None:
         """Meant to be used as a callback function post-login."""
@@ -152,9 +157,14 @@ class MainMenu(GeneralMenu):
             self.draw()
         self.input_text = ""
 
+    def error_login_callback(self, login_error: Exception) -> None:
+        """Meant to be used as an error callback function post-login."""
+        xplat.log("error login callback")
+        self.display_error.set_error_message(login_error)
+
     def do_login(self, token: str) -> None:
         """Log in with a play token."""
-        client.authn(token, self.post_login_callback)
+        client.authn(token, self.post_login_callback, self.error_login_callback)
 
     def button_action(self, text) -> None:
         if text == get_translated_msg("play") and self.play_button_enabled:
@@ -169,6 +179,16 @@ class MainMenu(GeneralMenu):
     def handle_event(self, event: pygame.event.Event) -> bool:
         if super().handle_event(event):
             return True
+
+        if self.display_error.is_visible():
+            if event.type == pygame.KEYDOWN and event.key in [
+                pygame.K_RETURN,
+                pygame.K_KP_ENTER,
+                pygame.K_ESCAPE,
+            ]:
+                self.display_error.set_error_message(None)
+                self.reset_fields()
+                return True
 
         if event.type == pygame.MOUSEBUTTONDOWN and mouse_buttons()[0]:
             self.pressed_button = self.get_hovered_button()
@@ -192,22 +212,13 @@ class MainMenu(GeneralMenu):
             if self.input_active:
                 if event.key in [pygame.K_RETURN, pygame.K_KP_ENTER]:
                     if self.input_text:
-                        self.do_login(self.input_text)
-                        self.input_active = False
-                        # response = self.validate_token(self.input_text)
-                        # if response.get("jwt", ""):
-                        #     self.token = self.input_text
-                        #     self.round_config = self.set_token(response)
-                        #     self.input_active = False
-                        #     # get players_name only if used in introduction
-                        #     if self.round_config.get("character_introduction_text", ""):
-                        #         self.players_name_active = True
-                        #     else:
-                        #         self.set_players_name("")
-                        #         self.play_button_enabled = True
-                        #         self.remove_button(get_translated_msg("Enter authentication data"))
-                        #         self.draw()
-                        #     self.input_text = ""
+                        try:
+                            self.do_login(self.input_text)
+                        except Exception as error:
+                            self.display_error.set_error_message(error)
+                        finally:
+                            self.input_active = False
+
                         return True
                 elif event.key == pygame.K_ESCAPE:
                     self.reset_fields()

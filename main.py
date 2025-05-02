@@ -35,6 +35,7 @@ from src.events import (
     SET_CURSOR,
     SHOW_BOX_KEYBINDINGS,
 )
+from src.exceptions import TooEarlyLoginError
 from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
@@ -550,7 +551,7 @@ class Game:
                     current_time - most_recent_completion
                 ).total_seconds() / 3600
                 if time_difference <= 12:
-                    raise ValueError(
+                    raise TooEarlyLoginError(
                         "Last daily task completion is less than 12 hours ago."
                     )
                 else:

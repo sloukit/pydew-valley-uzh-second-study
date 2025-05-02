@@ -9,6 +9,14 @@ class MinigameSetupError(Exception):
     """Something unexpected happened during minigame setup."""
 
 
+class LoginError(Exception):
+    """Something unexpected happened during login request."""
+
+
+class TooEarlyLoginError(LoginError):
+    """Something unexpected happened during login request."""
+
+
 class DevWarning(Warning):
     """Base warning class for development-related warnings.
 
