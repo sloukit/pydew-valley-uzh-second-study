@@ -170,22 +170,22 @@ class InventoryResource(_SerialisableEnum):
     BEAN = 16
     CAULIFLOWER = 17
     RED_CABBAGE = 18
-    WHEAT = 18
-    BROCCOLI = 19
+    WHEAT = 19
+    BROCCOLI = 20
 
-    CORN_SEED = 20
-    TOMATO_SEED = 21
+    CORN_SEED = 21
+    TOMATO_SEED = 22
 
-    BEETROOT_SEED = 22
-    CARROT_SEED = 23
-    EGGPLANT_SEED = 24
-    PUMPKIN_SEED = 25
-    PARSNIP_SEED = 26
-    CABBAGE_SEED = 27
-    CAULIFLOWER_SEED = 28
-    RED_CABBAGE_SEED = 29
-    WHEAT_SEED = 30
-    BROCCOLI_SEED = 31
+    BEETROOT_SEED = 23
+    CARROT_SEED = 24
+    EGGPLANT_SEED = 25
+    PUMPKIN_SEED = 26
+    PARSNIP_SEED = 27
+    CABBAGE_SEED = 28
+    CAULIFLOWER_SEED = 29
+    RED_CABBAGE_SEED = 30
+    WHEAT_SEED = 31
+    BROCCOLI_SEED = 32
 
     def get_worth(self):
         return self._ITEM_WORTHS[self]  # noqa
@@ -214,6 +214,12 @@ class FarmingTool(_SerialisableEnum):
             "eggplant_seed",
             "pumpkin_seed",
             "parsnip_seed",
+            "cabbage_seed",
+            "bean",
+            "cauliflower_seed",
+            "red_cabbage_seed",
+            "wheat_seed",
+            "broccoli_seed",
         )
     )
 
@@ -250,7 +256,7 @@ class FarmingTool(_SerialisableEnum):
             CAULIFLOWER_SEED: InventoryResource.CAULIFLOWER_SEED,
             RED_CABBAGE_SEED: InventoryResource.RED_CABBAGE_SEED,
             WHEAT_SEED: InventoryResource.WHEAT_SEED,
-            BROCCOLI_SEED: InventoryResource.BROCCOLI_SEED
+            BROCCOLI_SEED: InventoryResource.BROCCOLI_SEED,
         }
     )
 
@@ -268,7 +274,7 @@ class FarmingTool(_SerialisableEnum):
             CAULIFLOWER_SEED: InventoryResource.CAULIFLOWER,
             RED_CABBAGE_SEED: InventoryResource.RED_CABBAGE,
             WHEAT_SEED: InventoryResource.WHEAT,
-            BROCCOLI_SEED: InventoryResource.BROCCOLI
+            BROCCOLI_SEED: InventoryResource.BROCCOLI,
         }
     )
 
@@ -325,7 +331,7 @@ class SeedType(IntEnum):
             FarmingTool.CAULIFLOWER_SEED,
             FarmingTool.RED_CABBAGE_SEED,
             FarmingTool.WHEAT_SEED,
-            FarmingTool.BROCCOLI_SEED
+            FarmingTool.BROCCOLI_SEED,
         )
     )
 
@@ -343,7 +349,7 @@ class SeedType(IntEnum):
             InventoryResource.CAULIFLOWER_SEED,
             InventoryResource.RED_CABBAGE_SEED,
             InventoryResource.WHEAT_SEED,
-            InventoryResource.BROCCOLI_SEED
+            InventoryResource.BROCCOLI_SEED,
         )
     )
 
@@ -361,7 +367,7 @@ class SeedType(IntEnum):
             InventoryResource.CAULIFLOWER,
             InventoryResource.RED_CABBAGE,
             InventoryResource.WHEAT,
-            InventoryResource.BROCCOLI
+            InventoryResource.BROCCOLI,
         )
     )
 

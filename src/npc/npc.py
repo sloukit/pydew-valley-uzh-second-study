@@ -66,8 +66,6 @@ class NPC(NPCBase):
         self.has_outgroup_skin = False
         self.sickness_allowed = sickness_allowed
 
-        # TODO: Ensure that the NPC always has all needed seeds it needs
-        #  in its inventory
         self.inventory = {
             InventoryResource.WOOD: 0,
             InventoryResource.APPLE: 0,
@@ -88,6 +86,12 @@ class NPC(NPCBase):
             InventoryResource.EGGPLANT_SEED: 999,
             InventoryResource.PUMPKIN_SEED: 999,
             InventoryResource.PARSNIP_SEED: 999,
+            InventoryResource.CABBAGE_SEED: 999,
+            InventoryResource.BEAN: 999,
+            InventoryResource.CAULIFLOWER_SEED: 999,
+            InventoryResource.RED_CABBAGE_SEED: 999,
+            InventoryResource.WHEAT_SEED: 999,
+            InventoryResource.BROCCOLI_SEED: 999,
         }
 
         self.assign_outfit_ingroup()

@@ -38,7 +38,9 @@ def parse_crop_types(
         allowed_crops.extend(crop_types_list)
 
     if include_seeds:
-        seed_types_list = [f"{crop}_seed" for crop in crop_types_list]
+        seed_types_list = [
+            f"{crop}_seed" if crop != "bean" else crop for crop in crop_types_list
+        ]
         allowed_crops.extend(seed_types_list)
 
     return allowed_crops
