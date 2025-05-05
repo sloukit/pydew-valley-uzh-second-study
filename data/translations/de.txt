@@ -266,3 +266,6 @@ market_active_post_eruption_friends@@Dein Familienclan versammelt sich zur tägl
 # Goggles tutorial
 
 goggles_tutorial@@Du kannst ab jetzt die von der Regierung empfohlene Brille tragen. Klicke auf den Brillen-Button in deinem Inventar. Du ziehst die Brille wieder aus, indem du nochmal auf den Button klickst.
+
+login_failed@@Anmeldung fehlgeschlagen.|Prüfen Sie, ob Sie Ihr Token richtig geschrieben haben.
+too_early_login@@Sie können sich momentan nicht in das Spiel einloggen.|Bitte kommen Sie morgen wieder.|Vielen Dank.
