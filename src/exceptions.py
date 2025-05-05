@@ -14,7 +14,7 @@ class LoginError(Exception):
 
 
 class TooEarlyLoginError(LoginError):
-    """Something unexpected happened during login request."""
+    """The user tried to log into the game too early."""
 
 
 class DevWarning(Warning):
