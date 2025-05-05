@@ -520,7 +520,10 @@ class Game:
                 self.game_version = DEBUG_MODE_VERSION
             else:
                 raise ValueError("Invalid token value")
-            self.set_round(1)
+            if self.game_version == DEBUG_MODE_VERSION:
+                self.set_round(12)
+            else:
+                self.set_round(1)
             self.check_hat_condition()
 
         else:  # online deployed version with db access
@@ -656,6 +659,12 @@ class Game:
             "eggplant": support.import_folder("images/tilesets/plants/eggplant"),
             "pumpkin": support.import_folder("images/tilesets/plants/pumpkin"),
             "parsnip": support.import_folder("images/tilesets/plants/parsnip"),
+            "cabbage": support.import_folder("images/tilesets/plants/cabbage"),
+            "bean": support.import_folder("images/tilesets/plants/bean"),
+            "cauliflower": support.import_folder("images/tilesets/plants/cauliflower"),
+            "red_cabbage": support.import_folder("images/tilesets/plants/red_cabbage"),
+            "wheat": support.import_folder("images/tilesets/plants/wheat"),
+            "broccoli": support.import_folder("images/tilesets/plants/broccoli"),
             "rain drops": support.import_folder("images/rain/drops"),
             "rain floor": support.import_folder("images/rain/floor"),
             "objects": support.import_folder_dict("images/objects"),

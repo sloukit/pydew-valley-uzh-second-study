@@ -90,6 +90,12 @@ class InventoryResource(_SerialisableEnum):
             "eggplant",
             "pumpkin",
             "parsnip",
+            "cabbage",
+            "bean",
+            "cauliflower",
+            "red_cabbage",
+            "wheat",
+            "broccoli",
             "corn_seed",
             "tomato_seed",
             "beetroot_seed",
@@ -97,6 +103,11 @@ class InventoryResource(_SerialisableEnum):
             "eggplant_seed",
             "pumpkin_seed",
             "parsnip_seed",
+            "cabbage_seed",
+            "cauliflower_seed",
+            "red_cabbage_seed",
+            "wheat_seed",
+            "broccoli_seed",
         )
     )
     # All item worths in the game. When traders buy things off you, they pay you for half the worth.
@@ -118,6 +129,12 @@ class InventoryResource(_SerialisableEnum):
             14,  # EGGPLANT
             20,  # PUMPKIN
             32,  # PARSNIP
+            10,  # CABBAGE
+            8,  # BEAN
+            11,  # CAULIFLOWER
+            16,  # RED_CABBAGE
+            6,  # WHEAT
+            20,  # BROCCOLI
             4,  # CORN_SEED
             5,  # TOMATO_SEED
             6,  # BEETROOT_SEED
@@ -125,6 +142,11 @@ class InventoryResource(_SerialisableEnum):
             6,  # EGGPLANT_SEED
             7,  # PUMPKIN_SEED
             10,  # PARSNIP_SEED
+            10,  # CABBAGE_SEED
+            10,  # CAULIFLOWER_SEED
+            10,  # RED_CABBAGE_SEED
+            10,  # WHEAT_SEED
+            10,  # BROCCOLI_SEED
         )
     )
 
@@ -144,21 +166,33 @@ class InventoryResource(_SerialisableEnum):
     EGGPLANT = 12
     PUMPKIN = 13
     PARSNIP = 14
+    CABBAGE = 15
+    BEAN = 16
+    CAULIFLOWER = 17
+    RED_CABBAGE = 18
+    WHEAT = 19
+    BROCCOLI = 20
 
-    CORN_SEED = 15
-    TOMATO_SEED = 16
+    CORN_SEED = 21
+    TOMATO_SEED = 22
 
-    BEETROOT_SEED = 17
-    CARROT_SEED = 18
-    EGGPLANT_SEED = 19
-    PUMPKIN_SEED = 20
-    PARSNIP_SEED = 21
+    BEETROOT_SEED = 23
+    CARROT_SEED = 24
+    EGGPLANT_SEED = 25
+    PUMPKIN_SEED = 26
+    PARSNIP_SEED = 27
+    CABBAGE_SEED = 28
+    CAULIFLOWER_SEED = 29
+    RED_CABBAGE_SEED = 30
+    WHEAT_SEED = 31
+    BROCCOLI_SEED = 32
 
     def get_worth(self):
         return self._ITEM_WORTHS[self]  # noqa
 
     def is_seed(self):
-        return self >= self.CORN_SEED
+        # Beans can also be used as seeds, and thus do not need their own seed type.
+        return self >= self.CORN_SEED or self == self.BEAN
 
     def is_fruit(self):
         return self.APPLE <= self <= self.PEAR
@@ -180,6 +214,12 @@ class FarmingTool(_SerialisableEnum):
             "eggplant_seed",
             "pumpkin_seed",
             "parsnip_seed",
+            "cabbage_seed",
+            "bean",
+            "cauliflower_seed",
+            "red_cabbage_seed",
+            "wheat_seed",
+            "broccoli_seed",
         )
     )
 
@@ -195,6 +235,12 @@ class FarmingTool(_SerialisableEnum):
     EGGPLANT_SEED = 8
     PUMPKIN_SEED = 9
     PARSNIP_SEED = 10
+    CABBAGE_SEED = 11
+    BEAN = 12
+    CAULIFLOWER_SEED = 13
+    RED_CABBAGE_SEED = 14
+    WHEAT_SEED = 15
+    BROCCOLI_SEED = 16
 
     _AS_IRS = nonmember(
         {
@@ -205,6 +251,12 @@ class FarmingTool(_SerialisableEnum):
             EGGPLANT_SEED: InventoryResource.EGGPLANT_SEED,
             PUMPKIN_SEED: InventoryResource.PUMPKIN_SEED,
             PARSNIP_SEED: InventoryResource.PARSNIP_SEED,
+            CABBAGE_SEED: InventoryResource.CABBAGE_SEED,
+            BEAN: InventoryResource.BEAN,
+            CAULIFLOWER_SEED: InventoryResource.CAULIFLOWER_SEED,
+            RED_CABBAGE_SEED: InventoryResource.RED_CABBAGE_SEED,
+            WHEAT_SEED: InventoryResource.WHEAT_SEED,
+            BROCCOLI_SEED: InventoryResource.BROCCOLI_SEED,
         }
     )
 
@@ -217,6 +269,12 @@ class FarmingTool(_SerialisableEnum):
             EGGPLANT_SEED: InventoryResource.EGGPLANT,
             PUMPKIN_SEED: InventoryResource.PUMPKIN,
             PARSNIP_SEED: InventoryResource.PARSNIP,
+            CABBAGE_SEED: InventoryResource.CABBAGE,
+            BEAN: InventoryResource.BEAN,
+            CAULIFLOWER_SEED: InventoryResource.CAULIFLOWER,
+            RED_CABBAGE_SEED: InventoryResource.RED_CABBAGE,
+            WHEAT_SEED: InventoryResource.WHEAT,
+            BROCCOLI_SEED: InventoryResource.BROCCOLI,
         }
     )
 
@@ -268,6 +326,12 @@ class SeedType(IntEnum):
             FarmingTool.EGGPLANT_SEED,
             FarmingTool.PUMPKIN_SEED,
             FarmingTool.PARSNIP_SEED,
+            FarmingTool.CABBAGE_SEED,
+            FarmingTool.BEAN,
+            FarmingTool.CAULIFLOWER_SEED,
+            FarmingTool.RED_CABBAGE_SEED,
+            FarmingTool.WHEAT_SEED,
+            FarmingTool.BROCCOLI_SEED,
         )
     )
 
@@ -280,6 +344,12 @@ class SeedType(IntEnum):
             InventoryResource.EGGPLANT_SEED,
             InventoryResource.PUMPKIN_SEED,
             InventoryResource.PARSNIP_SEED,
+            InventoryResource.CABBAGE_SEED,
+            InventoryResource.BEAN,
+            InventoryResource.CAULIFLOWER_SEED,
+            InventoryResource.RED_CABBAGE_SEED,
+            InventoryResource.WHEAT_SEED,
+            InventoryResource.BROCCOLI_SEED,
         )
     )
 
@@ -292,6 +362,12 @@ class SeedType(IntEnum):
             InventoryResource.EGGPLANT,
             InventoryResource.PUMPKIN,
             InventoryResource.PARSNIP,
+            InventoryResource.CABBAGE,
+            InventoryResource.BEAN,
+            InventoryResource.CAULIFLOWER,
+            InventoryResource.RED_CABBAGE,
+            InventoryResource.WHEAT,
+            InventoryResource.BROCCOLI,
         )
     )
 
@@ -302,6 +378,12 @@ class SeedType(IntEnum):
     EGGPLANT = 4
     PUMPKIN = 5
     PARSNIP = 6
+    CABBAGE = 7
+    BEAN = 8
+    CAULIFLOWER = 9
+    RED_CABBAGE = 10
+    WHEAT = 11
+    BROCCOLI = 12
 
     @classmethod
     def from_farming_tool(cls, val: FarmingTool):
