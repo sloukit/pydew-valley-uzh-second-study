@@ -169,7 +169,7 @@ class Game:
         self._cursor_img: pygame.Surface | None = None
 
         self.save_file = SaveFile.load()
-        self.save_file.is_tutorial_completed = True
+        # self.save_file.is_tutorial_completed = True
 
         # main setup
         self.running = True
@@ -520,10 +520,7 @@ class Game:
                 self.game_version = DEBUG_MODE_VERSION
             else:
                 raise ValueError("Invalid token value")
-            if self.game_version == DEBUG_MODE_VERSION:
-                self.set_round(12)
-            else:
-                self.set_round(1)
+            self.set_round(1)
             self.check_hat_condition()
 
         else:  # online deployed version with db access

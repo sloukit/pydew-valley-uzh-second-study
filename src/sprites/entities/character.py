@@ -146,6 +146,10 @@ class Character(Entity, ABC):
             return True
         return False
 
+    @property
+    def in_outgroup(self):
+        return self.study_group == StudyGroup.OUTGROUP
+
     def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
         # super().draw(display_surface, rect, camera)
         blit_list = []

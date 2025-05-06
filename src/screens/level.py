@@ -584,10 +584,10 @@ class Level:
             self.outgroup_farm_time_entered = None
             self.outgroup_message_received = False
 
-        # If the player is in the farm and 60 seconds (currently 30s) have passed
+        # If the player is in the farm and 60 seconds (currently 15s) have passed
         if (
             self.outgroup_farm_entered
-            and pygame.time.get_ticks() - self.outgroup_farm_time_entered >= 30_000
+            and pygame.time.get_ticks() - self.outgroup_farm_time_entered >= 15000
         ):
             # Checks if player has already received the message and is not part of the outgroup
             if (
@@ -603,7 +603,7 @@ class Level:
 
         # checks 60 seconds and 120 seconds after player joins outgroup to convert appearance
         if self.player.study_group == StudyGroup.OUTGROUP:
-            # immediately player looses necklace
+            # The player immediately loses the necklace.
             delta_time = pygame.time.get_ticks() - (
                 self.start_become_outgroup_time or 0
             )
@@ -614,21 +614,21 @@ class Level:
 
             elif self.finish_become_outgroup:
                 pass
-            # after 3 minutes player gets horn
-            elif delta_time > 180_000:
+            # after 22.5 seconds, the player gets the horn
+            elif delta_time > 22500:
                 self.player.has_horn = True
                 self.finish_become_outgroup = True
-            # after 2 minutes player gets the same color as outgroup
-            elif 120_000 < delta_time < 180_000:
+            # after 15 seconds player gets the same color as outgroup
+            elif 15000 < delta_time < 22500:
                 self.player.image_alpha = 255
-            # after 1 minute player looses hat, fade in outgroup body
-            elif 60_000 < delta_time < 120_000:
+            # after 7.5 seconds, the player loses the hat, fade in outgroup body
+            elif 7500 < delta_time < 15000:
                 self.player.has_hat = False
                 self.player.has_outgroup_skin = True
-                self.player.image_alpha = 35 + 220 * ((delta_time - 60_000) / 60_000)
+                self.player.image_alpha = 35 + 220 * ((delta_time - 7500) / 7500)
             # during first minute fade out ingroup body
-            elif delta_time < 60_000:
-                self.player.image_alpha = 35 + 220 * (1 - delta_time / 60_000)
+            elif delta_time < 7500:
+                self.player.image_alpha = 35 + 220 * (1 - delta_time / 7500)
 
     def handle_event(self, event: pygame.event.Event) -> bool:
         if self.current_minigame and self.current_minigame.running:

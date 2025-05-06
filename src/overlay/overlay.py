@@ -72,4 +72,4 @@ class Overlay:
 
         # health bar
         if self.round_config.get("healthbar", False):
-            self.health_bar.draw(self.display_surface)
+            self.health_bar.draw(self.display_surface, self.player.in_outgroup)
