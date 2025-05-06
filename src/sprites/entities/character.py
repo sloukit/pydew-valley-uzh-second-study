@@ -162,14 +162,6 @@ class Character(Entity, ABC):
                 necklace_frame.set_alpha(self.image_alpha)
                 blit_list.append((necklace_frame, rect))
 
-        # Render the goggles
-        if self.has_goggles:
-            goggles_state = EntityState(f"goggles_{self.state.value}")
-            goggles_ani = self.assets[goggles_state][self.facing_direction]
-            goggles_frame = goggles_ani.get_frame(self.frame_index)
-            goggles_frame.set_alpha(self.image_alpha)
-            blit_list.append((goggles_frame, rect))
-
         # Render the hat/horn (depending on the group)
         if is_in_ingroup:
             if self.has_hat:
@@ -204,6 +196,14 @@ class Character(Entity, ABC):
                 horn_frame = horn_ani.get_frame(self.frame_index)
                 horn_frame.set_alpha(self.image_alpha)
                 blit_list.append((horn_frame, rect))
+
+        # Render the goggles
+        if self.has_goggles:
+            goggles_state = EntityState(f"goggles_{self.state.value}")
+            goggles_ani = self.assets[goggles_state][self.facing_direction]
+            goggles_frame = goggles_ani.get_frame(self.frame_index)
+            goggles_frame.set_alpha(self.image_alpha)
+            blit_list.append((goggles_frame, rect))
 
         display_surface.fblits(blit_list)
 
