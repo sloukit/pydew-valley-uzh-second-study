@@ -199,19 +199,24 @@ return_to_town@@Return to Town
 finished_minigame@@Minigame complete!
 self_time@@seconds needed
 outgroup_time@@The Hornlings needed {:.2f} seconds
+ingroup_time@@The Red Hats needed {:.2f} seconds
 cows herded in@@cows herded in
 ready@@Ready?
 go@@GO!
 cow_minigame_desc@@Cow Herding Minigame
 cow_minigame_desc_l1@@Herd the cows into the barn
-cow_minigame_desc_l2@@as fast as possible!
+cow_minigame_desc_l2@@as fast as you can!
 goal@@Objective:
 ch_goal@@Herd the cows into the barn!
 ingroup_score@@Red Hats' progress:
 outgroup_score@@Hornlings' progress:
 cow_count@@Cows in the barn
-[money win]@@You won 200$
-[money lost]@@You lost 200$
+ingrp_cheer@@YIPPEE! The Red Hats won!
+ingrp_disappointed@@Aw... the Red Hats lost...
+outgrp_cheer@@YIPPEE! The Hornlings won!
+outgrp_disappointed@@Aw... the Hornlings lost...
+[money win]@@You received 200$.
+[money lost]@@You lost 200$.
 
 # src/overlay/box_keybindings.py
 
