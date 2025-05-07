@@ -260,7 +260,7 @@ class CowHerding(Minigame):
                 self._minigame_time,
                 self._player_side.cows_herded_in,
                 self._opponent_side_script.total_time,
-                self._state.player.in_outgroup
+                self._state.player.in_outgroup,
             )
         else:
             self._state.player.blocked = False
@@ -453,7 +453,7 @@ class CowHerding(Minigame):
                 self._player_side.cows_herded_in,
                 self._opponent_side.cows_total,
                 self._opponent_side.cows_herded_in,
-                self._state.player.in_outgroup
+                self._state.player.in_outgroup,
             )
 
         if self._ani_cd_start < self._ctime < self._game_start + 1:
