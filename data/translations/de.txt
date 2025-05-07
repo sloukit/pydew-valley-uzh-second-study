@@ -195,7 +195,8 @@ cow_herding_title@@Kühe treiben
 return_to_town@@Zurück in die Stadt
 finished_minigame@@Spiel beendet!
 self_time@@Sekunden gebraucht
-outgroup_time@@Hornlinge: %.2f Sekunden
+outgroup_time@@Hornlinge: {:.2f} Sekunden
+ingroup_time@@Rothüte: {:.2f} Sekunden
 cows herded in@@Kühe im Stall
 ready@@Fertig?
 go@@Los!
@@ -207,10 +208,12 @@ ch_goal@@Treibe die Kühe in den Stall!
 ingroup_score@@Rothüte:
 outgroup_score@@Hornlinge:
 cow_count@@Kühe im Stall
-[cheering group]@@Die Rothüte sind stolz!
-[disappointed group]@@Die Rothüte sind enttäuscht
-[money win]@@Du hast 200$ gewonnen
-[money lost]@@Du hast 200$ verloren
+ingrp_cheer@@Die Rothüte sind stolz!
+ingrp_disappointed@@Die Rothüte sind enttäuscht...
+outgrp_cheer@@Die Hornlinge sind stolz!
+outgrp_disappointed@@Die Hornlinge sind enttäuscht...
+[money win]@@Du hast 200$ gewonnen.
+[money lost]@@Du hast 200$ verloren.
 
 # src/overlay/box_keybindings.py
 
