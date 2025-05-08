@@ -21,7 +21,7 @@ from src.events import (
     START_QUAKE,
     post_event,
 )
-from src.exceptions import GameMapWarning, DevWarning
+from src.exceptions import GameMapWarning
 from src.groups import AllSprites, PersistentSpriteGroup
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager

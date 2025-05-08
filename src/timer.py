@@ -37,7 +37,6 @@ class Timer:
     def get_progress(self) -> float:
         """returns a value between 0 and 1 that shows the timers progress
         1 means duration finshed"""
-        curr = pygame.time.get_ticks()
         return self.current_duration / self.duration if self.active else 0
 
     def update(self):
