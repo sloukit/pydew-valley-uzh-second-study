@@ -52,6 +52,7 @@ from src.settings import (
     SoundDict,
 )
 from src.sprites.base import Sprite
+from src.sprites.bath_bubble import BubbleMgr
 from src.sprites.entities.character import Character
 from src.sprites.entities.player import Player
 from src.sprites.particle import ParticleSprite
@@ -175,6 +176,8 @@ class Level:
 
         self.camera = Camera(0, 0)
         self.quaker = Quaker(self.camera)
+        BubbleMgr.set_bathbubble_surf(frames["level"]["objects"]["bubble"])
+        self.bubble_mgr = BubbleMgr()
         self.tool_statistics = {t.name: 0 for t in FarmingTool}
 
         self.soil_manager = SoilManager(self.all_sprites, self.frames["level"])
@@ -436,6 +439,11 @@ class Level:
                     x, y = map_coords_to_tile(plant.hitbox_rect.midbottom)
                     area.harvest((x, y), character.add_resource, self.create_particle)
 
+    def warp_to_map(self, map_name: str):
+        if map_name == "bathhouse":
+            self.bubble_mgr.start()
+        self.switch_to_map(map_name)
+
     def switch_to_map(self, map_name: Map):
         if self.tmx_maps.get(map_name):
             self.send_telemetry(
@@ -448,21 +456,14 @@ class Level:
             self.game_map.process_npc_round_config()
 
         else:
-            if (
-                map_name == "bathhouse"
-                and self.round_config["accessible_bathhouse"]
-                and self.player.hp < 80
-            ):
-                self.overlay.health_bar.apply_health(9999999)
-                self.player.bathstat = True
-                self.player.bath_time = time.time()
-                self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
-                self.load_map(self.current_map, from_map=map_name)
-            elif map_name == "bathhouse":
-                # this is to prevent warning in the console
+            if map_name == "bathhouse":
                 if self.round_config["accessible_bathhouse"]:
-                    self.load_map(self.current_map, from_map=map_name)
+                    if self.player.hp < 80:
+                        self.overlay.health_bar.apply_health(9999999)
+                        self.player.bathstat = True
+                        self.player.bath_time = time.time()
                     self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
+                    self.load_map(self.current_map, from_map=map_name)
             else:
                 warnings.warn(f'Error loading map: Map "{map_name}" not found')
 
@@ -1016,7 +1017,7 @@ class Level:
         return True
 
     def scripted_sequence_cleanup(self):
-        # go back to previous map if came not from TOWN
+        # go back to previous map if it wasn't TOWN
         if not self.prev_map == Map.TOWN and self.prev_map:
             self.map_transition.reset = partial(self.switch_to_map, Map(self.prev_map))
             self.start_map_transition()
@@ -1084,11 +1085,12 @@ class Level:
         if not self.map_transition:
             for warp_hitbox in self.player_exit_warps:
                 if self.player.hitbox_rect.colliderect(warp_hitbox.rect) and (
-                    not warp_hitbox.name == "bathhouse"
+                    warp_hitbox.name != "bathhouse"
                     or self.round_config["accessible_bathhouse"]
                 ):
+                    print(warp_hitbox.name)
                     self.map_transition.reset = partial(
-                        self.switch_to_map, warp_hitbox.name
+                        self.warp_to_map, warp_hitbox.name
                     )
                     self.start_map_transition()
                     return
@@ -1212,7 +1214,8 @@ class Level:
     def update(self, dt: float, move_things: bool = True):
         # update
         if self.map_transition:
-            self.map_transition.update()
+            if not self.bubble_mgr.active:
+                self.map_transition.update()
             self.game_time.last_time = pygame.time.get_ticks()
 
             if self.cutscene_animation.active:
@@ -1228,6 +1231,13 @@ class Level:
             self.camera.update(target)
 
             self.draw(dt, move_things)
+            if self.bubble_mgr.active:
+                self.bubble_mgr.update(dt)
+                self.bubble_mgr.draw()
+                if self.bubble_mgr.finished:
+                    map_timer = self.map_transition.timer
+                    map_timer.start_time = pygame.time.get_ticks()
+                    map_timer.now = pygame.time.get_ticks()
             return
 
         self.handle_controls()
