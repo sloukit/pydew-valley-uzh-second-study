@@ -103,6 +103,13 @@ _CAMERA_TARGET_TO_TEXT = (
     "outgroup_introduction_text",
     "narrative_text",
 )
+_CAMERA_TARGET_TO_TEXT_SOLO = (
+    "character_introduction_text",
+    "ingroup_introduction_text",
+    "outgroup_introduction_text",
+    "narrative_text",
+)
+_TARG_SKIP_IDX_SOLO = _CAMERA_TARGET_TO_TEXT_SOLO.index("outgroup_introduction_text")
 _GOGGLES_TUT_TSTAMP = 15
 _BLUR_FACTOR = 1
 
@@ -725,16 +732,28 @@ class Game:
                     # get previous dialog text
                     intro_text = self.dialogue_manager.dialogues["intro_to_game"][0][1]
 
-                    if self.level.cutscene_animation.active:
+                    cam_target_to_text = (
+                        _CAMERA_TARGET_TO_TEXT
+                        if self.game_version != 3
+                        else _CAMERA_TARGET_TO_TEXT_SOLO
+                    )
+                    cutscene_ani = self.level.cutscene_animation
+
+                    if cutscene_ani.active:
                         # start of intro - camera at home location
-                        index = self.level.cutscene_animation.current_index
-                        if index < len(_CAMERA_TARGET_TO_TEXT):
-                            if self.round_config.get(_CAMERA_TARGET_TO_TEXT[index], ""):
+                        index = cutscene_ani.current_index
+                        if index < len(cam_target_to_text):
+                            new_txt_id = cam_target_to_text[index]
+                            if self.round_config.get(new_txt_id, ""):
                                 intro_text = get_translated_msg(
-                                    self.round_config[_CAMERA_TARGET_TO_TEXT[index]]
+                                    self.round_config[new_txt_id]
                                 )
-                        # # end of intro - camera is over the home location
-                        elif index == len(self.level.cutscene_animation.targets) - 1:
+                            if self.game_version == 3 and index == _TARG_SKIP_IDX_SOLO:
+                                # Skip two targets if the game is in control condition.
+                                cutscene_ani.current_index += 1
+                                cutscene_ani.force_to_next()
+                        # end of intro - camera is over the home location
+                        elif index == len(cutscene_ani.targets) - 1:
                             if self.dialogue_manager.showing_dialogue:
                                 self.dialogue_manager.close_dialogue()
 
@@ -742,15 +761,13 @@ class Game:
 
                     intro_text = intro_text.format(initials=self.player.name)
 
-                    if (
-                        self.dialogue_manager.dialogues["intro_to_game"][0][1]
-                        != intro_text
-                    ):
+                    current_dialogue = self.dialogue_manager.dialogues["intro_to_game"][
+                        0
+                    ]
+                    if current_dialogue[1] != intro_text:
                         # dialog text has changed -> camera arrived to next intro stage,
                         # set new dialog text
-                        self.dialogue_manager.dialogues["intro_to_game"][0][1] = (
-                            intro_text
-                        )
+                        current_dialogue[1] = intro_text
 
                         # if old text is still displayed, reset dialog manager
                         if self.dialogue_manager.showing_dialogue:
@@ -760,7 +777,7 @@ class Game:
                         self.dialogue_manager.open_dialogue(
                             "intro_to_game", TUTORIAL_TB_LEFT, TUTORIAL_TB_TOP
                         )
-                elif not (self.round_config["character_introduction_timestamp"]):
+                elif not self.round_config["character_introduction_timestamp"]:
                     self.last_intro_txt_rendered = True
         elif not self.level.cutscene_animation.active and not self.switched_to_tutorial:
             if not self.level.overlay.box_keybindings_label.enabled:

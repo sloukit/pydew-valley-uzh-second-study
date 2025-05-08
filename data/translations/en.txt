@@ -254,7 +254,7 @@ narrative_family@@Your family clan urgently needs money: a volcano is raging not
 narrative_friends@@You and your friends are in desperate need of money: a volcano is threatening to erupt not far away, and you have to leave the island as soon as possible. The problem is, leaving the island will be expensive due to the sheer amount of people to ferry away. As a result, the more money you earn, the safer you get! You can earn money by selling crops, wood and fruit or winning cow-herding competitions against the Hornlings...
 narrative_solo@@A volcano nearby is threatening to erupt, so everybody is trying to get as much money as possible to escape before it does erupt. You can earn money by selling crops, wood and fruit, or by competing in cow herding events.
 outgroup_intro@@...which are the other community living in Mikhausen.
-outgroup_intro_solo@@The Red Hats aren't the only Mika community living in Mikhausen. Another group has split off long ago. Its members are called the Hornlings.
+outgroup_intro_solo@@The Red Hats aren't the only Mika community living in Mikhausen. Another group has split off long ago. Its members are called the Hornlings. A volcano nearby is threatening to erupt, so everybody is trying to get as much money as possible to escape before it does. You can earn money by selling crops, wood and fruit, or by competing in cow herding events.
 
 
 # Scripted sequences

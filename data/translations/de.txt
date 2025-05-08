@@ -249,7 +249,7 @@ narrative_family@@Dein Familienclan braucht dringend Geld: unweit tobt ein Vulka
 narrative_friends@@Deine Freundesfarm braucht dringend Geld: unweit tobt ein Vulkan und ihr müsst umziehen. Das ist teuer. Daher: je mehr Geld ihr verdient, desto sicherer seid ihr! Verkauft Ernte, Holz und Früchte, verdient Münzen beim Wettstreit 'Kuh-in-den-Stall' gegen die Hornlinge.
 narrative_solo@@Unweit von Mikahausen tobt ein Vulkan und alle müssen umziehen. Das ist teuer. Daher: je mehr Geld man verdient, desto sicherer ist man. Man verkauft dazu Ernte, Holz und Früchte und verdient Münzen beim Spiel 'Kuh-in-den-Stall'.
 outgroup_intro@@Es gibt auch eine andere in Mikhausen lebende Gruppe: Die Hornlinge.
-outgroup_intro_solo@@Diese Mikas sind Hornlinge.
+outgroup_intro_solo@@Diese Mikas sind Hornlinge. Unweit von Mikahausen tobt ein Vulkan und alle müssen umziehen. Das ist teuer. Daher: je mehr Geld man verdient, desto sicherer ist man. Man verkauft dazu Ernte, Holz und Früchte und verdient Münzen beim Spiel 'Kuh-in-den-Stall'.
 
 # Scripted sequences
 
