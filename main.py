@@ -169,7 +169,7 @@ class Game:
         self._cursor_img: pygame.Surface | None = None
 
         self.save_file = SaveFile.load()
-        self.save_file.is_tutorial_completed = True
+        # self.save_file.is_tutorial_completed = True
 
         # main setup
         self.running = True
@@ -510,13 +510,13 @@ class Game:
                 token_int = int(self.token)
             except ValueError:
                 raise ValueError("Invalid token value") from None
-            if token_int in range(100, 380):
+            if 100 <= token_int < 380:
                 self.game_version = 1
-            elif token_int in range(380, 660):
+            elif 380 <= token_int < 660:
                 self.game_version = 2
-            elif token_int in range(660, 940):
+            elif 660 <= token_int < 940:
                 self.game_version = 3
-            elif token_int in [0]:
+            elif not token_int:
                 self.game_version = DEBUG_MODE_VERSION
             else:
                 raise ValueError("Invalid token value")

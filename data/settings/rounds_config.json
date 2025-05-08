@@ -2053,7 +2053,7 @@
             "character_introduction_timestamp": [
                 0
             ],
-            "character_introduction_text": "Willkommen in der Stadt Mikhausen auf dem Planeten Mikana! Das bist du: Ein Mika, wie die auf Mikana lebenden Wesen genannt werden. Du lebst zusammen mit anderen Mikas hier in Mikhausen.",
+            "character_introduction_text": "chara_intro",
             "self_assessment_timestamp": [
                 660,
                 780
@@ -2065,11 +2065,11 @@
             "social_identity_assessment_menu": true,
             "minigame": true,
             "minigame_rooting_npcs": false,
-            "ingroup_introduction_text": "Diese Mikas sind Roth\u00fcte.",
-            "ingroup_hat_necklace_introduction_text": "Die ersten Mikas haben Mikahausen schon vor tausenden Jahren besiedelt.",
-            "ingroup_hat_introduction_text": "Die Mikas in Mikahausen haben sich auf den Ackerbau spezialisiert.",
-            "narrative_text": "Unweit von Mikahausen tobt ein Vulkan und alle m\u00fcssen umziehen. Das ist teuer. Daher: je mehr Geld man verdient, desto sicherer ist man. Man verkauft dazu Ernte, Holz und Fr\u00fcchte und verdient M\u00fcnzen beim Spiel 'Kuh-in-den-Stall'.",
-            "outgroup_introduction_text": "Diese Mikas sind Hornlinge.",
+            "ingroup_introduction_text": "clan_intro_solo",
+            "ingroup_hat_necklace_introduction_text": "membership_explanation_solo",
+            "ingroup_hat_introduction_text": "junior_solo",
+            "narrative_text": "narrative_solo",
+            "outgroup_introduction_text": "outgroup_intro_solo",
             "player_hat_sequence_timestamp": [],
             "player_hat_sequence_text": "",
             "ingroup_necklace_sequence_timestamp": [],
