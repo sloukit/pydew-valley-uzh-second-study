@@ -139,7 +139,9 @@ def _get_outgroup_income(money: str, in_outgrp: bool = False):
     if GAME_LANGUAGE == "en":
         # English currency formatting works like the German one, but with commas instead of colons.
         actual_money = money.replace(".", ",")
-    return get_translated_msg(f"{'in' if in_outgrp else 'out'}group_income_round_end").format(money=actual_money)
+    return get_translated_msg(
+        f"{'in' if in_outgrp else 'out'}group_income_round_end"
+    ).format(money=actual_money)
 
 
 class Game:
@@ -933,7 +935,7 @@ class Game:
                     elif self._can_notify_outgroup_money_income:
                         message = _get_outgroup_income(
                             self.round_config["notify_round_end_outgroup_text"],
-                            self.player.in_outgroup
+                            self.player.in_outgroup,
                         )
                         self._notify(message, "round_end_outgroup")
                     elif self._can_start_self_assessment_sequence:
