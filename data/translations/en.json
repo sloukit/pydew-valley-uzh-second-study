@@ -68,6 +68,7 @@
     "whole_finish": "Thanks for playing, you are done with the whole game. At the end, you had ${money}, and:",
     "next_round": "continue to next round",
     "outgroup_income_round_end": "The Hornlings earned ${money} in the last round.",
+    "ingroup_income_round_end": "The Red Hats earned ${money} in the last round.",
     "task": "Task",
     "confirm": "Confirm",
     "share_items": "Distribute them",

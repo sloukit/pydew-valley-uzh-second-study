@@ -68,6 +68,7 @@
     "whole_finish": "Das Spiel ist abgeschlossen! Bitte \u00f6ffnen Sie jetzt den Fragebogen aus der heutigen E-Mail. Sie k\u00f6nnen das Fenster jetzt schliessen. Besitz der Roth\u00fcte am Ende: ${money} und:",
     "next_round": "Weiter in die n\u00e4chste Runde",
     "outgroup_income_round_end": "Die Hornlinge haben letzte Runde {money}$ verdient.",
+    "ingroup_income_round_end": "Die Roth\u00fcte haben letzte Runde {money}$ verdient.",
     "task": "Aufgabe",
     "confirm": "Best\u00e4tigen",
     "share_items": "Wem m\u00f6chtest du wie viel geben?",
