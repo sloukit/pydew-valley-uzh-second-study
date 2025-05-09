@@ -268,9 +268,9 @@ ply_birthday_solo@@Everyone wishes you a happy birthday! Press Space to continue
 market_inactive_family@@Your family clan gathers for the daily meeting on what to buy. You cannot join them as you aren't a full Red Hat yet. Press Space to continue.
 market_inactive_friends@@Your friends gather for the daily meeting on what to buy. You cannot join them since you aren't a full Red Hat yet. Press Space to continue.
 market_active_family@@Your family clan gathers for the daily meeting on what to buy. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
-market_active_post_eruption_family@@Your family clan gathers for the daily meeting on how to deal with the new rules. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
+market_active_post_eruption_family@@Your family clan gathers for the daily meeting on whether to follow the new rules or not. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
 market_active_friends@@Your friends gather for the daily meeting on what to buy. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
-market_active_post_eruption_friends@@Your friends gather for the daily meeting on how to deal with the new rules. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
+market_active_post_eruption_friends@@Your friends gather for the daily meeting on whether to follow the new rules or not. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.
 
 # Goggles tutorial
 

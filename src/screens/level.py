@@ -13,7 +13,7 @@ from src.camera.camera_target import CameraTarget
 from src.camera.quaker import Quaker
 from src.camera.zoom_manager import ZoomManager
 from src.controls import Controls
-from src.enums import FarmingTool, GameState, Map, ScriptedSequenceType, StudyGroup
+from src.enums import FarmingTool, GameState, Map, ScriptedSequence, StudyGroup
 from src.events import (
     DIALOG_ADVANCE,
     DIALOG_SHOW,
@@ -68,6 +68,17 @@ from src.support import (
 )
 
 _TO_PLAYER_SPEED_INCREASE_THRESHOLD = 200
+_DECIDE_SEQUENCE = (
+    ScriptedSequence.GROUP_MARKET_PASSIVE,
+    ScriptedSequence.GROUP_MARKET_ACTIVE,
+)
+_RESTRICT_NPC_SEQ = (
+    ScriptedSequence.PLAYER_HAT,
+    ScriptedSequence.PLAYER_NECKLACE,
+    ScriptedSequence.INGROUP_NECKLACE,
+    ScriptedSequence.PLAYER_BIRTHDAY,
+)
+_YES_OR_NO = ("checkmark", "cross")
 
 
 class Level:
@@ -688,32 +699,22 @@ class Level:
                 self.switch_screen(GameState.NOTIFICATION_MENU)
 
             if self.controls.DEBUG_PLAYER_RECEIVES_HAT.click:
-                self.start_scripted_sequence(ScriptedSequenceType.PLAYER_HAT_SEQUENCE)
+                self.start_scripted_sequence(ScriptedSequence.PLAYER_HAT)
 
             if self.controls.DEBUG_PLAYER_RECEIVES_NECKLACE.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.PLAYER_NECKLACE_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.PLAYER_NECKLACE)
 
             if self.controls.DEBUG_PLAYERS_BIRTHDAY.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.PLAYER_BIRTHDAY_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.PLAYER_BIRTHDAY)
 
             if self.controls.DEBUG_NPC_RECEIVES_NECKLACE.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.INGROUP_NECKLACE)
 
             if self.controls.DEBUG_PASSIVE_DECIDE_TOMATO_OR_CORN.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.GROUP_MARKET_PASSIVE)
 
             if self.controls.DEBUG_ACTIVE_DECIDE_TOMATO_OR_CORN.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.GROUP_MARKET_ACTIVE)
 
             if self.controls.DEBUG_SHOW_HITBOXES.click:
                 self.show_hitbox_active = not self.show_hitbox_active
@@ -727,20 +728,18 @@ class Level:
             if self.controls.DEBUG_SHOW_SHOP.click:
                 self.switch_screen(GameState.SHOP)
 
-    def set_dialogue_from_round_config(
-        self, sequence_type: ScriptedSequenceType
-    ) -> None:
+    def set_dialogue_from_round_config(self, sequence_type: ScriptedSequence) -> None:
         dialogue_key = f"scripted_sequence_{sequence_type.value}"
         config_key = f"{sequence_type.value}_text"
         new_text = get_translated_msg(self.round_config[config_key])
         self.dialogue_manager.dialogues[dialogue_key][0][1] = new_text
 
-    def start_scripted_sequence(self, sequence_type: ScriptedSequenceType):
+    def start_scripted_sequence(self, sequence_type: ScriptedSequence):
         # do not start new scripted sequence when one is already running
         if self.cutscene_animation.active:
             return
 
-        # scripted sequence dialog text is set from `round_config.json` (derived from `game_levels.xlsx`)
+        # scripted sequence dialog text is set from `round_config.json` (derived from `game_levels_3b.xlsx`)
         self.set_dialogue_from_round_config(sequence_type)
 
         active_group = self.player.study_group
@@ -749,18 +748,14 @@ class Level:
         else:
             animation_name = "outgroup_gathering"
 
-        decide_sequence = [
-            ScriptedSequenceType.GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE,
-            ScriptedSequenceType.GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE,
-        ]
-        if sequence_type in decide_sequence:
+        if sequence_type in _DECIDE_SEQUENCE:
             if not self.current_map == Map.TOWN and not self.map_transition:
                 self.prev_player_pos = cast(tuple[int, int], self.player.rect.center)
                 self.prev_map = self.current_map
                 self.map_transition.reset = partial(self.switch_to_map, Map.TOWN)
                 self.start_map_transition()
 
-        # if switching to TOWN map for decide tomato or corn scripted sequence - quit until transition ends
+        # if switching to TOWN map for a prompt scripted sequence - quit until transition ends
         if not self.map_transition.peaked:
             return
 
@@ -772,15 +767,10 @@ class Level:
                     for npc in self.game_map.npcs
                     if npc.study_group == active_group and not npc.is_dead
                 ]
-                # restrict npcs to only 4 and the player
-                if sequence_type in [
-                    ScriptedSequenceType.PLAYER_HAT_SEQUENCE,
-                    ScriptedSequenceType.PLAYER_NECKLACE_SEQUENCE,
-                    ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE,
-                    ScriptedSequenceType.PLAYER_BIRTHDAY_SEQUENCE,
-                ]:
+                # Leave only 4 NPCs and the player
+                if sequence_type in _RESTRICT_NPC_SEQ:
                     npcs = self.limit_npcs_amount(npcs)
-                if sequence_type in decide_sequence:
+                if sequence_type in _DECIDE_SEQUENCE:
                     for npc in npcs:
                         npc.has_hat = True
                         npc.has_necklace = True
@@ -790,7 +780,7 @@ class Level:
                     for npc in self.game_map.npcs
                     if npc.study_group != active_group and not npc.is_dead
                 ]
-            if sequence_type == ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE:
+            if sequence_type == ScriptedSequence.INGROUP_NECKLACE:
                 npc_in_center = random.choice(npcs)
                 npcs.remove(npc_in_center)
                 npcs.append(self.player)
@@ -802,13 +792,13 @@ class Level:
                 self.end_scripted_sequence, sequence_type, npc_in_center
             )
 
-            if sequence_type not in decide_sequence or not self.prev_map:
+            if sequence_type not in _DECIDE_SEQUENCE or not self.prev_map:
                 self.prev_player_pos = cast(
                     tuple[int, int], self.player.rect.center
                 )  # else (0, 0)
 
             meeting_pos = self.cutscene_animation.targets[0].pos
-            if sequence_type in decide_sequence:
+            if sequence_type in _DECIDE_SEQUENCE:
                 # find position on map to teleport npc's from study group other then player's
                 # (located in a clear field, in the upper part of the TOWN map)
                 outgroup_hide_pos = self.cutscene_animation.animations[
@@ -848,9 +838,9 @@ class Level:
                     npc.teleport(new_pos)
                     angle += rot_by
 
-            # teleport npc's from study group other then player's to the upper part of the TOWN map,
+            # teleport npc's from study group other than player's to the upper part of the TOWN map,
             # so they don't interrupt in the meeting by the market
-            if sequence_type in decide_sequence and len(other_npcs) > 0:
+            if sequence_type in _DECIDE_SEQUENCE and len(other_npcs) > 0:
                 distance = pygame.Vector2(0, -2 * SCALED_TILE_SIZE)
                 angle = 0.0
                 rot_by = (180) / (len(other_npcs) - 1)
@@ -869,35 +859,35 @@ class Level:
         counter: int = 0
         restricted_npcs = []
         for npc in npcs:
-            if counter == len(npcs) or counter == 4:
+            if counter >= len(npcs) or counter == 4:
                 break
             restricted_npcs.append(npc)
             counter += 1
         return restricted_npcs
 
     def end_scripted_sequence(
-        self, sequence_type: ScriptedSequenceType, npc: NPC | Player
+        self, sequence_type: ScriptedSequence, npc: NPC | Player
     ) -> bool:
         # prevent the scripted sequence from ending
         if self.player.blocked:
             return False
 
-        if sequence_type == ScriptedSequenceType.PLAYER_HAT_SEQUENCE:
+        if sequence_type == ScriptedSequence.PLAYER_HAT:
             npc.has_hat = True
             self.player.blocked_from_market = False
-        elif sequence_type == ScriptedSequenceType.PLAYER_NECKLACE_SEQUENCE:
+        elif sequence_type == ScriptedSequence.PLAYER_NECKLACE:
             npc.has_necklace = True
-        elif sequence_type == ScriptedSequenceType.PLAYER_BIRTHDAY_SEQUENCE:
+        elif sequence_type == ScriptedSequence.PLAYER_BIRTHDAY:
             pass
-        elif sequence_type == ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE:
+        elif sequence_type == ScriptedSequence.INGROUP_NECKLACE:
             npc.has_hat = True
             npc.has_necklace = True
-        elif sequence_type == ScriptedSequenceType.GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE:
+        elif sequence_type == ScriptedSequence.GROUP_MARKET_PASSIVE:
             buy_list = TOMATO_OR_CORN_LIST
             self.end_scripted_sequence_decide(buy_list, is_player_active=False)
             return False
-        elif sequence_type == ScriptedSequenceType.GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE:
-            buy_list = TOMATO_OR_CORN_LIST
+        elif sequence_type == ScriptedSequence.GROUP_MARKET_ACTIVE:
+            buy_list = TOMATO_OR_CORN_LIST if self.get_round() < 7 else _YES_OR_NO
             self.end_scripted_sequence_decide(buy_list, is_player_active=True)
             return False
 

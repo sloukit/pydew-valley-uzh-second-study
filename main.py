@@ -24,7 +24,7 @@ from src.enums import (
     CustomCursor,
     GameState,
     Map,
-    ScriptedSequenceType,
+    ScriptedSequence,
     SelfAssessmentDimension,
     SocialIdentityAssessmentDimension,
 )
@@ -694,7 +694,15 @@ class Game:
                 ).convert_alpha(),
                 4,
             ),
+            "cross": pygame.transform.scale_by(
+                pygame.image.load(
+                    support.resource_path("images/ui/cross.png")
+                ).convert_alpha(),
+                4,
+            ),
         }
+        self.frames["emotes"]["checkmark"] = (self.frames["checkmark"],)
+        self.frames["emotes"]["cross"] = (self.frames["cross"],)
         prepare_checkmark_for_buttons(self.frames["checkmark"])
 
         for member in CustomCursor:
@@ -946,16 +954,14 @@ class Game:
                         self.round_config["player_hat_sequence_timestamp"] = (
                             self.round_config["player_hat_sequence_timestamp"][1:]
                         )
-                        self.level.start_scripted_sequence(
-                            ScriptedSequenceType.PLAYER_HAT_SEQUENCE
-                        )
+                        self.level.start_scripted_sequence(ScriptedSequence.PLAYER_HAT)
                     elif self._can_start_npc_necklace_sequence:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["ingroup_necklace_sequence_timestamp"] = (
                             self.round_config["ingroup_necklace_sequence_timestamp"][1:]
                         )
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE
+                            ScriptedSequence.INGROUP_NECKLACE
                         )
                     elif self._can_start_necklace_sequence:
                         # remove first timestamp from list not to repeat infinitely
@@ -963,7 +969,7 @@ class Game:
                             self.round_config["player_necklace_sequence_timestamp"][1:]
                         )
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.PLAYER_NECKLACE_SEQUENCE
+                            ScriptedSequence.PLAYER_NECKLACE
                         )
                     elif self._can_start_birthday_sequence:
                         # remove first timestamp from list not to repeat infinitely
@@ -971,7 +977,7 @@ class Game:
                             self.round_config["player_birthday_sequence_timestamp"][1:]
                         )
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.PLAYER_BIRTHDAY_SEQUENCE
+                            ScriptedSequence.PLAYER_BIRTHDAY
                         )
                     elif self._can_start_market_inactive_seq:
                         # remove first timestamp from list after transition to Town ends not to repeat infinitely
@@ -982,7 +988,7 @@ class Game:
                                 "group_market_passive_player_sequence_timestamp"
                             ][1:]
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE
+                            ScriptedSequence.GROUP_MARKET_PASSIVE
                         )
                     elif self._can_start_active_market_seq:
                         # remove first timestamp from list after transition to Town ends not to repeat infinitely
@@ -993,7 +999,7 @@ class Game:
                                 "group_market_active_player_sequence_timestamp"
                             ][1:]
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE
+                            ScriptedSequence.GROUP_MARKET_ACTIVE
                         )
                     elif self._can_prompt_allocation:
                         allocations_id = self.round_config["resource_allocation_text"]
