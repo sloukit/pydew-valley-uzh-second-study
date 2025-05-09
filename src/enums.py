@@ -533,13 +533,13 @@ class ClockVersion(IntEnum):
     DIGITAL = auto()
 
 
-class ScriptedSequenceType(StrEnum):
-    PLAYER_HAT_SEQUENCE = "player_hat_sequence"
-    PLAYER_NECKLACE_SEQUENCE = "player_necklace_sequence"
-    PLAYER_BIRTHDAY_SEQUENCE = "player_birthday_sequence"
-    INGROUP_NECKLACE_SEQUENCE = "ingroup_necklace_sequence"
-    GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE = "group_market_passive_player_sequence"
-    GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE = "group_market_active_player_sequence"
+class ScriptedSequence(StrEnum):
+    PLAYER_HAT = "player_hat_sequence"
+    PLAYER_NECKLACE = "player_necklace_sequence"
+    PLAYER_BIRTHDAY = "player_birthday_sequence"
+    INGROUP_NECKLACE = "ingroup_necklace_sequence"
+    GROUP_MARKET_PASSIVE = "group_market_passive_player_sequence"
+    GROUP_MARKET_ACTIVE = "group_market_active_player_sequence"
 
 
 class CustomCursor(IntEnum):
