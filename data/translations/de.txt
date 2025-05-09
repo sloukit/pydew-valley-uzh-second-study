@@ -87,6 +87,7 @@ temp_finish@@Für heute ist das Spiel beendet. Morgen geht es weiter - wir schic
 whole_finish@@Das Spiel ist abgeschlossen! Bitte öffnen Sie jetzt den Fragebogen aus der heutigen E-Mail. Sie können das Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
 next_round@@Weiter in die nächste Runde
 outgroup_income_round_end@@Die Hornlinge haben letzte Runde {money}$ verdient.
+ingroup_income_round_end@@Die Rothüte haben letzte Runde {money}$ verdient.
 
 # task (items allocation) menu
 
