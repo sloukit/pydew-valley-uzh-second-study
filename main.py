@@ -531,7 +531,7 @@ class Game:
                 raise ValueError("Invalid token value")
             self.set_round(1)
             self.check_hat_condition()
-
+        # TODO
         else:  # online deployed version with db access
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
             day_completions = []

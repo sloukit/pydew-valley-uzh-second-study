@@ -26,6 +26,7 @@ from src.groups import AllSprites, PersistentSpriteGroup
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
+from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.npc.npc import NPC
 from src.npc.setup import AIData
 from src.overlay.game_time import GameTime
@@ -207,6 +208,8 @@ class Level:
 
         self.controls = Controls
 
+        self.dead_npcs_registry = DeadNpcsRegistry()
+
         # level interactions
         self.get_round = get_set_round[0]
         self.set_round = get_set_round[1]
@@ -256,6 +259,7 @@ class Level:
             get_world_time,
             clock,
             round_config,
+            self.dead_npcs_registry,
         )
         self.show_hitbox_active = False
         self.show_pf_overlay = False
@@ -351,6 +355,7 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
+            death_callback=self.dead_npcs_registry.register_death,
         )
 
         self.camera.change_size(*self.game_map.size)

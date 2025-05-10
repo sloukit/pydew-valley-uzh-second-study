@@ -1,3 +1,4 @@
+import copy
 import warnings
 from collections.abc import Callable
 from typing import Any
@@ -307,10 +308,12 @@ class GameMap:
         frames: dict,
         round_config: dict[str, Any],
         get_game_version: Callable[[], int],
+        death_callback: Callable[[NPC], None],
     ):
         self.get_game_version = get_game_version
         self.number_of_hats_to_exclude = 2
         self._tilemap = tilemap
+        self.death_callback = death_callback
 
         if "Player" not in self._tilemap.layernames:
             raise InvalidMapError("No Player layer could be found")
@@ -718,7 +721,7 @@ class GameMap:
 
         npc = NPC(
             pos=pos,
-            assets=ENTITY_ASSETS.RABBIT,
+            assets=copy.deepcopy(ENTITY_ASSETS.RABBIT),
             groups=(self.all_sprites, self.collision_sprites),
             collision_sprites=self.collision_sprites,
             study_group=study_group,
@@ -732,6 +735,7 @@ class GameMap:
             has_necklace=has_necklace,
             special_features=features,
             npc_id=obj.id,
+            death_callback=self.death_callback,
         )
         npc.teleport(pos)
         # Ingroup NPCs wearing only the hat and no necklace should not be able to walk on the forest and town map,

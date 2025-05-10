@@ -119,6 +119,7 @@ OVERLAY_POSITIONS = {
     "clock": (SCREEN_WIDTH - 10, 10),
     "FPS": (SCREEN_WIDTH - 10, SCREEN_HEIGHT - 5),
     "display_error": (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2),
+    "dead_npcs_box": (15, 210),
 }
 
 APPLE_POS = {
