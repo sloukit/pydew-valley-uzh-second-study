@@ -43,6 +43,7 @@ from src.npc.behaviour.cow_behaviour_tree import (
 from src.npc.behaviour.npc_behaviour_tree import NPCBehaviourTree
 from src.npc.chicken import Chicken
 from src.npc.cow import Cow
+from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.npc.npc import NPC
 from src.npc.setup import AIData
 from src.npc.utils import pf_add_matrix_collision
@@ -94,7 +95,9 @@ def _setup_object_layer(
         x = obj.x * SCALE_FACTOR
         y = obj.y * SCALE_FACTOR
         pos = (x, y)
-        objects.append(func(pos, obj))
+        processed_object = func(pos, obj)
+        if processed_object is not None:
+            objects.append(processed_object)
     return objects
 
 
@@ -308,12 +311,12 @@ class GameMap:
         frames: dict,
         round_config: dict[str, Any],
         get_game_version: Callable[[], int],
-        death_callback: Callable[[NPC], None],
+        dead_npcs_registry: DeadNpcsRegistry,
     ):
         self.get_game_version = get_game_version
         self.number_of_hats_to_exclude = 2
         self._tilemap = tilemap
-        self.death_callback = death_callback
+        self.dead_npcs_registry: DeadNpcsRegistry = dead_npcs_registry
 
         if "Player" not in self._tilemap.layernames:
             raise InvalidMapError("No Player layer could be found")
@@ -719,6 +722,10 @@ class GameMap:
                     GameMapWarning,
                 )
 
+        # skip NPC if it's id is registered in the DNR
+        if self.dead_npcs_registry.is_npc_dead(obj.id, study_group):
+            return None
+
         npc = NPC(
             pos=pos,
             assets=copy.deepcopy(ENTITY_ASSETS.RABBIT),
@@ -735,7 +742,7 @@ class GameMap:
             has_necklace=has_necklace,
             special_features=features,
             npc_id=obj.id,
-            death_callback=self.death_callback,
+            death_callback=self.dead_npcs_registry.register_death,
         )
         npc.teleport(pos)
         # Ingroup NPCs wearing only the hat and no necklace should not be able to walk on the forest and town map,

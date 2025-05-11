@@ -536,6 +536,9 @@ class Game:
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
             day_completions = []
             max_complete_level = 0
+            self.level.dead_npcs_registry.set_registry_state(
+                response["dead_npc_registry"]
+            )
             if not (len(response["status"]) == 0):  # has at least 1 completed level
                 day_completions = [
                     d for d in response["status"] if d["game_round"] % 2 == 0

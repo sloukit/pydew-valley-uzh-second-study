@@ -208,7 +208,9 @@ class Level:
 
         self.controls = Controls
 
-        self.dead_npcs_registry = DeadNpcsRegistry()
+        self.dead_npcs_registry = DeadNpcsRegistry(
+            self.current_map, self.send_telemetry
+        )
 
         # level interactions
         self.get_round = get_set_round[0]
@@ -334,6 +336,9 @@ class Level:
         # manual memory cleaning
         gc.collect()
 
+        # update current map for remembering dead npcs
+        self.dead_npcs_registry.set_current_map_name(game_map)
+
         self.game_map = GameMap(
             selected_map=game_map,
             tilemap=self.tmx_maps[game_map],
@@ -355,7 +360,7 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
-            death_callback=self.dead_npcs_registry.register_death,
+            dead_npcs_registry=self.dead_npcs_registry,
         )
 
         self.camera.change_size(*self.game_map.size)
