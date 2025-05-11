@@ -39,6 +39,7 @@ from src.exceptions import TooEarlyLoginError
 from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
+from src.npc.dead_npcs_registry import DEAD_NPC_REGISTRY_UPDATE_EVENT
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
 from src.screens.inventory import InventoryMenu, prepare_checkmark_for_buttons
@@ -531,14 +532,10 @@ class Game:
                 raise ValueError("Invalid token value")
             self.set_round(1)
             self.check_hat_condition()
-        # TODO
         else:  # online deployed version with db access
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
             day_completions = []
             max_complete_level = 0
-            self.level.dead_npcs_registry.set_registry_state(
-                response["dead_npc_registry"]
-            )
             if not (len(response["status"]) == 0):  # has at least 1 completed level
                 day_completions = [
                     d for d in response["status"] if d["game_round"] % 2 == 0
@@ -557,6 +554,14 @@ class Game:
                 ]
                 most_recent_completion = max(timestamps)
                 current_time = datetime.now(timezone.utc)
+                self.level.dead_npcs_registry.restore_registry(
+                    dict(
+                        filter(
+                            lambda d: d["timestamp"] == most_recent_completion,
+                            day_completions,
+                        )
+                    )[DEAD_NPC_REGISTRY_UPDATE_EVENT]
+                )
 
                 # Check if the newest timestamp is more than 12 hours ago
                 time_difference = (

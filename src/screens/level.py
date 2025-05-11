@@ -209,7 +209,8 @@ class Level:
         self.controls = Controls
 
         self.dead_npcs_registry = DeadNpcsRegistry(
-            self.current_map, self.send_telemetry
+            self.current_map.name if self.current_map is not None else None,
+            self.send_telemetry,
         )
 
         # level interactions
