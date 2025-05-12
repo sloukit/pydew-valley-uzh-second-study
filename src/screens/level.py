@@ -338,7 +338,8 @@ class Level:
         gc.collect()
 
         # update current map for remembering dead npcs
-        self.dead_npcs_registry.set_current_map_name(game_map)
+        target_map_name: str = game_map.value if isinstance(game_map, Map) else game_map
+        self.dead_npcs_registry.set_current_map_name(target_map_name)
 
         self.game_map = GameMap(
             selected_map=game_map,

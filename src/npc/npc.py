@@ -251,10 +251,10 @@ class NPC(NPCBase):
                 self.die()
 
     def update(self, dt):
-        if self.sickness_allowed:
-            self.manage_sickness(dt)
         if self.is_dead:
             return
+        if self.sickness_allowed:
+            self.manage_sickness(dt)
         super().update(dt)
 
         self.emote_manager.update_obj(
