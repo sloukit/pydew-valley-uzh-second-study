@@ -263,6 +263,7 @@ class Level:
 
         # minigame
         self.current_minigame = None
+        self.cow_herding_count = 0
 
         # switch to outgroup farm
         self.outgroup_farm_entered = False
@@ -351,6 +352,8 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
+            disable_minigame=self.can_disable_minigame,
+            round_no=self.get_round(),
         )
 
         self.camera.change_size(*self.game_map.size)
@@ -453,7 +456,13 @@ class Level:
     def warp_to_map(self, map_name: str):
         if map_name == "bathhouse":
             self.bubble_mgr.start()
+        if map_name == "minigame":
+            self.cow_herding_count += 1
         self.switch_to_map(map_name)
+
+    @property
+    def can_disable_minigame(self):
+        return self.get_round() > 6 or self.cow_herding_count > 4
 
     def switch_to_map(self, map_name: Map):
         if self.tmx_maps.get(map_name):
@@ -840,10 +849,10 @@ class Level:
 
             # teleport npc's from study group other than player's to the upper part of the TOWN map,
             # so they don't interrupt in the meeting by the market
-            if sequence_type in _DECIDE_SEQUENCE and len(other_npcs) > 0:
+            if sequence_type in _DECIDE_SEQUENCE and other_npcs:
                 distance = pygame.Vector2(0, -2 * SCALED_TILE_SIZE)
                 angle = 0.0
-                rot_by = (180) / (len(other_npcs) - 1)
+                rot_by = 180 / (len(other_npcs) - 1)
                 for npc in other_npcs:
                     new_pos = outgroup_hide_pos + distance.rotate(angle)
                     npc.teleport(new_pos)

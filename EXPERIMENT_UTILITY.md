@@ -2,19 +2,39 @@
 
 This file holds some useful info for sickness probability and statistics for the experiment.
 
+## Sickness symptoms
+
+Sickness is decided every five minutes after the first five minutes have passed.
+If the player gets sick, they first suffer severe symptoms for three minutes, then they gradually recover (players cannot die, unlike NPCs).
+
+| Symptom               | Severe                                  | Recovery                                |
+|-----------------------|-----------------------------------------|-----------------------------------------|
+| Reduced walking speed | 50% of normal speed                     | 75% of normal speed                     |
+| Ability to use tools  | 30% chance to fail using any given tool | 10% chance to fail using any given tool |
+
+NPCs will also suffer from these same symptoms, but unlike the player, their recovery/death is determined in advance.
+If, for a given condition, enough NPCs died, NPCs cannot die anymore if they fulfill that condition.
+For example, in an adhering setting, only one non-adhering NPC can die in the first three rounds.
+
+For each potentially dying NPC, the death moment shall be selected in advance (round number and timestamp).
+This could potentially be saved in the database so everything can be computed when starting a new game at once.
+
+
 ## Definition of adherence and non-adherence
 
 This is a list of criteria used to determine when the player is considered as following the health 
 measures. All durations shown here are in real time.
 
 - A player is assumed to adhere to the bath health measure **when they take a bath within the first three minutes of each level**. If they do not take a bath in that period of time, they will be locked out of taking a bath for the duration of the round.
-- A player is considered to adhere to the goggles measure **if over the past three minutes, the player has worn the goggles for at least 2mn30**. This check will be run every three minutes, so a player can stop adhering to the goggles measure after a while or adhere again, and the probabilities should be affected accordingly.
+- A player is considered to adhere to the goggles measure **if over the past five minutes, the player has worn the goggles for at least 4mn**. This check will be run twice per round, after five minutes have passed, and then after 10 minutes have passed.
 
 
 ## Player's probability to get sick
 
+**Players cannot get sick during the first five minutes of each round.**
+
 **NOTE:** An adhering player can only get sick once during the entire six rounds, as long they adhere to the health measures
-for all rounds. 
+for all rounds.
 
 ### Rounds 7 to 9
 
