@@ -840,10 +840,10 @@ class Level:
 
             # teleport npc's from study group other than player's to the upper part of the TOWN map,
             # so they don't interrupt in the meeting by the market
-            if sequence_type in _DECIDE_SEQUENCE and len(other_npcs) > 0:
+            if sequence_type in _DECIDE_SEQUENCE and other_npcs:
                 distance = pygame.Vector2(0, -2 * SCALED_TILE_SIZE)
                 angle = 0.0
-                rot_by = (180) / (len(other_npcs) - 1)
+                rot_by = 180 / (len(other_npcs) - 1)
                 for npc in other_npcs:
                     new_pos = outgroup_hide_pos + distance.rotate(angle)
                     npc.teleport(new_pos)

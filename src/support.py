@@ -136,14 +136,18 @@ def import_font(size: int, font_path: str) -> pygame.font.Font:
     return pygame.font.Font(resource_path(font_path), size)
 
 
-def import_image(img_path: str, alpha: bool = True) -> pygame.Surface:
+def import_image(
+    img_path: str, alpha: bool = True, scale: bool = True
+) -> pygame.Surface:
     full_path = resource_path(img_path)
     surf = (
         pygame.image.load(full_path).convert_alpha()
         if alpha
         else pygame.image.load(full_path).convert()
     )
-    return pygame.transform.scale_by(surf, SCALE_FACTOR)
+    if scale:
+        return pygame.transform.scale_by(surf, SCALE_FACTOR)
+    return surf
 
 
 def import_folder(fold_path: str) -> list[pygame.Surface]:

@@ -220,7 +220,7 @@
     "market_active_post_eruption_family": "Your family clan gathers for the daily meeting on whether to follow the new rules or not. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.",
     "market_active_friends": "Your friends gather for the daily meeting on what to buy. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.",
     "market_active_post_eruption_friends": "Your friends gather for the daily meeting on whether to follow the new rules or not. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.",
-    "goggles_tutorial": "You can now choose whether or not you want to wear the goggles recommended by the government. To do so, you need to click on the button with a goggles icon in the inventory menu. You can also remove the goggles by clicking again on this very button. Try it!",
+    "goggles_tutorial": "You can now choose whether or not you want to wear the goggles recommended by the government. You can toggle them by clicking on the goggles button in the inventory.|Moreover, you can now switch to the outgroup by being in their farm for 15 seconds in a row, and the cow herding minigame has been closed due to damage caused by the eruption.",
     "login_failed": "Login failed. Check if you wrote your token correctly.",
     "too_early_login": "You are currently unable to login to the game.|Please come back tomorrow.|Thank you very much."
 }

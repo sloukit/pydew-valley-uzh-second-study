@@ -73,7 +73,7 @@ from src.settings import (
 )
 from src.sprites.setup import setup_entity_assets
 from src.support import get_translated_string as get_translated_msg
-from src.tutorial.tutorial import Tutorial
+from src.tutorial import Tutorial
 
 # memory cleaning settings
 print(f"gc.get_threshold: {gc.get_threshold()}")
