@@ -178,7 +178,7 @@ class Game:
         self._cursor_img: pygame.Surface | None = None
 
         self.save_file = SaveFile.load()
-        # self.save_file.is_tutorial_completed = True
+        self.save_file.is_tutorial_completed = True
 
         # main setup
         self.running = True
@@ -577,8 +577,8 @@ class Game:
 
     def set_round(self, round_no: int) -> None:
         self.round = round_no
+        self.level.cow_herding_count = 0
         # if config for given round number not found, use first one as fall back
-        # TODO: fix volcano eruption (`m`) debug which switched round to not existing value of 7
         if self.game_version < 0:
             self.game_version = DEBUG_MODE_VERSION
 

@@ -501,6 +501,7 @@ class Layer(IntEnum):
 
 
 class SpecialObjectLayer(StrEnum):
+    LOCK_MINIGAME = "lock_minigame"
     INTERACTIONS = "Interactions"
     COLLISIONS = "Collisions"
     TREES = "Trees"
