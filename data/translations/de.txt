@@ -273,3 +273,6 @@ goggles_tutorial@@Du kannst ab jetzt die von der Regierung empfohlene Brille tra
 
 login_failed@@Anmeldung fehlgeschlagen.|Prüfen Sie, ob Sie Ihr Token richtig geschrieben haben.
 too_early_login@@Sie können sich momentan nicht in das Spiel einloggen.|Bitte kommen Sie morgen wieder.|Vielen Dank.
+
+died_in_group_members@@Gestorbene Mitglieder der Gruppe:
+died_out_group_members@@Gestorbene Mitglieder der Out-Group:

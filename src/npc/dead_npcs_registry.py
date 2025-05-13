@@ -1,6 +1,6 @@
 from collections.abc import Callable
 
-from src.enums import StudyGroup
+from src.enums import Map, StudyGroup
 from src.npc.npc import NPC
 
 DEAD_NPC_REGISTRY_UPDATE_EVENT = "dead_npc_registry_update"
@@ -34,8 +34,10 @@ class DeadNpcsRegistry:
     def get_total_deaths_amount(self) -> int:
         return self.get_outgroup_deaths_amount() + self.get_ingroup_deaths_amount()
 
-    def set_current_map_name(self, current_map_name: str):
-        self.current_map_name = current_map_name
+    def set_current_map_name(self, current_map: str | Map):
+        self.current_map_name = (
+            current_map.value if isinstance(current_map, Map) else current_map
+        )
 
     def is_npc_dead(self, npc_id: int, study_group: StudyGroup) -> bool:
         result: bool = False

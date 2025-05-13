@@ -1,4 +1,3 @@
-import copy
 import warnings
 from collections.abc import Callable
 from typing import Any

@@ -222,5 +222,7 @@
     "market_active_post_eruption_friends": "Your friends gather for the daily meeting on whether to follow the new rules or not. As a full member of the Red Hats, you can take part in their chats! Press Space to continue.",
     "goggles_tutorial": "You can now choose whether or not you want to wear the goggles recommended by the government. To do so, you need to click on the button with a goggles icon in the inventory menu. You can also remove the goggles by clicking again on this very button. Try it!",
     "login_failed": "Login failed. Check if you wrote your token correctly.",
-    "too_early_login": "You are currently unable to login to the game.|Please come back tomorrow.|Thank you very much."
+    "too_early_login": "You are currently unable to login to the game.|Please come back tomorrow.|Thank you very much.",
+    "died_in_group_members": "Died in-group members:",
+    "died_out_group_members": "Died out-group members:"
 }

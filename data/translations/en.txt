@@ -279,3 +279,6 @@ goggles_tutorial@@You can now choose whether or not you want to wear the goggles
 
 login_failed@@Login failed. Check if you wrote your token correctly.
 too_early_login@@You are currently unable to login to the game.|Please come back tomorrow.|Thank you very much.
+
+died_in_group_members@@Died in-group members:
+died_out_group_members@@Died out-group members:
