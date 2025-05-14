@@ -364,7 +364,7 @@ class Level:
             get_game_version=self.get_game_version,
             dead_npcs_registry=self.dead_npcs_registry,
             disable_minigame=self.can_disable_minigame,
-            round_no=self.get_round()
+            round_no=self.get_round(),
         )
 
         self.camera.change_size(*self.game_map.size)
