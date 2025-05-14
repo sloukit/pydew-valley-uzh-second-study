@@ -310,7 +310,9 @@ class GameMap:
         frames: dict,
         round_config: dict[str, Any],
         get_game_version: Callable[[], int],
-        dead_npcs_registry: DeadNpcsRegistry,
+        disable_minigame: bool = False,
+        round_no: int = 0,
+        dead_npcs_registry: DeadNpcsRegistry
     ):
         self.get_game_version = get_game_version
         self.number_of_hats_to_exclude = 2
@@ -363,7 +365,9 @@ class GameMap:
         self.npcs = []
         self.animals = []
 
-        self._setup_layers(save_file, selected_map, scene_ani, zoom_man)
+        self._setup_layers(
+            save_file, selected_map, scene_ani, zoom_man, disable_minigame, round_no
+        )
 
         if selected_map == Map.MINIGAME and not self.round_config.get(
             "minigame_rooting_npcs", False
@@ -816,6 +820,16 @@ class GameMap:
                 f'Malformed animal object name "{obj.name}" in tilemap', GameMapWarning
             )
 
+    def _setup_mg_lock(self, pos, obj, layer, round_no: int):
+        show_in_earlier_rounds = obj.properties.get("show_in_earlier_rounds", False)
+        if (
+            round_no < 7
+            and show_in_earlier_rounds
+            or round_no > 6
+            and not show_in_earlier_rounds
+        ):
+            self._setup_map_object(pos, obj, layer)
+
     # endregion
 
     def _setup_layers(
@@ -824,6 +838,8 @@ class GameMap:
         gmap: Map,
         scene_ani: SceneAnimation,
         zoom_man: ZoomManager,
+        disable_minigame: bool = False,
+        round_no: int = 0,
     ):
         """
         Iterates over all map layers, updates the GameMap state and creates
@@ -944,6 +960,20 @@ class GameMap:
                         scene_ani.set_target_points(_setup_camera_layer(tilemap_layer))
                     case SpecialObjectLayer.ZOOM_AREAS:
                         zoom_man.set_zoom_areas(_setup_zoom_layer(tilemap_layer))
+                    case SpecialObjectLayer.LOCK_MINIGAME:
+                        if disable_minigame:
+                            layer = _get_element_property(
+                                tilemap_layer,
+                                "layer",
+                                lambda prop: Layer[prop],
+                                Layer.MAIN,
+                            )
+                            _setup_object_layer(
+                                tilemap_layer,
+                                lambda pos, obj, obj_layer=layer: self._setup_mg_lock(
+                                    pos, obj, obj_layer, round_no
+                                ),
+                            )
                     case _:
                         # set layer if defined in the TileLayer properties
                         layer = _get_element_property(
