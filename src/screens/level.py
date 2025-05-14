@@ -362,9 +362,9 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
+            dead_npcs_registry=self.dead_npcs_registry,
             disable_minigame=self.can_disable_minigame,
-            round_no=self.get_round(),
-            dead_npcs_registry=self.dead_npcs_registry
+            round_no=self.get_round()
         )
 
         self.camera.change_size(*self.game_map.size)

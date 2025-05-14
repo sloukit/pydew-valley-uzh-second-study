@@ -310,9 +310,9 @@ class GameMap:
         frames: dict,
         round_config: dict[str, Any],
         get_game_version: Callable[[], int],
+        dead_npcs_registry: DeadNpcsRegistry,
         disable_minigame: bool = False,
-        round_no: int = 0,
-        dead_npcs_registry: DeadNpcsRegistry
+        round_no: int = 0
     ):
         self.get_game_version = get_game_version
         self.number_of_hats_to_exclude = 2
