@@ -78,7 +78,7 @@ class DeadNpcsRegistry:
         result: int = 0
         for map_name in self.data.keys():
             current_map_data: dict[str : list[[int]]] = self.data[map_name]
-            if study_group.name not in current_map_data.keys():
+            if study_group.name not in current_map_data:
                 continue
             dead_npcs_list: list[int] = current_map_data[study_group.name]
             result += len(dead_npcs_list)
