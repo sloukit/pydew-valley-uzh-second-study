@@ -76,7 +76,7 @@ class DeadNpcsRegistry:
 
     def _count_dead_npcs_by_study_group(self, study_group: StudyGroup) -> int:
         result: int = 0
-        for map_name in self.data.keys():
+        for map_name in self.data:
             current_map_data: dict[str : list[[int]]] = self.data[map_name]
             if study_group.name not in current_map_data:
                 continue
