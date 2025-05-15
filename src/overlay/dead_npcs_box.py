@@ -67,6 +67,7 @@ class DeadNpcsBox:
 
     def draw_img_surface(self, start_img_topleft, amount):
         pad_x = 5
+        blit_list = []
         for i in range(0, amount):
             current_img_topleft = (
                 start_img_topleft[0] + i * (self.img_size[0] + pad_x),
@@ -79,4 +80,5 @@ class DeadNpcsBox:
                 self.img_size[1],
             )
 
-            self.display_surface.blit(self.image, img_rect)
+            blit_list.append((self.image, img_rect))
+        self.display_surface.fblits(blit_list)
