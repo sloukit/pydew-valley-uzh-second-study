@@ -30,6 +30,9 @@ class DeadNpcsBox:
         self.rect.topleft = OVERLAY_POSITIONS["dead_npcs_box"]
 
     def display(self):
+        if not self.dead_npcs_registry.is_enabled():
+            return
+
         background_color = RED
         foreground_color = BLACK
 

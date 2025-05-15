@@ -554,14 +554,15 @@ class Game:
                 ]
                 most_recent_completion = max(timestamps)
                 current_time = datetime.now(timezone.utc)
-                self.level.dead_npcs_registry.restore_registry(
-                    dict(
-                        filter(
-                            lambda d: d["timestamp"] == most_recent_completion,
-                            day_completions,
-                        )
-                    )[DEAD_NPC_REGISTRY_UPDATE_EVENT]
-                )
+                if max_complete_level > 6:
+                    self.level.dead_npcs_registry.restore_registry(
+                        dict(
+                            filter(
+                                lambda d: d["timestamp"] == most_recent_completion,
+                                day_completions,
+                            )
+                        )[DEAD_NPC_REGISTRY_UPDATE_EVENT]
+                    )
 
                 # Check if the newest timestamp is more than 12 hours ago
                 time_difference = (
@@ -589,6 +590,9 @@ class Game:
         # if config for given round number not found, use first one as fall back
         if self.game_version < 0:
             self.game_version = DEBUG_MODE_VERSION
+
+        if self.round > 6:
+            self.level.dead_npcs_registry.enable()
 
         # round end menu needs to get config from previous round,
         # since when this menu is activated it's already new round

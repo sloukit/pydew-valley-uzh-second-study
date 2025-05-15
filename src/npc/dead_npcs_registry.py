@@ -15,12 +15,16 @@ class DeadNpcsRegistry:
         self.data: dict[str : dict[str : list[int]]] = {}
         self.current_map_name: str = current_map_name
         self.telemetry_callback = telemetry_callback
+        self.enabled: bool = False
 
     def restore_registry(self, restored_registry: dict):
         self.current_map_name = restored_registry["current_map_name"]
         self.data = restored_registry["data"]
 
     def register_death(self, dying_npc: NPC):
+        if not self.is_enabled():
+            return
+
         self._get_dead_npcs_list(dying_npc.study_group).append(dying_npc.npc_id)
         del dying_npc
         self._store_registry()
@@ -51,6 +55,15 @@ class DeadNpcsRegistry:
                 break
         return result
 
+    def enable(self) -> None:
+        self.enabled = True
+
+    def disable(self) -> None:
+        self.enabled = False
+
+    def is_enabled(self) -> bool:
+        return self.enabled
+
     def _get_dead_npcs_list(self, study_group: StudyGroup) -> list[int]:
         map_data: dict[str : list[[int]]] = (
             self.data[self.current_map_name]
@@ -75,6 +88,9 @@ class DeadNpcsRegistry:
         return study_group_data
 
     def _count_dead_npcs_by_study_group(self, study_group: StudyGroup) -> int:
+        if not self.is_enabled():
+            return 0
+
         result: int = 0
         for map_name in self.data:
             current_map_data: dict[str : list[[int]]] = self.data[map_name]
