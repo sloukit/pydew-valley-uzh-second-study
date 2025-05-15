@@ -4,6 +4,9 @@ from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.settings import OVERLAY_POSITIONS
 from src.support import get_translated_string, import_font, import_image
 
+BLACK = "Black"
+RED = "Red"
+
 
 class DeadNpcsBox:
     def __init__(self, dead_npcs_registry: DeadNpcsRegistry):
@@ -27,9 +30,8 @@ class DeadNpcsBox:
         self.rect.topleft = OVERLAY_POSITIONS["dead_npcs_box"]
 
     def display(self):
-        black = "Black"
-        background_color = "Red"
-        foreground_color = black
+        background_color = RED
+        foreground_color = BLACK
 
         # rects and surfs
         dead_ingroup_members_surf = self.font.render(
