@@ -6,7 +6,6 @@ from typing import Callable
 import pygame
 
 from src.enums import (
-    EntityState,
     FarmingTool,
     InventoryResource,
     Layer,
@@ -41,8 +40,10 @@ class NPC(NPCBase):
         has_necklace: bool,
         special_features: str | None,
         npc_id: int = 0,
+        death_callback: Callable[[NPC], None] = None,
     ):
         self.tree_sprites = tree_sprites
+        self.death_callback = death_callback
 
         super().__init__(
             pos=pos,
@@ -232,18 +233,9 @@ class NPC(NPCBase):
         self.has_necklace = False
         self.has_hat = False
         self.has_horn = False
-
-        # set "dead" image, this could be a tombstone or a dead body, for example
-        if self.study_group == StudyGroup.OUTGROUP:
-            skin_state = EntityState(f"outgroup_{self.state.value}")
-            self.image = self.assets[skin_state][self.facing_direction].get_frame(0)
-        else:
-            self.image = self.assets[self.state][self.facing_direction].get_frame(0)
-        self.image.set_alpha(130)
-        self.image = pygame.transform.rotate(self.image, 90)
-
-        # remove from collision sprites so doesn't prevent farming or block other characters
+        self.image = None
         self.remove(self.collision_sprites)
+        self.death_callback(self)
 
     def manage_sickness(self, dt):
         # if NPC is not sick yet, check if it gets sick
@@ -281,8 +273,6 @@ class NPC(NPCBase):
 
     def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
         if self.is_dead:
-            # display only the dead NPC image if dead
-            display_surface.blit(self.image, rect)
             return
 
         super().draw(display_surface, rect, camera)

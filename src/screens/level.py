@@ -26,6 +26,7 @@ from src.groups import AllSprites, PersistentSpriteGroup
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
+from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.npc.npc import NPC
 from src.npc.setup import AIData
 from src.overlay.game_time import GameTime
@@ -207,6 +208,11 @@ class Level:
 
         self.controls = Controls
 
+        self.dead_npcs_registry = DeadNpcsRegistry(
+            self.current_map.name if self.current_map is not None else None,
+            self.send_telemetry,
+        )
+
         # level interactions
         self.get_round = get_set_round[0]
         self.set_round = get_set_round[1]
@@ -256,6 +262,7 @@ class Level:
             get_world_time,
             clock,
             round_config,
+            self.dead_npcs_registry,
         )
         self.show_hitbox_active = False
         self.show_pf_overlay = False
@@ -331,6 +338,9 @@ class Level:
         # manual memory cleaning
         gc.collect()
 
+        # update current map for remembering dead npcs
+        self.dead_npcs_registry.set_current_map_name(game_map)
+
         self.game_map = GameMap(
             selected_map=game_map,
             tilemap=self.tmx_maps[game_map],
@@ -352,6 +362,7 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
+            dead_npcs_registry=self.dead_npcs_registry,
             disable_minigame=self.can_disable_minigame,
             round_no=self.get_round(),
         )
