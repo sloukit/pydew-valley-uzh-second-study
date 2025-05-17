@@ -1,6 +1,6 @@
 import pygame
 
-from src.npc.dead_npcs_registry import DeadNpcsRegistry
+from src.npc.dead_npcs_registry import NpcsStateRegistry
 from src.settings import OVERLAY_POSITIONS
 from src.support import get_translated_string, import_font, import_image
 
@@ -9,7 +9,7 @@ RED = "Red"
 
 
 class DeadNpcsBox:
-    def __init__(self, dead_npcs_registry: DeadNpcsRegistry):
+    def __init__(self, dead_npcs_registry: NpcsStateRegistry):
         # setup
         self.display_surface = pygame.display.get_surface()
         self.dead_npcs_registry = dead_npcs_registry

@@ -26,7 +26,7 @@ from src.groups import AllSprites, PersistentSpriteGroup
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
-from src.npc.dead_npcs_registry import DeadNpcsRegistry
+from src.npc.dead_npcs_registry import NpcsStateRegistry
 from src.npc.npc import NPC
 from src.npc.setup import AIData
 from src.overlay.game_time import GameTime
@@ -208,7 +208,7 @@ class Level:
 
         self.controls = Controls
 
-        self.dead_npcs_registry = DeadNpcsRegistry(
+        self.dead_npcs_registry = NpcsStateRegistry(
             self.current_map.name if self.current_map is not None else None,
             self.send_telemetry,
         )

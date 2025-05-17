@@ -5,7 +5,7 @@ import pygame
 
 from src.enums import ClockVersion
 from src.gui.health_bar import HealthProgressBar
-from src.npc.dead_npcs_registry import DeadNpcsRegistry
+from src.npc.dead_npcs_registry import NpcsStateRegistry
 from src.overlay.box_keybindings import BoxKeybindings, BoxKeybindingsLabel
 from src.overlay.clock import Clock
 from src.overlay.dead_npcs_box import DeadNpcsBox
@@ -24,7 +24,7 @@ class Overlay:
         get_world_time: Callable[[None], tuple[int, int]],
         clock: pygame.time.Clock,
         round_config: dict[str, Any],
-        dead_npcs_registry: DeadNpcsRegistry,
+        dead_npcs_registry: NpcsStateRegistry,
     ) -> None:
         # general setup
         self.display_surface = pygame.display.get_surface()

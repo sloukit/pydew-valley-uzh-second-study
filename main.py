@@ -39,7 +39,7 @@ from src.exceptions import TooEarlyLoginError
 from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
-from src.npc.dead_npcs_registry import DEAD_NPC_REGISTRY_UPDATE_EVENT
+from src.npc.dead_npcs_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
 from src.screens.inventory import InventoryMenu, prepare_checkmark_for_buttons
@@ -561,7 +561,7 @@ class Game:
                                 lambda d: d["timestamp"] == most_recent_completion,
                                 day_completions,
                             )
-                        )[DEAD_NPC_REGISTRY_UPDATE_EVENT]
+                        )[NPC_STATE_REGISTRY_UPDATE_EVENT]
                     )
 
                 # Check if the newest timestamp is more than 12 hours ago
