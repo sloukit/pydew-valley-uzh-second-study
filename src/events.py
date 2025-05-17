@@ -218,4 +218,6 @@ SHOW_BOX_KEYBINDINGS = create_custom_event_type("SHOW_BOX_KEYBINDINGS")
 
 START_QUAKE = create_custom_event_type("StartQuake", duration=float, debug=bool)
 
+VOLCANO_ERUPTION = create_custom_event_type("VolcanoEruption")
+
 SET_CURSOR = create_custom_event_type("SET_CURSOR", cursor=CustomCursor)
