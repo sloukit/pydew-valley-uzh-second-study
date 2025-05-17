@@ -13,14 +13,22 @@ from src.camera.camera_target import CameraTarget
 from src.camera.quaker import Quaker
 from src.camera.zoom_manager import ZoomManager
 from src.controls import Controls
-from src.enums import FarmingTool, GameState, Map, ScriptedSequenceType, StudyGroup, Layer, Direction
+from src.enums import (
+    Direction,
+    FarmingTool,
+    GameState,
+    Layer,
+    Map,
+    ScriptedSequenceType,
+    StudyGroup,
+)
 from src.events import (
     DIALOG_ADVANCE,
     DIALOG_SHOW,
     SHOW_BOX_KEYBINDINGS,
     START_QUAKE,
-    post_event,
     VOLCANO_ERUPTION,
+    post_event,
 )
 from src.exceptions import GameMapWarning
 from src.groups import AllSprites, PersistentSpriteGroup
@@ -49,12 +57,11 @@ from src.settings import (
     SCREEN_WIDTH,
     TOMATO_OR_CORN_LIST,
     TOOLS_LOG_INTERVAL,
+    VOLCANO_POS,
     MapDict,
     SoundDict,
-    VOLCANO_POS,
-    VOLCANO_SIZE,
 )
-from src.sprites.base import Sprite, AnimatedSprite
+from src.sprites.base import AnimatedSprite, Sprite
 from src.sprites.entities.character import Character
 from src.sprites.entities.player import Player
 from src.sprites.particle import ParticleSprite
@@ -277,7 +284,9 @@ class Level:
             dur=2400,
         )
         volcano_image = self.frames["level"]["animations"]["volcano_exploding_new"]
-        self.volcano_sprite = AnimatedSprite(VOLCANO_POS, volcano_image, z=Layer.VOLCANO)
+        self.volcano_sprite = AnimatedSprite(
+            VOLCANO_POS, volcano_image, z=Layer.VOLCANO
+        )
         self.start_volcano_animation = False
         self.volcano_sounds = [
             self.sounds["mixkit-inside-a-volcano-2438"],
@@ -364,9 +373,11 @@ class Level:
         player_spawn = None
 
         # search for player entry warp depending on which map they came from
-        if (from_map and not game_map == Map.MINIGAME):
+        if from_map and not game_map == Map.MINIGAME:
             player_spawn = self.game_map.player_entry_warps.get(from_map)
-            if not player_spawn and (game_map != Map.VOLCANO and self.prev_map != Map.VOLCANO):
+            if not player_spawn and (
+                game_map != Map.VOLCANO and self.prev_map != Map.VOLCANO
+            ):
                 warnings.warn(
                     f'No valid entry warp found for "{game_map}" '
                     f'from: "{self.current_map}"',
@@ -1074,7 +1085,9 @@ class Level:
     # Creating Volcano on volcano map
     def create_volcano(self):
         Sprite(
-            VOLCANO_POS, self.frames["level"]["animations"]["volcano"][0], z=Layer.VOLCANO
+            VOLCANO_POS,
+            self.frames["level"]["animations"]["volcano"][0],
+            z=Layer.VOLCANO,
         ).add(self.all_sprites)
         self.volcano_animation()
 
@@ -1114,18 +1127,20 @@ class Level:
             self.volcano_erupt_count = 0
             self.sound_no = 0
 
-            self.activate_music() # Activating the old music
-            
+            self.activate_music()  # Activating the old music
+
             self.intro_shown.pop(Map.VOLCANO)
             self.current_map = self.prev_map
             self.prev_map = Map.VOLCANO
             self.map_transition.reset = partial(self.switch_to_map, self.current_map)
             self.start_map_transition()
 
-    def volcano(self, event = None):
-        if (self.get_round() == 7 or event == True) and not self.cutscene_animation.active:
+    def volcano(self, event=None):
+        if (self.get_round() == 7 or event) and not self.cutscene_animation.active:
             if not self.start_volcano_animation:
-                self.prev_map = self.game_map.current_map # Storing the current map so that player can return
+                self.prev_map = (
+                    self.game_map.current_map
+                )  # Storing the current map so that player can return
             self.start_volcano_map_transition()
 
     # reset
