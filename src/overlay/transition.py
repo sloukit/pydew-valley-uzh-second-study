@@ -35,6 +35,9 @@ class Transition:
         return bool(self.timer)
 
     def activate(self):
+        if self.timer.active:
+            return
+        print("Activated")
         self.timer.activate()
         self.peaked = False
 

@@ -48,7 +48,13 @@ class _CowHerdingScoreboard(AbstractMenu):
         self.font_description = import_font(24, "font/LycheeSoda.ttf")
         self.font_button = import_font(32, "font/LycheeSoda.ttf")
 
-    def setup(self, time_needed: float, cows_herded_in: int, opp_time: float):
+    def setup(
+        self,
+        time_needed: float,
+        cows_herded_in: int,
+        opp_time: float,
+        is_outgroup: bool = False,
+    ):
         box_center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         padding = (16, 24)
 
@@ -67,14 +73,18 @@ class _CowHerdingScoreboard(AbstractMenu):
             TextChunk(get_translated_msg("self_time"), self.font_description),
             Linebreak(),
             TextChunk(
-                get_translated_msg("outgroup_time").format(opp_time),
+                get_translated_msg(
+                    f"{'in' if is_outgroup else 'out'}group_time"
+                ).format(opp_time),
                 self.font_description,
             ),
             Linebreak(),
             TextChunk(
-                get_translated_msg("[cheering group]")
+                get_translated_msg(f"{'out' if is_outgroup else 'in'}grp_cheer")
                 if opp_time > time_needed
-                else get_translated_msg("[disappointed group]"),
+                else get_translated_msg(
+                    f"{'out' if is_outgroup else 'in'}grp_disappointed"
+                ),
                 self.font_description,
             ),
             Linebreak(),
@@ -269,6 +279,7 @@ class _CowHerdingOverlay:
         own_cows_herded_in: int,
         opp_cows_total: int,
         opp_cows_herded_in: int,
+        is_outgrp: bool = False,
     ):
         box_top_right = (SCREEN_WIDTH, 0)
         padding = 12
@@ -278,15 +289,21 @@ class _CowHerdingOverlay:
             Linebreak(),
             TextChunk(get_translated_msg("ch_goal"), self.font_objective),
             Linebreak((0, 32)),
-            TextChunk(get_translated_msg("ingroup_score"), self.font_objective),
+            TextChunk(
+                get_translated_msg(f"{'out' if is_outgrp else 'in'}group_score"),
+                self.font_objective,
+            ),
             Linebreak(),
             TextChunk(
                 f"({own_cows_herded_in}/{own_cows_total}) "
-                + get_translated_msg("Cows in the barn"),
+                + get_translated_msg("cow_count"),
                 self.font_objective,
             ),
             Linebreak((0, 32)),
-            TextChunk(get_translated_msg("outgroup_score"), self.font_objective),
+            TextChunk(
+                get_translated_msg(f"{'in' if is_outgrp else 'out'}group_score"),
+                self.font_objective,
+            ),
             Linebreak(),
             TextChunk(
                 f"({opp_cows_herded_in}/{opp_cows_total}) "

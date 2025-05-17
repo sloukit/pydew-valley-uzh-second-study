@@ -39,7 +39,9 @@ def parse_crop_types(
         allowed_crops.extend(crop_types_list)
 
     if include_seeds:
-        seed_types_list = [f"{crop}_seed" for crop in crop_types_list]
+        seed_types_list = [
+            f"{crop}_seed" if crop != "bean" else crop for crop in crop_types_list
+        ]
         allowed_crops.extend(seed_types_list)
 
     return allowed_crops
@@ -135,14 +137,18 @@ def import_font(size: int, font_path: str) -> pygame.font.Font:
     return pygame.font.Font(resource_path(font_path), size)
 
 
-def import_image(img_path: str, alpha: bool = True) -> pygame.Surface:
+def import_image(
+    img_path: str, alpha: bool = True, scale: bool = True
+) -> pygame.Surface:
     full_path = resource_path(img_path)
     surf = (
         pygame.image.load(full_path).convert_alpha()
         if alpha
         else pygame.image.load(full_path).convert()
     )
-    return pygame.transform.scale_by(surf, SCALE_FACTOR)
+    if scale:
+        return pygame.transform.scale_by(surf, SCALE_FACTOR)
+    return surf
 
 
 def import_folder(fold_path: str) -> list[pygame.Surface]:

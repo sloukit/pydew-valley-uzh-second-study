@@ -1,4 +1,4 @@
-import math
+from math import pi as PI, cos, sin  # noqa
 from abc import ABC
 from collections.abc import Callable
 
@@ -12,6 +12,10 @@ from src.gui.interface.emotes_base import EmoteBoxBase, EmoteManagerBase, EmoteW
 from src.settings import EMOTE_SIZE
 from src.support import draw_aa_line
 from src.timer import Timer
+
+
+_TWO_PI = PI * 2
+_HALF_PI = PI / 2
 
 
 class EmoteBox(EmoteBoxBase):
@@ -239,8 +243,9 @@ class EmoteWheel(EmoteWheelBase):
         self.visible = False
 
     def _setup_image(self):
+        bg_surf_size = self._outer_radius * 2
         background_surface = pygame.Surface(
-            (self._outer_radius * 2, self._outer_radius * 2), flags=pygame.SRCALPHA
+            (bg_surf_size, bg_surf_size), flags=pygame.SRCALPHA
         )
         pygame.draw.circle(
             background_surface,
@@ -253,17 +258,20 @@ class EmoteWheel(EmoteWheelBase):
 
         self._image.blit(background_surface, (0, 0))
 
-        for i in range(len(self._emotes)):
+        base_delta_emote_blit = self._outer_radius - EMOTE_SIZE / 2
+        ctr_minus_two = self._center - 2
+
+        for i, emote in enumerate(self._emotes):
             # draw lines as separators between the different emotes on the
             # selector wheel
-            deg = math.pi * 2 * i / len(self._emotes) - math.pi / 2
+            deg = _TWO_PI * i / self.emotes_count - _HALF_PI
             thickness = self._emote_separator_width
 
             # center_pos and length have to be slightly adjusted to be neither
             # to short, nor to extend beyond the edge of the selector wheel
             center_pos = (
-                self._outer_radius + math.cos(deg) * (self._center - 2),
-                self._outer_radius + math.sin(deg) * (self._center - 2),
+                self._outer_radius + cos(deg) * ctr_minus_two,
+                self._outer_radius + sin(deg) * ctr_minus_two,
             )
             length = self._outer_radius - self._inner_radius - 2
 
@@ -273,14 +281,14 @@ class EmoteWheel(EmoteWheelBase):
 
             # increase degree by half the distance to the next emote,
             #  to get the center of the current emote in the selector wheel
-            deg = math.pi * 2 * (i + 0.5) / len(self._emotes) - math.pi / 2
+            deg = _TWO_PI * (i + 0.5) / self.emotes_count - _HALF_PI
 
             # blit first frame of the emote as preview onto the selector wheel
             self._image.blit(
-                self._emote_manager.emotes[self._emotes[i]][0],
+                self._emote_manager.emotes[emote][0],
                 (
-                    self._outer_radius - EMOTE_SIZE / 2 + math.cos(deg) * self._center,
-                    self._outer_radius - EMOTE_SIZE / 2 + math.sin(deg) * self._center,
+                    base_delta_emote_blit + cos(deg) * self._center,
+                    base_delta_emote_blit + sin(deg) * self._center,
                 ),
             )
 
@@ -338,15 +346,17 @@ class EmoteWheel(EmoteWheelBase):
         self.image = self._image.copy()
 
         current_emote_index = self.emote_index % self.emotes_count
+        next_emote = current_emote_index + 1
 
         # draw thicker and brighter lines around the currently selected emote
-        deg = math.pi * 2 * current_emote_index / self.emotes_count - math.pi / 2
+        deg = _TWO_PI * current_emote_index / self.emotes_count - _HALF_PI
 
         # center_pos and length have to be slightly adjusted to be neither to
         # short, nor to extend beyond the edge of the selector wheel
+        ctr_minus_three = self._center - 3
         center_pos = (
-            self._outer_radius + math.cos(deg) * (self._center - 3),
-            self._outer_radius + math.sin(deg) * (self._center - 3),
+            self._outer_radius + cos(deg) * ctr_minus_three,
+            self._outer_radius + sin(deg) * ctr_minus_three,
         )
         thickness = self._selected_emote_separator_width
         length = self._outer_radius - self._inner_radius + 5
@@ -355,42 +365,40 @@ class EmoteWheel(EmoteWheelBase):
             self.image, center_pos, thickness, length, deg, SL_ORANGE_BRIGHTEST
         )
 
-        deg = (
-            math.pi * 2 * (current_emote_index + 1) / self.emotes_count
-        ) - math.pi / 2
+        deg = _TWO_PI * next_emote / self.emotes_count - _HALF_PI
         center_pos = (
-            self._outer_radius + math.cos(deg) * (self._center - 3),
-            self._outer_radius + math.sin(deg) * (self._center - 3),
+            self._outer_radius + cos(deg) * (self._center - 3),
+            self._outer_radius + sin(deg) * (self._center - 3),
         )
 
         draw_aa_line(
             self.image, center_pos, thickness, length, deg, SL_ORANGE_BRIGHTEST
         )
 
-        start_deg = (
-            -(math.pi * 2 * current_emote_index / self.emotes_count) + math.pi / 2
-        )
-        stop_deg = (
-            -(math.pi * 2 * (current_emote_index + 1) / self.emotes_count) + math.pi / 2
-        )
+        start_deg = -_TWO_PI * current_emote_index / self.emotes_count + _HALF_PI
+        stop_deg = -(_TWO_PI * next_emote / self.emotes_count) + _HALF_PI
+
+        dbl_radius = self._outer_radius * 2
 
         pygame.draw.arc(
             self.image,
             SL_ORANGE_BRIGHTEST,
-            (0, 0, self._outer_radius * 2, self._outer_radius * 2),
+            (0, 0, dbl_radius, dbl_radius),
             stop_deg,
             start_deg,
             thickness,
         )
 
+        arc_rect_topleft = self._outer_radius - self._inner_radius - 1
+        arc_rect_size = self._inner_radius * 2 + 2
         pygame.draw.arc(
             self.image,
             SL_ORANGE_BRIGHTEST,
             (
-                self._outer_radius - self._inner_radius - 1,
-                self._outer_radius - self._inner_radius - 1,
-                self._inner_radius * 2 + 2,
-                self._inner_radius * 2 + 2,
+                arc_rect_topleft,
+                arc_rect_topleft,
+                arc_rect_size,
+                arc_rect_size,
             ),
             stop_deg,
             start_deg,

@@ -24,7 +24,7 @@ from src.enums import (
     CustomCursor,
     GameState,
     Map,
-    ScriptedSequenceType,
+    ScriptedSequence,
     SelfAssessmentDimension,
     SocialIdentityAssessmentDimension,
 )
@@ -35,9 +35,11 @@ from src.events import (
     SET_CURSOR,
     SHOW_BOX_KEYBINDINGS,
 )
+from src.exceptions import TooEarlyLoginError
 from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
+from src.npc.dead_npcs_registry import DEAD_NPC_REGISTRY_UPDATE_EVENT
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
 from src.screens.inventory import InventoryMenu, prepare_checkmark_for_buttons
@@ -72,7 +74,7 @@ from src.settings import (
 )
 from src.sprites.setup import setup_entity_assets
 from src.support import get_translated_string as get_translated_msg
-from src.tutorial.tutorial import Tutorial
+from src.tutorial import Tutorial
 
 # memory cleaning settings
 print(f"gc.get_threshold: {gc.get_threshold()}")
@@ -102,6 +104,15 @@ _CAMERA_TARGET_TO_TEXT = (
     "outgroup_introduction_text",
     "narrative_text",
 )
+_CAMERA_TARGET_TO_TEXT_SOLO = (
+    "character_introduction_text",
+    "ingroup_introduction_text",
+    "outgroup_introduction_text",
+    "narrative_text",
+)
+_TARG_SKIP_IDX_SOLO = _CAMERA_TARGET_TO_TEXT_SOLO.index("outgroup_introduction_text")
+_GOGGLES_TUT_TSTAMP = 15
+_BLUR_FACTOR = 1
 
 
 def _get_alloc_text(alloc_id: str):
@@ -124,12 +135,14 @@ def _get_alloc_text(alloc_id: str):
     return txt_to_add
 
 
-def _get_outgroup_income(money: str):
+def _get_outgroup_income(money: str, in_outgrp: bool = False):
     actual_money = money
     if GAME_LANGUAGE == "en":
         # English currency formatting works like the German one, but with commas instead of colons.
         actual_money = money.replace(".", ",")
-    return get_translated_msg("outgroup_income_round_end").format(money=actual_money)
+    return get_translated_msg(
+        f"{'in' if in_outgrp else 'out'}group_income_round_end"
+    ).format(money=actual_money)
 
 
 class Game:
@@ -166,7 +179,7 @@ class Game:
         self._cursor_img: pygame.Surface | None = None
 
         self.save_file = SaveFile.load()
-        # self.save_file.is_tutorial_completed = True
+        self.save_file.is_tutorial_completed = True
 
         # main setup
         self.running = True
@@ -322,6 +335,7 @@ class Game:
         self.tutorial = Tutorial(
             self.all_sprites, self.player, self.level, self.round_config
         )
+        self._has_displayed_goggles_tutorial = False
 
         # intro to game and in-group msg.
         self.last_intro_txt_rendered = False
@@ -329,7 +343,9 @@ class Game:
 
     def _empty_round_config_notify(self, cfg_id: str):
         self.round_config[f"notify_{cfg_id}_text"] = ""
-        self.round_config[f"notify_{cfg_id}_timestamp"] = []
+        tstamp = f"notify_{cfg_id}_timestamp"
+        if tstamp in self.round_config:
+            self.round_config[tstamp] = []
 
     @property
     def _can_notify_new_crop(self):
@@ -439,8 +455,16 @@ class Game:
             > self.round_config["resource_allocation_timestamp"][0]
         )
 
+    @property
+    def _can_notify_goggles_tutorial(self):
+        return (
+            self.round == 7
+            and not self._has_displayed_goggles_tutorial
+            and self.round_end_timer > _GOGGLES_TUT_TSTAMP
+        )
+
     def _notify(self, message: str, id_to_empty: str):
-        self.notification_menu.message = message
+        self.notification_menu.set_message(message)
         self.switch_state(GameState.NOTIFICATION_MENU)
         # set to empty to not repeat
         self._empty_round_config_notify(id_to_empty)
@@ -496,19 +520,18 @@ class Game:
                 token_int = int(self.token)
             except ValueError:
                 raise ValueError("Invalid token value") from None
-            if token_int in range(100, 380):
+            if 100 <= token_int < 380:
                 self.game_version = 1
-            elif token_int in range(380, 660):
+            elif 380 <= token_int < 660:
                 self.game_version = 2
-            elif token_int in range(660, 940):
+            elif 660 <= token_int < 940:
                 self.game_version = 3
-            elif token_int in [0]:
+            elif not token_int:
                 self.game_version = DEBUG_MODE_VERSION
             else:
                 raise ValueError("Invalid token value")
             self.set_round(1)
             self.check_hat_condition()
-
         else:  # online deployed version with db access
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
             day_completions = []
@@ -531,13 +554,22 @@ class Game:
                 ]
                 most_recent_completion = max(timestamps)
                 current_time = datetime.now(timezone.utc)
+                if max_complete_level > 6:
+                    self.level.dead_npcs_registry.restore_registry(
+                        dict(
+                            filter(
+                                lambda d: d["timestamp"] == most_recent_completion,
+                                day_completions,
+                            )
+                        )[DEAD_NPC_REGISTRY_UPDATE_EVENT]
+                    )
 
                 # Check if the newest timestamp is more than 12 hours ago
                 time_difference = (
                     current_time - most_recent_completion
                 ).total_seconds() / 3600
                 if time_difference <= 12:
-                    raise ValueError(
+                    raise TooEarlyLoginError(
                         "Last daily task completion is less than 12 hours ago."
                     )
                 else:
@@ -554,10 +586,13 @@ class Game:
 
     def set_round(self, round_no: int) -> None:
         self.round = round_no
+        self.level.cow_herding_count = 0
         # if config for given round number not found, use first one as fall back
-        # TODO: fix volcano eruption (`m`) debug which switched round to not existing value of 7
         if self.game_version < 0:
             self.game_version = DEBUG_MODE_VERSION
+
+        if self.round > 6:
+            self.level.dead_npcs_registry.enable()
 
         # round end menu needs to get config from previous round,
         # since when this menu is activated it's already new round
@@ -642,6 +677,12 @@ class Game:
             "eggplant": support.import_folder("images/tilesets/plants/eggplant"),
             "pumpkin": support.import_folder("images/tilesets/plants/pumpkin"),
             "parsnip": support.import_folder("images/tilesets/plants/parsnip"),
+            "cabbage": support.import_folder("images/tilesets/plants/cabbage"),
+            "bean": support.import_folder("images/tilesets/plants/bean"),
+            "cauliflower": support.import_folder("images/tilesets/plants/cauliflower"),
+            "red_cabbage": support.import_folder("images/tilesets/plants/red_cabbage"),
+            "wheat": support.import_folder("images/tilesets/plants/wheat"),
+            "broccoli": support.import_folder("images/tilesets/plants/broccoli"),
             "rain drops": support.import_folder("images/rain/drops"),
             "rain floor": support.import_folder("images/rain/floor"),
             "objects": support.import_folder_dict("images/objects"),
@@ -667,7 +708,15 @@ class Game:
                 ).convert_alpha(),
                 4,
             ),
+            "cross": pygame.transform.scale_by(
+                pygame.image.load(
+                    support.resource_path("images/ui/cross.png")
+                ).convert_alpha(),
+                4,
+            ),
         }
+        self.frames["emotes"]["checkmark"] = (self.frames["checkmark"],)
+        self.frames["emotes"]["cross"] = (self.frames["cross"],)
         prepare_checkmark_for_buttons(self.frames["checkmark"])
 
         for member in CustomCursor:
@@ -705,16 +754,28 @@ class Game:
                     # get previous dialog text
                     intro_text = self.dialogue_manager.dialogues["intro_to_game"][0][1]
 
-                    if self.level.cutscene_animation.active:
+                    cam_target_to_text = (
+                        _CAMERA_TARGET_TO_TEXT
+                        if self.game_version != 3
+                        else _CAMERA_TARGET_TO_TEXT_SOLO
+                    )
+                    cutscene_ani = self.level.cutscene_animation
+
+                    if cutscene_ani.active:
                         # start of intro - camera at home location
-                        index = self.level.cutscene_animation.current_index
-                        if index < len(_CAMERA_TARGET_TO_TEXT):
-                            if self.round_config.get(_CAMERA_TARGET_TO_TEXT[index], ""):
+                        index = cutscene_ani.current_index
+                        if index < len(cam_target_to_text):
+                            new_txt_id = cam_target_to_text[index]
+                            if self.round_config.get(new_txt_id, ""):
                                 intro_text = get_translated_msg(
-                                    self.round_config[_CAMERA_TARGET_TO_TEXT[index]]
+                                    self.round_config[new_txt_id]
                                 )
-                        # # end of intro - camera is over the home location
-                        elif index == len(self.level.cutscene_animation.targets) - 1:
+                            if self.game_version == 3 and index == _TARG_SKIP_IDX_SOLO:
+                                # Skip two targets if the game is in control condition.
+                                cutscene_ani.current_index += 1
+                                cutscene_ani.force_to_next()
+                        # end of intro - camera is over the home location
+                        elif index == len(cutscene_ani.targets) - 1:
                             if self.dialogue_manager.showing_dialogue:
                                 self.dialogue_manager.close_dialogue()
 
@@ -722,15 +783,13 @@ class Game:
 
                     intro_text = intro_text.format(initials=self.player.name)
 
-                    if (
-                        self.dialogue_manager.dialogues["intro_to_game"][0][1]
-                        != intro_text
-                    ):
+                    current_dialogue = self.dialogue_manager.dialogues["intro_to_game"][
+                        0
+                    ]
+                    if current_dialogue[1] != intro_text:
                         # dialog text has changed -> camera arrived to next intro stage,
                         # set new dialog text
-                        self.dialogue_manager.dialogues["intro_to_game"][0][1] = (
-                            intro_text
-                        )
+                        current_dialogue[1] = intro_text
 
                         # if old text is still displayed, reset dialog manager
                         if self.dialogue_manager.showing_dialogue:
@@ -740,7 +799,7 @@ class Game:
                         self.dialogue_manager.open_dialogue(
                             "intro_to_game", TUTORIAL_TB_LEFT, TUTORIAL_TB_TOP
                         )
-                elif not (self.round_config["character_introduction_timestamp"]):
+                elif not self.round_config["character_introduction_timestamp"]:
                     self.last_intro_txt_rendered = True
         elif not self.level.cutscene_animation.active and not self.switched_to_tutorial:
             if not self.level.overlay.box_keybindings_label.enabled:
@@ -872,19 +931,23 @@ class Game:
                         message = get_translated_msg("new_crop").format(
                             crop=get_translated_msg(f"{msg_id}_new_crop")
                         )
-                        self.notification_menu.message = message
+                        self.notification_menu.set_message(message)
                         self.switch_state(GameState.NOTIFICATION_MENU)
                         # set to empty to not repeat
                         self._empty_round_config_notify("new_crop")
+                    elif self._can_notify_goggles_tutorial:
+                        self._has_displayed_goggles_tutorial = True
+                        self.notification_menu.set_message(
+                            get_translated_msg("goggles_tutorial")
+                        )
+                        self.switch_state(GameState.NOTIFICATION_MENU)
                     elif self._can_notify_questionnaire:
                         message = self.round_config["notify_questionnaire_text"]
-                        self.notification_menu.message = message
-                        self.switch_state(GameState.NOTIFICATION_MENU)
-                        # set to empty to not repeat
-                        self._empty_round_config_notify("questionnaire")
+                        self._notify(message, "questionnaire")
                     elif self._can_notify_outgroup_money_income:
                         message = _get_outgroup_income(
-                            self.round_config["notify_round_end_outgroup_text"]
+                            self.round_config["notify_round_end_outgroup_text"],
+                            self.player.in_outgroup,
                         )
                         self._notify(message, "round_end_outgroup")
                     elif self._can_start_self_assessment_sequence:
@@ -906,16 +969,14 @@ class Game:
                         self.round_config["player_hat_sequence_timestamp"] = (
                             self.round_config["player_hat_sequence_timestamp"][1:]
                         )
-                        self.level.start_scripted_sequence(
-                            ScriptedSequenceType.PLAYER_HAT_SEQUENCE
-                        )
+                        self.level.start_scripted_sequence(ScriptedSequence.PLAYER_HAT)
                     elif self._can_start_npc_necklace_sequence:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["ingroup_necklace_sequence_timestamp"] = (
                             self.round_config["ingroup_necklace_sequence_timestamp"][1:]
                         )
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE
+                            ScriptedSequence.INGROUP_NECKLACE
                         )
                     elif self._can_start_necklace_sequence:
                         # remove first timestamp from list not to repeat infinitely
@@ -923,7 +984,7 @@ class Game:
                             self.round_config["player_necklace_sequence_timestamp"][1:]
                         )
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.PLAYER_NECKLACE_SEQUENCE
+                            ScriptedSequence.PLAYER_NECKLACE
                         )
                     elif self._can_start_birthday_sequence:
                         # remove first timestamp from list not to repeat infinitely
@@ -931,7 +992,7 @@ class Game:
                             self.round_config["player_birthday_sequence_timestamp"][1:]
                         )
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.PLAYER_BIRTHDAY_SEQUENCE
+                            ScriptedSequence.PLAYER_BIRTHDAY
                         )
                     elif self._can_start_market_inactive_seq:
                         # remove first timestamp from list after transition to Town ends not to repeat infinitely
@@ -942,7 +1003,7 @@ class Game:
                                 "group_market_passive_player_sequence_timestamp"
                             ][1:]
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE
+                            ScriptedSequence.GROUP_MARKET_PASSIVE
                         )
                     elif self._can_start_active_market_seq:
                         # remove first timestamp from list after transition to Town ends not to repeat infinitely
@@ -953,7 +1014,7 @@ class Game:
                                 "group_market_active_player_sequence_timestamp"
                             ][1:]
                         self.level.start_scripted_sequence(
-                            ScriptedSequenceType.GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE
+                            ScriptedSequence.GROUP_MARKET_ACTIVE
                         )
                     elif self._can_prompt_allocation:
                         allocations_id = self.round_config["resource_allocation_text"]
@@ -989,7 +1050,7 @@ class Game:
 
             # Apply blur effect only if the player has goggles equipped
             if self.player.has_goggles and self.current_state == GameState.PLAY:
-                surface = pygame.transform.box_blur(self.display_surface, 3)
+                surface = pygame.transform.box_blur(self.display_surface, _BLUR_FACTOR)
                 self.display_surface.blit(surface, (0, 0))
 
             # Into and Tutorial

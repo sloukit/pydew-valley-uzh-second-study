@@ -39,7 +39,7 @@ class BoxKeybindingsLabel:
             f"{get_translated_msg('box info label')}", False, foreground_color
         )
         box_keybindings_label_rect = box_keybindings_label_surf.get_frect(
-            midright=(self.rect.right - 20, self.rect.centery + pad_y)
+            midright=(self.rect.right, self.rect.centery + pad_y)
         )
 
         # display

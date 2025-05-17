@@ -87,6 +87,7 @@ temp_finish@@Für heute ist das Spiel beendet. Morgen geht es weiter - wir schic
 whole_finish@@Das Spiel ist abgeschlossen! Bitte öffnen Sie jetzt den Fragebogen aus der heutigen E-Mail. Sie können das Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
 next_round@@Weiter in die nächste Runde
 outgroup_income_round_end@@Die Hornlinge haben letzte Runde {money}$ verdient.
+ingroup_income_round_end@@Die Rothüte haben letzte Runde {money}$ verdient.
 
 # task (items allocation) menu
 
@@ -195,7 +196,8 @@ cow_herding_title@@Kühe treiben
 return_to_town@@Zurück in die Stadt
 finished_minigame@@Spiel beendet!
 self_time@@Sekunden gebraucht
-outgroup_time@@Hornlinge: %.2f Sekunden
+outgroup_time@@Hornlinge: {:.2f} Sekunden
+ingroup_time@@Rothüte: {:.2f} Sekunden
 cows herded in@@Kühe im Stall
 ready@@Fertig?
 go@@Los!
@@ -207,10 +209,12 @@ ch_goal@@Treibe die Kühe in den Stall!
 ingroup_score@@Rothüte:
 outgroup_score@@Hornlinge:
 cow_count@@Kühe im Stall
-[cheering group]@@Die Rothüte sind stolz!
-[disappointed group]@@Die Rothüte sind enttäuscht
-[money win]@@Du hast 200$ gewonnen
-[money lost]@@Du hast 200$ verloren
+ingrp_cheer@@Die Rothüte sind stolz!
+ingrp_disappointed@@Die Rothüte sind enttäuscht...
+outgrp_cheer@@Die Hornlinge sind stolz!
+outgrp_disappointed@@Die Hornlinge sind enttäuscht...
+[money win]@@Du hast 200$ gewonnen.
+[money lost]@@Du hast 200$ verloren.
 
 # src/overlay/box_keybindings.py
 
@@ -246,7 +250,7 @@ narrative_family@@Dein Familienclan braucht dringend Geld: unweit tobt ein Vulka
 narrative_friends@@Deine Freundesfarm braucht dringend Geld: unweit tobt ein Vulkan und ihr müsst umziehen. Das ist teuer. Daher: je mehr Geld ihr verdient, desto sicherer seid ihr! Verkauft Ernte, Holz und Früchte, verdient Münzen beim Wettstreit 'Kuh-in-den-Stall' gegen die Hornlinge.
 narrative_solo@@Unweit von Mikahausen tobt ein Vulkan und alle müssen umziehen. Das ist teuer. Daher: je mehr Geld man verdient, desto sicherer ist man. Man verkauft dazu Ernte, Holz und Früchte und verdient Münzen beim Spiel 'Kuh-in-den-Stall'.
 outgroup_intro@@Es gibt auch eine andere in Mikhausen lebende Gruppe: Die Hornlinge.
-outgroup_intro_solo@@Diese Mikas sind Hornlinge.
+outgroup_intro_solo@@Diese Mikas sind Hornlinge. Unweit von Mikahausen tobt ein Vulkan und alle müssen umziehen. Das ist teuer. Daher: je mehr Geld man verdient, desto sicherer ist man. Man verkauft dazu Ernte, Holz und Früchte und verdient Münzen beim Spiel 'Kuh-in-den-Stall'.
 
 # Scripted sequences
 
@@ -262,3 +266,13 @@ market_active_family@@Dein Familienclan versammelt sich zur täglichen Abstimmun
 market_active_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 market_active_post_eruption_friends@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+
+# Goggles tutorial
+
+goggles_tutorial@@Wichtige Informationen: Du kannst nun die von der Regierung empfohlene Brille tragen. Ziehe sie an oder ab, indem du auf den Button im Inventar klickst.|Ab sofort kannst du zudem die Rothüte verlassen und dich den Hornlingen anschliessen, wenn du genug Zeit mit ihnen verbracht hast.|"Kuh-in-den-Stall" kann wegen des Vulkanausbruchs nicht mehr gespielt werden.
+
+login_failed@@Anmeldung fehlgeschlagen.|Prüfen Sie, ob Sie Ihr Token richtig geschrieben haben.
+too_early_login@@Sie können sich momentan nicht in das Spiel einloggen.|Bitte kommen Sie morgen wieder.|Vielen Dank.
+
+died_in_group_members@@Gestorbene Mitglieder der Gruppe:
+died_out_group_members@@Gestorbene Mitglieder der Out-Group:

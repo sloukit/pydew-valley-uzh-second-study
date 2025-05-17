@@ -5,8 +5,10 @@ import pygame
 
 from src.enums import ClockVersion
 from src.gui.health_bar import HealthProgressBar
+from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.overlay.box_keybindings import BoxKeybindings, BoxKeybindingsLabel
 from src.overlay.clock import Clock
+from src.overlay.dead_npcs_box import DeadNpcsBox
 from src.overlay.fps import FPS
 from src.overlay.game_time import GameTime
 from src.overlay.money import Money
@@ -22,12 +24,14 @@ class Overlay:
         get_world_time: Callable[[None], tuple[int, int]],
         clock: pygame.time.Clock,
         round_config: dict[str, Any],
+        dead_npcs_registry: DeadNpcsRegistry,
     ) -> None:
         # general setup
         self.display_surface = pygame.display.get_surface()
         self.player = entity
 
         self.box_keybindings = BoxKeybindings()
+        self.dead_npcs_box = DeadNpcsBox(dead_npcs_registry)
 
         # imports
         self.item_frames = item_frames
@@ -57,6 +61,9 @@ class Overlay:
         # Money amount display
         self.money.display()
 
+        # Dead npcs amount display
+        self.dead_npcs_box.display()
+
         # Box keybindings label display
         self.box_keybindings_label.display()
         self.box_keybindings.draw(self.display_surface)
@@ -72,4 +79,4 @@ class Overlay:
 
         # health bar
         if self.round_config.get("healthbar", False):
-            self.health_bar.draw(self.display_surface)
+            self.health_bar.draw(self.display_surface, self.player.in_outgroup)
