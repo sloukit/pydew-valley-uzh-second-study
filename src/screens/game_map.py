@@ -365,6 +365,7 @@ class GameMap:
         self.npcs = []
         self.animals = []
 
+        self.current_map = selected_map
         self._setup_layers(
             save_file, selected_map, scene_ani, zoom_man, disable_minigame, round_no
         )

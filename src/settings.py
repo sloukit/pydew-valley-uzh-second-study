@@ -18,6 +18,7 @@ type HornStatus = bool | None
 type OutgroupSkinStatus = bool | None
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1280, 720
+VOLCANO_SIZE = 500
 TILE_SIZE = 16
 CHAR_TILE_SIZE = 48
 SCALE_FACTOR = 4
@@ -128,6 +129,7 @@ APPLE_POS = {
     "bush": [(10, 10), (8, 37), (25, 25), (40, 13), (33, 40)],
 }
 
+VOLCANO_POS = (640, 0)
 CHARS_PER_LINE = 45
 TB_SIZE = (491, 376)
 GVT_TB_SIZE = (607, 276)
