@@ -84,6 +84,11 @@ class Character(Entity, ABC):
             InventoryResource.EGGPLANT: 0,
             InventoryResource.PUMPKIN: 0,
             InventoryResource.PARSNIP: 0,
+            InventoryResource.CABBAGE: 0,
+            InventoryResource.CAULIFLOWER: 0,
+            InventoryResource.RED_CABBAGE: 0,
+            InventoryResource.WHEAT: 0,
+            InventoryResource.BROCCOLI: 0,
             InventoryResource.CORN_SEED: 0,
             InventoryResource.TOMATO_SEED: 0,
             InventoryResource.BEETROOT_SEED: 0,
@@ -91,6 +96,12 @@ class Character(Entity, ABC):
             InventoryResource.EGGPLANT_SEED: 0,
             InventoryResource.PUMPKIN_SEED: 0,
             InventoryResource.PARSNIP_SEED: 0,
+            InventoryResource.CABBAGE_SEED: 0,
+            InventoryResource.BEAN: 0,
+            InventoryResource.CAULIFLOWER_SEED: 0,
+            InventoryResource.RED_CABBAGE_SEED: 0,
+            InventoryResource.WHEAT_SEED: 0,
+            InventoryResource.BROCCOLI_SEED: 0,
         }
 
         # Not all Characters can go to the market,
@@ -135,6 +146,10 @@ class Character(Entity, ABC):
             return True
         return False
 
+    @property
+    def in_outgroup(self):
+        return self.study_group == StudyGroup.OUTGROUP
+
     def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
         # super().draw(display_surface, rect, camera)
         blit_list = []
@@ -150,14 +165,6 @@ class Character(Entity, ABC):
                 necklace_frame = necklace_ani.get_frame(self.frame_index)
                 necklace_frame.set_alpha(self.image_alpha)
                 blit_list.append((necklace_frame, rect))
-
-        # Render the goggles
-        if self.has_goggles:
-            goggles_state = EntityState(f"goggles_{self.state.value}")
-            goggles_ani = self.assets[goggles_state][self.facing_direction]
-            goggles_frame = goggles_ani.get_frame(self.frame_index)
-            goggles_frame.set_alpha(self.image_alpha)
-            blit_list.append((goggles_frame, rect))
 
         # Render the hat/horn (depending on the group)
         if is_in_ingroup:
@@ -193,6 +200,14 @@ class Character(Entity, ABC):
                 horn_frame = horn_ani.get_frame(self.frame_index)
                 horn_frame.set_alpha(self.image_alpha)
                 blit_list.append((horn_frame, rect))
+
+        # Render the goggles
+        if self.has_goggles:
+            goggles_state = EntityState(f"goggles_{self.state.value}")
+            goggles_ani = self.assets[goggles_state][self.facing_direction]
+            goggles_frame = goggles_ani.get_frame(self.frame_index)
+            goggles_frame.set_alpha(self.image_alpha)
+            blit_list.append((goggles_frame, rect))
 
         display_surface.fblits(blit_list)
 

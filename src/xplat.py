@@ -13,6 +13,8 @@ import sys
 import urllib.request
 from typing import Callable
 
+from src.exceptions import LoginError
+
 
 class Log:
     """Simple cross-platform mechanism to print log messages."""
@@ -136,12 +138,22 @@ window._HTTP_HANDLER.post = function * post(
     );
     var content = "";
     fetch(request)
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) { throw response }
+            return response.text()
+        })
         .then((response) => {
             content = response
         })
         .catch(err => {
-            console.log(err);
+            var error = {
+                code: err.status,
+                url: err.url,
+                message: err.statusText,
+                error: !err.ok
+            }
+            console.log(error);
+            content = JSON.stringify(error)
         });
     while(content == "") {
         yield;
@@ -176,7 +188,14 @@ window._HTTP_HANDLER.post = function * post(
                 )
             )
             log(f"POST {url}: complete")
-            return json.loads(response)
+            json_response = json.loads(response)
+            if json_response["error"]:
+                log(
+                    f"POST {url}: failed. Request: {payload}. Response: {json_response}"
+                )
+            else:
+                log(f"POST {url}: succeeded")
+            return json_response
 
         self._emscripten_get = _emscripten_get
         self._emscripten_post = _emscripten_post
@@ -257,7 +276,13 @@ async def post_request_with_callback(
     headers: dict,
     data: dict,
     callback: Callable[[dict], None],
+    error_login_callback: Callable[[Exception], None],
 ) -> None:
     # Send the reponse to the callback
-    response = await post_request(url, headers, data)
-    callback(response)
+    try:
+        response = await post_request(url, headers, data)
+        if response["error"]:
+            raise LoginError("Login failed. Check if you wrote your token correctly.")
+        callback(response)
+    except Exception as e:
+        error_login_callback(e)

@@ -17,7 +17,7 @@ class Plant(Sprite):
         self.seed_type = seed_type
         self.max_age = len(self.frames) - 1
         self.age = 0
-        self.grow_speed = GROW_SPEED[seed_type.as_plant_name()]
+        self.grow_speed = GROW_SPEED.get(seed_type.as_plant_name(), 1.4)
 
         self._on_harvestable_funcs = []
         self.harvestable = False

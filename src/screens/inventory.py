@@ -189,12 +189,14 @@ class InventoryMenu(AbstractMenu):
                 filter(_get_resource_count, self._inventory.items()),
             )
         ):
+            print(ir.name)
             calc_img, btn_name = self._prepare_img_for_ir_button(ir, count)
-            row, column = divmod(button_no, 6)  # , _ ,
+            row, column = divmod(button_no, 7)
             btn_rect = generic_rect.copy()
             btn_rect.x = _LEFT_MARGIN + button_size[0] * column + x_spacing * column
             btn_rect.y = _TOP_MARGIN + (button_size[1] + _SPACING_BETWEEN_ROWS) * row
             if ir.is_seed():
+                print(btn_rect)
                 # Keep track of equip buttons so we can toggle whether they display
                 # a checkmark when equipped
                 self._assignable_irs.add(btn_name)
@@ -209,7 +211,7 @@ class InventoryMenu(AbstractMenu):
     def _ft_btn_setup(self, player, button_size: tuple[int, int]):
         # Portion of the menu to allow the player to select their current tool.
         rect = pygame.Rect((0, 0), button_size)
-        rect.centerx = self.rect.width / 2
+        rect.centerx = self.rect.width / 2 + 80
         for index, tool in enumerate(self._av_tools):
             img = self.item_frames[tool]
             calc_img = pygame.Surface((64, 64), pygame.SRCALPHA)
@@ -264,7 +266,7 @@ class InventoryMenu(AbstractMenu):
             self.assign_tool(text)
             for btn in self._ft_buttons:
                 btn.selected = btn.text == text
-        if "seed" in text:
+        if "seed" in text or text == "bean":
             self.assign_seed(text)
             if text in self._assignable_irs:
                 for btn in filter(
@@ -296,7 +298,7 @@ class InventoryMenu(AbstractMenu):
         for i, section_name in enumerate(self.SECTION_TITLES):
             text_surf = self.font.render(section_name, False, "black")
             text_rect = text_surf.get_frect(
-                top=top, centerx=(self.rect.width * (i + 1)) / 4
+                top=top, centerx=(self.rect.width * (i + 1)) / 4 + 80 * (i == 1)
             )
 
             bg_rect = pygame.Rect(0, 0, text_rect.width + 40, 50)

@@ -19,7 +19,7 @@ from src.enums import (
     GameState,
     Layer,
     Map,
-    ScriptedSequenceType,
+    ScriptedSequence,
     StudyGroup,
 )
 from src.events import (
@@ -35,6 +35,7 @@ from src.groups import AllSprites, PersistentSpriteGroup
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
+from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.npc.npc import NPC
 from src.npc.setup import AIData
 from src.overlay.game_time import GameTime
@@ -62,6 +63,7 @@ from src.settings import (
     SoundDict,
 )
 from src.sprites.base import AnimatedSprite, Sprite
+from src.sprites.bath_bubble import BubbleMgr
 from src.sprites.entities.character import Character
 from src.sprites.entities.player import Player
 from src.sprites.particle import ParticleSprite
@@ -77,6 +79,17 @@ from src.support import (
 )
 
 _TO_PLAYER_SPEED_INCREASE_THRESHOLD = 200
+_DECIDE_SEQUENCE = (
+    ScriptedSequence.GROUP_MARKET_PASSIVE,
+    ScriptedSequence.GROUP_MARKET_ACTIVE,
+)
+_RESTRICT_NPC_SEQ = (
+    ScriptedSequence.PLAYER_HAT,
+    ScriptedSequence.PLAYER_NECKLACE,
+    ScriptedSequence.INGROUP_NECKLACE,
+    ScriptedSequence.PLAYER_BIRTHDAY,
+)
+_YES_OR_NO = ("checkmark", "cross")
 
 
 class Level:
@@ -185,6 +198,8 @@ class Level:
 
         self.camera = Camera(0, 0)
         self.quaker = Quaker(self.camera)
+        BubbleMgr.set_bathbubble_surf(frames["level"]["objects"]["bubble"])
+        self.bubble_mgr = BubbleMgr()
         self.tool_statistics = {t.name: 0 for t in FarmingTool}
 
         self.soil_manager = SoilManager(self.all_sprites, self.frames["level"])
@@ -202,6 +217,11 @@ class Level:
         self.npc_emote_manager = NPCEmoteManager(self._emotes, self.all_sprites)
 
         self.controls = Controls
+
+        self.dead_npcs_registry = DeadNpcsRegistry(
+            self.current_map.name if self.current_map is not None else None,
+            self.send_telemetry,
+        )
 
         # level interactions
         self.get_round = get_set_round[0]
@@ -252,6 +272,7 @@ class Level:
             get_world_time,
             clock,
             round_config,
+            self.dead_npcs_registry,
         )
         self.show_hitbox_active = False
         self.show_pf_overlay = False
@@ -259,6 +280,7 @@ class Level:
 
         # minigame
         self.current_minigame = None
+        self.cow_herding_count = 0
 
         # switch to outgroup farm
         self.outgroup_farm_entered = False
@@ -346,6 +368,9 @@ class Level:
         # manual memory cleaning
         gc.collect()
 
+        # update current map for remembering dead npcs
+        self.dead_npcs_registry.set_current_map_name(game_map)
+
         self.game_map = GameMap(
             selected_map=game_map,
             tilemap=self.tmx_maps[game_map],
@@ -367,6 +392,9 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
+            dead_npcs_registry=self.dead_npcs_registry,
+            disable_minigame=self.can_disable_minigame,
+            round_no=self.get_round(),
         )
 
         self.camera.change_size(*self.game_map.size)
@@ -473,6 +501,17 @@ class Level:
                     x, y = map_coords_to_tile(plant.hitbox_rect.midbottom)
                     area.harvest((x, y), character.add_resource, self.create_particle)
 
+    def warp_to_map(self, map_name: str):
+        if map_name == "bathhouse":
+            self.bubble_mgr.start()
+        if map_name == "minigame":
+            self.cow_herding_count += 1
+        self.switch_to_map(map_name)
+
+    @property
+    def can_disable_minigame(self):
+        return self.get_round() > 6 or self.cow_herding_count > 4
+
     def switch_to_map(self, map_name: Map):
         if self.tmx_maps.get(map_name):
             self.send_telemetry(
@@ -485,21 +524,14 @@ class Level:
             self.game_map.process_npc_round_config()
 
         else:
-            if (
-                map_name == "bathhouse"
-                and self.round_config["accessible_bathhouse"]
-                and self.player.hp < 80
-            ):
-                self.overlay.health_bar.apply_health(9999999)
-                self.player.bathstat = True
-                self.player.bath_time = time.time()
-                self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
-                self.load_map(self.current_map, from_map=map_name)
-            elif map_name == "bathhouse":
-                # this is to prevent warning in the console
+            if map_name == "bathhouse":
                 if self.round_config["accessible_bathhouse"]:
-                    self.load_map(self.current_map, from_map=map_name)
+                    if self.player.hp < 80:
+                        self.overlay.health_bar.apply_health(9999999)
+                        self.player.bathstat = True
+                        self.player.bath_time = time.time()
                     self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
+                    self.load_map(self.current_map, from_map=map_name)
             else:
                 warnings.warn(f'Error loading map: Map "{map_name}" not found')
 
@@ -621,10 +653,10 @@ class Level:
             self.outgroup_farm_time_entered = None
             self.outgroup_message_received = False
 
-        # If the player is in the farm and 60 seconds (currently 30s) have passed
+        # If the player is in the farm and 60 seconds (currently 15s) have passed
         if (
             self.outgroup_farm_entered
-            and pygame.time.get_ticks() - self.outgroup_farm_time_entered >= 30_000
+            and pygame.time.get_ticks() - self.outgroup_farm_time_entered >= 15000
         ):
             # Checks if player has already received the message and is not part of the outgroup
             if (
@@ -640,7 +672,7 @@ class Level:
 
         # checks 60 seconds and 120 seconds after player joins outgroup to convert appearance
         if self.player.study_group == StudyGroup.OUTGROUP:
-            # immediately player looses necklace
+            # The player immediately loses the necklace.
             delta_time = pygame.time.get_ticks() - (
                 self.start_become_outgroup_time or 0
             )
@@ -651,21 +683,21 @@ class Level:
 
             elif self.finish_become_outgroup:
                 pass
-            # after 3 minutes player gets horn
-            elif delta_time > 180_000:
+            # after 22.5 seconds, the player gets the horn
+            elif delta_time > 22500:
                 self.player.has_horn = True
                 self.finish_become_outgroup = True
-            # after 2 minutes player gets the same color as outgroup
-            elif 120_000 < delta_time < 180_000:
+            # after 15 seconds player gets the same color as outgroup
+            elif 15000 < delta_time < 22500:
                 self.player.image_alpha = 255
-            # after 1 minute player looses hat, fade in outgroup body
-            elif 60_000 < delta_time < 120_000:
+            # after 7.5 seconds, the player loses the hat, fade in outgroup body
+            elif 7500 < delta_time < 15000:
                 self.player.has_hat = False
                 self.player.has_outgroup_skin = True
-                self.player.image_alpha = 35 + 220 * ((delta_time - 60_000) / 60_000)
+                self.player.image_alpha = 35 + 220 * ((delta_time - 7500) / 7500)
             # during first minute fade out ingroup body
-            elif delta_time < 60_000:
-                self.player.image_alpha = 35 + 220 * (1 - delta_time / 60_000)
+            elif delta_time < 7500:
+                self.player.image_alpha = 35 + 220 * (1 - delta_time / 7500)
 
     def handle_event(self, event: pygame.event.Event) -> bool:
         if self.current_minigame and self.current_minigame.running:
@@ -730,32 +762,22 @@ class Level:
                 self.switch_screen(GameState.NOTIFICATION_MENU)
 
             if self.controls.DEBUG_PLAYER_RECEIVES_HAT.click:
-                self.start_scripted_sequence(ScriptedSequenceType.PLAYER_HAT_SEQUENCE)
+                self.start_scripted_sequence(ScriptedSequence.PLAYER_HAT)
 
             if self.controls.DEBUG_PLAYER_RECEIVES_NECKLACE.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.PLAYER_NECKLACE_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.PLAYER_NECKLACE)
 
             if self.controls.DEBUG_PLAYERS_BIRTHDAY.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.PLAYER_BIRTHDAY_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.PLAYER_BIRTHDAY)
 
             if self.controls.DEBUG_NPC_RECEIVES_NECKLACE.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.INGROUP_NECKLACE)
 
             if self.controls.DEBUG_PASSIVE_DECIDE_TOMATO_OR_CORN.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.GROUP_MARKET_PASSIVE)
 
             if self.controls.DEBUG_ACTIVE_DECIDE_TOMATO_OR_CORN.click:
-                self.start_scripted_sequence(
-                    ScriptedSequenceType.GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE
-                )
+                self.start_scripted_sequence(ScriptedSequence.GROUP_MARKET_ACTIVE)
 
             if self.controls.DEBUG_SHOW_HITBOXES.click:
                 self.show_hitbox_active = not self.show_hitbox_active
@@ -769,20 +791,18 @@ class Level:
             if self.controls.DEBUG_SHOW_SHOP.click:
                 self.switch_screen(GameState.SHOP)
 
-    def set_dialogue_from_round_config(
-        self, sequence_type: ScriptedSequenceType
-    ) -> None:
+    def set_dialogue_from_round_config(self, sequence_type: ScriptedSequence) -> None:
         dialogue_key = f"scripted_sequence_{sequence_type.value}"
         config_key = f"{sequence_type.value}_text"
         new_text = get_translated_msg(self.round_config[config_key])
         self.dialogue_manager.dialogues[dialogue_key][0][1] = new_text
 
-    def start_scripted_sequence(self, sequence_type: ScriptedSequenceType):
+    def start_scripted_sequence(self, sequence_type: ScriptedSequence):
         # do not start new scripted sequence when one is already running
         if self.cutscene_animation.active:
             return
 
-        # scripted sequence dialog text is set from `round_config.json` (derived from `game_levels.xlsx`)
+        # scripted sequence dialog text is set from `round_config.json` (derived from `game_levels_3b.xlsx`)
         self.set_dialogue_from_round_config(sequence_type)
 
         active_group = self.player.study_group
@@ -791,18 +811,14 @@ class Level:
         else:
             animation_name = "outgroup_gathering"
 
-        decide_sequence = [
-            ScriptedSequenceType.GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE,
-            ScriptedSequenceType.GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE,
-        ]
-        if sequence_type in decide_sequence:
+        if sequence_type in _DECIDE_SEQUENCE:
             if not self.current_map == Map.TOWN and not self.map_transition:
                 self.prev_player_pos = cast(tuple[int, int], self.player.rect.center)
                 self.prev_map = self.current_map
                 self.map_transition.reset = partial(self.switch_to_map, Map.TOWN)
                 self.start_map_transition()
 
-        # if switching to TOWN map for decide tomato or corn scripted sequence - quit until transition ends
+        # if switching to TOWN map for a prompt scripted sequence - quit until transition ends
         if not self.map_transition.peaked:
             return
 
@@ -814,15 +830,10 @@ class Level:
                     for npc in self.game_map.npcs
                     if npc.study_group == active_group and not npc.is_dead
                 ]
-                # restrict npcs to only 4 and the player
-                if sequence_type in [
-                    ScriptedSequenceType.PLAYER_HAT_SEQUENCE,
-                    ScriptedSequenceType.PLAYER_NECKLACE_SEQUENCE,
-                    ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE,
-                    ScriptedSequenceType.PLAYER_BIRTHDAY_SEQUENCE,
-                ]:
+                # Leave only 4 NPCs and the player
+                if sequence_type in _RESTRICT_NPC_SEQ:
                     npcs = self.limit_npcs_amount(npcs)
-                if sequence_type in decide_sequence:
+                if sequence_type in _DECIDE_SEQUENCE:
                     for npc in npcs:
                         npc.has_hat = True
                         npc.has_necklace = True
@@ -832,7 +843,7 @@ class Level:
                     for npc in self.game_map.npcs
                     if npc.study_group != active_group and not npc.is_dead
                 ]
-            if sequence_type == ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE:
+            if sequence_type == ScriptedSequence.INGROUP_NECKLACE:
                 npc_in_center = random.choice(npcs)
                 npcs.remove(npc_in_center)
                 npcs.append(self.player)
@@ -844,13 +855,13 @@ class Level:
                 self.end_scripted_sequence, sequence_type, npc_in_center
             )
 
-            if sequence_type not in decide_sequence or not self.prev_map:
+            if sequence_type not in _DECIDE_SEQUENCE or not self.prev_map:
                 self.prev_player_pos = cast(
                     tuple[int, int], self.player.rect.center
                 )  # else (0, 0)
 
             meeting_pos = self.cutscene_animation.targets[0].pos
-            if sequence_type in decide_sequence:
+            if sequence_type in _DECIDE_SEQUENCE:
                 # find position on map to teleport npc's from study group other then player's
                 # (located in a clear field, in the upper part of the TOWN map)
                 outgroup_hide_pos = self.cutscene_animation.animations[
@@ -890,12 +901,12 @@ class Level:
                     npc.teleport(new_pos)
                     angle += rot_by
 
-            # teleport npc's from study group other then player's to the upper part of the TOWN map,
+            # teleport npc's from study group other than player's to the upper part of the TOWN map,
             # so they don't interrupt in the meeting by the market
-            if sequence_type in decide_sequence and len(other_npcs) > 0:
+            if sequence_type in _DECIDE_SEQUENCE and other_npcs:
                 distance = pygame.Vector2(0, -2 * SCALED_TILE_SIZE)
                 angle = 0.0
-                rot_by = (180) / (len(other_npcs) - 1)
+                rot_by = 180 / (len(other_npcs) - 1)
                 for npc in other_npcs:
                     new_pos = outgroup_hide_pos + distance.rotate(angle)
                     npc.teleport(new_pos)
@@ -911,35 +922,35 @@ class Level:
         counter: int = 0
         restricted_npcs = []
         for npc in npcs:
-            if counter == len(npcs) or counter == 4:
+            if counter >= len(npcs) or counter == 4:
                 break
             restricted_npcs.append(npc)
             counter += 1
         return restricted_npcs
 
     def end_scripted_sequence(
-        self, sequence_type: ScriptedSequenceType, npc: NPC | Player
+        self, sequence_type: ScriptedSequence, npc: NPC | Player
     ) -> bool:
         # prevent the scripted sequence from ending
         if self.player.blocked:
             return False
 
-        if sequence_type == ScriptedSequenceType.PLAYER_HAT_SEQUENCE:
+        if sequence_type == ScriptedSequence.PLAYER_HAT:
             npc.has_hat = True
             self.player.blocked_from_market = False
-        elif sequence_type == ScriptedSequenceType.PLAYER_NECKLACE_SEQUENCE:
+        elif sequence_type == ScriptedSequence.PLAYER_NECKLACE:
             npc.has_necklace = True
-        elif sequence_type == ScriptedSequenceType.PLAYER_BIRTHDAY_SEQUENCE:
+        elif sequence_type == ScriptedSequence.PLAYER_BIRTHDAY:
             pass
-        elif sequence_type == ScriptedSequenceType.INGROUP_NECKLACE_SEQUENCE:
+        elif sequence_type == ScriptedSequence.INGROUP_NECKLACE:
             npc.has_hat = True
             npc.has_necklace = True
-        elif sequence_type == ScriptedSequenceType.GROUP_MARKET_PASSIVE_PLAYER_SEQUENCE:
+        elif sequence_type == ScriptedSequence.GROUP_MARKET_PASSIVE:
             buy_list = TOMATO_OR_CORN_LIST
             self.end_scripted_sequence_decide(buy_list, is_player_active=False)
             return False
-        elif sequence_type == ScriptedSequenceType.GROUP_MARKET_ACTIVE_PLAYER_SEQUENCE:
-            buy_list = TOMATO_OR_CORN_LIST
+        elif sequence_type == ScriptedSequence.GROUP_MARKET_ACTIVE:
+            buy_list = TOMATO_OR_CORN_LIST if self.get_round() < 7 else _YES_OR_NO
             self.end_scripted_sequence_decide(buy_list, is_player_active=True)
             return False
 
@@ -1059,7 +1070,7 @@ class Level:
         return True
 
     def scripted_sequence_cleanup(self):
-        # go back to previous map if came not from TOWN
+        # go back to previous map if it wasn't TOWN
         if not self.prev_map == Map.TOWN and self.prev_map:
             self.map_transition.reset = partial(self.switch_to_map, Map(self.prev_map))
             self.start_map_transition()
@@ -1208,11 +1219,12 @@ class Level:
         if not self.map_transition:
             for warp_hitbox in self.player_exit_warps:
                 if self.player.hitbox_rect.colliderect(warp_hitbox.rect) and (
-                    not warp_hitbox.name == "bathhouse"
+                    warp_hitbox.name != "bathhouse"
                     or self.round_config["accessible_bathhouse"]
                 ):
+                    print(warp_hitbox.name)
                     self.map_transition.reset = partial(
-                        self.switch_to_map, warp_hitbox.name
+                        self.warp_to_map, warp_hitbox.name
                     )
                     self.start_map_transition()
                     return
@@ -1337,7 +1349,8 @@ class Level:
     def update(self, dt: float, move_things: bool = True):
         # update
         if self.map_transition:
-            self.map_transition.update()
+            if not self.bubble_mgr.active:
+                self.map_transition.update()
             self.game_time.last_time = pygame.time.get_ticks()
 
             if self.cutscene_animation.active:
@@ -1353,13 +1366,25 @@ class Level:
             self.camera.update(target)
 
             self.draw(dt, move_things)
+            if self.bubble_mgr.active:
+                self.bubble_mgr.update(dt)
+                self.bubble_mgr.draw()
+                if self.bubble_mgr.finished:
+                    map_timer = self.map_transition.timer
+                    map_timer.start_time = pygame.time.get_ticks()
+                    map_timer.now = pygame.time.get_ticks()
             return
 
         self.handle_controls()
 
         self.game_time.update()
         self.check_map_exit()
-        self.check_outgroup_logic()
+        if move_things:
+            # Don't check the outgroup logic if anything ends up interrupting (e.g. goggles notification).
+            self.check_outgroup_logic()
+        elif self.outgroup_farm_time_entered is not None:
+            # If there IS an interruption and the player actually IS in the farm, just reset the timer instead.
+            self.outgroup_farm_time_entered = pygame.time.get_ticks()
 
         # show intro scripted sequence only once
         if not self.intro_shown.get(self.current_map, False):

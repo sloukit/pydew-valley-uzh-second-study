@@ -12,13 +12,17 @@ class HealthProgressBar:
 
         # storing all three cat images
         self.cat_imgs = []
+        self.outgroup_cat_imgs = []
         for i in range(3):
             img = import_image(f"images/ui/health_bar/health_cat_{i + 1}.png")
-            img = pygame.transform.scale(
-                img, (img.get_width() * 0.7, img.get_height() * 0.7)
+            outgrp_img = import_image(
+                f"images/ui/health_bar/outgroup_health{i + 1}.png"
             )
+            img = pygame.transform.scale_by(img, 0.7)
+            outgrp_img = pygame.transform.scale_by(outgrp_img, 0.7)
             rect = img.get_rect(midright=(self.pos[0] + 10, self.pos[1] + 20))
-            self.cat_imgs.append([img, rect])
+            self.cat_imgs.append((img, rect))
+            self.outgroup_cat_imgs.append((outgrp_img, rect))
         self.curr_cat = 0  # current cat index.
 
         # health bar frame
@@ -53,7 +57,7 @@ class HealthProgressBar:
             "Green": pygame.Color(201, 255, 117),
         }
 
-    def render(self, screen):
+    def render(self, screen, outgroup=False):
         health_percent = self.hp / self.max_hp
         # shake
         if health_percent <= 0.3:
@@ -88,7 +92,11 @@ class HealthProgressBar:
             (self.health_bar_rect.x + offset[0], self.health_bar_rect.y + offset[1]),
         )
         # emote
-        cat_img, cat_rect = self.cat_imgs[self.curr_cat]
+        cat_img, cat_rect = (
+            self.cat_imgs[self.curr_cat]
+            if not outgroup
+            else self.outgroup_cat_imgs[self.curr_cat]
+        )
         screen.blit(cat_img, (cat_rect.x + offset[0], cat_rect.y + offset[1]))
 
     def apply_damage(self, intensity):
@@ -106,6 +114,6 @@ class HealthProgressBar:
             factor = t * 2
             self.color = self.colors["Red"].lerp(self.colors["Yellow"], factor)
 
-    def draw(self, screen):
+    def draw(self, screen, outgroup=False):
         self.change_color()
-        self.render(screen)
+        self.render(screen, outgroup)

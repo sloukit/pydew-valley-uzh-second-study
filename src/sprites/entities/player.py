@@ -181,6 +181,7 @@ class Player(Character):
             ):
                 proceed = False
 
+        print(current_seed)
         return current_seed
 
     def handle_controls(self):
@@ -351,6 +352,7 @@ class Player(Character):
             (pos[0] - self.rect.width / 2, pos[1] - self.rect.height / 2),
             self.rect.size,
         )
+        self.hitbox_rect.center = self.rect.center
 
     def get_current_tool_string(self):
         return self.current_tool.as_serialised_string()

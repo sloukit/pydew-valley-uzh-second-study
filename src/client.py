@@ -23,7 +23,11 @@ BAD_PLAY_TOKEN_2 = "zzz"
 DUMMY_TELEMETRY_DATA = {"self_assessment": "ok"}
 
 
-def authn(play_token: str, post_login_callback: Callable[[dict], None]) -> None:
+def authn(
+    play_token: str,
+    post_login_callback: Callable[[dict], None],
+    error_login_callback: Callable[[Exception], None],
+) -> None:
     if USE_SERVER:
         url = f"{SERVER_URL}/authn"
         headers = {}
@@ -31,22 +35,25 @@ def authn(play_token: str, post_login_callback: Callable[[dict], None]) -> None:
             "play_token": play_token,
         }
         # Do this all asynchronously:
-        asyncio.create_task(
-            xplat.post_request_with_callback(
-                url,
-                headers,
-                payload,
-                post_login_callback,
+        try:
+            asyncio.create_task(
+                xplat.post_request_with_callback(
+                    url, headers, payload, post_login_callback, error_login_callback
+                )
             )
-        )
+        except Exception as err:
+            error_login_callback(err)
     else:
-        post_login_callback(
-            {
-                "token": play_token,
-                "jwt": "dummy_token",
-                "game_version": 1,
-            }
-        )
+        try:
+            post_login_callback(
+                {
+                    "token": play_token,
+                    "jwt": "dummy_token",
+                    "game_version": 1,
+                }
+            )
+        except Exception as err:
+            error_login_callback(err)
 
 
 def send_telemetry(encoded_jwt: str, payload: dict) -> None:

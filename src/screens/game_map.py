@@ -42,6 +42,7 @@ from src.npc.behaviour.cow_behaviour_tree import (
 from src.npc.behaviour.npc_behaviour_tree import NPCBehaviourTree
 from src.npc.chicken import Chicken
 from src.npc.cow import Cow
+from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.npc.npc import NPC
 from src.npc.setup import AIData
 from src.npc.utils import pf_add_matrix_collision
@@ -93,7 +94,9 @@ def _setup_object_layer(
         x = obj.x * SCALE_FACTOR
         y = obj.y * SCALE_FACTOR
         pos = (x, y)
-        objects.append(func(pos, obj))
+        processed_object = func(pos, obj)
+        if processed_object is not None:
+            objects.append(processed_object)
     return objects
 
 
@@ -307,10 +310,14 @@ class GameMap:
         frames: dict,
         round_config: dict[str, Any],
         get_game_version: Callable[[], int],
+        dead_npcs_registry: DeadNpcsRegistry,
+        disable_minigame: bool = False,
+        round_no: int = 0,
     ):
         self.get_game_version = get_game_version
         self.number_of_hats_to_exclude = 2
         self._tilemap = tilemap
+        self.dead_npcs_registry: DeadNpcsRegistry = dead_npcs_registry
 
         if "Player" not in self._tilemap.layernames:
             raise InvalidMapError("No Player layer could be found")
@@ -359,8 +366,9 @@ class GameMap:
         self.animals = []
 
         self.current_map = selected_map
-
-        self._setup_layers(save_file, selected_map, scene_ani, zoom_man)
+        self._setup_layers(
+            save_file, selected_map, scene_ani, zoom_man, disable_minigame, round_no
+        )
 
         if selected_map == Map.MINIGAME and not self.round_config.get(
             "minigame_rooting_npcs", False
@@ -718,9 +726,14 @@ class GameMap:
                     GameMapWarning,
                 )
 
+        # skip NPC if it's id is registered in the DNR
+        if self.dead_npcs_registry.is_npc_dead(obj.id, study_group):
+            return None
+
         npc = NPC(
             pos=pos,
             assets=ENTITY_ASSETS.RABBIT,
+            # assets=copy.deepcopy(ENTITY_ASSETS.RABBIT),
             groups=(self.all_sprites, self.collision_sprites),
             collision_sprites=self.collision_sprites,
             study_group=study_group,
@@ -734,6 +747,7 @@ class GameMap:
             has_necklace=has_necklace,
             special_features=features,
             npc_id=obj.id,
+            death_callback=self.dead_npcs_registry.register_death,
         )
         npc.teleport(pos)
         # Ingroup NPCs wearing only the hat and no necklace should not be able to walk on the forest and town map,
@@ -807,6 +821,16 @@ class GameMap:
                 f'Malformed animal object name "{obj.name}" in tilemap', GameMapWarning
             )
 
+    def _setup_mg_lock(self, pos, obj, layer, round_no: int):
+        show_in_earlier_rounds = obj.properties.get("show_in_earlier_rounds", False)
+        if (
+            round_no < 7
+            and show_in_earlier_rounds
+            or round_no > 6
+            and not show_in_earlier_rounds
+        ):
+            self._setup_map_object(pos, obj, layer)
+
     # endregion
 
     def _setup_layers(
@@ -815,6 +839,8 @@ class GameMap:
         gmap: Map,
         scene_ani: SceneAnimation,
         zoom_man: ZoomManager,
+        disable_minigame: bool = False,
+        round_no: int = 0,
     ):
         """
         Iterates over all map layers, updates the GameMap state and creates
@@ -935,6 +961,20 @@ class GameMap:
                         scene_ani.set_target_points(_setup_camera_layer(tilemap_layer))
                     case SpecialObjectLayer.ZOOM_AREAS:
                         zoom_man.set_zoom_areas(_setup_zoom_layer(tilemap_layer))
+                    case SpecialObjectLayer.LOCK_MINIGAME:
+                        if disable_minigame:
+                            layer = _get_element_property(
+                                tilemap_layer,
+                                "layer",
+                                lambda prop: Layer[prop],
+                                Layer.MAIN,
+                            )
+                            _setup_object_layer(
+                                tilemap_layer,
+                                lambda pos, obj, obj_layer=layer: self._setup_mg_lock(
+                                    pos, obj, obj_layer, round_no
+                                ),
+                            )
                     case _:
                         # set layer if defined in the TileLayer properties
                         layer = _get_element_property(
