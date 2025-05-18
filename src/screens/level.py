@@ -277,7 +277,8 @@ class Level:
         )
 
         # Volcano
-        self.previous_map = None
+        self.volcano_erupt_once = False
+        self.volcano_event = False
         self.volcano_map_transition = Transition(
             lambda: self.switch_to_map(Map.VOLCANO),
             self.create_volcano,
@@ -376,7 +377,7 @@ class Level:
         if from_map and not game_map == Map.MINIGAME:
             player_spawn = self.game_map.player_entry_warps.get(from_map)
             if not player_spawn and (
-                game_map != Map.VOLCANO and self.prev_map != Map.VOLCANO
+                self.current_map != Map.VOLCANO and self.prev_map != Map.VOLCANO
             ):
                 warnings.warn(
                     f'No valid entry warp found for "{game_map}" '
@@ -418,6 +419,11 @@ class Level:
             )
 
             self.cutscene_animation.set_current_animation(DEFAULT_ANIMATION_NAME)
+
+            # Starting intro animation for Volcano map in level 7
+            if self.current_map == Map.VOLCANO:
+                self.cutscene_animation.start()
+
         self.rain.set_floor_size(self.game_map.get_size())
 
         self.current_map = game_map
@@ -1072,6 +1078,10 @@ class Level:
     def finish_transition(self):
         self.player.blocked = False
         self.had_slept = True
+        if self.prev_map == Map.VOLCANO:
+            self.start_volcano_animation = False
+            self.volcano_erupt_once = True
+            self.prev_map = None
 
     def start_day_transition(self):
         self.day_transition.activate()
@@ -1084,6 +1094,7 @@ class Level:
 
     # Creating Volcano on volcano map
     def create_volcano(self):
+        # self.cutscene_animation.start()
         Sprite(
             VOLCANO_POS,
             self.frames["level"]["animations"]["volcano"][0],
@@ -1122,25 +1133,35 @@ class Level:
         elif not pygame.mixer.get_busy():
             # Killing the volcano sprite and reseting the quaker
             self.volcano_sprite.kill()
-            self.start_volcano_animation = False
+            # self.start_volcano_animation = False
             self.quaker.reset()
             self.volcano_erupt_count = 0
             self.sound_no = 0
 
             self.activate_music()  # Activating the old music
 
-            self.intro_shown.pop(Map.VOLCANO)
+            if self.volcano_event:
+                self.intro_shown.pop(Map.VOLCANO)
             self.current_map = self.prev_map
             self.prev_map = Map.VOLCANO
             self.map_transition.reset = partial(self.switch_to_map, self.current_map)
             self.start_map_transition()
 
     def volcano(self, event=None):
-        if (self.get_round() == 7 or event) and not self.cutscene_animation.active:
+        if (self.get_round() == 7) and (self.game_time.get_time()[1] == 5 and not self.volcano_erupt_once):
             if not self.start_volcano_animation:
                 self.prev_map = (
                     self.game_map.current_map
                 )  # Storing the current map so that player can return
+                self.current_map = Map.VOLCANO
+                self.start_volcano_map_transition()
+        elif event and not self.cutscene_animation.active:
+            if not self.start_volcano_animation:
+                self.volcano_event = event
+                self.prev_map = (
+                    self.game_map.current_map
+                )  # Storing the current map so that player can return
+                self.current_map = Map.VOLCANO
             self.start_volcano_map_transition()
 
     # reset
