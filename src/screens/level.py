@@ -1159,7 +1159,9 @@ class Level:
             self.start_map_transition()
 
     def volcano(self, event=None):
-        if (self.get_round() == 7) and (self.game_time.get_time()[1] == 5 and not self.volcano_erupt_once):
+        if (self.get_round() == 7) and (
+            self.game_time.get_time()[1] == 5 and not self.volcano_erupt_once
+        ):
             if not self.start_volcano_animation:
                 self.prev_map = (
                     self.game_map.current_map
