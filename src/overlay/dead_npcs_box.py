@@ -1,5 +1,6 @@
 import pygame
 
+from src.fblitter import FBLITTER
 from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.settings import OVERLAY_POSITIONS
 from src.support import get_translated_string, import_font, import_image
@@ -15,7 +16,7 @@ class DeadNpcsBox:
         self.dead_npcs_registry = dead_npcs_registry
         self.img_size = (15, 20)
         self.image = pygame.transform.scale(
-            import_image("images/objects/cross.png"), self.img_size
+            import_image("images/ui/grave.png"), self.img_size
         )
 
         # dimensions
@@ -55,12 +56,16 @@ class DeadNpcsBox:
         )
 
         # display
-        pygame.draw.rect(self.display_surface, background_color, self.rect, 0, 4)
-        pygame.draw.rect(self.display_surface, foreground_color, self.rect, 4, 4)
-        self.display_surface.blit(dead_ingroup_members_surf, dead_ingroup_members_rect)
-        self.display_surface.blit(
-            dead_outgroup_members_surf, dead_outgroup_members_rect
-        )
+        FBLITTER.draw_rect(background_color, self.rect, 0, 4)
+        FBLITTER.draw_rect(foreground_color, self.rect, 4, 4)
+        FBLITTER.schedule_blit(dead_ingroup_members_surf, dead_ingroup_members_rect)
+        FBLITTER.schedule_blit(dead_outgroup_members_surf, dead_outgroup_members_rect)
+        # pygame.draw.rect(self.display_surface, background_color, self.rect, 0, 4)
+        # pygame.draw.rect(self.display_surface, foreground_color, self.rect, 4, 4)
+        # self.display_surface.blit(dead_ingroup_members_surf, dead_ingroup_members_rect)
+        # self.display_surface.blit(
+        #     dead_outgroup_members_surf, dead_outgroup_members_rect
+        # )
         self.draw_img_surface(
             dead_ingroup_members_rect.topright,
             self.dead_npcs_registry.get_ingroup_deaths_amount(),
@@ -86,4 +91,4 @@ class DeadNpcsBox:
             )
 
             blit_list.append((self.image, img_rect))
-        self.display_surface.fblits(blit_list)
+        FBLITTER.schedule_blits(blit_list)
