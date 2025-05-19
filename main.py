@@ -112,7 +112,7 @@ _CAMERA_TARGET_TO_TEXT_SOLO = (
     "narrative_text",
 )
 _TARG_SKIP_IDX_SOLO = _CAMERA_TARGET_TO_TEXT_SOLO.index("outgroup_introduction_text")
-_GOGGLES_TUT_TSTAMP = 15
+_GOGGLES_TUT_TSTAMP = 5
 _BLUR_FACTOR = 1
 
 
@@ -529,9 +529,11 @@ class Game:
                 self.game_version = 3
             elif not token_int:
                 self.game_version = DEBUG_MODE_VERSION
+                self.set_round(7)
             else:
                 raise ValueError("Invalid token value")
-            self.set_round(1)
+            if self.game_version:
+                self.set_round(1)
             self.check_hat_condition()
         else:  # online deployed version with db access
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
@@ -918,7 +920,7 @@ class Game:
                 self.menus[self.current_state].update(dt)
             else:
                 # prevents events to happen during minigame
-                if (
+                if self.level.current_map != Map.VOLCANO and (
                     not self.level.current_minigame
                     or not self.level.current_minigame.running
                 ):

@@ -1169,6 +1169,8 @@ class Level:
                 )  # Storing the current map so that player can return
                 self.current_map = Map.VOLCANO
                 self.start_volcano_map_transition()
+                prev_time = self.game_time.get_time()
+                self.game_time.set_time(prev_time[0], prev_time[1] + 1)
         elif event and not self.cutscene_animation.active:
             if not self.start_volcano_animation:
                 self.volcano_event = event
