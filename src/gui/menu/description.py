@@ -4,6 +4,7 @@ import pygame
 from pygame.math import Vector2 as vector
 
 from src.controls import Controls
+from src.fblitter import FBLITTER
 from src.gui.menu.components import Button, KeySetup, Slider
 from src.support import get_translated_string as get_translated_msg
 from src.support import load_data, resource_path, save_data
@@ -77,10 +78,12 @@ class Description:
         slide_bar_rect.right = self.description_rect.right - 2
         slide_bar_rect.top = self.description_rect.top - Y1 * coeff
 
-        pygame.draw.rect(self.display_surface, "grey", slide_bar_rect, 0, 4)
+        FBLITTER.draw_rect("grey", slide_bar_rect, 0, 4)
+        # pygame.draw.rect(self.display_surface, "grey", slide_bar_rect, 0, 4)
 
     def draw(self):
-        pygame.draw.rect(self.display_surface, "White", self.rect, 0, 4)
+        FBLITTER.draw_rect("white", self.rect, 0, 4)
+        # pygame.draw.rect(self.display_surface, "White", self.rect, 0, 4)
 
         # blit description slider
         pos = self.description_slider_rect.topleft
@@ -88,7 +91,8 @@ class Description:
 
         # blit description
         pos = self.description_rect.topleft
-        self.display_surface.blit(self.description_surface, pos)
+        FBLITTER.schedule_blit(self.description_surface, pos)
+        # self.display_surface.blit(self.description_surface, pos)
 
         self.draw_slider_bar()
 

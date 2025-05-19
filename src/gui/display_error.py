@@ -1,6 +1,7 @@
 import pygame
 
 from src.exceptions import LoginError, TooEarlyLoginError
+from src.fblitter import FBLITTER
 from src.settings import OVERLAY_POSITIONS
 from src.support import (
     get_translated_string,
@@ -44,9 +45,12 @@ class DisplayError:
         )
 
         # display
-        pygame.draw.rect(self.display_surface, "White", self.rect, 0, 4)
-        pygame.draw.rect(self.display_surface, foreground_color, self.rect, 4, 4)
-        self.display_surface.blit(message_surf, message_rect)
+        FBLITTER.draw_rect("white", self.rect, 0, 4)
+        FBLITTER.draw_rect(foreground_color, self.rect, 4, 4)
+        FBLITTER.schedule_blit(message_surf, message_rect)
+        # pygame.draw.rect(self.display_surface, "White", self.rect, 0, 4)
+        # pygame.draw.rect(self.display_surface, foreground_color, self.rect, 4, 4)
+        # self.display_surface.blit(message_surf, message_rect)
 
     def set_error_message(self, error: Exception | None):
         if isinstance(error, TooEarlyLoginError):

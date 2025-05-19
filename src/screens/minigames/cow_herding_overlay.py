@@ -4,6 +4,7 @@ from typing import Callable
 import pygame
 
 from src.colors import SL_ORANGE_BRIGHT, SL_ORANGE_BRIGHTEST
+from src.fblitter import FBLITTER
 from src.gui.menu.abstract_menu import AbstractMenu
 from src.screens.minigames.gui import (
     Linebreak,
@@ -131,7 +132,8 @@ class _CowHerdingScoreboard(AbstractMenu):
         self.buttons.append(self._return_button)
 
     def draw_title(self):
-        self.display_surface.blit(self._surface, (0, 0))
+        FBLITTER.schedule_blit(self._surface, (0, 0))
+        # self.display_surface.blit(self._surface, (0, 0))
 
     def update(self, dt):
         self.mouse_hover()
@@ -206,13 +208,20 @@ class _CowHerdingOverlay:
                 alpha = 1 - ((current_fraction - 0.5) * 2) * 4.5 / 2
                 rendered_text.set_alpha(max(0, int(alpha * 255)))
 
-            self.display_surface.blit(
+            FBLITTER.schedule_blit(
                 rendered_text,
                 (
-                    SCREEN_WIDTH / 2 - rendered_text.get_width() / 2,
-                    SCREEN_HEIGHT / 3 - rendered_text.get_height() / 2,
+                    SCREEN_WIDTH / 2 - rendered_text.width / 2,
+                    SCREEN_HEIGHT / 3 - rendered_text.height / 2,
                 ),
             )
+            # self.display_surface.blit(
+            #     rendered_text,
+            #     (
+            #         SCREEN_WIDTH / 2 - rendered_text.get_width() / 2,
+            #         SCREEN_HEIGHT / 3 - rendered_text.get_height() / 2,
+            #     ),
+            # )
 
         elif current_time_int < ready_up_duration + cd_duration:
             rendered_text = self._render_countdown_text(
@@ -237,13 +246,20 @@ class _CowHerdingOverlay:
                 alpha = current_fraction * 4 * 1.5 - 0.5
                 rendered_text.set_alpha(max(0, int(alpha * 255)))
 
-        self.display_surface.blit(
+        FBLITTER.schedule_blit(
             rendered_text,
             (
-                SCREEN_WIDTH / 2 - rendered_text.get_width() / 2,
-                SCREEN_HEIGHT / 3 - rendered_text.get_height() / 2,
+                SCREEN_WIDTH / 2 - rendered_text.width / 2,
+                SCREEN_HEIGHT / 3 - rendered_text.height / 2,
             ),
         )
+        # self.display_surface.blit(
+        #     rendered_text,
+        #     (
+        #         SCREEN_WIDTH / 2 - rendered_text.get_width() / 2,
+        #         SCREEN_HEIGHT / 3 - rendered_text.get_height() / 2,
+        #     ),
+        # )
 
     def draw_description(self):
         box_center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
@@ -261,17 +277,24 @@ class _CowHerdingOverlay:
             ),
         )
 
-        _draw_box(self.display_surface, box_center, text.surface_rect.size)
+        FBLITTER.draw_box(box_center, text.surface_rect.size)
 
         text_surface = pygame.Surface(text.surface_rect.size, pygame.SRCALPHA)
         text.draw(text_surface)
-        self.display_surface.blit(
+        FBLITTER.schedule_blit(
             text_surface,
             (
                 box_center[0] - text.surface_rect.width / 2,
                 box_center[1] - text.surface_rect.height / 2,
             ),
         )
+        # self.display_surface.blit(
+        #     text_surface,
+        #     (
+        #         box_center[0] - text.surface_rect.width / 2,
+        #         box_center[1] - text.surface_rect.height / 2,
+        #     ),
+        # )
 
     def draw_objective(
         self,
@@ -312,8 +335,7 @@ class _CowHerdingOverlay:
             ),
         )
 
-        _draw_box(
-            self.display_surface,
+        FBLITTER.draw_box(
             (
                 box_top_right[0] - text.surface_rect.width / 2,
                 box_top_right[1] + text.surface_rect.height / 2,
@@ -326,13 +348,20 @@ class _CowHerdingOverlay:
 
         text_surface = pygame.Surface(text.surface_rect.size, pygame.SRCALPHA)
         text.draw(text_surface)
-        self.display_surface.blit(
+        FBLITTER.schedule_blit(
             text_surface,
             (
                 box_top_right[0] - text.surface_rect.width - padding,
                 box_top_right[1] + padding,
             ),
         )
+        # self.display_surface.blit(
+        #     text_surface,
+        #     (
+        #         box_top_right[0] - text.surface_rect.width - padding,
+        #         box_top_right[1] + padding,
+        #     ),
+        # )
 
     def draw_timer(self, current_time: float):
         t = max(0.0, current_time)
@@ -352,8 +381,7 @@ class _CowHerdingOverlay:
             else:
                 total_length += self.timer_chars[char].get_width()
 
-        _draw_box(
-            self.display_surface,
+        FBLITTER.draw_box(
             (SCREEN_WIDTH / 2, 0),
             (total_length, self.timer_char_height + 32),
         )
@@ -363,10 +391,14 @@ class _CowHerdingOverlay:
         offset_y = 3
 
         for char in timer_string:
-            self.display_surface.blit(
+            FBLITTER.schedule_blit(
                 self.timer_chars[char],
                 (SCREEN_WIDTH / 2 - total_length / 2 + current_length, offset_y),
             )
+            # self.display_surface.blit(
+            #     self.timer_chars[char],
+            #     (SCREEN_WIDTH / 2 - total_length / 2 + current_length, offset_y),
+            # )
             if char.isdigit():
                 current_length += self.timer_char_width
             else:

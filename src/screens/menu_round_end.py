@@ -5,6 +5,7 @@ from typing import Any
 import pygame
 
 from src.enums import GameState
+from src.fblitter import FBLITTER
 from src.gui.menu.components import Button
 from src.gui.menu.general_menu import GeneralMenu
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
@@ -31,20 +32,30 @@ class RoundMenu(GeneralMenu):
         ) -> None:
             self.img = pygame.Surface(rect.size, flags=pygame.SRCALPHA)
             self.img.fill(pygame.Color(0, 0, 0, 0))
-            pygame.draw.rect(self.img, "azure3", (0, 0, rect.width, rect.height), 0, 4)
+            FBLITTER.set_current_surf(self.img)
+            FBLITTER.draw_rect("azure3", (0, 0, rect.width, rect.height), 0, 4)
+            # pygame.draw.rect(self.img, "azure3", (0, 0, rect.width, rect.height), 0, 4)
 
             # crop icon
-            self.img.blit(
+            FBLITTER.schedule_blit(
                 icon,
                 icon.get_rect().move(10, rect.height // 2 - icon.get_height() // 2),
             )
+            # self.img.blit(
+            #     icon,
+            #     icon.get_rect().move(10, rect.height // 2 - icon.get_height() // 2),
+            # )
 
             # crop name
             label = font.render(text, False, "Black")
-            self.img.blit(
+            FBLITTER.schedule_blit(
                 label,
                 label.get_rect().move(50, rect.height // 2 - label.get_height() // 2),
             )
+            # self.img.blit(
+            #     label,
+            #     label.get_rect().move(50, rect.height // 2 - label.get_height() // 2),
+            # )
 
             # crop amount
             val = font.render(value, False, "Black")
@@ -52,9 +63,11 @@ class RoundMenu(GeneralMenu):
                 rect.width - val.get_width() - 10,
                 rect.height // 2 - val.get_height() // 2,
             )
-            self.img.blit(val, val_rect)
+            FBLITTER.schedule_blit(val, val_rect)
+            # self.img.blit(val, val_rect)
 
             self.rect = rect
+            FBLITTER.blit_all()
 
     def __init__(
         self,
@@ -67,7 +80,7 @@ class RoundMenu(GeneralMenu):
         send_telemetry: Callable[[dict[str, Any]], None],
     ):
         self.player = player
-        self.textUIs: list = []
+        self.text_uis: list = []
         self.min_scroll = self.get_min_scroll()
         self.scroll = 0
         self.get_round = get_round
@@ -109,33 +122,33 @@ class RoundMenu(GeneralMenu):
 
     def generate_items(self):
         # i'm sorry for my sins of lack of automation. For those who come after, please do better. --Kyle N.
-        basicRect = pygame.Rect((0, 0), (400, 50))
-        basicRect.top = self.rect.top - 74  # im sorry, this is so scuffed
-        basicRect.centerx = self.rect.centerx
+        basic_rect = pygame.Rect((0, 0), (400, 50))
+        basic_rect.top = self.rect.top - 74  # im sorry, this is so scuffed
+        basic_rect.centerx = self.rect.centerx
 
-        self.textUIs = []
+        self.text_uis = []
         self.telemetry = {}
         values = list(self.player.inventory.values())
         for index, item in enumerate(list(self.player.inventory)):
             if item.as_serialised_string() not in self.allowed_crops:
                 continue
-            rect = pygame.Rect(basicRect)
-            itemName = get_translated_msg(item.as_serialised_string())
+            rect = pygame.Rect(basic_rect)
+            item_name = get_translated_msg(item.as_serialised_string())
             frame_name = item.as_serialised_string()
             icon = self.item_frames[frame_name]
             icon = pygame.transform.scale_by(icon, 0.5)
 
-            itemUI = self.TextUI(self.font, itemName, str(values[index]), icon, rect)
-            self.textUIs.append(itemUI)
-            basicRect = basicRect.move(0, 60)
+            item_ui = self.TextUI(self.font, item_name, str(values[index]), icon, rect)
+            self.text_uis.append(item_ui)
+            basic_rect = basic_rect.move(0, 60)
 
-            self.telemetry[itemName] = str(values[index])
+            self.telemetry[item_name] = str(values[index])
 
         self.min_scroll = self.get_min_scroll()
         self.send_telemetry(self.telemetry)
 
     def get_min_scroll(self):
-        return -60 * len(self.textUIs) + 460
+        return -60 * len(self.text_uis) + 460
 
     def button_setup(self):
         # button setup
@@ -158,7 +171,7 @@ class RoundMenu(GeneralMenu):
             generic_button_rect = rect.move(0, button_height + space)
 
     def close(self):
-        if not (self.continue_disabled):
+        if not self.continue_disabled:
             self.switch_screen(GameState.PLAY)
             gc.collect()
 
@@ -172,7 +185,7 @@ class RoundMenu(GeneralMenu):
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                if not (self.continue_disabled):
+                if not self.continue_disabled:
                     self.close()
                     self.scroll = 0
                     return True
@@ -218,8 +231,10 @@ class RoundMenu(GeneralMenu):
         bg_rect = pygame.Rect((0, 0), (title_box_width, title_box_height))
         bg_rect.center = text_rect.center
 
-        pygame.draw.rect(self.display_surface, "White", bg_rect, 0, 4)
-        self.display_surface.blit(text_surf, text_rect)
+        FBLITTER.draw_rect("white", bg_rect, 0, 4)
+        FBLITTER.schedule_blit(text_surf, text_rect)
+        # pygame.draw.rect(self.display_surface, "White", bg_rect, 0, 4)
+        # self.display_surface.blit(text_surf, text_rect)
 
     def stats_scroll(self, amount):
         if self.scroll < self.min_scroll and amount < 0:
@@ -227,15 +242,16 @@ class RoundMenu(GeneralMenu):
         if self.scroll > self.MAX_SCROLL and amount > 0:
             return
         self.scroll += amount
-        for item in self.textUIs:
+        for item in self.text_uis:
             item.rect.centery += amount
 
     def draw_stats(self):
-        for item in self.textUIs:
+        for item in self.text_uis:
             if item.rect.centery < 52 or item.rect.centery > 540:
                 continue
 
-            self.display_surface.blit(item.img, item.rect.midleft)
+            FBLITTER.schedule_blit(item.img, item.rect.midleft)
+            # self.display_surface.blit(item.img, item.rect.midleft)
 
     def draw(self):
         self.draw_stats()

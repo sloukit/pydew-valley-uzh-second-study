@@ -7,6 +7,7 @@ from pygame.mouse import get_pressed as mouse_buttons
 from src import client, xplat
 from src.enums import CustomCursor, GameState
 from src.events import SET_CURSOR, post_event
+from src.fblitter import FBLITTER
 from src.gui.display_error import DisplayError
 from src.gui.menu.general_menu import GeneralMenu
 from src.settings import (
@@ -88,23 +89,28 @@ class MainMenu(GeneralMenu):
         background_rect = box.copy()
         background_rect.inflate_ip(0, 50)
         background_rect.move_ip(0, -8)
-        pygame.draw.rect(
-            self.display_surface, background_color, background_rect, border_radius=10
-        )
+        FBLITTER.draw_rect(background_color, background_rect, border_radius=10)
+        # pygame.draw.rect(
+        #     self.display_surface, background_color, background_rect, border_radius=10
+        # )
 
         if input_active:
             label_font = self.font
             label_surface = label_font.render(label_text, True, text_color)
             label_rect = label_surface.get_rect(midbottom=(box.centerx, box.top + 5))
-            self.display_surface.blit(label_surface, label_rect)
+            FBLITTER.schedule_blit(label_surface, label_rect)
+            # self.display_surface.blit(label_surface, label_rect)
 
-        pygame.draw.rect(self.display_surface, box_color, box, border_radius=10)
-        pygame.draw.rect(self.display_surface, border_color, box, 3, border_radius=10)
+        FBLITTER.draw_rect(box_color, box, border_radius=10)
+        FBLITTER.draw_rect(border_color, box, 3, border_radius=10)
+        # pygame.draw.rect(self.display_surface, box_color, box, border_radius=10)
+        # pygame.draw.rect(self.display_surface, border_color, box, 3, border_radius=10)
 
         font = self.font
         text_surface = font.render(input_text, True, text_color)
         text_rect = text_surface.get_rect(midleft=(box.x + 10, box.centery))
-        self.display_surface.blit(text_surface, text_rect)
+        FBLITTER.schedule_blit(text_surface, text_rect)
+        # self.display_surface.blit(text_surface, text_rect)
 
         if input_active:
             current_time = pygame.time.get_ticks()
@@ -113,7 +119,8 @@ class MainMenu(GeneralMenu):
                 self.cursor_timer = current_time
             if self.cursor_visible:
                 cursor_rect = pygame.Rect(text_rect.topright, (2, text_rect.height))
-                pygame.draw.rect(self.display_surface, text_color, cursor_rect)
+                FBLITTER.draw_rect(text_color, cursor_rect)
+                # pygame.draw.rect(self.display_surface, text_color, cursor_rect)
 
     def draw(self) -> None:
         super().draw()

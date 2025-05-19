@@ -12,6 +12,7 @@ from src.colors import (
     SL_ORANGE_MEDIUM,
 )
 from src.controls import Control
+from src.fblitter import FBLITTER
 from src.support import get_translated_string as get_translated_msg
 from src.support import resource_path
 
@@ -93,7 +94,10 @@ class Component:
 
     # draw
     def draw(self, surface: pygame.Surface):
-        pygame.draw.rect(surface, "red", self.rect, 0, 4)
+        FBLITTER.set_current_surf(surface)
+        FBLITTER.draw_rect("red", self.rect, 0, 4)
+        if not FBLITTER.is_on_display_surf:
+            FBLITTER.blit_all()
 
     # update
     def update_rect(self, x: int):
@@ -135,23 +139,29 @@ class AbstractButton(Component, ABC):
     def draw_hover(self):
         if self.mouse_hover():
             self.hover_active = True
-            pygame.draw.rect(self.display_surface, "Black", self.rect, 4, 4)
+            FBLITTER.draw_rect("black", self.rect, 4, 4)
+            # pygame.draw.rect(self.display_surface, "Black", self.rect, 4, 4)
         else:
             self.hover_active = False
 
     def draw_content(self):
-        self.display_surface.blit(self.content, self._content_rect)
+        FBLITTER.schedule_blit(self.content, self._content_rect)
+        # self.display_surface.blit(self.content, self._content_rect)
 
     def draw(self, surface: pygame.Surface):
         self.display_surface = surface
-        pygame.draw.rect(self.display_surface, self.color, self.rect, 0, 4)
+        FBLITTER.draw_rect(self.color, self.rect, 0, 4)
+        # pygame.draw.rect(self.display_surface, self.color, self.rect, 0, 4)
         self.draw_content()
         self.draw_hover()
 
     def draw_disabled(self, surface):
-        pygame.draw.rect(surface, self.disabled_color, self.rect)
+        FBLITTER.set_current_surf(surface)
+        FBLITTER.draw_rect(self.disabled_color, self.rect)
         text_surf = self.font.render(self._content, True, "Gray")
-        surface.blit(text_surf, text_surf.get_rect(center=self.rect.center))
+        FBLITTER.schedule_blit(text_surf, text_surf.get_rect(center=self.rect.center))
+        if not FBLITTER.is_on_display_surf:
+            FBLITTER.blit_all()
 
 
 class Button(AbstractButton):
@@ -220,8 +230,7 @@ class ArrowButton(AbstractButton):
 
     def draw_polygon(self, direction: str, color: tuple[int, int, int]):
         if direction == "up":
-            pygame.draw.polygon(
-                self.display_surface,
+            FBLITTER.draw_polygon(
                 color,
                 [
                     (self.rect.centerx, self.rect.top + 5),
@@ -229,9 +238,17 @@ class ArrowButton(AbstractButton):
                     (self.rect.right - 5, self.rect.bottom - 5),
                 ],
             )
+            # pygame.draw.polygon(
+            #     self.display_surface,
+            #     color,
+            #     [
+            #         (self.rect.centerx, self.rect.top + 5),
+            #         (self.rect.left + 5, self.rect.bottom - 5),
+            #         (self.rect.right - 5, self.rect.bottom - 5),
+            #     ],
+            # )
         else:
-            pygame.draw.polygon(
-                self.display_surface,
+            FBLITTER.draw_polygon(
                 color,
                 [
                     (self.rect.centerx, self.rect.bottom - 5),
@@ -239,6 +256,15 @@ class ArrowButton(AbstractButton):
                     (self.rect.right - 5, self.rect.top + 5),
                 ],
             )
+            # pygame.draw.polygon(
+            #     self.display_surface,
+            #     color,
+            #     [
+            #         (self.rect.centerx, self.rect.bottom - 5),
+            #         (self.rect.left + 5, self.rect.top + 5),
+            #         (self.rect.right - 5, self.rect.top + 5),
+            #     ],
+            # )
 
     def draw(self, surface: pygame.Surface):
         self.display_surface = surface
@@ -406,7 +432,8 @@ class InputField:
     def draw_hover(self):
         if self.mouse_hover():
             self.hover_active = True
-            pygame.draw.rect(self.surface, self.border_color_active, self.rect, 4, 4)
+            FBLITTER.draw_rect(self.border_color_active, self.rect, 4, 4)
+            # pygame.draw.rect(self.surface, self.border_color_active, self.rect, 4, 4)
         else:
             self.hover_active = False
 
@@ -415,13 +442,23 @@ class InputField:
             border_color = self.border_color_active
         else:
             border_color = self.border_color_passive
-        pygame.draw.rect(self.surface, border_color, self.rect, 4, 4)
+        FBLITTER.set_current_surf(self.surface)
+        FBLITTER.draw_rect(border_color, self.rect, 4, 4)
+        # pygame.draw.rect(self.surface, border_color, self.rect, 4, 4)
         text_surf = self.font.render(self.input_text, True, SL_ORANGE_BRIGHTEST)
-        self.surface.blit(
+        FBLITTER.schedule_blit(
             text_surf,
             (
                 self.rect.x + self.rect.width / 2 - text_surf.get_width() / 2,
                 self.rect.y + self.rect.height / 2 - text_surf.get_height() / 2 + 2,
             ),
         )
+        # self.surface.blit(
+        #     text_surf,
+        #     (
+        #         self.rect.x + self.rect.width / 2 - text_surf.get_width() / 2,
+        #         self.rect.y + self.rect.height / 2 - text_surf.get_height() / 2 + 2,
+        #     ),
+        # )
         self.draw_hover()
+        FBLITTER.blit_all()
