@@ -31,6 +31,7 @@ from src.events import (
     post_event,
 )
 from src.exceptions import GameMapWarning
+from src.fblitter import FBLITTER
 from src.groups import AllSprites, PersistentSpriteGroup
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
@@ -1240,23 +1241,28 @@ class Level:
             for sprite in self.collision_sprites:
                 rect = sprite.rect.copy()
                 rect.topleft += offset
-                pygame.draw.rect(self.display_surface, "red", rect, 2)
+                FBLITTER.draw_rect("red", rect, 2)
+                # pygame.draw.rect(self.display_surface, "red", rect, 2)
 
                 hitbox = sprite.hitbox_rect.copy()
                 hitbox.topleft += offset
-                pygame.draw.rect(self.display_surface, "blue", hitbox, 2)
+                FBLITTER.draw_rect("blue", hitbox, 2)
+                # pygame.draw.rect(self.display_surface, "blue", hitbox, 2)
 
                 if isinstance(sprite, Character):
                     hitbox = sprite.axe_hitbox.copy()
                     hitbox.topleft += offset
-                    pygame.draw.rect(self.display_surface, "green", hitbox, 2)
+                    FBLITTER.draw_rect("green", hitbox, 2)
+                    # pygame.draw.rect(self.display_surface, "green", hitbox, 2)
             for drop in self.drop_sprites:
-                pygame.draw.rect(
-                    self.display_surface, "red", drop.rect.move(*offset), 2
-                )
-                pygame.draw.rect(
-                    self.display_surface, "blue", drop.hitbox_rect.move(*offset), 2
-                )
+                FBLITTER.draw_rect("red", drop.rect.move(offset), 2)
+                FBLITTER.draw_rect("blue", drop.hitbox_rect.move(offset), 2)
+                # pygame.draw.rect(
+                #     self.display_surface, "red", drop.rect.move(offset), 2
+                # )
+                # pygame.draw.rect(
+                #     self.display_surface, "blue", drop.hitbox_rect.move(*offset), 2
+                # )
 
     def setup_pf_overlay(self):
         self.pf_overlay_non_walkable = pygame.Surface(
@@ -1307,9 +1313,7 @@ class Level:
                                 (npe.pf_path[i - 1][0]) * SCALED_TILE_SIZE + offset.x,
                                 (npe.pf_path[i - 1][1]) * SCALED_TILE_SIZE + offset.y,
                             )
-                        pygame.draw.aaline(
-                            self.display_surface, (0, 0, 0), start_pos, end_pos
-                        )
+                        FBLITTER.draw_aaline((0, 0, 0), start_pos, end_pos)
 
     # endregion
 
@@ -1319,7 +1323,7 @@ class Level:
 
     def draw(self, dt: float, move_things: bool):
         self.player.hp = self.overlay.health_bar.hp
-        self.display_surface.fill((130, 168, 132))
+        # self.display_surface.fill((130, 168, 132))
         self.all_sprites.draw(self.camera, False)
 
         self.draw_pf_overlay()

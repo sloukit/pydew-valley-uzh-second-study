@@ -84,7 +84,7 @@ SAM_BORDER_SIZE = (
     131,
 )  # absolute size of the border around self-assessment manikins
 
-SOCIAL_IDENTITY_ASSESSMENT_BORDER_SIZE = (
+SIA_BORDER_SIZE = (
     122,
     131,
 )

@@ -36,6 +36,7 @@ from src.events import (
     SHOW_BOX_KEYBINDINGS,
 )
 from src.exceptions import TooEarlyLoginError
+from src.fblitter import FBLITTER
 from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
@@ -1048,6 +1049,8 @@ class Game:
                 is_game_paused,
             )
 
+            FBLITTER.blit_all()
+
             # Apply blur effect only if the player has goggles equipped
             if self.player.has_goggles and self.current_state == GameState.PLAY:
                 surface = pygame.transform.box_blur(self.display_surface, _BLUR_FACTOR)
@@ -1065,6 +1068,7 @@ class Game:
             if not is_game_paused or is_first_frame:
                 self.previous_frame = self.display_surface.copy()
             self.display_surface.blit(self._cursor_img, mouse_pos)
+            FBLITTER.blit_all()
             is_first_frame = False
             pygame.display.update()
             await asyncio.sleep(0)
