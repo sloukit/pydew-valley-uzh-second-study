@@ -102,6 +102,7 @@ class Controls(Control, Enum):
     ADVANCE_DIALOG = (pygame.K_SPACE, "Advance Dialog")
     SHOW_BOX_KEYBINDINGS = (pygame.K_q, "Show Box Keybindings")
 
+    DEBUG_VOLCANO = (pygame.K_0, "Start Volcano Eruption")
     DEBUG_APPLY_HEALTH = (pygame.K_1, "Apply health")
     DEBUG_APPLY_DAMAGE = (pygame.K_2, "Apply damage")
     DEBUG_QUAKE = (pygame.K_m, "Start Earthquake Effect")

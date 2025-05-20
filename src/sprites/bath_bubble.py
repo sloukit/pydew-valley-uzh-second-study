@@ -4,6 +4,7 @@ from random import shuffle
 import pygame
 from pygame.sprite import Group
 
+from src.fblitter import FBLITTER
 from src.settings import SCREEN_HEIGHT
 from src.sprites.base import Sprite
 
@@ -87,4 +88,4 @@ class BubbleMgr:
 
     def draw(self):
         blit_list = [(bubble.image, bubble.rect) for bubble in self.bubble_grp]
-        pygame.display.get_surface().fblits(blit_list)
+        FBLITTER.schedule_blits(blit_list)

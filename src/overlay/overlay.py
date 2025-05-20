@@ -4,6 +4,7 @@ from typing import Any
 import pygame
 
 from src.enums import ClockVersion
+from src.fblitter import FBLITTER
 from src.gui.health_bar import HealthProgressBar
 from src.npc.dead_npcs_registry import NpcsStateRegistry
 from src.overlay.box_keybindings import BoxKeybindings, BoxKeybindingsLabel
@@ -56,7 +57,8 @@ class Overlay:
         # seeds
         seed_surf = self.item_frames[self.player.get_current_seed_string()]
         seed_rect = seed_surf.get_frect(midbottom=OVERLAY_POSITIONS["seed"])
-        self.display_surface.blit(seed_surf, seed_rect)
+        FBLITTER.schedule_blit(seed_surf, seed_rect)
+        # self.display_surface.blit(seed_surf, seed_rect)
 
         # Money amount display
         self.money.display()
@@ -71,7 +73,8 @@ class Overlay:
         # tool
         tool_surf = self.item_frames[self.player.get_current_tool_string()]
         tool_rect = tool_surf.get_frect(midbottom=OVERLAY_POSITIONS["tool"])
-        self.display_surface.blit(tool_surf, tool_rect)
+        FBLITTER.schedule_blit(tool_surf, tool_rect)
+        # self.display_surface.blit(tool_surf, tool_rect)
 
         self.clock.display()
         if self.is_debug_mode_version:

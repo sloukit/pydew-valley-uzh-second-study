@@ -10,9 +10,10 @@ from src.colors import (
     SL_ORANGE_MEDIUM,
 )
 from src.enums import SelfAssessmentDimension
+from src.fblitter import FBLITTER
 from src.gui.menu.abstract_menu import AbstractMenu
 from src.gui.menu.components import AbstractButton
-from src.screens.minigames.gui import Text, TextChunk, _draw_box, _ReturnButton
+from src.screens.minigames.gui import Text, TextChunk, _ReturnButton  # , _draw_box
 from src.settings import SAM_BORDER_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH
 from src.support import get_translated_string as get_translated_msg
 from src.support import import_font, resource_path
@@ -52,7 +53,8 @@ class _SAMButton(AbstractButton):
         if self._selected:
             color = SL_ORANGE_BRIGHTER
 
-        pygame.draw.rect(self.display_surface, color, self.rect, 0, 2)
+        FBLITTER.draw_rect(color, self.rect, 0, 2)
+        # pygame.draw.rect(self.display_surface, color, self.rect, 0, 2)
 
     def move(self, topleft: tuple[float, float]):
         self.rect.topleft = topleft
@@ -60,11 +62,16 @@ class _SAMButton(AbstractButton):
         self._content_rect.center = self.rect.center
 
     def draw(self, surface: pygame.Surface):
-        pygame.draw.rect(surface, SL_ORANGE_DARK, self.rect.inflate(6, 6), 6, 4)
+        FBLITTER.set_current_surf(
+            surface
+        )  # Using the provided surface as the current one to fblit on
+        FBLITTER.draw_rect(SL_ORANGE_DARK, self.rect.inflate(6, 6), 6, 4)
+        # pygame.draw.rect(surface, SL_ORANGE_DARK, self.rect.inflate(6, 6), 6, 4)
 
         self.display_surface = surface
         self.draw_hover()
         self.draw_content()
+        FBLITTER.blit_all()
 
     def change_img(self, new_img: pygame.Surface):
         self._content.fill((0, 0, 0, 0))
@@ -185,11 +192,12 @@ class SelfAssessmentMenu(AbstractMenu):
             + button_area_height,
         )
 
-        _draw_box(self._surface, box_center, box_size)
+        FBLITTER.set_current_surf(self._surface)
+        FBLITTER.draw_box(box_center, box_size)
 
         text_surface = pygame.Surface(text.surface_rect.size, pygame.SRCALPHA)
         text.draw(text_surface)
-        self._surface.blit(
+        FBLITTER.schedule_blit(
             text_surface,
             (
                 box_center[0] - text.surface_rect.width / 2,
@@ -199,6 +207,7 @@ class SelfAssessmentMenu(AbstractMenu):
                 - button_area_height / 2,
             ),
         )
+        FBLITTER.blit_all()
 
         self._continue_button.move(
             (
@@ -276,7 +285,8 @@ class SelfAssessmentMenu(AbstractMenu):
         self.buttons.extend(self._sam_buttons)
 
     def draw_title(self):
-        self.display_surface.blit(self._surface, (0, 0))
+        FBLITTER.schedule_blit(self._surface, (0, 0))
+        # self.display_surface.blit(self._surface, (0, 0))
 
     def draw_description(self):
         pass

@@ -13,15 +13,25 @@ from src.camera.camera_target import CameraTarget
 from src.camera.quaker import Quaker
 from src.camera.zoom_manager import ZoomManager
 from src.controls import Controls
-from src.enums import FarmingTool, GameState, Map, ScriptedSequence, StudyGroup
+from src.enums import (
+    Direction,
+    FarmingTool,
+    GameState,
+    Layer,
+    Map,
+    ScriptedSequence,
+    StudyGroup,
+)
 from src.events import (
     DIALOG_ADVANCE,
     DIALOG_SHOW,
     SHOW_BOX_KEYBINDINGS,
     START_QUAKE,
+    VOLCANO_ERUPTION,
     post_event,
 )
 from src.exceptions import GameMapWarning
+from src.fblitter import FBLITTER
 from src.groups import AllSprites, PersistentSpriteGroup
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
@@ -49,10 +59,11 @@ from src.settings import (
     SCREEN_WIDTH,
     TOMATO_OR_CORN_LIST,
     TOOLS_LOG_INTERVAL,
+    VOLCANO_POS,
     MapDict,
     SoundDict,
 )
-from src.sprites.base import Sprite
+from src.sprites.base import AnimatedSprite, Sprite
 from src.sprites.bath_bubble import BubbleMgr
 from src.sprites.entities.character import Character
 from src.sprites.entities.player import Player
@@ -288,6 +299,26 @@ class Level:
             dur=2400,
         )
 
+        # Volcano
+        self.volcano_erupt_once = False
+        self.volcano_event = False
+        self.volcano_map_transition = Transition(
+            lambda: self.switch_to_map(Map.VOLCANO),
+            self.create_volcano,
+            dur=2400,
+        )
+        volcano_image = self.frames["level"]["animations"]["volcano_exploding_new"]
+        self.volcano_sprite = AnimatedSprite(
+            VOLCANO_POS, volcano_image, z=Layer.VOLCANO
+        )
+        self.start_volcano_animation = False
+        self.volcano_sounds = [
+            self.sounds["mixkit-inside-a-volcano-2438"],
+            self.sounds["mixkit-volcano-lava-hiss-2447"],
+        ]
+        self.volcano_erupt_count = 0
+        self.sound_no = 0
+
         # watch the player behaviour in achieving tutorial tasks
         self.tile_farmed = False
         self.crop_planted = False
@@ -374,7 +405,9 @@ class Level:
         # search for player entry warp depending on which map they came from
         if from_map and not game_map == Map.MINIGAME:
             player_spawn = self.game_map.player_entry_warps.get(from_map)
-            if not player_spawn:
+            if not player_spawn and (
+                self.current_map != Map.VOLCANO and self.prev_map != Map.VOLCANO
+            ):
                 warnings.warn(
                     f'No valid entry warp found for "{game_map}" '
                     f'from: "{self.current_map}"',
@@ -415,6 +448,11 @@ class Level:
             )
 
             self.cutscene_animation.set_current_animation(DEFAULT_ANIMATION_NAME)
+
+            # Starting intro animation for Volcano map in level 7
+            if self.current_map == Map.VOLCANO:
+                self.cutscene_animation.start()
+
         self.rain.set_floor_size(self.game_map.get_size())
 
         self.current_map = game_map
@@ -673,6 +711,9 @@ class Level:
                 self.set_round(7)
             return True
 
+        elif event.type == VOLCANO_ERUPTION:
+            self.volcano(True)
+
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.switch_screen(GameState.PAUSE)
@@ -697,6 +738,9 @@ class Level:
         if self.get_game_version() == DEBUG_MODE_VERSION:
             # if self.controls.DEBUG_QUAKE.click:
             #     post_event(START_QUAKE, duration=2.0, debug=True)
+            if self.controls.DEBUG_VOLCANO.click:
+                post_event(VOLCANO_ERUPTION)
+
             if self.controls.DEBUG_APPLY_HEALTH.click:
                 self.overlay.health_bar.apply_health(1)
 
@@ -1046,10 +1090,95 @@ class Level:
     def finish_transition(self):
         self.player.blocked = False
         self.had_slept = True
+        if self.prev_map == Map.VOLCANO:
+            self.start_volcano_animation = False
+            self.volcano_erupt_once = True
+            self.prev_map = None
 
     def start_day_transition(self):
         self.day_transition.activate()
         self.start_transition()
+
+    def start_volcano_map_transition(self):
+        self.volcano_map_transition.reset = partial(self.switch_to_map, Map.VOLCANO)
+        self.volcano_map_transition.activate()
+        self.start_transition()
+
+    # Creating Volcano on volcano map
+    def create_volcano(self):
+        # self.cutscene_animation.start()
+        Sprite(
+            VOLCANO_POS,
+            self.frames["level"]["animations"]["volcano"][0],
+            z=Layer.VOLCANO,
+        ).add(self.all_sprites)
+        self.volcano_animation()
+
+    def volcano_animation(self):
+        # Stopping the game music and playing the volcano eruption sound
+        self.sounds["music"].stop()
+        pygame.mixer.init(44100, -16, 2, 262144)
+
+        if not pygame.mixer.get_busy() and self.volcano_erupt_count <= 5:
+            self.start_volcano_animation = True
+
+            self.quaker.reset()
+            self.quaker.start(10000)
+
+            if self.sound_no == 1 and not self.volcano_sprite.alive():
+                self.volcano_sprite.add(self.all_sprites)
+                self.quaker.reset()
+                self.quaker.direction = Direction.UPLEFT
+                self.quaker.start(1000)
+            else:
+                self.volcano_sprite.kill()
+
+            self.volcano_sounds[self.sound_no].set_volume(0.7)
+            self.volcano_sounds[self.sound_no].play()
+
+            self.volcano_erupt_count += 1
+            self.sound_no += 1
+
+            if self.sound_no > 1:
+                self.sound_no = 0
+
+        elif not pygame.mixer.get_busy():
+            # Killing the volcano sprite and reseting the quaker
+            self.volcano_sprite.kill()
+            # self.start_volcano_animation = False
+            self.quaker.reset()
+            self.volcano_erupt_count = 0
+            self.sound_no = 0
+
+            self.activate_music()  # Activating the old music
+
+            if self.volcano_event:
+                self.intro_shown.pop(Map.VOLCANO)
+            self.current_map = self.prev_map
+            self.prev_map = Map.VOLCANO
+            self.map_transition.reset = partial(self.switch_to_map, self.current_map)
+            self.start_map_transition()
+
+    def volcano(self, event=None):
+        if (self.get_round() == 7) and (
+            self.game_time.get_time()[1] == 5 and not self.volcano_erupt_once
+        ):
+            if not self.start_volcano_animation:
+                self.prev_map = (
+                    self.game_map.current_map
+                )  # Storing the current map so that player can return
+                self.current_map = Map.VOLCANO
+                self.start_volcano_map_transition()
+                prev_time = self.game_time.get_time()
+                self.game_time.set_time(prev_time[0], prev_time[1] + 1)
+        elif event and not self.cutscene_animation.active:
+            if not self.start_volcano_animation:
+                self.volcano_event = event
+                self.prev_map = (
+                    self.game_map.current_map
+                )  # Storing the current map so that player can return
+                self.current_map = Map.VOLCANO
+            self.start_volcano_map_transition()
 
     # reset
     def reset(self):
@@ -1114,23 +1243,28 @@ class Level:
             for sprite in self.collision_sprites:
                 rect = sprite.rect.copy()
                 rect.topleft += offset
-                pygame.draw.rect(self.display_surface, "red", rect, 2)
+                FBLITTER.draw_rect("red", rect, 2)
+                # pygame.draw.rect(self.display_surface, "red", rect, 2)
 
                 hitbox = sprite.hitbox_rect.copy()
                 hitbox.topleft += offset
-                pygame.draw.rect(self.display_surface, "blue", hitbox, 2)
+                FBLITTER.draw_rect("blue", hitbox, 2)
+                # pygame.draw.rect(self.display_surface, "blue", hitbox, 2)
 
                 if isinstance(sprite, Character):
                     hitbox = sprite.axe_hitbox.copy()
                     hitbox.topleft += offset
-                    pygame.draw.rect(self.display_surface, "green", hitbox, 2)
+                    FBLITTER.draw_rect("green", hitbox, 2)
+                    # pygame.draw.rect(self.display_surface, "green", hitbox, 2)
             for drop in self.drop_sprites:
-                pygame.draw.rect(
-                    self.display_surface, "red", drop.rect.move(*offset), 2
-                )
-                pygame.draw.rect(
-                    self.display_surface, "blue", drop.hitbox_rect.move(*offset), 2
-                )
+                FBLITTER.draw_rect("red", drop.rect.move(offset), 2)
+                FBLITTER.draw_rect("blue", drop.hitbox_rect.move(offset), 2)
+                # pygame.draw.rect(
+                #     self.display_surface, "red", drop.rect.move(offset), 2
+                # )
+                # pygame.draw.rect(
+                #     self.display_surface, "blue", drop.hitbox_rect.move(*offset), 2
+                # )
 
     def setup_pf_overlay(self):
         self.pf_overlay_non_walkable = pygame.Surface(
@@ -1181,9 +1315,7 @@ class Level:
                                 (npe.pf_path[i - 1][0]) * SCALED_TILE_SIZE + offset.x,
                                 (npe.pf_path[i - 1][1]) * SCALED_TILE_SIZE + offset.y,
                             )
-                        pygame.draw.aaline(
-                            self.display_surface, (0, 0, 0), start_pos, end_pos
-                        )
+                        FBLITTER.draw_aaline((0, 0, 0), start_pos, end_pos)
 
     # endregion
 
@@ -1193,7 +1325,7 @@ class Level:
 
     def draw(self, dt: float, move_things: bool):
         self.player.hp = self.overlay.health_bar.hp
-        self.display_surface.fill((130, 168, 132))
+        # self.display_surface.fill((130, 168, 132))
         self.all_sprites.draw(self.camera, False)
 
         self.draw_pf_overlay()
@@ -1211,6 +1343,7 @@ class Level:
         # transitions
         self.day_transition.draw()
         self.map_transition.draw()
+        self.volcano_map_transition.draw()
 
     # update
     def update_rain(self):
@@ -1270,8 +1403,13 @@ class Level:
         if self.current_minigame and self.current_minigame.running:
             self.current_minigame.update(dt)
 
+        self.volcano()
+        if self.start_volcano_animation:
+            self.volcano_animation()
+
         self.update_rain()
         self.day_transition.update()
+        self.volcano_map_transition.update()
         self.map_transition.update()
         if move_things:
             if self.cutscene_animation.active:

@@ -36,6 +36,7 @@ from src.events import (
     SHOW_BOX_KEYBINDINGS,
 )
 from src.exceptions import TooEarlyLoginError
+from src.fblitter import FBLITTER
 from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
@@ -111,7 +112,7 @@ _CAMERA_TARGET_TO_TEXT_SOLO = (
     "narrative_text",
 )
 _TARG_SKIP_IDX_SOLO = _CAMERA_TARGET_TO_TEXT_SOLO.index("outgroup_introduction_text")
-_GOGGLES_TUT_TSTAMP = 15
+_GOGGLES_TUT_TSTAMP = 5
 _BLUR_FACTOR = 1
 
 
@@ -898,6 +899,8 @@ class Game:
 
             is_game_paused = self.game_paused()
 
+            self.display_surface.fill("#C0D470")
+
             if not is_game_paused or is_first_frame:
                 if self.level.cutscene_animation.active:
                     event = pygame.key.get_pressed()
@@ -917,7 +920,7 @@ class Game:
                 self.menus[self.current_state].update(dt)
             else:
                 # prevents events to happen during minigame
-                if (
+                if self.level.current_map != Map.VOLCANO and (
                     not self.level.current_minigame
                     or not self.level.current_minigame.running
                 ):
@@ -1048,6 +1051,8 @@ class Game:
                 is_game_paused,
             )
 
+            FBLITTER.blit_all()
+
             # Apply blur effect only if the player has goggles equipped
             if self.player.has_goggles and self.current_state == GameState.PLAY:
                 surface = pygame.transform.box_blur(self.display_surface, _BLUR_FACTOR)
@@ -1065,6 +1070,7 @@ class Game:
             if not is_game_paused or is_first_frame:
                 self.previous_frame = self.display_surface.copy()
             self.display_surface.blit(self._cursor_img, mouse_pos)
+            FBLITTER.blit_all()
             is_first_frame = False
             pygame.display.update()
             await asyncio.sleep(0)

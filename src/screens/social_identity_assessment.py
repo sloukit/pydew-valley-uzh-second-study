@@ -11,13 +11,14 @@ from src.colors import (
     SL_ORANGE_MEDIUM,
 )
 from src.enums import SocialIdentityAssessmentDimension
+from src.fblitter import FBLITTER
 from src.gui.menu.abstract_menu import AbstractMenu
 from src.gui.menu.components import AbstractButton
-from src.screens.minigames.gui import Text, TextChunk, _draw_box, _ReturnButton
+from src.screens.minigames.gui import Text, TextChunk, _ReturnButton  # , _draw_box
 from src.settings import (
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
-    SOCIAL_IDENTITY_ASSESSMENT_BORDER_SIZE,
+    SIA_BORDER_SIZE,
 )
 from src.sprites.entities.player import Player
 from src.support import get_translated_string as get_translated_msg
@@ -39,7 +40,7 @@ class _SocialIdentityAssessmentButton(AbstractButton):
         self._content_rect = self.content.get_frect()
 
         self.rect = self._content_rect.copy()
-        self.rect.size = SOCIAL_IDENTITY_ASSESSMENT_BORDER_SIZE
+        self.rect.size = SIA_BORDER_SIZE
 
         self.initial_rect = self.rect.copy()
 
@@ -60,7 +61,8 @@ class _SocialIdentityAssessmentButton(AbstractButton):
         if self._selected:
             color = SL_ORANGE_BRIGHTER
 
-        pygame.draw.rect(self.display_surface, color, self.rect, 0, 2)
+        FBLITTER.draw_rect(color, self.rect, 0, 2)
+        # pygame.draw.rect(self.display_surface, color, self.rect, 0, 2)
 
     def move(self, topleft: tuple[float, float]):
         self.rect.topleft = topleft
@@ -68,11 +70,13 @@ class _SocialIdentityAssessmentButton(AbstractButton):
         self._content_rect.center = self.rect.center
 
     def draw(self, surface: pygame.Surface):
-        pygame.draw.rect(surface, SL_ORANGE_DARK, self.rect.inflate(6, 6), 6, 4)
+        FBLITTER.set_current_surf(surface)
+        FBLITTER.draw_rect(SL_ORANGE_DARK, self.rect.inflate(6, 6), 6, 4)
 
         self.display_surface = surface
         self.draw_hover()
         self.draw_content()
+        FBLITTER.blit_all()
 
     def change_img(self, new_img: pygame.Surface):
         self._content.fill((0, 0, 0, 0))
@@ -119,12 +123,8 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
 
         self.button_top_margin = 32
         self.social_identity_assessment_button_padding = 48
-        self.social_identity_assessment_button_w = (
-            SOCIAL_IDENTITY_ASSESSMENT_BORDER_SIZE[0]
-        )
-        self.social_identity_assessment_button_h = (
-            SOCIAL_IDENTITY_ASSESSMENT_BORDER_SIZE[1]
-        )
+        self.social_identity_assessment_button_w = SIA_BORDER_SIZE[0]
+        self.social_identity_assessment_button_h = SIA_BORDER_SIZE[1]
 
         self.social_identity_assessment_button_wp = (
             self.social_identity_assessment_button_w
@@ -201,7 +201,8 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
             + button_area_height,
         )
 
-        _draw_box(self._surface, self.box_center, box_size)
+        FBLITTER.set_current_surf(self._surface)
+        FBLITTER.draw_box(self.box_center, box_size)
 
         self._continue_button.move(
             (
@@ -239,15 +240,23 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
                 text_surf = self.font.render(
                     get_translated_msg(text_key), False, "Black"
                 )
-                half_width_of_text = text_surf.get_rect().width / 2
+                half_width_of_text = text_surf.width / 2
                 current_button_bottom_left = current_button.rect.midbottom
-                self._surface.blit(
+                FBLITTER.schedule_blit(
                     text_surf,
                     (
                         current_button_bottom_left[0] - half_width_of_text,
                         current_button_bottom_left[1] + 10,
                     ),
                 )
+                # self._surface.blit(
+                #     text_surf,
+                #     (
+                #         current_button_bottom_left[0] - half_width_of_text,
+                #         current_button_bottom_left[1] + 10,
+                #     ),
+                # )
+        FBLITTER.blit_all()
 
     def get_description_text(self) -> Text:
         return Text(TextChunk(self.get_question_by_selection(), self.font_title))
@@ -317,7 +326,8 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
         self.buttons.extend(self._social_identity_assessment_buttons)
 
     def draw_title(self):
-        self.display_surface.blit(self._surface, (0, 0))
+        FBLITTER.schedule_blit(self._surface, (0, 0))
+        # self.display_surface.blit(self._surface, (0, 0))
 
     def create_image_number(self, number, foreground_color="Black") -> pygame.surface:
         return self.numbers_font.render(f"{number}", False, foreground_color)
@@ -342,8 +352,15 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
             left=self.rect.left + 50,
             width=self.rect.width - 100,
         )
-        pygame.draw.rect(self._surface, SL_ORANGE_BRIGHT, text_rect)
-        self._surface.blit(
+        FBLITTER.set_current_surf(self._surface)
+        FBLITTER.draw_rect(SL_ORANGE_BRIGHT, text_rect)
+        FBLITTER.schedule_blit(
             text_surface,
             description_position,
         )
+        FBLITTER.blit_all()
+        # pygame.draw.rect(self._surface, SL_ORANGE_BRIGHT, text_rect)
+        # self._surface.blit(
+        #     text_surface,
+        #     description_position,
+        # )
