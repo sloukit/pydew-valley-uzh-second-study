@@ -281,7 +281,7 @@ async def post_request_with_callback(
     # Send the reponse to the callback
     try:
         response = await post_request(url, headers, data)
-        if response["error"]:
+        if response.get("error", ""):
             raise LoginError("Login failed. Check if you wrote your token correctly.")
         callback(response)
     except Exception as e:

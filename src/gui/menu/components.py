@@ -433,7 +433,6 @@ class InputField:
         if self.mouse_hover():
             self.hover_active = True
             FBLITTER.draw_rect(self.border_color_active, self.rect, 4, 4)
-            # pygame.draw.rect(self.surface, self.border_color_active, self.rect, 4, 4)
         else:
             self.hover_active = False
 
@@ -453,12 +452,5 @@ class InputField:
                 self.rect.y + self.rect.height / 2 - text_surf.get_height() / 2 + 2,
             ),
         )
-        # self.surface.blit(
-        #     text_surf,
-        #     (
-        #         self.rect.x + self.rect.width / 2 - text_surf.get_width() / 2,
-        #         self.rect.y + self.rect.height / 2 - text_surf.get_height() / 2 + 2,
-        #     ),
-        # )
         self.draw_hover()
         FBLITTER.blit_all()

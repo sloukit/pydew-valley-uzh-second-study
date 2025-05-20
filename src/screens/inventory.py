@@ -109,6 +109,7 @@ class InventoryMenu(AbstractMenu):
         assign_tool: Callable,
         assign_seed: Callable,
         round_config: dict[str, Any],
+        send_telemetry: Callable[[dict], None],
     ):
         super().__init__(get_translated_msg("inventory"), (SCREEN_WIDTH, 800))
         self.player = player
@@ -118,6 +119,8 @@ class InventoryMenu(AbstractMenu):
         self.assign_tool = assign_tool
         self.assign_seed = assign_seed
         self.round_config = round_config
+        self.send_glasses_telemetry = send_telemetry
+        self._goggles_equipped = False
         self.item_frames = frames["items"]
         self.object_frames = frames["level"]["objects"]
         self.cosmetic_frames = frames["cosmetics"]
@@ -325,6 +328,7 @@ class InventoryMenu(AbstractMenu):
             self._special_btns.extend(
                 self._special_btn_setup(self.player, _BUTTON_SIZE)
             )
+            self._goggles_equipped = self.player.has_goggles
         self.buttons.extend(
             chain(self._inv_buttons, self._ft_buttons, self._special_btns)
         )
@@ -336,7 +340,13 @@ class InventoryMenu(AbstractMenu):
         if event.type == pygame.KEYDOWN:
             if event.key == Controls.INVENTORY.control_value:
                 post_event(SET_CURSOR, cursor=CustomCursor.ARROW)
-                self.switch_screen(GameState.PLAY)
+                if (
+                    int(self.round_config["level_name_text"].removeprefix("Level ")) < 7
+                    or self.player.has_goggles == self._goggles_equipped
+                ):
+                    self.switch_screen(GameState.PLAY)
+                else:
+                    self.send_glasses_telemetry({"put_on": self.player.has_goggles})
                 return True
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
