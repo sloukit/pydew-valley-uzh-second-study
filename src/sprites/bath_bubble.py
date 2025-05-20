@@ -88,4 +88,4 @@ class BubbleMgr:
 
     def draw(self):
         blit_list = [(bubble.image, bubble.rect) for bubble in self.bubble_grp]
-        FBLITTER.schedule_fblits(blit_list)
+        FBLITTER.schedule_blits(blit_list)
