@@ -180,7 +180,7 @@ class Game:
         self._cursor_img: pygame.Surface | None = None
 
         self.save_file = SaveFile.load()
-        self.save_file.is_tutorial_completed = True
+        # self.save_file.is_tutorial_completed = True
 
         # main setup
         self.running = True
@@ -271,6 +271,7 @@ class Game:
             self.player.assign_tool,
             self.player.assign_seed,
             self.round_config,
+            partial(self.send_telemetry_and_play, "goggle_status_change"),
         )
         self.round_menu = RoundMenu(
             self.switch_state,
@@ -284,6 +285,7 @@ class Game:
         self.outgroup_menu = OutgroupMenu(
             self.player,
             self.switch_state,
+            partial(self.send_telemetry_and_play, "outgroup_switch", {}),
         )
 
         self.self_assessment_menu = SelfAssessmentMenu(
@@ -529,11 +531,9 @@ class Game:
                 self.game_version = 3
             elif not token_int:
                 self.game_version = DEBUG_MODE_VERSION
-                self.set_round(7)
             else:
                 raise ValueError("Invalid token value")
-            if self.game_version:
-                self.set_round(1)
+            self.set_round(1)
             self.check_hat_condition()
         else:  # online deployed version with db access
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
@@ -551,6 +551,7 @@ class Game:
                     )
             else:
                 xplat.log("First login ever with this token, start level 1!")
+            # max_complete_level = 6
             if len(day_completions) > 0:
                 timestamps = [
                     datetime.fromisoformat(d["timestamp"]) for d in day_completions
@@ -1056,7 +1057,7 @@ class Game:
             # Apply blur effect only if the player has goggles equipped
             if self.player.has_goggles and self.current_state == GameState.PLAY:
                 surface = pygame.transform.box_blur(self.display_surface, _BLUR_FACTOR)
-                self.display_surface.blit(surface, (0, 0))
+                FBLITTER.schedule_blit(surface, (0, 0))
 
             # Into and Tutorial
             self.show_intro_msg()
@@ -1069,7 +1070,7 @@ class Game:
             mouse_pos = pygame.mouse.get_pos()
             if not is_game_paused or is_first_frame:
                 self.previous_frame = self.display_surface.copy()
-            self.display_surface.blit(self._cursor_img, mouse_pos)
+            FBLITTER.schedule_blit(self._cursor_img, mouse_pos)
             FBLITTER.blit_all()
             is_first_frame = False
             pygame.display.update()

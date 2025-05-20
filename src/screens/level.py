@@ -504,6 +504,7 @@ class Level:
 
     def warp_to_map(self, map_name: str):
         if map_name == "bathhouse":
+            self.send_telemetry("bath_taken", {})
             self.bubble_mgr.start()
         if map_name == "minigame":
             self.cow_herding_count += 1
