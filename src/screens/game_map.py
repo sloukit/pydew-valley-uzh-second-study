@@ -42,8 +42,8 @@ from src.npc.behaviour.cow_behaviour_tree import (
 from src.npc.behaviour.npc_behaviour_tree import NPCBehaviourTree
 from src.npc.chicken import Chicken
 from src.npc.cow import Cow
-from src.npc.dead_npcs_registry import NpcsStateRegistry
 from src.npc.npc import NPC
+from src.npc.npcs_state_registry import NpcsStateRegistry
 from src.npc.setup import AIData
 from src.npc.utils import pf_add_matrix_collision
 from src.overlay.soil import SoilManager
@@ -310,14 +310,14 @@ class GameMap:
         frames: dict,
         round_config: dict[str, Any],
         get_game_version: Callable[[], int],
-        dead_npcs_registry: NpcsStateRegistry,
+        npcs_state_registry: NpcsStateRegistry,
         disable_minigame: bool = False,
         round_no: int = 0,
     ):
         self.get_game_version = get_game_version
         self.number_of_hats_to_exclude = 2
         self._tilemap = tilemap
-        self.npcs_state_registry: NpcsStateRegistry = dead_npcs_registry
+        self.npcs_state_registry: NpcsStateRegistry = npcs_state_registry
 
         if "Player" not in self._tilemap.layernames:
             raise InvalidMapError("No Player layer could be found")

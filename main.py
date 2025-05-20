@@ -38,9 +38,10 @@ from src.events import (
 from src.exceptions import TooEarlyLoginError
 from src.fblitter import FBLITTER
 from src.groups import AllSprites
+from src.gui.health_bar import PLAYER_HP, PLAYER_IS_SICK
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
-from src.npc.dead_npcs_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
+from src.npc.npcs_state_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
 from src.screens.inventory import InventoryMenu, prepare_checkmark_for_buttons
@@ -556,7 +557,7 @@ class Game:
                 most_recent_completion = max(timestamps)
                 current_time = datetime.now(timezone.utc)
                 if max_complete_level > 6:
-                    self.level.dead_npcs_registry.restore_registry(
+                    self.level.npcs_state_registry.restore_registry(
                         dict(
                             filter(
                                 lambda d: d["timestamp"] == most_recent_completion,
@@ -564,6 +565,16 @@ class Game:
                             )
                         )[NPC_STATE_REGISTRY_UPDATE_EVENT]
                     )
+
+                    # restoring of saved player health point state
+                    restored_player_hp: dict = dict(
+                        filter(
+                            lambda d: d["timestamp"] == most_recent_completion,
+                            day_completions,
+                        )
+                    )
+                    self.player.hp = restored_player_hp[PLAYER_HP]
+                    self.player.is_sick = restored_player_hp[PLAYER_IS_SICK]
 
                 # Check if the newest timestamp is more than 12 hours ago
                 time_difference = (
@@ -593,7 +604,7 @@ class Game:
             self.game_version = DEBUG_MODE_VERSION
 
         if self.round > 6:
-            self.level.dead_npcs_registry.enable()
+            self.level.npcs_state_registry.enable()
 
         # round end menu needs to get config from previous round,
         # since when this menu is activated it's already new round

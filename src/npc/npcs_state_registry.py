@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from src.enums import Map, StudyGroup
 from src.npc.npc import NPC
@@ -32,13 +32,14 @@ class NpcsStateRegistry:
         if not self.is_enabled():
             return
 
-        if self._is_ready_to_update():
-            return
-
         npc_states: list[dict] = self._get_npcs_state_list(npc.study_group)
         current_npc_state = self._get_state(npc_states, npc.npc_id)
         current_npc_state[NPC_HP] = npc.hp
         current_npc_state[NPC_SICKNESS] = npc.is_sick
+
+        if self._is_ready_to_update():
+            return
+
         self.last_health_update_timestamp = self.get_current_time()
         self._store_registry()
 
@@ -94,9 +95,9 @@ class NpcsStateRegistry:
         return self.enabled
 
     def _is_ready_to_update(self):
-        return self.last_health_update_timestamp - self.get_current_time() < timedelta(
-            seconds=HEALTH_UPDATE_DELTA_SECONDS
-        )
+        return (
+            self.get_current_time() - self.last_health_update_timestamp
+        ).total_seconds() > HEALTH_UPDATE_DELTA_SECONDS
 
     def _get_npcs_state_list(self, study_group: StudyGroup) -> list[dict]:
         map_data: dict[str : list[[dict]]] = (
