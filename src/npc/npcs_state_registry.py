@@ -47,7 +47,7 @@ class NpcsStateRegistry:
         return datetime.now()
 
     def register_death(self, dying_npc: NPC):
-        if not self.is_enabled():
+        if not self.enabled:
             return
 
         npc_states: list[dict] = self._get_npcs_state_list(dying_npc.study_group)
