@@ -147,7 +147,7 @@ class NpcsStateRegistry:
         return result
 
     def _get_dead_npc(self, npc_states_list) -> list[dict]:
-        if npc_states_list is None or len(npc_states_list) == 0:
+        if not npc_states_list:
             return []
         result: list[dict] = []
         for current_state in npc_states_list:
