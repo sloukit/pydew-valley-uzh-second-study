@@ -109,9 +109,7 @@ class NpcsStateRegistry:
     def _get_npc_states(
         self, map_data: dict[str, list[dict]], study_group: StudyGroup
     ) -> list[dict]:
-        study_group_data: list[dict] = (
-            map_data[study_group.name] if study_group.name in map_data.keys() else None
-        )
+        study_group_data: list[dict] = map_data.get(study_group.name)
         if study_group_data is None:
             study_group_data = []
             map_data[study_group.name] = study_group_data
