@@ -190,13 +190,15 @@ def animation_importer(
     if frame_size is None:
         frame_size = TILE_SIZE
 
+    orig_frame_size = frame_size
+
     animation_dict = {}
     for folder_path, _, file_names in os.walk(os.path.join(*ani_path)):
         for file_name in file_names:
             if file_name == "volcano_exploding_new.png" or file_name == "volcano.png":
                 frame_size = VOLCANO_SIZE
             else:
-                frame_size = TILE_SIZE
+                frame_size = orig_frame_size
             full_path = os.path.join(folder_path, file_name)
             surf = pygame.image.load(full_path).convert_alpha()
             animation_dict[str(file_name.split(".")[0])] = []
