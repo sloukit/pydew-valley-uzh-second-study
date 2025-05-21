@@ -18,7 +18,7 @@ class NpcsStateRegistry:
         current_map_name: str | None,
         telemetry_callback: Callable[[str, dict], None],
     ):
-        self.last_health_update_timestamp = self.get_current_time()
+        self.last_health_update_timestamp = datetime.now()
         self.data: dict[str : dict[str : list[dict]]] = {}
         self.current_map_name: str = current_map_name
         self.telemetry_callback = telemetry_callback
