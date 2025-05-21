@@ -40,7 +40,7 @@ class NpcsStateRegistry:
         if self._is_not_ready_to_update():
             return
 
-        self.last_health_update_timestamp = self.get_current_time()
+        self.last_health_update_timestamp = datetime.now()
         self._store_registry()
 
     def get_current_time(self):
