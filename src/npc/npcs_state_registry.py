@@ -80,7 +80,7 @@ class NpcsStateRegistry:
             dying_npc_state = self._get_state(dead_npcs_list, npc_id)
             if dying_npc_state is not None:
                 result = (
-                    dying_npc_state[NPC_DEAD] if NPC_DEAD in dying_npc_state else False
+                    dying_npc_state.get(NPC_DEAD, False)
                 )
                 break
         return result
