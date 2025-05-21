@@ -94,7 +94,7 @@ class NpcsStateRegistry:
 
     def _is_not_ready_to_update(self):
         return (
-            self.get_current_time() - self.last_health_update_timestamp
+            datetime.now() - self.last_health_update_timestamp
         ).total_seconds() < HEALTH_UPDATE_DELTA_SECONDS
 
     def _get_npcs_state_list(self, study_group: StudyGroup) -> list[dict]:
