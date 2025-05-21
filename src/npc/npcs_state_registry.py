@@ -124,7 +124,7 @@ class NpcsStateRegistry:
         return current_state
 
     def _get_npc_state_data(self, npc_states, npc_id: int) -> dict | None:
-        if npc_states is None or len(npc_states) == 0:
+        if not npc_states:
             return
 
         for current_state in npc_states:
