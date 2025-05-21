@@ -131,12 +131,12 @@ class NpcsStateRegistry:
 
     def _get_npc_state_data(self, npc_states, npc_id: int) -> dict | None:
         if npc_states is None or len(npc_states) == 0:
-            return None
+            return
 
         for current_state in npc_states:
             if NPC_ID in current_state and current_state[NPC_ID] == npc_id:
                 return current_state
-        return None
+        return
 
     def _count_dead_npcs_by_study_group(self, study_group: StudyGroup) -> int:
         if not self.is_enabled():
