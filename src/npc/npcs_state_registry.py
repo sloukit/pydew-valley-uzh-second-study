@@ -128,7 +128,7 @@ class NpcsStateRegistry:
             return
 
         for current_state in npc_states:
-            if NPC_ID in current_state and current_state[NPC_ID] == npc_id:
+            if current_state.get(NPC_ID) == npc_id:
                 return current_state
         return
 
