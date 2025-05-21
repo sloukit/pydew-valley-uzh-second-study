@@ -100,11 +100,7 @@ class NpcsStateRegistry:
         ).total_seconds() < HEALTH_UPDATE_DELTA_SECONDS
 
     def _get_npcs_state_list(self, study_group: StudyGroup) -> list[dict]:
-        map_data: dict[str : list[[dict]]] = (
-            self.data[self.current_map_name]
-            if self.current_map_name in self.data.keys()
-            else None
-        )
+        map_data: dict[str : list[[dict]]] = self.data.get(self.current_map_name)
         if map_data is None:
             map_data = {}
             self.data[self.current_map_name] = map_data
