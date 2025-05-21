@@ -151,7 +151,7 @@ class NpcsStateRegistry:
             return []
         result: list[dict] = []
         for current_state in npc_states_list:
-            if NPC_DEAD in current_state and current_state[NPC_DEAD]:
+            if current_state.get(NPC_DEAD, False):
                 result.append(current_state)
 
         return result
