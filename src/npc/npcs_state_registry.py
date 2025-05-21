@@ -79,9 +79,7 @@ class NpcsStateRegistry:
             dead_npcs_list: list[dict] = current_map_data[study_group.name]
             dying_npc_state = self._get_state(dead_npcs_list, npc_id)
             if dying_npc_state is not None:
-                result = (
-                    dying_npc_state.get(NPC_DEAD, False)
-                )
+                result = dying_npc_state.get(NPC_DEAD, False)
                 break
         return result
 
