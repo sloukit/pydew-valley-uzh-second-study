@@ -131,7 +131,7 @@ class NpcsStateRegistry:
         return
 
     def _count_dead_npcs_by_study_group(self, study_group: StudyGroup) -> int:
-        if not self.is_enabled():
+        if not self.enabled:
             return 0
 
         result: int = 0
