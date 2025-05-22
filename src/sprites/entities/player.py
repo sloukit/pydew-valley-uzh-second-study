@@ -73,6 +73,7 @@ class Player(Character):
             plant_collision=plant_collision,
         )
 
+        self.is_sick = False
         self.round_config = round_config
         self.get_game_version = get_game_version
         self.send_telemetry = send_telemetry
