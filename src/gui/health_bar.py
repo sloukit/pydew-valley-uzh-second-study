@@ -6,6 +6,10 @@ from src.fblitter import FBLITTER
 from src.settings import SCALE_FACTOR
 from src.support import import_image
 
+PLAYER_HP = "player_hp"
+PLAYER_IS_SICK = "player_is_sick"
+PLAYER_HP_STATE = "player_hp_state"
+
 
 class HealthProgressBar:
     def __init__(self, hp):

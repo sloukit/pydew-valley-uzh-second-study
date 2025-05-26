@@ -33,11 +33,12 @@ from src.events import (
 from src.exceptions import GameMapWarning
 from src.fblitter import FBLITTER
 from src.groups import AllSprites, PersistentSpriteGroup
+from src.gui.health_bar import PLAYER_HP, PLAYER_HP_STATE, PLAYER_IS_SICK
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
-from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.npc.npc import NPC
+from src.npc.npcs_state_registry import NpcsStateRegistry
 from src.npc.setup import AIData
 from src.overlay.game_time import GameTime
 from src.overlay.overlay import Overlay
@@ -219,7 +220,7 @@ class Level:
 
         self.controls = Controls
 
-        self.dead_npcs_registry = DeadNpcsRegistry(
+        self.npcs_state_registry = NpcsStateRegistry(
             self.current_map.name if self.current_map is not None else None,
             self.send_telemetry,
         )
@@ -273,7 +274,7 @@ class Level:
             get_world_time,
             clock,
             round_config,
-            self.dead_npcs_registry,
+            self.npcs_state_registry,
         )
         self.show_hitbox_active = False
         self.show_pf_overlay = False
@@ -370,7 +371,7 @@ class Level:
         gc.collect()
 
         # update current map for remembering dead npcs
-        self.dead_npcs_registry.set_current_map_name(game_map)
+        self.npcs_state_registry.set_current_map_name(game_map)
 
         self.game_map = GameMap(
             selected_map=game_map,
@@ -393,7 +394,7 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
-            dead_npcs_registry=self.dead_npcs_registry,
+            npcs_state_registry=self.npcs_state_registry,
             disable_minigame=self.can_disable_minigame,
             round_no=self.get_round(),
         )
@@ -531,6 +532,13 @@ class Level:
                     if self.player.hp < 80:
                         self.overlay.health_bar.apply_health(9999999)
                         self.player.bathstat = True
+                        self.send_telemetry(
+                            PLAYER_HP_STATE,
+                            {
+                                PLAYER_HP: self.player.hp,
+                                PLAYER_IS_SICK: self.player.is_sick,
+                            },
+                        )
                         self.player.bath_time = time.time()
                     self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
                     self.load_map(self.current_map, from_map=map_name)
@@ -1216,11 +1224,15 @@ class Level:
         self.start_transition()
 
     def decay_health(self):
-        if self.player.hp > 10:
+        if self.player.hp > 10 and self.player.is_sick:
             if not self.player.bathstat and not self.player.has_goggles:
                 self.overlay.health_bar.apply_damage(HEALTH_DECAY_VALUE)
             elif not self.player.has_goggles and self.player.bathstat:
                 self.overlay.health_bar.apply_damage((HEALTH_DECAY_VALUE / 2))
+            self.send_telemetry(
+                PLAYER_HP_STATE,
+                {PLAYER_HP: self.player.hp, PLAYER_IS_SICK: self.player.is_sick},
+            )
 
     def check_map_exit(self):
         if not self.map_transition:
