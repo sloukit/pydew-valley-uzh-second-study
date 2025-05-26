@@ -40,7 +40,7 @@ from src.fblitter import FBLITTER
 from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
-from src.npc.dead_npcs_registry import DEAD_NPC_REGISTRY_UPDATE_EVENT
+from src.npc.npcs_state_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
 from src.screens.inventory import InventoryMenu, prepare_checkmark_for_buttons
@@ -73,6 +73,7 @@ from src.settings import (
     SoundDict,
     # SERVER_URL,
 )
+from src.sickness import SicknessManager
 from src.sprites.setup import setup_entity_assets
 from src.support import get_translated_string as get_translated_msg
 from src.tutorial import Tutorial
@@ -342,6 +343,16 @@ class Game:
         self.last_intro_txt_rendered = False
         self.switched_to_tutorial = False
 
+        # Sickness management
+        self.sickness_man = SicknessManager(
+            self.get_round,
+            lambda: self.round_end_timer,
+            lambda: self.player.has_goggles,
+            lambda: True,
+            lambda: self.player.is_sick,
+            self.send_telemetry
+        )
+
     def _empty_round_config_notify(self, cfg_id: str):
         self.round_config[f"notify_{cfg_id}_text"] = ""
         tstamp = f"notify_{cfg_id}_timestamp"
@@ -556,13 +567,13 @@ class Game:
                 most_recent_completion = max(timestamps)
                 current_time = datetime.now(timezone.utc)
                 if max_complete_level > 6:
-                    self.level.dead_npcs_registry.restore_registry(
+                    self.level.npcs_state_registry.restore_registry(
                         dict(
                             filter(
                                 lambda d: d["timestamp"] == most_recent_completion,
                                 day_completions,
                             )
-                        )[DEAD_NPC_REGISTRY_UPDATE_EVENT]
+                        )[NPC_STATE_REGISTRY_UPDATE_EVENT]
                     )
 
                 # Check if the newest timestamp is more than 12 hours ago

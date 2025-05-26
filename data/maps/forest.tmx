@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="31" nextobjectid="405">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="31" nextobjectid="405">
  <tileset firstgid="1" source="../tilesets/Darker_Grass_Tile_Layers.tsx"/>
  <tileset firstgid="78" source="../tilesets/Bush_Tiles.tsx"/>
  <tileset firstgid="199" source="../tilesets/Darker_Grass_Hills_Tiles_v2.tsx"/>
@@ -889,11 +889,35 @@
   </object>
  </objectgroup>
  <objectgroup id="26" name="NPCs">
-  <object id="393" gid="732" x="510" y="160" width="20" height="21"/>
-  <object id="394" gid="732" x="414" y="192" width="20" height="21"/>
-  <object id="395" gid="732" x="382" y="272" width="20" height="21"/>
-  <object id="396" gid="734" x="287" y="416" width="18" height="17"/>
-  <object id="397" gid="734" x="431" y="448" width="18" height="17"/>
-  <object id="398" gid="734" x="559" y="416" width="18" height="17"/>
+  <object id="393" gid="732" x="510" y="160" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="5"/>
+   </properties>
+  </object>
+  <object id="394" gid="732" x="414" y="192" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="395" gid="732" x="382" y="272" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="396" gid="734" x="287" y="416" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="15"/>
+   </properties>
+  </object>
+  <object id="397" gid="734" x="431" y="448" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="398" gid="734" x="559" y="416" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="17"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

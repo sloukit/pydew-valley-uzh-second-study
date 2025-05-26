@@ -710,24 +710,27 @@ class GameMap:
             if "necklace" in features:
                 has_necklace = True
 
+        npc_id = obj.properties.get("npc_id")
+        if npc_id is None:
+            raise InvalidMapError("At least one NPC was not given an ID on the current map.")
         study_group = StudyGroup.NO_GROUP
         group = obj.properties.get("group")
         if group is None:
             warnings.warn(
-                f"NPC with ID {obj.id} has no group assigned to it", GameMapWarning
+                f"NPC with ID {npc_id} has no group assigned to it", GameMapWarning
             )
         else:
             try:
                 study_group = StudyGroup[group]
             except KeyError:
                 warnings.warn(
-                    f"NPC with ID {obj.id} has an invalid group '{group}' assigned to "
+                    f"NPC with ID {npc_id} has an invalid group '{group}' assigned to "
                     f"it",
                     GameMapWarning,
                 )
 
         # skip NPC if it's id is registered in the DNR
-        if self.npcs_state_registry.is_npc_dead(obj.id, study_group):
+        if self.npcs_state_registry.is_npc_dead(npc_id, study_group):
             return None
 
         npc = NPC(
@@ -746,7 +749,7 @@ class GameMap:
             has_hat=has_hat,
             has_necklace=has_necklace,
             special_features=features,
-            npc_id=obj.id,
+            npc_id=npc_id,
             death_callback=self.npcs_state_registry.register_death,
             health_update_callback=self.npcs_state_registry.register_health_update,
         )
