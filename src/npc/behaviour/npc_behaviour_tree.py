@@ -32,6 +32,7 @@ class NPCIndividualContext(Context):
     npc: NPCBase
     # list of available seeds depending on game version and round number
     allowed_seeds: list[SeedType] = field(default_factory=list)
+    adhering_to_measures: bool = field(default=False)
 
 
 def walk_to_pos(
@@ -83,6 +84,37 @@ def walk_to_pos(
 
 def wander(context: NPCIndividualContext) -> bool:
     return pf_wander(context.npc)
+
+
+# region Logic for farm NPCs to potentially "leave the map" and come back to go to the bathhouse
+def will_leave_farm_for_bathhouse(context: NPCIndividualContext) -> bool:
+    # TODO: this condition isn't enough alone. More checks should be implemented:
+    #      - Check if the map is the farm.
+    #      - Ensure the round number is higher than 7 or that 30 seconds have passed (i.e. the eruption occurred)
+    #      - Check if the bathhouse timespan isn't elapsed already.
+    #      - Random chance to head to the bathhouse.
+    #      - The NPC didn't already head to the bathhouse.
+    return context.adhering_to_measures
+
+
+def go_to_bathhouse(context: NPCIndividualContext) -> bool:
+    return walk_to_pos(context, (24, 40), lambda: print("Finished"))
+
+
+def will_return_to_farm_from_bathhouse(context: NPCIndividualContext) -> bool:
+    # TODO: add more conditions to ensure the NPC returns properly from the bathhouse. List:
+    #      - Already "left" the map (i.e. finished moving and is out of visible bounds)
+    #      - 45 seconds passed since the NPC left (i.e. they waited long enough outside of view)
+    #      - The map is the farm
+    return context.npc.get_tile_pos() == (24, 40)
+
+
+def return_from_bathhouse(context: NPCIndividualContext):
+    # TODO: change the lambda at the end to return the NPC's behavioural tree to normal once it returns from the bath.
+    return walk_to_pos(context, (17, 27), lambda: print("Finished return"))
+
+
+# endregion
 
 
 # region farming-exclusive logic
@@ -535,7 +567,7 @@ def cheer(context: NPCIndividualContext) -> bool:
 
 # region behaviour trees
 class NPCBehaviourTree(NodeWrapper, Enum):
-    Farming = Selector(
+    FARMING = Selector(
         Sequence(
             Condition(will_farm),
             Selector(
@@ -554,19 +586,26 @@ class NPCBehaviourTree(NodeWrapper, Enum):
         Action(wander),
     )
 
-    Woodcutting = Selector(
+    WOODCUTTING = Selector(
         Sequence(Condition(will_cut_wood), Selector(Action(chop_tree))),
         Action(wander),
     )
 
-    DoNothing = Selector(
+    DO_NOTHING = Selector(
         Sequence(Condition(will_do_nothing), Selector(Action(do_nothing))),
         Action(do_nothing),
     )
 
-    Cheer = Selector(
+    CHEER = Selector(
         Sequence(Condition(will_cheer), Selector(Action(cheer))),
         Action(do_nothing),
+    )
+
+    FARM_GO_TO_BATHHOUSE = Selector(
+        Sequence(
+            Condition(will_return_to_farm_from_bathhouse), Action(return_from_bathhouse)
+        ),
+        Sequence(Condition(will_leave_farm_for_bathhouse), Action(go_to_bathhouse)),
     )
 
 

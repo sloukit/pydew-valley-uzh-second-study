@@ -382,6 +382,9 @@ class GameMap:
                 self._setup_emote_interactions()
                 _setup_animal_ranges(self.interaction_sprites, self.animals)
 
+    def get_size_in_tiles(self):
+        return self._tilemap_size
+
     def round_config_changed(self, round_config: dict[str, Any]) -> None:
         self.round_config = round_config
         self.process_npc_round_config()
@@ -712,7 +715,9 @@ class GameMap:
 
         npc_id = obj.properties.get("npc_id")
         if npc_id is None:
-            raise InvalidMapError("At least one NPC was not given an ID on the current map.")
+            raise InvalidMapError(
+                "At least one NPC was not given an ID on the current map."
+            )
         study_group = StudyGroup.NO_GROUP
         group = obj.properties.get("group")
         if group is None:
@@ -742,6 +747,7 @@ class GameMap:
             study_group=study_group,
             apply_tool=self.apply_tool,
             plant_collision=self.plant_collision,
+            get_map_size=self.get_size_in_tiles,
             soil_manager=self.soil_manager,
             emote_manager=self.npc_emote_manager,
             tree_sprites=self.tree_sprites,
@@ -778,17 +784,17 @@ class GameMap:
 
         behaviour = obj.properties.get("behaviour")
         if behaviour != "Woodcutting" and gmap == Map.NEW_FARM:
-            npc.conditional_behaviour_tree = NPCBehaviourTree.Farming
+            npc.conditional_behaviour_tree = NPCBehaviourTree.FARMING
         elif no_walking_npc:
-            npc.conditional_behaviour_tree = NPCBehaviourTree.DoNothing
+            npc.conditional_behaviour_tree = NPCBehaviourTree.DO_NOTHING
         elif cheering:
-            npc.conditional_behaviour_tree = NPCBehaviourTree.Cheer
+            npc.conditional_behaviour_tree = NPCBehaviourTree.CHEER
             if npc.study_group == StudyGroup.INGROUP:
                 npc.facing_direction = Direction.RIGHT
             if npc.study_group == StudyGroup.OUTGROUP:
                 npc.facing_direction = Direction.LEFT
         else:
-            npc.conditional_behaviour_tree = NPCBehaviourTree.Woodcutting
+            npc.conditional_behaviour_tree = NPCBehaviourTree.WOODCUTTING
         return npc
 
     def _setup_animal(self, pos: tuple[int, int], obj: TiledObject):

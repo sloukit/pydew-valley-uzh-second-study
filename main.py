@@ -352,7 +352,7 @@ class Game:
             lambda: self.player.has_goggles,
             lambda: True,
             lambda: self.player.is_sick,
-            self.send_telemetry
+            self.send_telemetry,
         )
 
     def _empty_round_config_notify(self, cfg_id: str):
