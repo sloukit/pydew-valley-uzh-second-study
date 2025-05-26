@@ -1,11 +1,11 @@
 from typing import Sequence
 
 import pygame
-from pygame.typing import ColorLike, Point, RectLike
 
 from src.colors import SL_ORANGE_BRIGHT, SL_ORANGE_DARK, SL_ORANGE_DARKER
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 from src.support import get_translated_string
+from src.utils import ColorLike, Point, RectLike
 
 
 class _FBlitterType:
