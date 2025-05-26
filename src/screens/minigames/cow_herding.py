@@ -196,6 +196,7 @@ class CowHerding(Minigame):
             emote_manager=self._state.game_map.npc_emote_manager,
             tree_sprites=pygame.sprite.Group(),
             sickness_allowed=self.round_config.get("sickness", False),
+            npc_id=40,
             has_hat=False,
             has_necklace=False,
             special_features=None,
