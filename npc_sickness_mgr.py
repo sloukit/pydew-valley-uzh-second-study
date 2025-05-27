@@ -30,6 +30,8 @@ _REBEL_ADHERENCE_INGRP_COUNT = _ID_POOL_SIZE * 0.2
 # Halve the NPC count for NPC adherence in the outgroup.
 _ADHERENCE_OUTGRP_COUNT = _MAXIMUM_DEATH_COUNT = _ID_POOL_SIZE // 2
 
+_DEATH_LIKELIHOOD = 0.5
+
 # Sentinel object returned if an NPC doesn't die.
 _WILL_NOT_DIE = object()
 
@@ -69,6 +71,10 @@ def _get_death(npc_id: int, death_round: int) -> NPCSicknessStatus:
     )
 
 
+def _roll_death():
+    return random() < _DEATH_LIKELIHOOD
+
+
 def _roll_death_count_for_ingrp(
     current_count: int, current_round: int, adherence: bool
 ):
@@ -76,7 +82,7 @@ def _roll_death_count_for_ingrp(
     if adherence and current_round > 9:
         return 0
     computed = 0
-    computed += random() < 0.3
+    computed += _roll_death()
     if (
         current_count + computed < _MAXIMUM_DEATH_COUNT
         and not adherence
@@ -85,7 +91,7 @@ def _roll_death_count_for_ingrp(
         # Roll a second time if not in the adherence condition,
         # the round allows it, and there are few enough deaths that
         # a successful roll won't go past the maximum death count.
-        computed += random() < 0.3
+        computed += _roll_death()
     return computed
 
 
@@ -99,7 +105,7 @@ def _get_sickness_from_death_evt(orig_evt: NPCSicknessStatus):
         orig_evt.npc_id,
         orig_evt.round_no,
         sickness_tstamp,
-        NPCSicknessStatusChange.SICKNESS
+        NPCSicknessStatusChange.SICKNESS,
     )
 
 
@@ -113,18 +119,10 @@ class NPCSicknessManager:
             n: deque() for n in range(7, 13)
         }
 
-    def _generate_death_events(self, status_dict: dict):
+    def _generate_death_events(
+        self, status_dict: dict, ingrp_eligible: list[int], outgrp_eligible: list[int]
+    ):
         """Generate death events for the last 6 rounds."""
-        death_eligible_ingrp_npcs = list(
-            _INGRP_ID_SAMPLING.difference(  # noqa
-                self._ingrp_adhering_ids
-            )
-        )
-        death_eligible_outgrp_npcs = list(
-            _OUTGRP_ID_SAMPLING.difference(  # noqa
-                self._outgrp_adhering_ids
-            )
-        )
         ingrp_death_count = 0
         outgrp_death_count = 0
         for rnd in range(7, 13):
@@ -144,23 +142,21 @@ class NPCSicknessManager:
                     # for this round.
                     # We can't use "continue" here because the checks still need to be performed
                     # for the outgroup.
-                    selected_ids = sample(
-                        death_eligible_ingrp_npcs, curr_ingrp_rnd_deaths
-                    )
+                    selected_ids = sample(ingrp_eligible, curr_ingrp_rnd_deaths)
                     for npc_id in selected_ids:
                         status_dict[rnd].append(_get_death(npc_id, rnd))
-                        death_eligible_ingrp_npcs.remove(npc_id)
+                        ingrp_eligible.remove(npc_id)
                     ingrp_death_count += curr_ingrp_rnd_deaths
 
             if outgrp_death_count < _MAXIMUM_DEATH_COUNT:
-                kill_another_outgrp_npc = random() < 0.3
+                kill_another_outgrp_npc = _roll_death()
                 if not kill_another_outgrp_npc:
                     # Checks were already performed for the ingroup, so we can safely
                     # jump to the next loop.
                     continue
-                selected_npc_id = choice(death_eligible_outgrp_npcs)
+                selected_npc_id = choice(outgrp_eligible)
                 status_dict[rnd].append(_get_death(selected_npc_id, rnd))
-                death_eligible_outgrp_npcs.remove(selected_npc_id)
+                outgrp_eligible.remove(selected_npc_id)
                 outgrp_death_count += kill_another_outgrp_npc
 
     def _compute_npc_status(self):
@@ -172,13 +168,34 @@ class NPCSicknessManager:
         }  # noqa
 
         # For each group, select which NPCs are going to die first.
-        self._generate_death_events(status_changes)
+        ingrp_sick_death_eligible = list(
+            _INGRP_ID_SAMPLING.difference(  # noqa
+                self._ingrp_adhering_ids
+            )
+        )
+        outgrp_sick_death_eligible = list(
+            _OUTGRP_ID_SAMPLING.difference(  # noqa
+                self._outgrp_adhering_ids
+            )
+        )
+
+        # Note: using copies here as we're also going to pick through those same sets of IDs to decide when other NPCs get sick.
+        self._generate_death_events(
+            status_changes, ingrp_sick_death_eligible.copy(), outgrp_sick_death_eligible.copy()
+        )
 
         # Next, we generate sickness events for NPCs scheduled to die in their death round.
         for death_event in chain.from_iterable(status_changes.values()):
             status_changes[death_event.round_no].append(
                 _get_sickness_from_death_evt(death_event)
             )
+
+            current_npc_id = death_event.npc_id
+            if current_npc_id in ingrp_sick_death_eligible:
+                ingrp_sick_death_eligible.remove(current_npc_id)
+            if current_npc_id in outgrp_sick_death_eligible:
+                outgrp_sick_death_eligible.remove(current_npc_id)
+
 
         # Sort all NPC sickness events by timestamp in each round's list and then put them in the queues in that order.
         for round_no, event_list in status_changes.items():
