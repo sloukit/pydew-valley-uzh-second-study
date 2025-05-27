@@ -59,10 +59,10 @@ for all rounds.
 ## NPC behaviours in experiment conditions
 **NOTE:** Regardless of the experiment condition, the outgroup will always have half of its members adhering to both measures (a given NPC can either adhere to both measures or to none).
 
-| Condition     | Ingroup NPC behaviour            |
-|---------------|----------------------------------|
-| Adherence     | 80% adhering to goggles and bath |
-| Non-adherence | 80% non-adhering                 |
+| Condition     | Ingroup NPC behaviour                    |
+|---------------|------------------------------------------|
+| Adherence     | 80% of NPCs adhering to goggles and bath |
+| Non-adherence | 80% non-adhering                         |
 
 
 ## Sick/dead NPC proportions in the various conditions
@@ -73,9 +73,6 @@ for all rounds.
 This table shows how many NPCS will get sick and potentially die when the player is in the "Adherence" scenario 
 (i.e. when most of the ingroup NPCs adhere to the health measures).
 
-- In ingroup: 9 adhering NPCs, 3 non-adhering NPCs
-- Outgroup: 6 NPCs adhering, and 6 NPCs not adhering.
-
 | Sick NPCs in ingroup       | Sick NPCs in outgroup      | Dying NPCs in ingroup | Dying NPCs in outgroup | During rounds |
 |----------------------------|----------------------------|-----------------------|------------------------|---------------|
 | 2 non-adhering, 1 adhering | 5 non-adhering, 1 adhering | 1 non-adhering        | 1 non-adhering         | 7, 8 and 9    |
@@ -85,9 +82,6 @@ This table shows how many NPCS will get sick and potentially die when the player
 
 The following table shows how many NPCs will get sick and potentially die when the player is in the "Non-adherence" scenario
 (i.e. when most of the ingroup NPCs refuse to follow the health measures).
-
-- Ingroup: 3 adhering NPCs, 6 non-adhering NPCS
-- Outgroup: 6 NPCs adhering, 6 not adhering.
 
 | Sick NPCs in ingroup       | Sick NPCs in outgroup      | Dying NPCs in ingroup | Dying NPCs in outgroup | During rounds |
 |----------------------------|----------------------------|-----------------------|------------------------|---------------|
