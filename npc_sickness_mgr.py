@@ -180,7 +180,6 @@ class NPCSicknessManager:
             n: [] for n in range(7, 13)
         }
 
-        sick_npcs = {n: ([], []) for n in range(7, 13)}
         deaths = {n: ([], []) for n in range(7, 13)}
 
         # For each group, select which NPCs are going to die first.
@@ -208,7 +207,6 @@ class NPCSicknessManager:
 
             current_npc = death_event.npc_id
             is_ingrp = current_npc < _ID_POOL_SIZE
-            sick_npcs[death_event.round_no][not is_ingrp].append(death_event.npc_id)
             deaths[death_event.round_no][not is_ingrp].append(death_event.npc_id)
 
         # Pick which NPCs will suffer from nonlethal sickness in each round.
@@ -227,7 +225,7 @@ class NPCSicknessManager:
                     2
                     + 4 * (not self.adherence)
                     + 2 * (not self.adherence and rnd < 10)
-                    - len(sick_npcs[rnd][0])
+                    - len(deaths[rnd][0])
                 )
 
                 actual_sample_length = min(
@@ -253,7 +251,7 @@ class NPCSicknessManager:
                     except ValueError:
                         pass
 
-                nominal_target_count = 4 + (rnd < 10)
+                nominal_target_count = 4 + (rnd < 10) - len(deaths[rnd][1])
                 actual_sample_length = min(
                     len(outgrp_sick_death_eligible), nominal_target_count
                 )
