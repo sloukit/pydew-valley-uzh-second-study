@@ -80,6 +80,7 @@ def _roll_death_count_for_ingrp(
 ):
     """Roll how many NPCs will die in the ingroup for the current round."""
     if adherence and current_round > 9:
+        # Force every remaining NPC to survive in this case.
         return 0
     computed = 0
     computed += _roll_death()
@@ -109,6 +110,12 @@ def _get_sickness_from_death_evt(orig_evt: NPCSicknessStatus):
     )
 
 
+def _get_sickness(npc_id: int, current_round: int):
+    return NPCSicknessStatus(
+        npc_id, current_round, randint(1, 2) * 300, NPCSicknessStatusChange.SICKNESS
+    )
+
+
 class NPCSicknessManager:
     def __init__(self, get_round: Callable[[], int], adherence: bool = False):
         self.get_round = get_round
@@ -120,7 +127,10 @@ class NPCSicknessManager:
         }
 
     def _generate_death_events(
-        self, status_dict: dict, ingrp_eligible: list[int], outgrp_eligible: list[int]
+        self,
+        status_dict: dict[int, list[NPCSicknessStatus]],
+        ingrp_eligible: list[int],
+        outgrp_eligible: list[int],
     ):
         """Generate death events for the last 6 rounds."""
         ingrp_death_count = 0
@@ -163,39 +173,106 @@ class NPCSicknessManager:
         """Calculate all sickness-related status change events
         for NPCs."""
         # TODO: continue this
+        ingrp_adherence_pickable = list(self._ingrp_adhering_ids)
+        outgrp_adherence_pickable = list(self._outgrp_adhering_ids)
+
         status_changes: dict[int, list[NPCSicknessStatus]] = {
             n: [] for n in range(7, 13)
-        }  # noqa
+        }
+
+        sick_npcs = {n: ([], []) for n in range(7, 13)}
+        deaths = {n: ([], []) for n in range(7, 13)}
 
         # For each group, select which NPCs are going to die first.
         ingrp_sick_death_eligible = list(
-            _INGRP_ID_SAMPLING.difference(  # noqa
-                self._ingrp_adhering_ids
-            )
+            _INGRP_ID_SAMPLING.difference(self._ingrp_adhering_ids)
         )
         outgrp_sick_death_eligible = list(
-            _OUTGRP_ID_SAMPLING.difference(  # noqa
-                self._outgrp_adhering_ids
-            )
+            _OUTGRP_ID_SAMPLING.difference(self._outgrp_adhering_ids)
         )
 
         # Note: using copies here as we're also going to pick through those same sets of IDs to decide when other NPCs get sick.
         self._generate_death_events(
-            status_changes, ingrp_sick_death_eligible.copy(), outgrp_sick_death_eligible.copy()
+            status_changes,
+            ingrp_sick_death_eligible.copy(),
+            outgrp_sick_death_eligible.copy(),
         )
 
         # Next, we generate sickness events for NPCs scheduled to die in their death round.
+        # These will then be removed from sampling for the current round, and once the death round is reached
+        # when selecting other NPCs to fall sick in said round, removed from the eligible pool entirely.
         for death_event in chain.from_iterable(status_changes.values()):
             status_changes[death_event.round_no].append(
                 _get_sickness_from_death_evt(death_event)
             )
 
-            current_npc_id = death_event.npc_id
-            if current_npc_id in ingrp_sick_death_eligible:
-                ingrp_sick_death_eligible.remove(current_npc_id)
-            if current_npc_id in outgrp_sick_death_eligible:
-                outgrp_sick_death_eligible.remove(current_npc_id)
+            current_npc = death_event.npc_id
+            is_ingrp = current_npc < _ID_POOL_SIZE
+            sick_npcs[death_event.round_no][not is_ingrp].append(death_event.npc_id)
+            deaths[death_event.round_no][not is_ingrp].append(death_event.npc_id)
 
+        # Pick which NPCs will suffer from nonlethal sickness in each round.
+        current_ingrp_sick_npcs = []
+        current_outgrp_sick_npcs = []
+        for rnd in range(7, 13):
+            # Selection for the ingroup (non-adhering NPCs)
+            if ingrp_sick_death_eligible:
+                for dead_id in deaths[rnd][0]:
+                    try:
+                        ingrp_sick_death_eligible.remove(dead_id)
+                    except ValueError:
+                        pass
+
+                nominal_target_count = (
+                    2
+                    + 4 * (not self.adherence)
+                    + 2 * (not self.adherence and rnd < 10)
+                    - len(sick_npcs[rnd][0])
+                )
+
+                actual_sample_length = min(
+                    len(ingrp_sick_death_eligible), nominal_target_count
+                )
+                if actual_sample_length:
+                    current_ingrp_sick_npcs = sample(
+                        ingrp_sick_death_eligible, actual_sample_length
+                    )
+                else:
+                    current_ingrp_sick_npcs.clear()
+
+            # Selection for the ingroup (adhering NPCs)
+            current_ingrp_adherent = choice(ingrp_adherence_pickable)
+            ingrp_adherence_pickable.remove(current_ingrp_adherent)
+            current_ingrp_sick_npcs.append(current_ingrp_adherent)
+
+            # Selection for the outgroup (non-adhering NPCs)
+            if outgrp_sick_death_eligible:
+                for dead_id in deaths[rnd][1]:
+                    try:
+                        outgrp_sick_death_eligible.remove(dead_id)
+                    except ValueError:
+                        pass
+
+                nominal_target_count = 4 + (rnd < 10)
+                actual_sample_length = min(
+                    len(outgrp_sick_death_eligible), nominal_target_count
+                )
+
+                if actual_sample_length:
+                    current_outgrp_sick_npcs = sample(
+                        outgrp_sick_death_eligible, actual_sample_length
+                    )
+                else:
+                    current_outgrp_sick_npcs.clear()
+
+            # Selection for the outgroup (adhering NPCs)
+            current_outgrp_adherent = choice(outgrp_adherence_pickable)
+            outgrp_adherence_pickable.remove(current_outgrp_adherent)
+            current_outgrp_sick_npcs.append(current_outgrp_adherent)
+
+            # Generate all the sickness start events in one fell swoop.
+            for npc_id in chain(current_ingrp_sick_npcs, current_outgrp_sick_npcs):
+                status_changes[rnd].append(_get_sickness(npc_id, rnd))
 
         # Sort all NPC sickness events by timestamp in each round's list and then put them in the queues in that order.
         for round_no, event_list in status_changes.items():
