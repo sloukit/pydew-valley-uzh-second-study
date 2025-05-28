@@ -33,7 +33,9 @@ class RoundMenu(GeneralMenu):
             self.img = pygame.Surface(rect.size, flags=pygame.SRCALPHA)
             self.img.fill(pygame.Color(0, 0, 0, 0))
             FBLITTER.set_current_surf(self.img)
-            FBLITTER.draw_rect("azure3", pygame.Rect(0, 0, rect.width, rect.height), 0, 4)
+            FBLITTER.draw_rect(
+                "azure3", pygame.Rect(0, 0, rect.width, rect.height), 0, 4
+            )
             # pygame.draw.rect(self.img, "azure3", (0, 0, rect.width, rect.height), 0, 4)
 
             # crop icon
