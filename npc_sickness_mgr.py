@@ -122,10 +122,16 @@ class NPCSicknessManager:
         self.adherence = adherence
         self._ingrp_adhering_ids = set()
         self._outgrp_adhering_ids = set()
+        # Using deques so we can pull the events out as time passes in the game.
         self.computed_status_changes: dict[int, deque[NPCSicknessStatus]] = {
             n: deque() for n in range(7, 13)
         }
 
+    def get_status_from_server(self):
+        # TODO: add this.
+        pass
+
+    # region Sickness event generation (first login)
     def _generate_death_events(
         self,
         status_dict: dict[int, list[NPCSicknessStatus]],
@@ -169,10 +175,107 @@ class NPCSicknessManager:
                 outgrp_eligible.remove(selected_npc_id)
                 outgrp_death_count += kill_another_outgrp_npc
 
+    def _compute_nonlethal_sickness(
+        self,
+        status_dict: dict,
+        deaths: dict,
+        ingrp_sick_eligible: list[int],
+        outgrp_sick_eligible: list[int],
+        ingrp_adherence_pickable: list[int],
+        outgrp_adherence_pickable: list[int],
+    ):
+        current_ingrp_sick_npcs = []
+        current_outgrp_sick_npcs = []
+        for rnd in range(7, 13):
+            # Selection for the ingroup (non-adhering NPCs)
+            if ingrp_sick_eligible:
+                for dead_id in deaths[rnd][0]:
+                    try:
+                        ingrp_sick_eligible.remove(dead_id)
+                    except ValueError:
+                        pass
+
+                nominal_target_count = (
+                    2
+                    + 4 * (not self.adherence)
+                    + 2 * (not self.adherence and rnd < 10)
+                    - len(deaths[rnd][0])
+                )
+
+                actual_sample_length = min(
+                    len(ingrp_sick_eligible), nominal_target_count
+                )
+                if actual_sample_length:
+                    current_ingrp_sick_npcs = sample(
+                        ingrp_sick_eligible, actual_sample_length
+                    )
+                else:
+                    current_ingrp_sick_npcs.clear()
+
+            # Selection for the ingroup (adhering NPCs)
+            current_ingrp_adherent = choice(ingrp_adherence_pickable)
+            ingrp_adherence_pickable.remove(current_ingrp_adherent)
+            current_ingrp_sick_npcs.append(current_ingrp_adherent)
+
+            # Selection for the outgroup (non-adhering NPCs)
+            if outgrp_sick_eligible:
+                for dead_id in deaths[rnd][1]:
+                    try:
+                        outgrp_sick_eligible.remove(dead_id)
+                    except ValueError:
+                        pass
+
+                nominal_target_count = 4 + (rnd < 10) - len(deaths[rnd][1])
+                actual_sample_length = min(
+                    len(outgrp_sick_eligible), nominal_target_count
+                )
+
+                if actual_sample_length:
+                    current_outgrp_sick_npcs = sample(
+                        outgrp_sick_eligible, actual_sample_length
+                    )
+                else:
+                    current_outgrp_sick_npcs.clear()
+
+            # Selection for the outgroup (adhering NPCs)
+            current_outgrp_adherent = choice(outgrp_adherence_pickable)
+            outgrp_adherence_pickable.remove(current_outgrp_adherent)
+            current_outgrp_sick_npcs.append(current_outgrp_adherent)
+
+            # Generate all the sickness start events in one fell swoop.
+            for npc_id in chain(current_ingrp_sick_npcs, current_outgrp_sick_npcs):
+                status_dict[rnd].append(_get_sickness(npc_id, rnd))
+
+    def _compute_bathhouse_timings(self, status_dict: dict):
+        """Generate bathhouse timings for each adhering NPC in both groups."""
+        ingrp_pickable = self._ingrp_adhering_ids
+        outgrp_pickable = self._outgrp_adhering_ids
+        for rnd in range(7, 13):
+            for npc_id in chain(ingrp_pickable, outgrp_pickable):
+                # It is assumed an NPC takes 45 seconds to leave the map and come back in all instances.
+                if rnd == 7:
+                    # Allowed range for bathhouse access: 1 minute (60 seconds) to 5 minutes (300 seconds).
+                    # i.e. the allowed timeframe is 240 seconds long.
+                    # Since an NPC takes 45 seconds to go to the bathhouse, take the bath and then come back,
+                    # the allowed range for NPCs to go to the bathhouse is only 195 seconds long.
+                    bathhouse_tstamp = random() * 195 + 60  # Add 1 minute to the rolled duration.
+                else:
+                    # Allowed range in all other rounds: until 3 minutes after round start.
+                    # Again, since an NPC takes 45 seconds to go take the bath, that leaves only
+                    # 135 seconds worth of time to roll a bathhouse moment.
+                    bathhouse_tstamp = random() * 135
+                status_dict[rnd].append(
+                    NPCSicknessStatus(
+                        npc_id,
+                        rnd,
+                        bathhouse_tstamp,
+                        NPCSicknessStatusChange.GO_TO_BATHHOUSE
+                    )
+                )
+
     def _compute_npc_status(self):
         """Calculate all sickness-related status change events
         for NPCs."""
-        # TODO: continue this
         ingrp_adherence_pickable = list(self._ingrp_adhering_ids)
         outgrp_adherence_pickable = list(self._outgrp_adhering_ids)
 
@@ -210,67 +313,17 @@ class NPCSicknessManager:
             deaths[death_event.round_no][not is_ingrp].append(death_event.npc_id)
 
         # Pick which NPCs will suffer from nonlethal sickness in each round.
-        current_ingrp_sick_npcs = []
-        current_outgrp_sick_npcs = []
-        for rnd in range(7, 13):
-            # Selection for the ingroup (non-adhering NPCs)
-            if ingrp_sick_death_eligible:
-                for dead_id in deaths[rnd][0]:
-                    try:
-                        ingrp_sick_death_eligible.remove(dead_id)
-                    except ValueError:
-                        pass
+        self._compute_nonlethal_sickness(
+            status_changes,
+            deaths,
+            ingrp_sick_death_eligible,
+            outgrp_sick_death_eligible,
+            ingrp_adherence_pickable,
+            outgrp_adherence_pickable,
+        )
 
-                nominal_target_count = (
-                    2
-                    + 4 * (not self.adherence)
-                    + 2 * (not self.adherence and rnd < 10)
-                    - len(deaths[rnd][0])
-                )
-
-                actual_sample_length = min(
-                    len(ingrp_sick_death_eligible), nominal_target_count
-                )
-                if actual_sample_length:
-                    current_ingrp_sick_npcs = sample(
-                        ingrp_sick_death_eligible, actual_sample_length
-                    )
-                else:
-                    current_ingrp_sick_npcs.clear()
-
-            # Selection for the ingroup (adhering NPCs)
-            current_ingrp_adherent = choice(ingrp_adherence_pickable)
-            ingrp_adherence_pickable.remove(current_ingrp_adherent)
-            current_ingrp_sick_npcs.append(current_ingrp_adherent)
-
-            # Selection for the outgroup (non-adhering NPCs)
-            if outgrp_sick_death_eligible:
-                for dead_id in deaths[rnd][1]:
-                    try:
-                        outgrp_sick_death_eligible.remove(dead_id)
-                    except ValueError:
-                        pass
-
-                nominal_target_count = 4 + (rnd < 10) - len(deaths[rnd][1])
-                actual_sample_length = min(
-                    len(outgrp_sick_death_eligible), nominal_target_count
-                )
-
-                if actual_sample_length:
-                    current_outgrp_sick_npcs = sample(
-                        outgrp_sick_death_eligible, actual_sample_length
-                    )
-                else:
-                    current_outgrp_sick_npcs.clear()
-
-            # Selection for the outgroup (adhering NPCs)
-            current_outgrp_adherent = choice(outgrp_adherence_pickable)
-            outgrp_adherence_pickable.remove(current_outgrp_adherent)
-            current_outgrp_sick_npcs.append(current_outgrp_adherent)
-
-            # Generate all the sickness start events in one fell swoop.
-            for npc_id in chain(current_ingrp_sick_npcs, current_outgrp_sick_npcs):
-                status_changes[rnd].append(_get_sickness(npc_id, rnd))
+        # Generate random timings for the NPCs to head to the bathhouse for each round.
+        self._compute_bathhouse_timings(status_changes)
 
         # Sort all NPC sickness events by timestamp in each round's list and then put them in the queues in that order.
         for round_no, event_list in status_changes.items():
@@ -288,3 +341,5 @@ class NPCSicknessManager:
         self._outgrp_adhering_ids = set(
             sample(_OUTGRP_ID_SAMPLING_LST, _ADHERENCE_OUTGRP_COUNT)
         )
+
+    # endregion
