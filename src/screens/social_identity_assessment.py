@@ -240,7 +240,7 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
                 text_surf = self.font.render(
                     get_translated_msg(text_key), False, "Black"
                 )
-                half_width_of_text = text_surf.width / 2
+                half_width_of_text = text_surf.get_frect().width / 2
                 current_button_bottom_left = current_button.rect.midbottom
                 FBLITTER.schedule_blit(
                     text_surf,
