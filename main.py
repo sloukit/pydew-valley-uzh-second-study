@@ -357,8 +357,7 @@ class Game:
         )
 
         self.npc_sickness_mgr = NPCSicknessManager(
-            self.get_round,
-            False
+            self.get_round, self.send_telemetry, False
         )
 
     def _empty_round_config_notify(self, cfg_id: str):
@@ -483,6 +482,7 @@ class Game:
             and not self._has_displayed_goggles_tutorial
             and self.round_end_timer > _GOGGLES_TUT_TSTAMP
         )
+
     # endregion
 
     def _notify(self, message: str, id_to_empty: str):

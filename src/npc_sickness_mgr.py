@@ -55,6 +55,13 @@ class NPCSicknessStatus:
     timestamp: float
     change_type: NPCSicknessStatusChange
 
+    def as_dict(self):
+        return {
+            "npc_id": self.npc_id,
+            "timestamp": self.timestamp,
+            "change_type": self.change_type.value,
+        }
+
 
 def _get_death(npc_id: int, death_round: int) -> NPCSicknessStatus:
     """Define a death timestamp for a certain NPC id."""
@@ -117,8 +124,14 @@ def _get_sickness(npc_id: int, current_round: int):
 
 
 class NPCSicknessManager:
-    def __init__(self, get_round: Callable[[], int], adherence: bool = False):
+    def __init__(
+        self,
+        get_round: Callable[[], int],
+        send_telemetry: Callable[[str, dict], None],
+        adherence: bool = False,
+    ):
         self.get_round = get_round
+        self.send_telemetry = send_telemetry
         self.adherence = adherence
         self._ingrp_adhering_ids = set()
         self._outgrp_adhering_ids = set()
@@ -258,7 +271,9 @@ class NPCSicknessManager:
                     # i.e. the allowed timeframe is 240 seconds long.
                     # Since an NPC takes 45 seconds to go to the bathhouse, take the bath and then come back,
                     # the allowed range for NPCs to go to the bathhouse is only 195 seconds long.
-                    bathhouse_tstamp = random() * 195 + 60  # Add 1 minute to the rolled duration.
+                    bathhouse_tstamp = (
+                        random() * 195 + 60
+                    )  # Add 1 minute to the rolled duration.
                 else:
                     # Allowed range in all other rounds: until 3 minutes after round start.
                     # Again, since an NPC takes 45 seconds to go take the bath, that leaves only
@@ -269,7 +284,7 @@ class NPCSicknessManager:
                         npc_id,
                         rnd,
                         bathhouse_tstamp,
-                        NPCSicknessStatusChange.GO_TO_BATHHOUSE
+                        NPCSicknessStatusChange.GO_TO_BATHHOUSE,
                     )
                 )
 
@@ -329,6 +344,12 @@ class NPCSicknessManager:
         for round_no, event_list in status_changes.items():
             event_list.sort(key=lambda evt: evt.timestamp)
             self.computed_status_changes[round_no].extend(event_list)
+
+        # Send the status to the server.
+        self.send_telemetry(
+            "npc_status",
+            {n: [evt.as_dict() for evt in val] for n, val in status_changes.items()},
+        )
 
     def select_adhering_npcs(self):
         """Determine which NPCs adhere to the health measures.
