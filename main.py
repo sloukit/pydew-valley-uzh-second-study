@@ -41,6 +41,7 @@ from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
 from src.npc.npcs_state_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
+from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
 from src.screens.inventory import InventoryMenu, prepare_checkmark_for_buttons
@@ -355,12 +356,18 @@ class Game:
             self.send_telemetry,
         )
 
+        self.npc_sickness_mgr = NPCSicknessManager(
+            self.get_round,
+            False
+        )
+
     def _empty_round_config_notify(self, cfg_id: str):
         self.round_config[f"notify_{cfg_id}_text"] = ""
         tstamp = f"notify_{cfg_id}_timestamp"
         if tstamp in self.round_config:
             self.round_config[tstamp] = []
 
+    # region Notification and event checks
     @property
     def _can_notify_new_crop(self):
         return (
@@ -476,6 +483,7 @@ class Game:
             and not self._has_displayed_goggles_tutorial
             and self.round_end_timer > _GOGGLES_TUT_TSTAMP
         )
+    # endregion
 
     def _notify(self, message: str, id_to_empty: str):
         self.notification_menu.set_message(message)
