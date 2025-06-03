@@ -272,7 +272,11 @@ async def get_request_with_callback(
     callback: Callable[[dict], None],
     error_callback: Callable[[Exception], None],
 ):
-    pass
+    try:
+        response = await get_request(url, headers)
+        callback(response)
+    except Exception as exc:
+        error_callback(exc)
 
 
 async def post_request(url: str, headers: dict, data: dict) -> list | dict:

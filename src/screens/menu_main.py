@@ -167,6 +167,8 @@ class MainMenu(GeneralMenu):
     def error_login_callback(self, login_error: Exception) -> None:
         """Meant to be used as an error callback function post-login."""
         xplat.log("error login callback")
+        # TODO: remove this print once testing is finished.
+        print(login_error)
         self.display_error.set_error_message(login_error)
 
     def do_login(self, token: str) -> None:

@@ -14,6 +14,7 @@ from random import choice, randint, random, sample
 from typing import Callable
 
 from src.enums import NPCSicknessStatusChange
+from src.xplat import get_request_with_callback  # noqa: F401
 
 # Used to sample NPC IDs when selecting which NPCs adhere or not.
 _INGRP_ID_SAMPLING_LST = list(range(12))
