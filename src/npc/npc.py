@@ -41,9 +41,11 @@ class NPC(NPCBase):
         special_features: str | None,
         npc_id: int = 0,
         death_callback: Callable[[NPC], None] = None,
+        health_update_callback: Callable[[NPC], None] = None,
     ):
         self.tree_sprites = tree_sprites
         self.death_callback = death_callback
+        self.health_update_callback = health_update_callback
 
         super().__init__(
             pos=pos,
@@ -247,6 +249,7 @@ class NPC(NPCBase):
             self.speed = self.hp
             self.image_alpha = 30 + int(150 * (self.hp / 100))
             self.image.set_alpha(self.image_alpha)
+            self.health_update_callback(self)
             if self.hp <= 0:
                 self.die()
 
