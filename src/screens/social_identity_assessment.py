@@ -240,7 +240,7 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
                 text_surf = self.font.render(
                     get_translated_msg(text_key), False, "Black"
                 )
-                half_width_of_text = text_surf.width / 2
+                half_width_of_text = text_surf.get_frect().width / 2
                 current_button_bottom_left = current_button.rect.midbottom
                 FBLITTER.schedule_blit(
                     text_surf,
@@ -327,7 +327,6 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
 
     def draw_title(self):
         FBLITTER.schedule_blit(self._surface, (0, 0))
-        # self.display_surface.blit(self._surface, (0, 0))
 
     def create_image_number(self, number, foreground_color="Black") -> pygame.surface:
         return self.numbers_font.render(f"{number}", False, foreground_color)
@@ -359,8 +358,3 @@ class SocialIdentityAssessmentMenu(AbstractMenu):
             description_position,
         )
         FBLITTER.blit_all()
-        # pygame.draw.rect(self._surface, SL_ORANGE_BRIGHT, text_rect)
-        # self._surface.blit(
-        #     text_surface,
-        #     description_position,
-        # )

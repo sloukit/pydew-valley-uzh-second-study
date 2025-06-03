@@ -505,6 +505,7 @@ class Level:
 
     def warp_to_map(self, map_name: str):
         if map_name == "bathhouse":
+            self.send_telemetry("bath_taken", {})
             self.bubble_mgr.start()
         if map_name == "minigame":
             self.cow_herding_count += 1
@@ -743,6 +744,10 @@ class Level:
         if self.controls.SHOW_BOX_KEYBINDINGS.click:
             post_event(SHOW_BOX_KEYBINDINGS)
 
+        # TODO: move this back into the debug controls if check once testing is done
+        if self.controls.DEBUG_END_ROUND.click:
+            self.switch_screen(GameState.ROUND_END)
+
         if self.get_game_version() == DEBUG_MODE_VERSION:
             # if self.controls.DEBUG_QUAKE.click:
             #     post_event(START_QUAKE, duration=2.0, debug=True)
@@ -757,9 +762,6 @@ class Level:
 
             if self.controls.DEBUG_PLAYER_TASK.click:
                 self.switch_screen(GameState.PLAYER_TASK)
-
-            if self.controls.DEBUG_END_ROUND.click:
-                self.switch_screen(GameState.ROUND_END)
 
             if self.controls.DEBUG_SELF_ASSESSMENT.click:
                 self.switch_screen(GameState.SELF_ASSESSMENT)
