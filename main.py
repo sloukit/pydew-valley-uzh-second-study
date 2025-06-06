@@ -507,7 +507,7 @@ class Game:
                 "payload": payload,
                 "game_version": self.game_version,
                 "game_round": self.round,
-                "round_timer": str(round(self.round_end_timer, 2)),
+                "round_timer": round(self.round_end_timer, 2),
             }
             client.send_telemetry(self.jwt, telemetry)
 
@@ -523,12 +523,14 @@ class Game:
 
     def set_token(self, response: dict[str, Any]) -> dict[str, Any]:
         xplat.log("Login successful!")
+        xplat.log(f"Response content: {response}")
         # `token` is the play token the player entered
         self.token = response["token"]
         # `jwt` is the creds used to send telemetry to the backend
         self.jwt = response["jwt"]
         # `game_version` is stored in the player database
-        self.game_version = int(response["game_version"])
+        self.game_version = response["game_version"]
+        self.npc_sickness_mgr.adherence = response["adherence"]
         xplat.log(f"token: {self.token}")
         xplat.log(f"jwt: {self.jwt}")
 
@@ -558,7 +560,7 @@ class Game:
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
             day_completions = []
             max_complete_level = 0
-            if not (len(response["status"]) == 0):  # has at least 1 completed level
+            if response["status"]:  # has at least 1 completed level
                 day_completions = [
                     d for d in response["status"] if d["game_round"] % 2 == 0
                 ]  # these are day task completions
@@ -568,8 +570,10 @@ class Game:
                     raise ValueError(
                         "All levels are already completed for this player token."
                     )
+
             else:
                 xplat.log("First login ever with this token, start level 1!")
+                self.npc_sickness_mgr.compute_sickness_events()
             # max_complete_level = 6
             if len(day_completions) > 0:
                 timestamps = [

@@ -6,6 +6,7 @@ get sick and whether they will die or recover on the fly.
 
 For adhering NPCs, it will also be decided when the NPCs go to the bathhouse this way."""
 
+import asyncio  # noqa: F401
 from collections import deque
 from dataclasses import dataclass
 from itertools import chain
@@ -141,7 +142,7 @@ class NPCSicknessManager:
             n: deque() for n in range(7, 13)
         }
 
-    def get_status_from_server(self):
+    def get_status_from_server(self, jwt: str):
         # TODO: add this.
         pass
 
@@ -320,6 +321,8 @@ class NPCSicknessManager:
         # These will then be removed from sampling for the current round, and once the death round is reached
         # when selecting other NPCs to fall sick in said round, removed from the eligible pool entirely.
         for death_event in chain.from_iterable(status_changes.values()):
+            if death_event.change_type != NPCSicknessStatusChange.DIE:
+                continue
             status_changes[death_event.round_no].append(
                 _get_sickness_from_death_evt(death_event)
             )
@@ -363,5 +366,9 @@ class NPCSicknessManager:
         self._outgrp_adhering_ids = set(
             sample(_OUTGRP_ID_SAMPLING_LST, _ADHERENCE_OUTGRP_COUNT)
         )
+
+    def compute_sickness_events(self):
+        self.select_adhering_npcs()
+        self._compute_npc_status()
 
     # endregion

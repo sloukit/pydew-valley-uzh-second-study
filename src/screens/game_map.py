@@ -747,7 +747,6 @@ class GameMap:
             study_group=study_group,
             apply_tool=self.apply_tool,
             plant_collision=self.plant_collision,
-            get_map_size=self.get_size_in_tiles,
             soil_manager=self.soil_manager,
             emote_manager=self.npc_emote_manager,
             tree_sprites=self.tree_sprites,

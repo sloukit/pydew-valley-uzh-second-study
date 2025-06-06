@@ -35,7 +35,6 @@ class NPCBase(Character, AIBehaviour, ABC):
         study_group: StudyGroup,
         apply_tool: Callable[[FarmingTool, tuple[float, float], Character], None],
         plant_collision: Callable[[Character], None],
-        get_map_size: Callable[[], tuple[int, int]],
         behaviour_tree_context: ContextType,
         z: int,
         emote_manager: NPCEmoteManager,
@@ -53,7 +52,6 @@ class NPCBase(Character, AIBehaviour, ABC):
             z=z,
         )
         AIBehaviour.__init__(self, behaviour_tree_context=behaviour_tree_context)
-        self.get_map_size = get_map_size
         self.emote_manager = emote_manager
         self.npc_id = npc_id
         self.speed = 250
