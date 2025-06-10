@@ -14,8 +14,8 @@ from math import ceil, floor
 from random import choice, randint, random, sample
 from typing import Callable
 
+from src.client import get_npc_status  # noqa: F401
 from src.enums import NPCSicknessStatusChange
-from src.xplat import get_request_with_callback  # noqa: F401
 
 # Used to sample NPC IDs when selecting which NPCs adhere or not.
 _INGRP_ID_SAMPLING_LST = list(range(12))
@@ -129,10 +129,12 @@ class NPCSicknessManager:
     def __init__(
         self,
         get_round: Callable[[], int],
+        get_rnd_timer: Callable[[], float],
         send_telemetry: Callable[[str, dict], None],
         adherence: bool = False,
     ):
         self.get_round = get_round
+        self.get_rnd_timer = get_rnd_timer
         self.send_telemetry = send_telemetry
         self.adherence = adherence
         self._ingrp_adhering_ids = set()
@@ -142,9 +144,44 @@ class NPCSicknessManager:
             n: deque() for n in range(7, 13)
         }
 
+    @property
+    def _next_event(self):
+        return self.computed_status_changes[self.get_round()][0]
+
+    def update_npc_status(self):
+        if self.get_round() < 7:
+            # Don't do anything if in the earlier rounds.
+            return
+        time_elapsed = self.get_rnd_timer()
+        next_evt = self._next_event
+        if next_evt.timestamp > time_elapsed:
+            # Too early.
+            return
+
+        match next_evt.change_type:
+            # TODO: add behavioural code to get NPCs sick after round 7, and other related things.
+            case NPCSicknessStatusChange.SICKNESS:
+                pass
+            case NPCSicknessStatusChange.DIE:
+                pass
+            case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
+                pass
+
+    def _setup_from_returned_data(self, received: dict | None):
+        print(received)
+
+        received_data = received["data"]
+
+        if received_data is None:
+            self.compute_sickness_events()
+            return
+
+        for i, evt_list in received_data.items():
+            for evt in evt_list:
+                self.computed_status_changes[i].append(NPCSicknessStatus(evt["npc_id"], i, evt["timestamp"], evt["change_type"]))
+
     def get_status_from_server(self, jwt: str):
-        # TODO: add this.
-        pass
+        get_npc_status(jwt, self._setup_from_returned_data)
 
     # region Sickness event generation (first login)
     def _generate_death_events(

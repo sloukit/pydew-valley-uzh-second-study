@@ -357,7 +357,7 @@ class Game:
         )
 
         self.npc_sickness_mgr = NPCSicknessManager(
-            self.get_round, self.send_telemetry, False
+            self.get_round, lambda: self.round_end_timer, self.send_telemetry, False
         )
 
     def _empty_round_config_notify(self, cfg_id: str):
@@ -573,7 +573,7 @@ class Game:
 
             else:
                 xplat.log("First login ever with this token, start level 1!")
-                self.npc_sickness_mgr.compute_sickness_events()
+            self.npc_sickness_mgr.get_status_from_server(self.jwt)
             # max_complete_level = 6
             if len(day_completions) > 0:
                 timestamps = [

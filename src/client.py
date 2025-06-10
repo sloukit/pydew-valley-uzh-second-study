@@ -69,7 +69,7 @@ def send_telemetry(encoded_jwt: str, payload: dict) -> None:
 
 
 async def _get_npc_status_internal(encoded_jwt: str, callback: Callable) -> dict | None:
-    url = f"{SERVER_URL}/npc_status"
+    url = f"{SERVER_URL}/telemetry/npc_status/"
     headers = {
         "Authorization": f"Bearer {encoded_jwt}"
     }
