@@ -70,13 +70,10 @@ def send_telemetry(encoded_jwt: str, payload: dict) -> None:
 
 async def _get_npc_status_internal(encoded_jwt: str, callback: Callable) -> dict | None:
     url = f"{SERVER_URL}/telemetry/npc_status/"
-    headers = {
-        "Authorization": f"Bearer {encoded_jwt}"
-    }
+    headers = {"Authorization": f"Bearer {encoded_jwt}"}
     callback(await xplat.get_request(url, headers))
 
 
 def get_npc_status(encoded_jwt: str, callback: Callable) -> None:
     xplat.log("Retrieving NPC status...")
     asyncio.create_task(_get_npc_status_internal(encoded_jwt, callback))
-

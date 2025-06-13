@@ -12,9 +12,7 @@ from pytmx import (  # type: ignore[import-untyped]
     TiledTileLayer,
 )
 
-from src.camera.camera_target import CameraTarget
-from src.camera.zoom_area import ZoomArea
-from src.camera.zoom_manager import ZoomManager
+from src.camera import CameraTarget, ZoomArea, ZoomManager
 from src.enums import (
     Direction,
     FarmingTool,
@@ -309,8 +307,10 @@ class GameMap:
         # assets
         frames: dict,
         round_config: dict[str, Any],
+        # NPC-related stuff
         get_game_version: Callable[[], int],
         npcs_state_registry: NpcsStateRegistry,
+        reference_npc_in_mgr: Callable[[int, NPC], None],
         disable_minigame: bool = False,
         round_no: int = 0,
     ):
@@ -318,6 +318,7 @@ class GameMap:
         self.number_of_hats_to_exclude = 2
         self._tilemap = tilemap
         self.npcs_state_registry: NpcsStateRegistry = npcs_state_registry
+        self._reference_npc_in_mgr = reference_npc_in_mgr
 
         if "Player" not in self._tilemap.layernames:
             raise InvalidMapError("No Player layer could be found")
@@ -726,7 +727,7 @@ class GameMap:
             )
         else:
             try:
-                study_group = StudyGroup[group]
+                study_group = StudyGroup(group)
             except KeyError:
                 warnings.warn(
                     f"NPC with ID {npc_id} has an invalid group '{group}' assigned to "
@@ -759,6 +760,7 @@ class GameMap:
             health_update_callback=self.npcs_state_registry.register_health_update,
         )
         npc.teleport(pos)
+        self._reference_npc_in_mgr(npc_id, npc)
         # Ingroup NPCs wearing only the hat and no necklace should not be able to walk on the forest and town map,
         # only on the farming map
         no_walking_npc = (

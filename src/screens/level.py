@@ -37,6 +37,7 @@ from src.gui.health_bar import PLAYER_HP, PLAYER_HP_STATE, PLAYER_IS_SICK
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
+from src.npc.behaviour.context import NPCSharedContext
 from src.npc.npc import NPC
 from src.npc.npcs_state_registry import NpcsStateRegistry
 from src.npc.setup import AIData
@@ -161,9 +162,10 @@ class Level:
         sounds: SoundDict,
         save_file: SaveFile,
         clock: pygame.time.Clock,
-        get_world_time: Callable[[None], tuple[int, int]],
+        get_world_time: Callable[[], tuple[int, int]],
         dialogue_manager: DialogueManager,
         send_telemetry: Callable[[str, dict[str, Any]], None],
+        reference_npc_in_mgr: Callable[[int, NPC], None],
     ) -> None:
         # main setup
         self.display_surface = pygame.display.get_surface()
@@ -171,6 +173,7 @@ class Level:
         self.save_file = save_file
         self.dialogue_manager = dialogue_manager
         self.send_telemetry = send_telemetry
+        self.reference_npc_in_mgr = reference_npc_in_mgr
 
         # cutscene
         # target_points = [(100, 100), (200, 200), (300, 100), (800, 900)]
@@ -395,6 +398,7 @@ class Level:
             round_config=self.round_config,
             get_game_version=self.get_game_version,
             npcs_state_registry=self.npcs_state_registry,
+            reference_npc_in_mgr=self.reference_npc_in_mgr,
             disable_minigame=self.can_disable_minigame,
             round_no=self.get_round(),
         )
@@ -457,6 +461,7 @@ class Level:
         self.rain.set_floor_size(self.game_map.get_size())
 
         self.current_map = game_map
+        NPCSharedContext.current_map = game_map
 
         if game_map == Map.MINIGAME:
             self.current_minigame = CowHerding(

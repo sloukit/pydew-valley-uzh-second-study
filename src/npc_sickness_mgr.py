@@ -16,6 +16,7 @@ from typing import Callable
 
 from src.client import get_npc_status  # noqa: F401
 from src.enums import NPCSicknessStatusChange
+from src.npc.npc import NPC
 
 # Used to sample NPC IDs when selecting which NPCs adhere or not.
 _INGRP_ID_SAMPLING_LST = list(range(12))
@@ -136,6 +137,7 @@ class NPCSicknessManager:
         self.get_round = get_round
         self.get_rnd_timer = get_rnd_timer
         self.send_telemetry = send_telemetry
+        self._npcs: dict[int, NPC] = {}
         self.adherence = adherence
         self._ingrp_adhering_ids = set()
         self._outgrp_adhering_ids = set()
@@ -143,32 +145,55 @@ class NPCSicknessManager:
         self.computed_status_changes: dict[int, deque[NPCSicknessStatus]] = {
             n: deque() for n in range(7, 13)
         }
+        self.death_tstamps: dict[int, tuple[int, float]] = {}
+
+    def add_npc(self, npc_id: int, obj: NPC):
+        self._npcs[npc_id] = obj
 
     @property
     def _next_event(self):
         return self.computed_status_changes[self.get_round()][0]
 
     def update_npc_status(self):
-        if self.get_round() < 7:
+        current_round = self.get_round()
+        if current_round < 7:
             # Don't do anything if in the earlier rounds.
             return
         time_elapsed = self.get_rnd_timer()
         next_evt = self._next_event
-        if next_evt.timestamp > time_elapsed:
+        timestamp = next_evt.timestamp
+        if timestamp > time_elapsed:
             # Too early.
             return
 
+        target_npc: int = next_evt.npc_id
+
         match next_evt.change_type:
-            # TODO: add behavioural code to get NPCs sick after round 7, and other related things.
             case NPCSicknessStatusChange.SICKNESS:
-                pass
+                # Check if the NPC is scheduled to die
+                death_tstamp = self.death_tstamps.get(target_npc)
+                if (
+                    death_tstamp is None
+                    or death_tstamp[0] < current_round
+                    or timestamp + 300 < death_tstamp[1]
+                ):
+                    # Regular sickness if any of these three conditions is not fulfilled:
+                    # - There is no death timestamp for this NPC.
+                    # - The current round is lower than the one in the death timestamp for the NPC.
+                    # - There is more than 5 minutes between the sickness timestamp and the death timestamp.
+                    self._npcs[target_npc].get_sick(timestamp)
+                    return
+                self._npcs[target_npc].get_sick(timestamp, death_tstamp[1])
             case NPCSicknessStatusChange.DIE:
-                pass
+                self._npcs[target_npc].die()
             case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
                 pass
 
     def _setup_from_returned_data(self, received: dict | None):
         print(received)
+
+        if received is None:
+            return
 
         received_data = received["data"]
 
@@ -178,7 +203,12 @@ class NPCSicknessManager:
 
         for i, evt_list in received_data.items():
             for evt in evt_list:
-                self.computed_status_changes[i].append(NPCSicknessStatus(evt["npc_id"], i, evt["timestamp"], evt["change_type"]))
+                computed = NPCSicknessStatus(
+                    evt["npc_id"], i, evt["timestamp"], evt["change_type"]
+                )
+                self.computed_status_changes[i].append(computed)
+                if computed.change_type == NPCSicknessStatusChange.DIE:
+                    self.death_tstamps[computed.npc_id] = (i, computed.timestamp)
 
     def get_status_from_server(self, jwt: str):
         get_npc_status(jwt, self._setup_from_returned_data)
@@ -212,7 +242,9 @@ class NPCSicknessManager:
                     # for the outgroup.
                     selected_ids = sample(ingrp_eligible, curr_ingrp_rnd_deaths)
                     for npc_id in selected_ids:
-                        status_dict[rnd].append(_get_death(npc_id, rnd))
+                        computed = _get_death(npc_id, rnd)
+                        status_dict[rnd].append(computed)
+                        self.death_tstamps[npc_id] = (rnd, computed.timestamp)
                         ingrp_eligible.remove(npc_id)
                     ingrp_death_count += curr_ingrp_rnd_deaths
 
@@ -223,7 +255,9 @@ class NPCSicknessManager:
                     # jump to the next loop.
                     continue
                 selected_npc_id = choice(outgrp_eligible)
-                status_dict[rnd].append(_get_death(selected_npc_id, rnd))
+                computed = _get_death(selected_npc_id, rnd)
+                status_dict[rnd].append(computed)
+                self.death_tstamps[selected_npc_id] = (rnd, computed.timestamp)
                 outgrp_eligible.remove(selected_npc_id)
                 outgrp_death_count += kill_another_outgrp_npc
 

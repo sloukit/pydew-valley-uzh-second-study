@@ -40,6 +40,7 @@ from src.fblitter import FBLITTER
 from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
+from src.npc.npc import NPC
 from src.npc.npcs_state_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
 from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.fast_forward import FastForward
@@ -235,6 +236,7 @@ class Game:
             self.get_world_time,
             self.dialogue_manager,
             self.send_telemetry,
+            self.add_npc_to_mgr,
         )
         self.player = self.level.player
 
@@ -359,6 +361,9 @@ class Game:
         self.npc_sickness_mgr = NPCSicknessManager(
             self.get_round, lambda: self.round_end_timer, self.send_telemetry, False
         )
+
+    def add_npc_to_mgr(self, npc_id: int, npc: NPC):
+        self.npc_sickness_mgr.add_npc(npc_id, npc)
 
     def _empty_round_config_notify(self, cfg_id: str):
         self.round_config[f"notify_{cfg_id}_text"] = ""

@@ -1,38 +1,24 @@
 from __future__ import annotations
 
 import random
-from dataclasses import dataclass, field
 from enum import Enum
 from typing import Callable
 
 import pygame
 
-from src.enums import Direction, FarmingTool, ItemToUse, SeedType
-from src.npc.bases.npc_base import NPCBase
+from src.enums import Direction, FarmingTool, ItemToUse, Map
 from src.npc.behaviour.ai_behaviour_tree_base import (
     Action,
     Condition,
-    Context,
     NodeWrapper,
     Selector,
     Sequence,
 )
+from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.npc.utils import pf_move_to, pf_wander
 from src.settings import SCALED_TILE_SIZE
 from src.sprites.objects.tree import Tree
 from src.support import distance, near_tiles
-
-
-class NPCSharedContext:
-    targets = set()
-
-
-@dataclass
-class NPCIndividualContext(Context):
-    npc: NPCBase
-    # list of available seeds depending on game version and round number
-    allowed_seeds: list[SeedType] = field(default_factory=list)
-    adhering_to_measures: bool = field(default=False)
 
 
 def walk_to_pos(
@@ -94,7 +80,13 @@ def will_leave_farm_for_bathhouse(context: NPCIndividualContext) -> bool:
     #      - Check if the bathhouse timespan isn't elapsed already.
     #      - Random chance to head to the bathhouse.
     #      - The NPC didn't already head to the bathhouse.
-    return context.adhering_to_measures
+    shared_ctx = NPCSharedContext
+    return (
+        context.adhering_to_measures
+        and shared_ctx.current_map == Map.NEW_FARM
+        and shared_ctx.get_round() >= 7
+        and shared_ctx.get_rnd_timer() >= 30
+    )
 
 
 def go_to_bathhouse(context: NPCIndividualContext) -> bool:
