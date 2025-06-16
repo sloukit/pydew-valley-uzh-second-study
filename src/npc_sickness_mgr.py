@@ -15,7 +15,9 @@ from random import choice, randint, random, sample
 from typing import Callable
 
 from src.client import get_npc_status  # noqa: F401
-from src.enums import NPCSicknessStatusChange
+from src.enums import Map, NPCSicknessStatusChange
+from src.npc.behaviour.context import NPCSharedContext
+from src.npc.behaviour.npc_behaviour_tree import NPCBehaviourTree
 from src.npc.npc import NPC
 
 # Used to sample NPC IDs when selecting which NPCs adhere or not.
@@ -35,8 +37,11 @@ _ADHERENCE_OUTGRP_COUNT = _MAXIMUM_DEATH_COUNT = _ID_POOL_SIZE // 2
 
 _DEATH_LIKELIHOOD = 0.5
 
-# Sentinel object returned if an NPC doesn't die.
-_WILL_NOT_DIE = object()
+# Maps the appropriate behaviour trees to the current map for the bathhouse.
+_MAP_TO_BATH_BEHAVIOUR = {
+    Map.NEW_FARM: NPCBehaviourTree.FARM_GO_TO_BATHHOUSE,
+    Map.FOREST: NPCBehaviourTree.FOREST_GO_TO_BATHHOUSE
+}
 
 
 def _get_ingrp_adhering_count(adherence: bool = False):
@@ -187,7 +192,11 @@ class NPCSicknessManager:
             case NPCSicknessStatusChange.DIE:
                 self._npcs[target_npc].die()
             case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
-                pass
+                self._npcs[
+                    target_npc
+                ].conditional_behaviour_tree = _MAP_TO_BATH_BEHAVIOUR[
+                    NPCSharedContext.current_map
+                ]
 
     def _setup_from_returned_data(self, received: dict | None):
         print(received)

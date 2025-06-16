@@ -40,6 +40,7 @@ from src.fblitter import FBLITTER
 from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
+from src.npc.behaviour.context import NPCSharedContext
 from src.npc.npc import NPC
 from src.npc.npcs_state_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
 from src.npc_sickness_mgr import NPCSicknessManager
@@ -349,9 +350,12 @@ class Game:
         self.switched_to_tutorial = False
 
         # Sickness management
+        self.get_rnd_timer = lambda: self.round_end_timer
+        NPCSharedContext.get_rnd_timer = self.get_rnd_timer
+        NPCSharedContext.get_round = self.get_round
         self.sickness_man = SicknessManager(
             self.get_round,
-            lambda: self.round_end_timer,
+            self.get_rnd_timer,
             lambda: self.player.has_goggles,
             lambda: True,
             lambda: self.player.is_sick,
@@ -359,7 +363,7 @@ class Game:
         )
 
         self.npc_sickness_mgr = NPCSicknessManager(
-            self.get_round, lambda: self.round_end_timer, self.send_telemetry, False
+            self.get_round, self.get_rnd_timer, self.send_telemetry, False
         )
 
     def add_npc_to_mgr(self, npc_id: int, npc: NPC):

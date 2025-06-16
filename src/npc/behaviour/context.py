@@ -19,3 +19,8 @@ class NPCIndividualContext(Context):
     # list of available seeds depending on game version and round number
     allowed_seeds: list[SeedType] = field(default_factory=list)
     adhering_to_measures: bool = field(default=False)
+    timing_for_bathhouse: float = field(default=0.0)
+    going_to_bathhouse: bool = field(default=False)
+
+    def set_behaviour(self, new_behaviour):
+        self.npc.conditional_behaviour_tree = new_behaviour

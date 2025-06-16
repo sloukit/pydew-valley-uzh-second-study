@@ -6,7 +6,7 @@ from typing import Callable
 
 import pygame
 
-from src.enums import Direction, FarmingTool, ItemToUse, Map
+from src.enums import Direction, FarmingTool, ItemToUse, Map, StudyGroup
 from src.npc.behaviour.ai_behaviour_tree_base import (
     Action,
     Condition,
@@ -74,38 +74,122 @@ def wander(context: NPCIndividualContext) -> bool:
 
 # region Logic for farm NPCs to potentially "leave the map" and come back to go to the bathhouse
 def will_leave_farm_for_bathhouse(context: NPCIndividualContext) -> bool:
-    # TODO: this condition isn't enough alone. More checks should be implemented:
-    #      - Check if the map is the farm.
-    #      - Ensure the round number is higher than 7 or that 30 seconds have passed (i.e. the eruption occurred)
-    #      - Check if the bathhouse timespan isn't elapsed already.
-    #      - Random chance to head to the bathhouse.
-    #      - The NPC didn't already head to the bathhouse.
     shared_ctx = NPCSharedContext
+    current_round = shared_ctx.get_round()
+    is_rnd_7 = current_round == 7
     return (
         context.adhering_to_measures
         and shared_ctx.current_map == Map.NEW_FARM
-        and shared_ctx.get_round() >= 7
-        and shared_ctx.get_rnd_timer() >= 30
+        and current_round >= 7
+        and shared_ctx.get_rnd_timer() >= 30 * is_rnd_7
+        and not context.going_to_bathhouse
     )
 
 
 def go_to_bathhouse(context: NPCIndividualContext) -> bool:
-    return walk_to_pos(context, (24, 40), lambda: print("Finished"))
+    context.timing_for_bathhouse = NPCSharedContext.get_rnd_timer()
+    context.going_to_bathhouse = True
+    is_outgrp = context.npc.study_group == StudyGroup.OUTGROUP
+    return walk_to_pos(context, (24 + 30 * is_outgrp, 40), lambda: print("Finished"))
 
 
 def will_return_to_farm_from_bathhouse(context: NPCIndividualContext) -> bool:
-    # TODO: add more conditions to ensure the NPC returns properly from the bathhouse. List:
-    #      - Already "left" the map (i.e. finished moving and is out of visible bounds)
-    #      - 45 seconds passed since the NPC left (i.e. they waited long enough outside of view)
-    #      - The map is the farm
-    return context.npc.get_tile_pos() == (24, 40)
+    shared_ctx = NPCSharedContext
+    is_outgrp = context.npc.study_group == StudyGroup.OUTGROUP
+    return (
+        context.adhering_to_measures
+        and context.going_to_bathhouse
+        and shared_ctx.current_map == Map.NEW_FARM
+        and context.npc.get_tile_pos() == (24 + 30 * is_outgrp, 40)
+        and shared_ctx.get_rnd_timer() - context.timing_for_bathhouse >= 45
+    )
 
 
-def return_from_bathhouse(context: NPCIndividualContext):
-    # TODO: change the lambda at the end to return the NPC's behavioural tree to normal once it returns from the bath.
-    return walk_to_pos(context, (17, 27), lambda: print("Finished return"))
+def _reset_state_to_normal(context: NPCIndividualContext, behaviour):
+    context.going_to_bathhouse = False
+    context.set_behaviour(behaviour)
 
 
+def return_from_bathhouse_farm(context: NPCIndividualContext):
+    is_outgrp = context.npc.study_group == StudyGroup.OUTGROUP
+    return walk_to_pos(
+        context,
+        (17 + 44 * is_outgrp, 27),
+        lambda: _reset_state_to_normal(context, NPCBehaviourTree.FARMING),
+    )
+
+
+# endregion
+
+
+# region Forest-NPC logic to go to the bathhouse
+def will_leave_forest_for_bathhouse(context: NPCIndividualContext) -> bool:
+    shared_ctx = NPCSharedContext
+    current_round = shared_ctx.get_round()
+    is_rnd_7 = current_round == 7
+    return (
+        context.adhering_to_measures
+        and shared_ctx.current_map == Map.FOREST
+        and current_round >= 7
+        and shared_ctx.get_rnd_timer() >= 30 * is_rnd_7
+        and not context.going_to_bathhouse
+    )
+
+
+def go_to_bathhouse_forest(context: NPCIndividualContext):
+    context.timing_for_bathhouse = NPCSharedContext.get_rnd_timer()
+    return walk_to_pos(context, (9, 18), lambda: print("Finished moving"))
+
+
+def will_return_to_forest(context: NPCIndividualContext):
+    position = context.npc.get_tile_pos()
+    return (
+        context.adhering_to_measures
+        and NPCSharedContext.current_map == Map.FOREST
+        and position[0] <= 9
+        and position[1] == 18
+        and NPCSharedContext.get_rnd_timer() - context.timing_for_bathhouse >= 45
+        and context.going_to_bathhouse
+    )
+
+
+def return_from_bathhouse_forest(context: NPCIndividualContext):
+    context.going_to_bathhouse = False
+    return walk_to_pos(
+        context, (10, 18), _reset_state_to_normal(context, NPCBehaviourTree.WOODCUTTING)
+    )
+# endregion
+
+
+# region "Go to bathhouse" logic for town map
+def will_leave_to_bathhouse(context: NPCIndividualContext) -> bool:
+    shared_ctx = NPCSharedContext
+    current_round = shared_ctx.get_round()
+    is_rnd_7 = current_round == 7
+    return (
+        context.adhering_to_measures
+        and current_round >= 7
+        and shared_ctx.current_map == Map.TOWN
+        and shared_ctx.get_rnd_timer() >= 30 * is_rnd_7
+        and not context.going_to_bathhouse
+    )
+
+
+def go_to_bathhouse_town(context: NPCIndividualContext) -> bool:
+    return walk_to_pos(context, (54, 43), lambda: print("Finished moving"))
+
+
+def will_leave_bathhouse(context: NPCIndividualContext):
+    shared_ctx = NPCSharedContext
+    return (
+        context.adhering_to_measures
+        and context.going_to_bathhouse
+        and shared_ctx.get_rnd_timer() - context.timing_for_bathhouse >= 30
+    )
+
+def leave_bathhouse(context: NPCIndividualContext):
+    # TODO: add this.
+    pass
 # endregion
 
 
@@ -595,9 +679,21 @@ class NPCBehaviourTree(NodeWrapper, Enum):
 
     FARM_GO_TO_BATHHOUSE = Selector(
         Sequence(
-            Condition(will_return_to_farm_from_bathhouse), Action(return_from_bathhouse)
+            Condition(will_return_to_farm_from_bathhouse),
+            Action(return_from_bathhouse_farm),
         ),
         Sequence(Condition(will_leave_farm_for_bathhouse), Action(go_to_bathhouse)),
+        Action(do_nothing),
+    )
+
+    FOREST_GO_TO_BATHHOUSE = Selector(
+        Sequence(
+            Condition(will_return_to_forest), Action(return_from_bathhouse_forest)
+        ),
+        Sequence(
+            Condition(will_leave_forest_for_bathhouse), Action(go_to_bathhouse_forest)
+        ),
+        Action(do_nothing),
     )
 
 

@@ -14,7 +14,7 @@ from src.enums import (
 )
 from src.gui.interface.emotes import NPCEmoteManager
 from src.npc.bases.npc_base import NPCBase
-from src.npc.behaviour.npc_behaviour_tree import NPCIndividualContext
+from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.overlay.soil import SoilManager
 from src.settings import Coordinate
 from src.sprites.entities.character import Character
@@ -250,6 +250,8 @@ class NPC(NPCBase):
     def update(self, dt):
         if self.is_dead:
             return
+        if NPCSharedContext.get_round() >= 7 and self.behaviour_tree_context.adhering_to_measures:
+            self.has_goggles = True
         if self.sickness_allowed:
             self.manage_sickness(dt)
         super().update(dt)
