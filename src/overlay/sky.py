@@ -70,7 +70,7 @@ class Sky:
 
         return color
 
-    def display(self, level):
+    def display(self, level: int, rnd_timer: float):
         # draw
         self.color = self.get_color()
         self.full_surf.fill(self.color)
@@ -79,7 +79,8 @@ class Sky:
         #     self.full_surf, (0, 0), special_flags=pygame.BLEND_RGBA_MULT
         # )
 
-        if level >= 7:
+        is_rnd_7 = level == 7
+        if level >= 7 and (not is_rnd_7 or rnd_timer >= 30):
             self.volcanic_surf.fill(self.volcanic_color)
             FBLITTER.schedule_blit(self.volcanic_surf, (0, 0))
             # self.display_surface.blit(self.volcanic_surf, (0, 0))

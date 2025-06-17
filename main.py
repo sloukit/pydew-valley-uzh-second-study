@@ -116,7 +116,8 @@ _CAMERA_TARGET_TO_TEXT_SOLO = (
     "narrative_text",
 )
 _TARG_SKIP_IDX_SOLO = _CAMERA_TARGET_TO_TEXT_SOLO.index("outgroup_introduction_text")
-_GOGGLES_TUT_TSTAMP = 5
+_GOGGLES_TUT_TSTAMP = 35
+_ENABLE_SICKNESS_TSTAMP = 33
 _BLUR_FACTOR = 1
 
 
@@ -216,6 +217,7 @@ class Game:
         self.jwt: str = ""
         self.round_end_timer: float = 0.0
         self.ROUND_END_TIME_IN_MINUTES: float = 99999999.0
+        self.get_rnd_timer = lambda: self.round_end_timer
 
         # dialog
         self.all_sprites = AllSprites()
@@ -223,10 +225,27 @@ class Game:
             self.all_sprites, f"data/textboxes/{GAME_LANGUAGE}/dialogues.json"
         )
 
+        # Sickness management
+        NPCSharedContext.get_rnd_timer = self.get_rnd_timer
+        NPCSharedContext.get_round = self.get_round
+        self.sickness_man = SicknessManager(
+            self.get_round,
+            self.get_rnd_timer,
+            lambda: self.player.has_goggles,
+            lambda: True,
+            lambda: self.player.is_sick,
+            self.send_telemetry,
+        )
+
+        self.npc_sickness_mgr = NPCSicknessManager(
+            self.get_round, self.get_rnd_timer, self.send_telemetry, False
+        )
+
         # screens
         self.level = Level(
             self.switch_state,
             (self.get_round, self.set_round),
+            self.get_rnd_timer,
             self.round_config,
             lambda: self.game_version,
             self.tmx_maps,
@@ -348,23 +367,6 @@ class Game:
         # intro to game and in-group msg.
         self.last_intro_txt_rendered = False
         self.switched_to_tutorial = False
-
-        # Sickness management
-        self.get_rnd_timer = lambda: self.round_end_timer
-        NPCSharedContext.get_rnd_timer = self.get_rnd_timer
-        NPCSharedContext.get_round = self.get_round
-        self.sickness_man = SicknessManager(
-            self.get_round,
-            self.get_rnd_timer,
-            lambda: self.player.has_goggles,
-            lambda: True,
-            lambda: self.player.is_sick,
-            self.send_telemetry,
-        )
-
-        self.npc_sickness_mgr = NPCSicknessManager(
-            self.get_round, self.get_rnd_timer, self.send_telemetry, False
-        )
 
     def add_npc_to_mgr(self, npc_id: int, npc: NPC):
         self.npc_sickness_mgr.add_npc(npc_id, npc)
@@ -612,7 +614,8 @@ class Game:
                     xplat.log(
                         f"Login successful: Time since last level completion: {time_difference:.2f} hours"
                     )
-            self.set_round(max_complete_level + 1)
+            self.set_round(7)
+            # self.set_round(max_complete_level + 1)
             self.check_hat_condition()  # in levels above 2, the player should wear a hat unless it's version 3
 
         xplat.log(f"Game version {self.game_version}")
@@ -627,8 +630,8 @@ class Game:
         if self.game_version < 0:
             self.game_version = DEBUG_MODE_VERSION
 
-        if self.round > 6:
-            self.level.dead_npcs_registry.enable()
+        if self.round > 7:
+            self.level.npcs_state_registry.enable()
 
         # round end menu needs to get config from previous round,
         # since when this menu is activated it's already new round
@@ -973,6 +976,15 @@ class Game:
                         self.switch_state(GameState.NOTIFICATION_MENU)
                         # set to empty to not repeat
                         self._empty_round_config_notify("new_crop")
+                    elif (
+                        self.round == 7
+                        and self.round_end_timer > _ENABLE_SICKNESS_TSTAMP
+                        and not self.level.npcs_state_registry.enabled
+                    ):
+                        self.round_config["healthbar"] = True
+                        self.round_config["sickness"] = True
+                        self.npc_sickness_mgr.apply_sickness_enable_to_existing_npcs()
+                        self.level.npcs_state_registry.enable()
                     elif self._can_notify_goggles_tutorial:
                         self._has_displayed_goggles_tutorial = True
                         self.notification_menu.set_message(
@@ -1067,6 +1079,8 @@ class Game:
                         # set to empty not to repeat infinitely
                         self.round_config["resource_allocation_text"] = ""
                         self.round_config["resource_allocation_timestamp"] = []
+
+            self.npc_sickness_mgr.update_npc_status()
 
             if self.level.cutscene_animation.active:
                 self.all_sprites.update_blocked(dt)

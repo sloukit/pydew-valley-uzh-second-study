@@ -727,7 +727,7 @@ class GameMap:
             )
         else:
             try:
-                study_group = StudyGroup(group)
+                study_group = StudyGroup[group]
             except KeyError:
                 warnings.warn(
                     f"NPC with ID {npc_id} has an invalid group '{group}' assigned to "

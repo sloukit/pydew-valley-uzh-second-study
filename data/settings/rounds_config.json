@@ -511,12 +511,12 @@
                 "cabbage"
             ],
             "playable_outgroup": true,
-            "healthbar": true,
+            "healthbar": false,
             "accessible_bathhouse": true,
-            "sickness": true,
+            "sickness": false,
             "inventory_goggles": true,
             "volcanic_eruption_timestamp": [
-                15
+                220
             ],
             "government_character": true,
             "inventory_tools": true,
@@ -1515,12 +1515,12 @@
                 "cabbage"
             ],
             "playable_outgroup": true,
-            "healthbar": true,
+            "healthbar": false,
             "accessible_bathhouse": true,
-            "sickness": true,
+            "sickness": false,
             "inventory_goggles": true,
             "volcanic_eruption_timestamp": [
-                15
+                220
             ],
             "statistics": true,
             "government_character": true,
@@ -2503,12 +2503,12 @@
                 "cabbage"
             ],
             "playable_outgroup": true,
-            "healthbar": true,
+            "healthbar": false,
             "accessible_bathhouse": true,
-            "sickness": true,
+            "sickness": false,
             "inventory_goggles": true,
             "volcanic_eruption_timestamp": [
-                15
+                220
             ],
             "statistics": true,
             "government_character": true,
