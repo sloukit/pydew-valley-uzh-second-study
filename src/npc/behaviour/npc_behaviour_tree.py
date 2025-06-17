@@ -158,6 +158,8 @@ def return_from_bathhouse_forest(context: NPCIndividualContext):
     return walk_to_pos(
         context, (10, 18), _reset_state_to_normal(context, NPCBehaviourTree.WOODCUTTING)
     )
+
+
 # endregion
 
 
@@ -184,12 +186,19 @@ def will_leave_bathhouse(context: NPCIndividualContext):
     return (
         context.adhering_to_measures
         and context.going_to_bathhouse
+        and shared_ctx.current_map == Map.TOWN
         and shared_ctx.get_rnd_timer() - context.timing_for_bathhouse >= 30
     )
 
+
 def leave_bathhouse(context: NPCIndividualContext):
-    # TODO: add this.
-    pass
+    return walk_to_pos(
+        context,
+        (55, 22),
+        lambda: _reset_state_to_normal(context, NPCBehaviourTree.FARMING),
+    )
+
+
 # endregion
 
 
@@ -693,6 +702,12 @@ class NPCBehaviourTree(NodeWrapper, Enum):
         Sequence(
             Condition(will_leave_forest_for_bathhouse), Action(go_to_bathhouse_forest)
         ),
+        Action(do_nothing),
+    )
+
+    TOWN_GO_TO_BATHHOUSE = Selector(
+        Sequence(Condition(will_leave_bathhouse), Action(leave_bathhouse)),
+        Sequence(Condition(will_leave_to_bathhouse), Action(go_to_bathhouse_town)),
         Action(do_nothing),
     )
 

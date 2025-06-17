@@ -40,7 +40,8 @@ _DEATH_LIKELIHOOD = 0.5
 # Maps the appropriate behaviour trees to the current map for the bathhouse.
 _MAP_TO_BATH_BEHAVIOUR = {
     Map.NEW_FARM: NPCBehaviourTree.FARM_GO_TO_BATHHOUSE,
-    Map.FOREST: NPCBehaviourTree.FOREST_GO_TO_BATHHOUSE
+    Map.FOREST: NPCBehaviourTree.FOREST_GO_TO_BATHHOUSE,
+    Map.TOWN: NPCBehaviourTree.TOWN_GO_TO_BATHHOUSE
 }
 
 
@@ -69,6 +70,19 @@ class NPCSicknessStatus:
             "timestamp": self.timestamp,
             "change_type": self.change_type.value,
         }
+
+
+def _summarise_event(evt: NPCSicknessStatus):
+    match evt.change_type:
+        case NPCSicknessStatusChange.DIE:
+            action = "die"
+        case NPCSicknessStatusChange.SICKNESS:
+            action = "get sick"
+        case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
+            action = "go to the bathhouse"
+        case NPCSicknessStatusChange.SWITCH_TO_RECOVERY:
+            action = "recover"
+    print(f"On round {evt.round_no}, after {round(evt.timestamp, 2)} seconds pass, NPC {evt.npc_id} will {action}")
 
 
 def _get_death(npc_id: int, death_round: int) -> NPCSicknessStatus:
@@ -154,6 +168,14 @@ class NPCSicknessManager:
 
     def add_npc(self, npc_id: int, obj: NPC):
         self._npcs[npc_id] = obj
+        if npc_id in self._ingrp_adhering_ids or npc_id in self._outgrp_adhering_ids:
+            # If the NPC is supposed to adhere to the conditions, it will wear the goggles.
+            # This also allows it to go to the bathhouse.
+            obj.behaviour_tree_context.adhering_to_measures = True
+
+    def apply_sickness_to_existing_npcs(self):
+        for npc in self._npcs.values():
+            npc.sickness_allowed = True
 
     @property
     def _next_event(self):
@@ -161,6 +183,8 @@ class NPCSicknessManager:
 
     def update_npc_status(self):
         current_round = self.get_round()
+        if not self.computed_status_changes[7]:
+            return
         if current_round < 7:
             # Don't do anything if in the earlier rounds.
             return
@@ -187,16 +211,21 @@ class NPCSicknessManager:
                     # - The current round is lower than the one in the death timestamp for the NPC.
                     # - There is more than 5 minutes between the sickness timestamp and the death timestamp.
                     self._npcs[target_npc].get_sick(timestamp)
+                    self.computed_status_changes[current_round].popleft()
                     return
                 self._npcs[target_npc].get_sick(timestamp, death_tstamp[1])
+                self.computed_status_changes[current_round].popleft()
             case NPCSicknessStatusChange.DIE:
                 self._npcs[target_npc].die()
+                self.computed_status_changes[current_round].popleft()
             case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
+                print(f"NPC {target_npc} is going to the bathhouse")
                 self._npcs[
                     target_npc
                 ].conditional_behaviour_tree = _MAP_TO_BATH_BEHAVIOUR[
                     NPCSharedContext.current_map
                 ]
+                self.computed_status_changes[current_round].popleft()
 
     def _setup_from_returned_data(self, received: dict | None):
         print(received)
@@ -210,14 +239,21 @@ class NPCSicknessManager:
             self.compute_sickness_events()
             return
 
+        print("=================NPC SICKNESS EVENT ORDER=====================")
         for i, evt_list in received_data.items():
             for evt in evt_list:
                 computed = NPCSicknessStatus(
                     evt["npc_id"], i, evt["timestamp"], evt["change_type"]
                 )
-                self.computed_status_changes[i].append(computed)
+                self.computed_status_changes[int(i)].append(computed)
+                _summarise_event(computed)
                 if computed.change_type == NPCSicknessStatusChange.DIE:
                     self.death_tstamps[computed.npc_id] = (i, computed.timestamp)
+                if computed.change_type == NPCSicknessStatusChange.GO_TO_BATHHOUSE:
+                    if computed.npc_id < _ID_POOL_SIZE:
+                        self._ingrp_adhering_ids.add(computed.npc_id)
+                    else:
+                        self._outgrp_adhering_ids.add(computed.npc_id)
 
     def get_status_from_server(self, jwt: str):
         get_npc_status(jwt, self._setup_from_returned_data)

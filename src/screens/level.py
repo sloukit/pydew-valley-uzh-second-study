@@ -155,6 +155,7 @@ class Level:
         self,
         switch: Callable[[GameState], None],
         get_set_round: tuple[Callable[[], int], Callable[[int], None]],
+        get_rnd_timer: Callable[[], float],
         round_config: dict[str, Any],
         get_game_version: Callable[[], int],
         tmx_maps: MapDict,
@@ -231,6 +232,7 @@ class Level:
         # level interactions
         self.get_round = get_set_round[0]
         self.set_round = get_set_round[1]
+        self.get_rnd_timer = get_rnd_timer
         self.round_config = round_config
         self.get_game_version = get_game_version
 
@@ -1176,8 +1178,9 @@ class Level:
 
     def volcano(self, event=None):
         if (self.get_round() == 7) and (
-            self.game_time.get_time()[1] == 5 and not self.volcano_erupt_once
+            self.get_rnd_timer() >= 30 and not self.volcano_erupt_once
         ):
+            self.volcano_erupt_once = True
             if not self.start_volcano_animation:
                 self.prev_map = (
                     self.game_map.current_map
@@ -1339,7 +1342,7 @@ class Level:
     # endregion
 
     def draw_overlay(self):
-        self.sky.display(self.get_round())
+        self.sky.display(self.get_round(), self.get_rnd_timer())
         self.overlay.display()
 
     def draw(self, dt: float, move_things: bool):
@@ -1352,7 +1355,7 @@ class Level:
 
         self.zoom_manager.apply_zoom()
         if move_things:
-            self.sky.display(self.get_round())
+            self.sky.display(self.get_round(), self.get_rnd_timer())
 
         self.draw_overlay()
 
