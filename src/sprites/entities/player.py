@@ -134,6 +134,13 @@ class Player(Character):
             self.focused_entity.unfocus()
         self.focused_entity = None
 
+    def get_sick(self):
+        self.is_sick = True
+
+    def recover(self):
+        self.is_sick = False
+        self.hp = 100
+
     def save(self):
         # We compact the inventory first,
         # i.e. remove any default values if they didn't change.

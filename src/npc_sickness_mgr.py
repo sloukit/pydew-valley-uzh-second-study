@@ -15,9 +15,7 @@ from random import choice, randint, random, sample
 from typing import Callable
 
 from src.client import get_npc_status  # noqa: F401
-from src.enums import Map, NPCSicknessStatusChange
-from src.npc.behaviour.context import NPCSharedContext
-from src.npc.behaviour.npc_behaviour_tree import NPCBehaviourTree
+from src.enums import NPCSicknessStatusChange
 from src.npc.npc import NPC
 
 # Used to sample NPC IDs when selecting which NPCs adhere or not.
@@ -36,13 +34,6 @@ _REBEL_ADHERENCE_INGRP_COUNT = _ID_POOL_SIZE * 0.2
 _ADHERENCE_OUTGRP_COUNT = _MAXIMUM_DEATH_COUNT = _ID_POOL_SIZE // 2
 
 _DEATH_LIKELIHOOD = 0.5
-
-# Maps the appropriate behaviour trees to the current map for the bathhouse.
-_MAP_TO_BATH_BEHAVIOUR = {
-    Map.NEW_FARM: NPCBehaviourTree.FARM_GO_TO_BATHHOUSE,
-    Map.FOREST: NPCBehaviourTree.FOREST_GO_TO_BATHHOUSE,
-    Map.TOWN: NPCBehaviourTree.TOWN_GO_TO_BATHHOUSE,
-}
 
 
 def _get_ingrp_adhering_count(adherence: bool = False):
@@ -79,7 +70,7 @@ def _summarise_event(evt: NPCSicknessStatus):
         case NPCSicknessStatusChange.SICKNESS:
             action = "get sick"
         case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
-            action = "go to the bathhouse"
+            return
         case NPCSicknessStatusChange.SWITCH_TO_RECOVERY:
             action = "recover"
     print(
@@ -221,12 +212,12 @@ class NPCSicknessManager:
                 self._npcs[target_npc].die()
                 self.computed_status_changes[current_round].popleft()
             case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
-                print(f"NPC {target_npc} is going to the bathhouse")
-                self._npcs[
-                    target_npc
-                ].conditional_behaviour_tree = _MAP_TO_BATH_BEHAVIOUR[
-                    NPCSharedContext.current_map
-                ]
+                # print(f"NPC {target_npc} is going to the bathhouse")
+                # self._npcs[
+                #     target_npc
+                # ].conditional_behaviour_tree = _MAP_TO_BATH_BEHAVIOUR[
+                #     NPCSharedContext.current_map
+                # ]
                 self.computed_status_changes[current_round].popleft()
 
     def _setup_from_returned_data(self, received: dict | None):

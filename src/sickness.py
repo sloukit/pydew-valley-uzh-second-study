@@ -26,6 +26,8 @@ class SicknessManager:
         get_bath_status: Callable[[], bool],
         is_ply_sick: Callable[[], bool],
         send_telemetry: Callable[[str, dict], None],
+        make_player_sick: Callable[[], None],
+        make_ply_recover: Callable[[], None],
     ):
         self.get_round = get_round
         self.get_rend_timer = get_round_end_timer
@@ -33,6 +35,9 @@ class SicknessManager:
         self._bath_status = get_bath_status
         self._is_ply_sick = is_ply_sick
         self.send_telemetry = send_telemetry
+        self._make_ply_sick = make_player_sick
+        self._make_ply_recover = make_ply_recover
+        self.sickness_calc_count = 0
 
     @property
     def _sickness_likelihood(self) -> float:
@@ -44,3 +49,22 @@ class SicknessManager:
 
     def should_make_player_sick(self):
         return _random_from_probability(self._sickness_likelihood)
+
+    def update_ply_sickness(self):
+        current_round = self.get_round()
+        if current_round < 7 or self.get_rend_timer() < 300:
+            return
+
+        current_timer = self.get_rend_timer()
+
+        if (
+            self.get_rend_timer() >= 300
+            and not self.sickness_calc_count
+            or current_timer >= 600
+            and self.sickness_calc_count < 2
+        ):
+            self.sickness_calc_count += 1
+            if self.should_make_player_sick():
+                self._make_ply_sick()
+            else:
+                self._make_ply_recover()

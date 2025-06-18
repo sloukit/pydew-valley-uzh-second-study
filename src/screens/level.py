@@ -1461,7 +1461,7 @@ class Level:
                 ),
                 dt,
             )
-            if self.round_config.get("sickness", False):
+            if self.round_config.get("sickness", False) and self.player.is_sick:
                 self.decay_health()
 
         self.draw(dt, move_things)

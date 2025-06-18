@@ -225,22 +225,6 @@ class Game:
             self.all_sprites, f"data/textboxes/{GAME_LANGUAGE}/dialogues.json"
         )
 
-        # Sickness management
-        NPCSharedContext.get_rnd_timer = self.get_rnd_timer
-        NPCSharedContext.get_round = self.get_round
-        self.sickness_man = SicknessManager(
-            self.get_round,
-            self.get_rnd_timer,
-            lambda: self.player.has_goggles,
-            lambda: True,
-            lambda: self.player.is_sick,
-            self.send_telemetry,
-        )
-
-        self.npc_sickness_mgr = NPCSicknessManager(
-            self.get_round, self.get_rnd_timer, self.send_telemetry, False
-        )
-
         # screens
         self.level = Level(
             self.switch_state,
@@ -259,6 +243,26 @@ class Game:
             self.add_npc_to_mgr,
         )
         self.player = self.level.player
+
+        # Sickness management
+        self.took_bath = False
+        self.goggles_delta = 0.0
+        NPCSharedContext.get_rnd_timer = self.get_rnd_timer
+        NPCSharedContext.get_round = self.get_round
+        self.sickness_man = SicknessManager(
+            self.get_round,
+            self.get_rnd_timer,
+            lambda: self.goggles_delta >= 240,
+            lambda: self.took_bath,
+            lambda: self.player.is_sick,
+            self.send_telemetry,
+            self.player.get_sick,
+            self.player.recover,
+        )
+
+        self.npc_sickness_mgr = NPCSicknessManager(
+            self.get_round, self.get_rnd_timer, self.send_telemetry, False
+        )
 
         self.tutorial = None
         self.inventory_menu = None
@@ -367,6 +371,14 @@ class Game:
         # intro to game and in-group msg.
         self.last_intro_txt_rendered = False
         self.switched_to_tutorial = False
+
+    def tick_bath_if_in_range(self):
+        if self.took_bath:
+            return
+        if self.round > 7 and self.round_end_timer <= 180:
+            self.took_bath = True
+        if self.round == 7 and 60 <= self.round_end_timer <= 300:
+            self.took_bath = True
 
     def add_npc_to_mgr(self, npc_id: int, npc: NPC):
         self.npc_sickness_mgr.add_npc(npc_id, npc)
@@ -512,6 +524,8 @@ class Game:
         return (min, sec)
 
     def send_telemetry(self, event: str, payload: dict[str, int]) -> None:
+        if event == "bath_taken":
+            self.tick_bath_if_in_range()
         if USE_SERVER:
             telemetry = {
                 "event": event,
@@ -625,6 +639,8 @@ class Game:
 
     def set_round(self, round_no: int) -> None:
         self.round = round_no
+        self.took_bath = False
+        self.goggles_delta = 0.0
         self.level.cow_herding_count = 0
         # if config for given round number not found, use first one as fall back
         if self.game_version < 0:
@@ -1094,11 +1110,15 @@ class Game:
                         self.fast_forward.draw_overlay(self.display_surface)
             else:
                 self.all_sprites.update(dt)
+
+            if self.player.has_goggles:
+                self.goggles_delta += dt
             # this draw duplicates the same call in level.py, but without it, dialog box won't be visible
             self.all_sprites.draw(
                 self.level.camera,
                 is_game_paused,
             )
+
 
             FBLITTER.blit_all()
 
