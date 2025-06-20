@@ -225,6 +225,10 @@ class Game:
             self.all_sprites, f"data/textboxes/{GAME_LANGUAGE}/dialogues.json"
         )
 
+        self.npc_sickness_mgr = NPCSicknessManager(
+            self.get_round, self.get_rnd_timer, self.send_telemetry, False
+        )
+
         # screens
         self.level = Level(
             self.switch_state,
@@ -258,10 +262,7 @@ class Game:
             self.send_telemetry,
             self.player.get_sick,
             self.player.recover,
-        )
-
-        self.npc_sickness_mgr = NPCSicknessManager(
-            self.get_round, self.get_rnd_timer, self.send_telemetry, False
+            self._reset_goggles_timer,
         )
 
         self.tutorial = None
@@ -371,6 +372,9 @@ class Game:
         # intro to game and in-group msg.
         self.last_intro_txt_rendered = False
         self.switched_to_tutorial = False
+
+    def _reset_goggles_timer(self):
+        self.goggles_delta = 0.0
 
     def tick_bath_if_in_range(self):
         if self.took_bath:
@@ -1096,6 +1100,7 @@ class Game:
                         self.round_config["resource_allocation_text"] = ""
                         self.round_config["resource_allocation_timestamp"] = []
 
+            self.sickness_man.update_ply_sickness()
             self.npc_sickness_mgr.update_npc_status()
 
             if self.level.cutscene_animation.active:
@@ -1118,7 +1123,6 @@ class Game:
                 self.level.camera,
                 is_game_paused,
             )
-
 
             FBLITTER.blit_all()
 

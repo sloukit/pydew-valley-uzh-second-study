@@ -218,6 +218,7 @@ class NPC(NPCBase):
     def get_sick(self, sick_tstamp: float, death_tstamp: float | None = None):
         # if wearing goggles, the probability of getting sick is halved
         self.is_sick = True
+        self.emote_manager.show_emote(self, "sad_sick_ani")
         if death_tstamp is None:
             self.will_die = False
             self.die_rate = random.randint(1, 10)

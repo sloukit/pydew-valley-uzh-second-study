@@ -28,6 +28,7 @@ class SicknessManager:
         send_telemetry: Callable[[str, dict], None],
         make_player_sick: Callable[[], None],
         make_ply_recover: Callable[[], None],
+        reset_goggles_delta: Callable[[], None],
     ):
         self.get_round = get_round
         self.get_rend_timer = get_round_end_timer
@@ -37,6 +38,7 @@ class SicknessManager:
         self.send_telemetry = send_telemetry
         self._make_ply_sick = make_player_sick
         self._make_ply_recover = make_ply_recover
+        self.reset_goggles_delta = reset_goggles_delta
         self.sickness_calc_count = 0
 
     @property
@@ -68,3 +70,4 @@ class SicknessManager:
                 self._make_ply_sick()
             else:
                 self._make_ply_recover()
+            self.reset_goggles_delta()

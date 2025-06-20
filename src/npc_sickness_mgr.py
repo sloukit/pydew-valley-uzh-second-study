@@ -241,7 +241,7 @@ class NPCSicknessManager:
                 self.computed_status_changes[int(i)].append(computed)
                 _summarise_event(computed)
                 if computed.change_type == NPCSicknessStatusChange.DIE:
-                    self.death_tstamps[computed.npc_id] = (i, computed.timestamp)
+                    self.death_tstamps[computed.npc_id] = (int(i), computed.timestamp)
                 if computed.change_type == NPCSicknessStatusChange.GO_TO_BATHHOUSE:
                     if computed.npc_id < _ID_POOL_SIZE:
                         self._ingrp_adhering_ids.add(computed.npc_id)
