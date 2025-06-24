@@ -49,6 +49,7 @@ def authn(
                 {
                     "token": play_token,
                     "jwt": "dummy_token",
+                    "adherence": True,
                     "game_version": 1,
                 }
             )
