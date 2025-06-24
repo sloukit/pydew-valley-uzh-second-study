@@ -14,12 +14,11 @@ from src.enums import (
 )
 from src.gui.interface.emotes import NPCEmoteManager
 from src.npc.bases.npc_base import NPCBase
-from src.npc.behaviour.npc_behaviour_tree import NPCIndividualContext
+from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.overlay.soil import SoilManager
 from src.settings import Coordinate
 from src.sprites.entities.character import Character
 from src.sprites.setup import EntityAsset
-from src.timer import Timer
 
 
 class NPC(NPCBase):
@@ -41,9 +40,11 @@ class NPC(NPCBase):
         special_features: str | None,
         npc_id: int = 0,
         death_callback: Callable[[NPC], None] = None,
+        health_update_callback: Callable[[NPC], None] = None,
     ):
         self.tree_sprites = tree_sprites
         self.death_callback = death_callback
+        self.health_update_callback = health_update_callback
 
         super().__init__(
             pos=pos,
@@ -102,15 +103,10 @@ class NPC(NPCBase):
         self.probability_to_get_sick = (
             0.3 if self.has_goggles else 0.6
         ) < random.random()
-        # set a timer to get the NPC sick after a random time
-        self.sick_timer = Timer(
-            random.randint(5, 20) * 1000,
-            autostart=self.sickness_allowed,
-            func=self.get_sick,
-        )
 
         self.is_sick = False
         self.is_dead = False
+        self.will_die = False
         self.hp = 100
         # how fast the NPC dies after getting sick
         self.die_rate = random.randint(35, 75)
@@ -118,7 +114,7 @@ class NPC(NPCBase):
     def set_allowed_seeds(self, allowed_seeds: dict[str]) -> None:
         seed_types = []
         for seed_type in SeedType:
-            if SeedType._AS_IRS[seed_type].as_serialised_string() in allowed_seeds:
+            if seed_type.as_ir().as_serialised_string() in allowed_seeds:
                 seed_types.append(seed_type)
         # using NPCIndividualContext, however it would make more sense to use NPCSharedContext,
         # but not sure how to set it :-(
@@ -126,12 +122,7 @@ class NPC(NPCBase):
 
     def set_sickness_allowed(self, sickness_allowed: bool) -> None:
         self.sickness_allowed = sickness_allowed
-        if sickness_allowed:
-            if not self.sick_timer.active:
-                self.sick_timer.activate()
-        else:
-            if self.sick_timer.active:
-                self.sick_timer.deactivate()
+        if not self.sickness_allowed:
             self.is_sick = False
             self.hp = 100
 
@@ -224,9 +215,17 @@ class NPC(NPCBase):
             self.has_outgroup_skin = True
 
     # NPC sickness
-    def get_sick(self):
+    def get_sick(self, sick_tstamp: float, death_tstamp: float | None = None):
         # if wearing goggles, the probability of getting sick is halved
-        self.is_sick = self.probability_to_get_sick < random.random()
+        self.is_sick = True
+        self.emote_manager.show_emote(self, "sad_sick_ani")
+        if death_tstamp is None:
+            self.will_die = False
+            self.die_rate = random.randint(1, 10)
+            return
+        self.will_die = True
+        sickness_duration = death_tstamp - sick_tstamp
+        self.die_rate = 100 / sickness_duration
 
     def die(self):
         self.is_dead = True
@@ -238,23 +237,27 @@ class NPC(NPCBase):
         self.death_callback(self)
 
     def manage_sickness(self, dt):
-        # if NPC is not sick yet, check if it gets sick
-        if self.sick_timer.active:
-            self.sick_timer.update()
-        elif self.is_sick and not self.is_dead:
+        if self.is_sick and not self.is_dead:
             # if NPC is sick, decrease health, speed and alpha
             self.hp -= int(self.die_rate * dt)
+            self.hp = max(0, self.hp)
             self.speed = self.hp
             self.image_alpha = 30 + int(150 * (self.hp / 100))
             self.image.set_alpha(self.image_alpha)
-            if self.hp <= 0:
-                self.die()
+            self.health_update_callback(self)
+            # if self.hp <= 0:
+            #     self.die()
 
     def update(self, dt):
-        if self.sickness_allowed:
-            self.manage_sickness(dt)
         if self.is_dead:
             return
+        if (
+            NPCSharedContext.get_round() >= 7
+            and self.behaviour_tree_context.adhering_to_measures
+        ):
+            self.has_goggles = True
+        if self.sickness_allowed:
+            self.manage_sickness(dt)
         super().update(dt)
 
         self.emote_manager.update_obj(

@@ -2,6 +2,18 @@ from enum import Enum, IntEnum, StrEnum, nonmember, auto  # noqa
 from random import randint
 
 
+class SicknessGravity(IntEnum):
+    SEVERE = 0
+    RECOVER = auto()
+
+
+class NPCSicknessStatusChange(IntEnum):
+    SICKNESS = 0
+    SWITCH_TO_RECOVERY = auto()
+    DIE = auto()
+    GO_TO_BATHHOUSE = auto()
+
+
 class ZoomState(IntEnum):
     NOT_ZOOMING = 0
     ZOOMING_IN = auto()

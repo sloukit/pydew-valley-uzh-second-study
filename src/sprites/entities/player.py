@@ -4,6 +4,7 @@ import time
 from typing import Any, Callable, Type
 
 import pygame  # noqa
+from random import random
 
 from src.controls import Controls
 from src.enums import FarmingTool, InventoryResource, ItemToUse, StudyGroup
@@ -73,6 +74,7 @@ class Player(Character):
             plant_collision=plant_collision,
         )
 
+        self.is_sick = False
         self.round_config = round_config
         self.get_game_version = get_game_version
         self.send_telemetry = send_telemetry
@@ -133,6 +135,14 @@ class Player(Character):
             self.focused_entity.unfocus()
         self.focused_entity = None
 
+    def get_sick(self):
+        self.is_sick = True
+        self.emote_manager.show_emote(self, "sad_sick_ani")
+
+    def recover(self):
+        self.is_sick = False
+        self.hp = 100
+
     def save(self):
         # We compact the inventory first,
         # i.e. remove any default values if they didn't change.
@@ -147,6 +157,11 @@ class Player(Character):
                 del compacted_inv[k]
         self.save_file.inventory = compacted_inv
         self.save_file.save()
+
+    def use_tool(self, option: ItemToUse):
+        if self.is_sick and random() < 0.3:
+            return
+        super().use_tool(option)
 
     def load_controls(self):
         self.controls.load_default_keybinds()

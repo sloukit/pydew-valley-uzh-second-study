@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="442">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="442">
  <tileset firstgid="1" source="../tilesets/grass_tileset.tsx"/>
  <tileset firstgid="78" source="../tilesets/Interaction.tsx"/>
  <tileset firstgid="80" source="../tilesets/fence_tileset.tsx"/>
@@ -1017,35 +1017,125 @@
   <object id="368" gid="828" x="390" y="448" width="20" height="21">
    <properties>
     <property name="features" value="hat"/>
+    <property name="npc_id" type="int" value="11"/>
    </properties>
   </object>
-  <object id="369" gid="828" x="374.597" y="368.618" width="20" height="21"/>
-  <object id="370" gid="828" x="406" y="368" width="20" height="21"/>
-  <object id="371" gid="828" x="347.293" y="409.415" width="20" height="21"/>
+  <object id="369" gid="828" x="374.597" y="368.618" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="370" gid="828" x="406" y="368" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="371" gid="828" x="347.293" y="409.415" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="7"/>
+   </properties>
+  </object>
   <object id="372" gid="828" x="502" y="351" width="20" height="21">
    <properties>
     <property name="features" value="hat_necklace"/>
+    <property name="npc_id" type="int" value="4"/>
    </properties>
   </object>
-  <object id="373" gid="830" x="817.424" y="415.696" width="18" height="17"/>
-  <object id="374" gid="830" x="862.572" y="421.858" width="18" height="17"/>
-  <object id="375" gid="830" x="871" y="400" width="18" height="17"/>
-  <object id="376" gid="830" x="894.798" y="410.724" width="18" height="17"/>
-  <object id="377" gid="830" x="893.693" y="371.948" width="18" height="17"/>
-  <object id="415" gid="828" x="435.764" y="355.1" width="20" height="21"/>
-  <object id="416" gid="828" x="424.659" y="379.603" width="20" height="21"/>
-  <object id="419" gid="828" x="370.677" y="404.008" width="20" height="21"/>
-  <object id="420" gid="828" x="354.568" y="383.566" width="20" height="21"/>
-  <object id="422" gid="828" x="417.286" y="407.389" width="20" height="21"/>
-  <object id="423" gid="830" x="837.473" y="354.042" width="18" height="17"/>
-  <object id="424" gid="830" x="783.212" y="389.184" width="18" height="17"/>
-  <object id="425" gid="830" x="800.483" y="368.914" width="18" height="17"/>
-  <object id="426" gid="830" x="809.966" y="393.052" width="18" height="17"/>
-  <object id="427" gid="830" x="831.086" y="378.397" width="18" height="17"/>
-  <object id="428" gid="830" x="846.172" y="403.828" width="18" height="17"/>
-  <object id="429" gid="830" x="863.845" y="374.517" width="18" height="17"/>
-  <object id="432" gid="828" x="394.872" y="395.522" width="20" height="21"/>
-  <object id="433" gid="828" x="389.708" y="352.089" width="20" height="21"/>
+  <object id="373" gid="830" x="817.424" y="415.696" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="19"/>
+   </properties>
+  </object>
+  <object id="374" gid="830" x="862.572" y="421.858" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="23"/>
+   </properties>
+  </object>
+  <object id="375" gid="830" x="871" y="400" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="21"/>
+   </properties>
+  </object>
+  <object id="376" gid="830" x="894.798" y="410.724" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="377" gid="830" x="893.693" y="371.948" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="415" gid="828" x="435.764" y="355.1" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="416" gid="828" x="424.659" y="379.603" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="419" gid="828" x="370.677" y="404.008" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="420" gid="828" x="354.568" y="383.566" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="5"/>
+   </properties>
+  </object>
+  <object id="422" gid="828" x="417.286" y="407.389" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="423" gid="830" x="837.473" y="354.042" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="12"/>
+   </properties>
+  </object>
+  <object id="424" gid="830" x="783.212" y="389.184" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="17"/>
+   </properties>
+  </object>
+  <object id="425" gid="830" x="800.483" y="368.914" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="13"/>
+   </properties>
+  </object>
+  <object id="426" gid="830" x="809.966" y="393.052" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="18"/>
+   </properties>
+  </object>
+  <object id="427" gid="830" x="831.086" y="378.397" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="14"/>
+   </properties>
+  </object>
+  <object id="428" gid="830" x="846.172" y="403.828" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="20"/>
+   </properties>
+  </object>
+  <object id="429" gid="830" x="863.845" y="374.517" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="15"/>
+   </properties>
+  </object>
+  <object id="432" gid="828" x="394.872" y="395.522" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="9"/>
+   </properties>
+  </object>
+  <object id="433" gid="828" x="389.708" y="352.089" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="16" name="Border" width="80" height="40">
   <properties>

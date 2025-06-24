@@ -266,6 +266,19 @@ async def get_request(url: str, headers: dict) -> list | dict:
     return await handler.get(url, headers)
 
 
+async def get_request_with_callback(
+    url: str,
+    headers: dict,
+    callback: Callable[[dict], None],
+    error_callback: Callable[[Exception], None],
+):
+    try:
+        response = await get_request(url, headers)
+        callback(response)
+    except Exception as exc:
+        error_callback(exc)
+
+
 async def post_request(url: str, headers: dict, data: dict) -> list | dict:
     handler = _get_http_handler()
     return await handler.post(url, headers, data)
@@ -276,7 +289,7 @@ async def post_request_with_callback(
     headers: dict,
     data: dict,
     callback: Callable[[dict], None],
-    error_login_callback: Callable[[Exception], None],
+    error_callback: Callable[[Exception], None],
 ) -> None:
     # Send the reponse to the callback
     try:
@@ -285,4 +298,4 @@ async def post_request_with_callback(
             raise LoginError("Login failed. Check if you wrote your token correctly.")
         callback(response)
     except Exception as e:
-        error_login_callback(e)
+        error_callback(e)

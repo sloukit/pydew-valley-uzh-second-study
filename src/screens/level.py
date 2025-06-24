@@ -33,11 +33,13 @@ from src.events import (
 from src.exceptions import GameMapWarning
 from src.fblitter import FBLITTER
 from src.groups import AllSprites, PersistentSpriteGroup
+from src.gui.health_bar import PLAYER_HP, PLAYER_HP_STATE, PLAYER_IS_SICK
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
-from src.npc.dead_npcs_registry import DeadNpcsRegistry
+from src.npc.behaviour.context import NPCSharedContext
 from src.npc.npc import NPC
+from src.npc.npcs_state_registry import NpcsStateRegistry
 from src.npc.setup import AIData
 from src.overlay.game_time import GameTime
 from src.overlay.overlay import Overlay
@@ -153,6 +155,7 @@ class Level:
         self,
         switch: Callable[[GameState], None],
         get_set_round: tuple[Callable[[], int], Callable[[int], None]],
+        get_rnd_timer: Callable[[], float],
         round_config: dict[str, Any],
         get_game_version: Callable[[], int],
         tmx_maps: MapDict,
@@ -160,9 +163,10 @@ class Level:
         sounds: SoundDict,
         save_file: SaveFile,
         clock: pygame.time.Clock,
-        get_world_time: Callable[[None], tuple[int, int]],
+        get_world_time: Callable[[], tuple[int, int]],
         dialogue_manager: DialogueManager,
         send_telemetry: Callable[[str, dict[str, Any]], None],
+        reference_npc_in_mgr: Callable[[int, NPC], None],
     ) -> None:
         # main setup
         self.display_surface = pygame.display.get_surface()
@@ -170,6 +174,7 @@ class Level:
         self.save_file = save_file
         self.dialogue_manager = dialogue_manager
         self.send_telemetry = send_telemetry
+        self.reference_npc_in_mgr = reference_npc_in_mgr
 
         # cutscene
         # target_points = [(100, 100), (200, 200), (300, 100), (800, 900)]
@@ -219,7 +224,7 @@ class Level:
 
         self.controls = Controls
 
-        self.dead_npcs_registry = DeadNpcsRegistry(
+        self.npcs_state_registry = NpcsStateRegistry(
             self.current_map.name if self.current_map is not None else None,
             self.send_telemetry,
         )
@@ -227,6 +232,7 @@ class Level:
         # level interactions
         self.get_round = get_set_round[0]
         self.set_round = get_set_round[1]
+        self.get_rnd_timer = get_rnd_timer
         self.round_config = round_config
         self.get_game_version = get_game_version
 
@@ -273,7 +279,7 @@ class Level:
             get_world_time,
             clock,
             round_config,
-            self.dead_npcs_registry,
+            self.npcs_state_registry,
         )
         self.show_hitbox_active = False
         self.show_pf_overlay = False
@@ -370,7 +376,7 @@ class Level:
         gc.collect()
 
         # update current map for remembering dead npcs
-        self.dead_npcs_registry.set_current_map_name(game_map)
+        self.npcs_state_registry.set_current_map_name(game_map)
 
         self.game_map = GameMap(
             selected_map=game_map,
@@ -393,7 +399,8 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
-            dead_npcs_registry=self.dead_npcs_registry,
+            npcs_state_registry=self.npcs_state_registry,
+            reference_npc_in_mgr=self.reference_npc_in_mgr,
             disable_minigame=self.can_disable_minigame,
             round_no=self.get_round(),
         )
@@ -456,6 +463,7 @@ class Level:
         self.rain.set_floor_size(self.game_map.get_size())
 
         self.current_map = game_map
+        NPCSharedContext.current_map = game_map
 
         if game_map == Map.MINIGAME:
             self.current_minigame = CowHerding(
@@ -531,6 +539,13 @@ class Level:
                     if self.player.hp < 80:
                         self.overlay.health_bar.apply_health(9999999)
                         self.player.bathstat = True
+                        self.send_telemetry(
+                            PLAYER_HP_STATE,
+                            {
+                                PLAYER_HP: self.player.hp,
+                                PLAYER_IS_SICK: self.player.is_sick,
+                            },
+                        )
                         self.player.bath_time = time.time()
                     self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
                     self.load_map(self.current_map, from_map=map_name)
@@ -1163,8 +1178,9 @@ class Level:
 
     def volcano(self, event=None):
         if (self.get_round() == 7) and (
-            self.game_time.get_time()[1] == 5 and not self.volcano_erupt_once
+            self.get_rnd_timer() >= 30 and not self.volcano_erupt_once
         ):
+            self.volcano_erupt_once = True
             if not self.start_volcano_animation:
                 self.prev_map = (
                     self.game_map.current_map
@@ -1216,11 +1232,15 @@ class Level:
         self.start_transition()
 
     def decay_health(self):
-        if self.player.hp > 10:
+        if self.player.hp > 10 and self.player.is_sick:
             if not self.player.bathstat and not self.player.has_goggles:
                 self.overlay.health_bar.apply_damage(HEALTH_DECAY_VALUE)
             elif not self.player.has_goggles and self.player.bathstat:
                 self.overlay.health_bar.apply_damage((HEALTH_DECAY_VALUE / 2))
+            self.send_telemetry(
+                PLAYER_HP_STATE,
+                {PLAYER_HP: self.player.hp, PLAYER_IS_SICK: self.player.is_sick},
+            )
 
     def check_map_exit(self):
         if not self.map_transition:
@@ -1322,7 +1342,7 @@ class Level:
     # endregion
 
     def draw_overlay(self):
-        self.sky.display(self.get_round())
+        self.sky.display(self.get_round(), self.get_rnd_timer())
         self.overlay.display()
 
     def draw(self, dt: float, move_things: bool):
@@ -1335,7 +1355,7 @@ class Level:
 
         self.zoom_manager.apply_zoom()
         if move_things:
-            self.sky.display(self.get_round())
+            self.sky.display(self.get_round(), self.get_rnd_timer())
 
         self.draw_overlay()
 
@@ -1441,7 +1461,7 @@ class Level:
                 ),
                 dt,
             )
-            if self.round_config.get("sickness", False):
+            if self.round_config.get("sickness", False) and self.player.is_sick:
                 self.decay_health()
 
         self.draw(dt, move_things)

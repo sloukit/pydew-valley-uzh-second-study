@@ -12,9 +12,7 @@ from pytmx import (  # type: ignore[import-untyped]
     TiledTileLayer,
 )
 
-from src.camera.camera_target import CameraTarget
-from src.camera.zoom_area import ZoomArea
-from src.camera.zoom_manager import ZoomManager
+from src.camera import CameraTarget, ZoomArea, ZoomManager
 from src.enums import (
     Direction,
     FarmingTool,
@@ -42,8 +40,8 @@ from src.npc.behaviour.cow_behaviour_tree import (
 from src.npc.behaviour.npc_behaviour_tree import NPCBehaviourTree
 from src.npc.chicken import Chicken
 from src.npc.cow import Cow
-from src.npc.dead_npcs_registry import DeadNpcsRegistry
 from src.npc.npc import NPC
+from src.npc.npcs_state_registry import NpcsStateRegistry
 from src.npc.setup import AIData
 from src.npc.utils import pf_add_matrix_collision
 from src.overlay.soil import SoilManager
@@ -309,15 +307,18 @@ class GameMap:
         # assets
         frames: dict,
         round_config: dict[str, Any],
+        # NPC-related stuff
         get_game_version: Callable[[], int],
-        dead_npcs_registry: DeadNpcsRegistry,
+        npcs_state_registry: NpcsStateRegistry,
+        reference_npc_in_mgr: Callable[[int, NPC], None],
         disable_minigame: bool = False,
         round_no: int = 0,
     ):
         self.get_game_version = get_game_version
         self.number_of_hats_to_exclude = 2
         self._tilemap = tilemap
-        self.dead_npcs_registry: DeadNpcsRegistry = dead_npcs_registry
+        self.npcs_state_registry: NpcsStateRegistry = npcs_state_registry
+        self._reference_npc_in_mgr = reference_npc_in_mgr
 
         if "Player" not in self._tilemap.layernames:
             raise InvalidMapError("No Player layer could be found")
@@ -381,6 +382,9 @@ class GameMap:
             if ENABLE_NPCS:
                 self._setup_emote_interactions()
                 _setup_animal_ranges(self.interaction_sprites, self.animals)
+
+    def get_size_in_tiles(self):
+        return self._tilemap_size
 
     def round_config_changed(self, round_config: dict[str, Any]) -> None:
         self.round_config = round_config
@@ -710,24 +714,29 @@ class GameMap:
             if "necklace" in features:
                 has_necklace = True
 
+        npc_id = obj.properties.get("npc_id")
+        if npc_id is None:
+            raise InvalidMapError(
+                "At least one NPC was not given an ID on the current map."
+            )
         study_group = StudyGroup.NO_GROUP
         group = obj.properties.get("group")
         if group is None:
             warnings.warn(
-                f"NPC with ID {obj.id} has no group assigned to it", GameMapWarning
+                f"NPC with ID {npc_id} has no group assigned to it", GameMapWarning
             )
         else:
             try:
                 study_group = StudyGroup[group]
             except KeyError:
                 warnings.warn(
-                    f"NPC with ID {obj.id} has an invalid group '{group}' assigned to "
+                    f"NPC with ID {npc_id} has an invalid group '{group}' assigned to "
                     f"it",
                     GameMapWarning,
                 )
 
         # skip NPC if it's id is registered in the DNR
-        if self.dead_npcs_registry.is_npc_dead(obj.id, study_group):
+        if self.npcs_state_registry.is_npc_dead(npc_id, study_group):
             return None
 
         npc = NPC(
@@ -746,10 +755,12 @@ class GameMap:
             has_hat=has_hat,
             has_necklace=has_necklace,
             special_features=features,
-            npc_id=obj.id,
-            death_callback=self.dead_npcs_registry.register_death,
+            npc_id=npc_id,
+            death_callback=self.npcs_state_registry.register_death,
+            health_update_callback=self.npcs_state_registry.register_health_update,
         )
         npc.teleport(pos)
+        self._reference_npc_in_mgr(npc_id, npc)
         # Ingroup NPCs wearing only the hat and no necklace should not be able to walk on the forest and town map,
         # only on the farming map
         no_walking_npc = (
@@ -774,17 +785,17 @@ class GameMap:
 
         behaviour = obj.properties.get("behaviour")
         if behaviour != "Woodcutting" and gmap == Map.NEW_FARM:
-            npc.conditional_behaviour_tree = NPCBehaviourTree.Farming
+            npc.conditional_behaviour_tree = NPCBehaviourTree.FARMING
         elif no_walking_npc:
-            npc.conditional_behaviour_tree = NPCBehaviourTree.DoNothing
+            npc.conditional_behaviour_tree = NPCBehaviourTree.DO_NOTHING
         elif cheering:
-            npc.conditional_behaviour_tree = NPCBehaviourTree.Cheer
+            npc.conditional_behaviour_tree = NPCBehaviourTree.CHEER
             if npc.study_group == StudyGroup.INGROUP:
                 npc.facing_direction = Direction.RIGHT
             if npc.study_group == StudyGroup.OUTGROUP:
                 npc.facing_direction = Direction.LEFT
         else:
-            npc.conditional_behaviour_tree = NPCBehaviourTree.Woodcutting
+            npc.conditional_behaviour_tree = NPCBehaviourTree.WOODCUTTING
         return npc
 
     def _setup_animal(self, pos: tuple[int, int], obj: TiledObject):

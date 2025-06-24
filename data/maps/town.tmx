@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="70" height="55" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="629">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="55" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="631">
  <tileset firstgid="1" source="../tilesets/grass_tileset.tsx"/>
  <tileset firstgid="78" source="../tilesets/fence_tileset.tsx"/>
  <tileset firstgid="94" source="../tilesets/Stone_Path.tsx"/>
@@ -39,7 +39,7 @@
 0,0,0,0,0,0,77,77,77,77,77,77,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,77,77,77,77,77,77,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,77,77,77,77,0,0,0,77,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,779,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,77,77,77,77,77,0,77,77,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,660,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,77,77,77,77,77,0,77,77,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,77,77,77,77,77,77,0,77,77,77,0,0,0,0,77,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,77,77,77,77,77,77,77,77,77,77,0,0,0,0,77,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,77,77,77,77,77,77,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,77,77,77,77,77,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -1336,14 +1336,56 @@
   <properties>
    <property name="show_in_earlier_rounds" type="bool" value="false"/>
   </properties>
-  <object id="589" gid="963" x="320" y="496" width="20" height="21"/>
-  <object id="590" gid="963" x="506" y="496" width="20" height="21"/>
-  <object id="591" gid="963" x="324" y="467" width="20" height="21"/>
-  <object id="592" gid="963" x="420" y="516" width="20" height="21"/>
-  <object id="594" gid="965" x="240" y="660" width="18" height="17"/>
-  <object id="595" gid="965" x="270.333" y="689.5" width="18" height="17"/>
-  <object id="596" gid="965" x="348" y="660" width="18" height="17"/>
-  <object id="599" gid="965" x="383" y="655" width="18" height="17"/>
+  <object id="589" gid="963" x="320" y="496" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="590" gid="963" x="506" y="496" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="591" gid="963" x="324" y="467" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="592" gid="963" x="420" y="516" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="594" gid="965" x="240" y="660" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="12"/>
+   </properties>
+  </object>
+  <object id="595" gid="965" x="270.333" y="689.5" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="13"/>
+   </properties>
+  </object>
+  <object id="596" gid="965" x="348" y="660" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="14"/>
+   </properties>
+  </object>
+  <object id="599" gid="965" x="383" y="655" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="15"/>
+   </properties>
+  </object>
+  <object id="629" gid="963" x="791.727" y="719.273" width="20" height="21">
+   <properties>
+    <property name="npc_id" type="int" value="50"/>
+   </properties>
+  </object>
+  <object id="630" gid="965" x="825.818" y="734.909" width="18" height="17">
+   <properties>
+    <property name="npc_id" type="int" value="51"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="26" name="lock_minigame">
   <object id="626" gid="365" x="441.545" y="260.455" width="31" height="29"/>

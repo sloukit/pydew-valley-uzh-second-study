@@ -1,37 +1,24 @@
 from __future__ import annotations
 
 import random
-from dataclasses import dataclass, field
 from enum import Enum
 from typing import Callable
 
 import pygame
 
-from src.enums import Direction, FarmingTool, ItemToUse, SeedType
-from src.npc.bases.npc_base import NPCBase
+from src.enums import Direction, FarmingTool, ItemToUse, Map, StudyGroup
 from src.npc.behaviour.ai_behaviour_tree_base import (
     Action,
     Condition,
-    Context,
     NodeWrapper,
     Selector,
     Sequence,
 )
+from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.npc.utils import pf_move_to, pf_wander
 from src.settings import SCALED_TILE_SIZE
 from src.sprites.objects.tree import Tree
 from src.support import distance, near_tiles
-
-
-class NPCSharedContext:
-    targets = set()
-
-
-@dataclass
-class NPCIndividualContext(Context):
-    npc: NPCBase
-    # list of available seeds depending on game version and round number
-    allowed_seeds: list[SeedType] = field(default_factory=list)
 
 
 def walk_to_pos(
@@ -83,6 +70,136 @@ def walk_to_pos(
 
 def wander(context: NPCIndividualContext) -> bool:
     return pf_wander(context.npc)
+
+
+# region Logic for farm NPCs to potentially "leave the map" and come back to go to the bathhouse
+def will_leave_farm_for_bathhouse(context: NPCIndividualContext) -> bool:
+    shared_ctx = NPCSharedContext
+    current_round = shared_ctx.get_round()
+    is_rnd_7 = current_round == 7
+    return (
+        context.adhering_to_measures
+        and shared_ctx.current_map == Map.NEW_FARM
+        and current_round >= 7
+        and shared_ctx.get_rnd_timer() >= 30 * is_rnd_7
+        and not context.going_to_bathhouse
+    )
+
+
+def go_to_bathhouse(context: NPCIndividualContext) -> bool:
+    context.timing_for_bathhouse = NPCSharedContext.get_rnd_timer()
+    context.going_to_bathhouse = True
+    is_outgrp = context.npc.study_group == StudyGroup.OUTGROUP
+    return walk_to_pos(context, (24 + 30 * is_outgrp, 40), lambda: print("Finished"))
+
+
+def will_return_to_farm_from_bathhouse(context: NPCIndividualContext) -> bool:
+    shared_ctx = NPCSharedContext
+    is_outgrp = context.npc.study_group == StudyGroup.OUTGROUP
+    return (
+        context.adhering_to_measures
+        and context.going_to_bathhouse
+        and shared_ctx.current_map == Map.NEW_FARM
+        and context.npc.get_tile_pos() == (24 + 30 * is_outgrp, 40)
+        and shared_ctx.get_rnd_timer() - context.timing_for_bathhouse >= 45
+    )
+
+
+def _reset_state_to_normal(context: NPCIndividualContext, behaviour):
+    context.going_to_bathhouse = False
+    context.set_behaviour(behaviour)
+
+
+def return_from_bathhouse_farm(context: NPCIndividualContext):
+    is_outgrp = context.npc.study_group == StudyGroup.OUTGROUP
+    return walk_to_pos(
+        context,
+        (17 + 44 * is_outgrp, 27),
+        lambda: _reset_state_to_normal(context, NPCBehaviourTree.FARMING),
+    )
+
+
+# endregion
+
+
+# region Forest-NPC logic to go to the bathhouse
+def will_leave_forest_for_bathhouse(context: NPCIndividualContext) -> bool:
+    shared_ctx = NPCSharedContext
+    current_round = shared_ctx.get_round()
+    is_rnd_7 = current_round == 7
+    return (
+        context.adhering_to_measures
+        and shared_ctx.current_map == Map.FOREST
+        and current_round >= 7
+        and shared_ctx.get_rnd_timer() >= 30 * is_rnd_7
+        and not context.going_to_bathhouse
+    )
+
+
+def go_to_bathhouse_forest(context: NPCIndividualContext):
+    context.timing_for_bathhouse = NPCSharedContext.get_rnd_timer()
+    return walk_to_pos(context, (9, 18), lambda: print("Finished moving"))
+
+
+def will_return_to_forest(context: NPCIndividualContext):
+    position = context.npc.get_tile_pos()
+    return (
+        context.adhering_to_measures
+        and NPCSharedContext.current_map == Map.FOREST
+        and position[0] <= 9
+        and position[1] == 18
+        and NPCSharedContext.get_rnd_timer() - context.timing_for_bathhouse >= 45
+        and context.going_to_bathhouse
+    )
+
+
+def return_from_bathhouse_forest(context: NPCIndividualContext):
+    context.going_to_bathhouse = False
+    return walk_to_pos(
+        context, (10, 18), _reset_state_to_normal(context, NPCBehaviourTree.WOODCUTTING)
+    )
+
+
+# endregion
+
+
+# region "Go to bathhouse" logic for town map
+def will_leave_to_bathhouse(context: NPCIndividualContext) -> bool:
+    shared_ctx = NPCSharedContext
+    current_round = shared_ctx.get_round()
+    is_rnd_7 = current_round == 7
+    return (
+        context.adhering_to_measures
+        and current_round >= 7
+        and shared_ctx.current_map == Map.TOWN
+        and shared_ctx.get_rnd_timer() >= 30 * is_rnd_7
+        and not context.going_to_bathhouse
+    )
+
+
+def go_to_bathhouse_town(context: NPCIndividualContext) -> bool:
+    return walk_to_pos(context, (54, 43), lambda: print("Finished moving"))
+
+
+def will_leave_bathhouse(context: NPCIndividualContext):
+    shared_ctx = NPCSharedContext
+    return (
+        context.adhering_to_measures
+        and context.going_to_bathhouse
+        and shared_ctx.current_map == Map.TOWN
+        and shared_ctx.get_rnd_timer() - context.timing_for_bathhouse >= 30
+    )
+
+
+def leave_bathhouse(context: NPCIndividualContext):
+    return walk_to_pos(
+        context,
+        (55, 22),
+        lambda: _reset_state_to_normal(context, NPCBehaviourTree.FARMING),
+    )
+
+
+# endregion
 
 
 # region farming-exclusive logic
@@ -535,7 +652,7 @@ def cheer(context: NPCIndividualContext) -> bool:
 
 # region behaviour trees
 class NPCBehaviourTree(NodeWrapper, Enum):
-    Farming = Selector(
+    FARMING = Selector(
         Sequence(
             Condition(will_farm),
             Selector(
@@ -554,18 +671,43 @@ class NPCBehaviourTree(NodeWrapper, Enum):
         Action(wander),
     )
 
-    Woodcutting = Selector(
+    WOODCUTTING = Selector(
         Sequence(Condition(will_cut_wood), Selector(Action(chop_tree))),
         Action(wander),
     )
 
-    DoNothing = Selector(
+    DO_NOTHING = Selector(
         Sequence(Condition(will_do_nothing), Selector(Action(do_nothing))),
         Action(do_nothing),
     )
 
-    Cheer = Selector(
+    CHEER = Selector(
         Sequence(Condition(will_cheer), Selector(Action(cheer))),
+        Action(do_nothing),
+    )
+
+    FARM_GO_TO_BATHHOUSE = Selector(
+        Sequence(
+            Condition(will_return_to_farm_from_bathhouse),
+            Action(return_from_bathhouse_farm),
+        ),
+        Sequence(Condition(will_leave_farm_for_bathhouse), Action(go_to_bathhouse)),
+        Action(do_nothing),
+    )
+
+    FOREST_GO_TO_BATHHOUSE = Selector(
+        Sequence(
+            Condition(will_return_to_forest), Action(return_from_bathhouse_forest)
+        ),
+        Sequence(
+            Condition(will_leave_forest_for_bathhouse), Action(go_to_bathhouse_forest)
+        ),
+        Action(do_nothing),
+    )
+
+    TOWN_GO_TO_BATHHOUSE = Selector(
+        Sequence(Condition(will_leave_bathhouse), Action(leave_bathhouse)),
+        Sequence(Condition(will_leave_to_bathhouse), Action(go_to_bathhouse_town)),
         Action(do_nothing),
     )
 

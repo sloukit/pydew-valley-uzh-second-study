@@ -511,12 +511,12 @@
                 "cabbage"
             ],
             "playable_outgroup": true,
-            "healthbar": true,
+            "healthbar": false,
             "accessible_bathhouse": true,
-            "sickness": true,
+            "sickness": false,
             "inventory_goggles": true,
             "volcanic_eruption_timestamp": [
-                15
+                220
             ],
             "government_character": true,
             "inventory_tools": true,
@@ -560,10 +560,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                180
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_family"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 8",
@@ -645,10 +643,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_family"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 9",
@@ -729,10 +725,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_family"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 10",
@@ -816,10 +810,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_family"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 11",
@@ -902,10 +894,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_family"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 12",
@@ -991,10 +981,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_family"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         }
     ],
     [
@@ -1515,12 +1503,12 @@
                 "cabbage"
             ],
             "playable_outgroup": true,
-            "healthbar": true,
+            "healthbar": false,
             "accessible_bathhouse": true,
-            "sickness": true,
+            "sickness": false,
             "inventory_goggles": true,
             "volcanic_eruption_timestamp": [
-                15
+                220
             ],
             "statistics": true,
             "government_character": true,
@@ -1565,10 +1553,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                180
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_friends"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 8",
@@ -1651,10 +1637,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_friends"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 9",
@@ -1736,10 +1720,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_friends"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 10",
@@ -1824,10 +1806,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_friends"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 11",
@@ -1911,10 +1891,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_friends"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         },
         {
             "level_name_text": "Level 12",
@@ -2001,10 +1979,8 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [
-                120
-            ],
-            "group_market_active_player_sequence_text": "market_active_post_eruption_friends"
+            "group_market_active_player_sequence_timestamp": [],
+            "group_market_active_player_sequence_text": ""
         }
     ],
     [
@@ -2503,12 +2479,12 @@
                 "cabbage"
             ],
             "playable_outgroup": true,
-            "healthbar": true,
+            "healthbar": false,
             "accessible_bathhouse": true,
-            "sickness": true,
+            "sickness": false,
             "inventory_goggles": true,
             "volcanic_eruption_timestamp": [
-                15
+                220
             ],
             "statistics": true,
             "government_character": true,
