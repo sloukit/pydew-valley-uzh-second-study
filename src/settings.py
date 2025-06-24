@@ -53,14 +53,13 @@ POS_MOVE_LOG_INTERVAL = 15
 TOOLS_LOG_INTERVAL = 5
 
 IS_WEB = sys.platform in ("emscripten", "wasm")
-# TODO: uncomment this once testing is finished.
 # for now, in web mode, do not use dummy server (which requires `requests` module not available via pygbag)
-# if not IS_WEB:
-#     # If we're running locally, set this via environment variable:
-#     if os.getenv("USE_SERVER") == "true":
-#         USE_SERVER = True
-#     else:
-#         USE_SERVER = False
+if not IS_WEB:
+    # If we're running locally, set this via environment variable:
+    if os.getenv("USE_SERVER") == "true":
+        USE_SERVER = True
+    else:
+        USE_SERVER = False
 
 
 # NOTE(larsbutler): Don't change this line at all.
@@ -74,9 +73,8 @@ if IS_WEB:
     # build time.
     SERVER_URL = WEB_SERVER_URL
 else:
-    # TODO: original line is commented, restore once testing is finished.
-    # SERVER_URL = os.getenv("SERVER_URL", "http://127.0.0.0:8888")
-    SERVER_URL = os.getenv("SERVER_URL", "http://localhost:8001")
+    SERVER_URL = os.getenv("SERVER_URL", "http://127.0.0.0:8888")
+    # SERVER_URL = os.getenv("SERVER_URL", "http://localhost:8001")
 
 SETUP_PATHFINDING = any((ENABLE_NPCS, TEST_ANIMALS))
 
