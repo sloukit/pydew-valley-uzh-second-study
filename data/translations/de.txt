@@ -83,8 +83,8 @@ reset@@Standard
 # round end menu
 
 round_end_info@@Runde {round_no} ist fertig. Besitz der Rothüte: ${money} und:
-temp_finish@@Für heute ist das Spiel beendet. Sie können jetzt die Studie auf Prolific beenden und dieses Fenster schliessen. Besitz der Rothüte: ${money} und:
-whole_finish@@Das Spiel ist abgeschlossen! Bitte öffnen Sie jetzt den Fragebogen in der Beschreibung auf Prolific. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
+temp_finish@@Runde {round_no} ist beendet, Sie sind für heute fertig! Beenden Sie nun die Studie auf Prolific. Sie können sich morgen für den nächsten Teil anmelden. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte: ${money} und:
+whole_finish@@Runde {round_no} ist fertig, damit ist das Spiel abgeschlossen! Bitte gehen Sie jetzt auf Prolific und öffnen den Link zum Fragebogen. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
 next_round@@Weiter in die nächste Runde
 outgroup_income_round_end@@Die Hornlinge haben letzte Runde {money}$ verdient.
 ingroup_income_round_end@@Die Rothüte haben letzte Runde {money}$ verdient.
