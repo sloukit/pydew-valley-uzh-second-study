@@ -350,9 +350,9 @@ class Player(Character):
         if current_time - self.created_time >= self.delay_time_speed:
             self.speed = self.original_speed * (self.hp / 100)
 
-    def set_transparency_asper_health(self):
-        alpha_value = int(255 * (self.hp / 100))
-        self.image.set_alpha(alpha_value)
+    # def set_transparency_asper_health(self):
+      # alpha_value = int(255 * (self.hp / 100))
+      # self.image.set_alpha(alpha_value)
 
     def check_bath_bool(self):
         if (round(time.time() - self.bath_time)) == BATH_STATUS_TIMEOUT:
@@ -384,7 +384,7 @@ class Player(Character):
 
     def update(self, dt):
         self.set_speed_asper_health()
-        self.set_transparency_asper_health()
+      # self.set_transparency_asper_health()
         self.check_bath_bool()
         self.handle_controls()
         super().update(dt)
