@@ -367,7 +367,7 @@ class Game:
         self.tutorial = Tutorial(
             self.all_sprites, self.player, self.level, self.round_config
         )
-        self._has_displayed_goggles_tutorial = False
+        self._has_displayed_initial_gov_statement = False
 
         # intro to game and in-group msg.
         self.last_intro_txt_rendered = False
@@ -503,10 +503,10 @@ class Game:
         )
 
     @property
-    def _can_notify_goggles_tutorial(self):
+    def _can_notify_initial_gov_statement(self):
         return (
             self.round == 7
-            and not self._has_displayed_goggles_tutorial
+            and not self._has_displayed_initial_gov_statement
             and self.round_end_timer > _GOGGLES_TUT_TSTAMP
         )
 
@@ -1005,10 +1005,10 @@ class Game:
                         self.round_config["sickness"] = True
                         self.npc_sickness_mgr.apply_sickness_enable_to_existing_npcs()
                         self.level.npcs_state_registry.enable()
-                    elif self._can_notify_goggles_tutorial:
-                        self._has_displayed_goggles_tutorial = True
+                    elif self._can_notify_initial_gov_statement:
+                        self._has_displayed_initial_gov_statement = True
                         self.notification_menu.set_message(
-                            get_translated_msg("goggles_tutorial")
+                            get_translated_msg("initial_gov_statement")
                         )
                         self.switch_state(GameState.NOTIFICATION_MENU)
                     elif self._can_notify_questionnaire:
