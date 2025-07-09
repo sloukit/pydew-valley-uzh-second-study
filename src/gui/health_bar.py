@@ -53,7 +53,7 @@ class HealthProgressBar:
         # self.per_width_hp will be substract / added as per intensity.
 
         # shake
-        self.SHAKE_INTENSITY = 1.5
+        self.SHAKE_INTENSITY = 0
 
         # colors for health bar.
         self.colors = {
