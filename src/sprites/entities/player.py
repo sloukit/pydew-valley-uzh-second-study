@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 from typing import Any, Callable, Type
+import math
 
 import pygame  # noqa
 from random import random
@@ -347,8 +348,12 @@ class Player(Character):
 
     def set_speed_asper_health(self):
         current_time = time.time()
+        health_factor = math.sqrt(self.hp / 100)
+        min_speed_factor = 0.45
+        scaled_factor = min_speed_factor + (1 - min_speed_factor) * health_factor
+
         if current_time - self.created_time >= self.delay_time_speed:
-            self.speed = self.original_speed * (self.hp / 100)
+            self.speed = self.original_speed * scaled_factor
 
     # def set_transparency_asper_health(self):
       # alpha_value = int(255 * (self.hp / 100))
