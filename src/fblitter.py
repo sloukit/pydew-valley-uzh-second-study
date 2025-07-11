@@ -232,6 +232,9 @@ class _FBlitterType:
         )
         # background
         self.draw_rect(SL_ORANGE_BRIGHT, rect, border_radius=12)
+        curr_surf = self.current_surf
+        self.blit_all()
+        self.current_surf = curr_surf
 
 
 FBLITTER = _FBlitterType()  # noqa
