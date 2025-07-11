@@ -197,6 +197,7 @@ class SelfAssessmentMenu(AbstractMenu):
 
         text_surface = pygame.Surface(text.surface_rect.size, pygame.SRCALPHA)
         text.draw(text_surface)
+        FBLITTER.set_current_surf(self._surface)
         FBLITTER.schedule_blit(
             text_surface,
             (
