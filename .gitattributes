@@ -1,0 +1,6 @@
+*.py text
+*.txt text
+*.md diff=markdown
+*.sh text
+
+*.png binary

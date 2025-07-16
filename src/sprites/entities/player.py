@@ -139,6 +139,18 @@ class Player(Character):
         self.is_sick = True
         self.emote_manager.show_emote(self, "sad_sick_ani")
 
+#    def set_sick_look(self): 
+        """
+            Changes the look of the player to a sick look by senting a new palette on its sprite.
+        """
+#        for item in super().frames.items:
+#            new_palette = item.get_palette()
+#            item: pygame.Surface
+#            for color in item.get_palette():
+#                match color:
+#                    case _:
+#                        print(f"Color {color} not handled in sick look")
+
     def recover(self):
         self.is_sick = False
         self.hp = 100
@@ -387,11 +399,13 @@ class Player(Character):
         self.set_transparency_asper_health()
         self.check_bath_bool()
         self.handle_controls()
+        self.sick_look()
         super().update(dt)
         self.emote_manager.update_obj(
             self, (self.rect.centerx - 47, self.rect.centery - 128)
         )
         self.emote_manager.update_emote_wheel(self.rect.center)
+        
 
     def update_blocked(self, dt):
         """the scripted sequence needs to display emote box even when Player is blocked"""
