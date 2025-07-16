@@ -142,7 +142,7 @@ class Player(Character):
 
 #    def set_sick_look(self): 
         """
-            Changes the look of the player to a sick look by senting a new palette on its sprite.
+            Changes the look of the player to a sick look by sending a new palette on its sprite.
         """
 #        for item in super().frames.items:
 #            new_palette = item.get_palette()
@@ -404,7 +404,7 @@ class Player(Character):
         # self.set_transparency_asper_health()
         self.check_bath_bool()
         self.handle_controls()
-        self.sick_look()
+        #self.sick_look()
         super().update(dt)
         self.emote_manager.update_obj(
             self, (self.rect.centerx - 47, self.rect.centery - 128)
