@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import math
 import time
+from random import random
 from typing import Any, Callable, Type
 
 import pygame  # noqa
-from random import random
 
 from src.controls import Controls
 from src.enums import FarmingTool, InventoryResource, ItemToUse, StudyGroup
@@ -347,12 +348,16 @@ class Player(Character):
 
     def set_speed_asper_health(self):
         current_time = time.time()
-        if current_time - self.created_time >= self.delay_time_speed:
-            self.speed = self.original_speed * (self.hp / 100)
+        health_factor = math.sqrt(self.hp / 100)
+        min_speed_factor = 0.45
+        scaled_factor = min_speed_factor + (1 - min_speed_factor) * health_factor
 
-    def set_transparency_asper_health(self):
-        alpha_value = int(255 * (self.hp / 100))
-        self.image.set_alpha(alpha_value)
+        if current_time - self.created_time >= self.delay_time_speed:
+            self.speed = self.original_speed * scaled_factor
+
+    # def set_transparency_asper_health(self):
+    # alpha_value = int(255 * (self.hp / 100))
+    # self.image.set_alpha(alpha_value)
 
     def check_bath_bool(self):
         if (round(time.time() - self.bath_time)) == BATH_STATUS_TIMEOUT:
@@ -384,7 +389,7 @@ class Player(Character):
 
     def update(self, dt):
         self.set_speed_asper_health()
-        self.set_transparency_asper_health()
+        # self.set_transparency_asper_health()
         self.check_bath_bool()
         self.handle_controls()
         super().update(dt)

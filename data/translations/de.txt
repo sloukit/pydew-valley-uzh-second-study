@@ -83,8 +83,8 @@ reset@@Standard
 # round end menu
 
 round_end_info@@Runde {round_no} ist fertig. Besitz der Rothüte: ${money} und:
-temp_finish@@Für heute ist das Spiel beendet. Morgen geht es weiter - wir schicken Ihnen wieder eine E-Mail mit dem Link zum Spiel. Sie können das Fenster jetzt schliessen. Besitz der Rothüte: ${money} und:
-whole_finish@@Das Spiel ist abgeschlossen! Bitte öffnen Sie jetzt den Fragebogen aus der heutigen E-Mail. Sie können das Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
+temp_finish@@Runde {round_no} ist beendet, Sie sind für heute fertig! Beenden Sie nun die Studie auf Prolific. Sie können sich morgen für den nächsten Teil anmelden. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte: ${money} und:
+whole_finish@@Runde {round_no} ist fertig, damit ist das Spiel abgeschlossen! Bitte gehen Sie jetzt auf Prolific und öffnen den Link zum Fragebogen. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
 next_round@@Weiter in die nächste Runde
 outgroup_income_round_end@@Die Hornlinge haben letzte Runde {money}$ verdient.
 ingroup_income_round_end@@Die Rothüte haben letzte Runde {money}$ verdient.
@@ -267,12 +267,12 @@ market_active_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimm
 market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 market_active_post_eruption_friends@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 
-# Goggles tutorial
+# Government statements
 
-goggles_tutorial@@Wichtige Informationen: Du kannst nun die von der Regierung empfohlene Brille tragen. Ziehe sie an oder ab, indem du auf den Button im Inventar klickst.|Ab sofort kannst du zudem die Rothüte verlassen und dich den Hornlingen anschliessen, wenn du genug Zeit mit ihnen verbracht hast.|"Kuh-in-den-Stall" kann wegen des Vulkanausbruchs nicht mehr gespielt werden.
+initial_gov_statement@@Die Regierung in Mikahausen meldet sich: Der Vulkanausbruch hat uns Mikas schwer getroffen: Durch die giftigen Stoffe in der Luft kann über die Augen und die Haut die Vulkanseuche, eine ansteckende und tödliche Krankheit, ausgelöst werden. Alle Mikas sind betroffen. Deshalb müssen alle Mikas ab sofort und zu jeder Zeit eine Spezialbrille tragen und täglich ein spezielles Bad nehmen. Diese Schutzmassnahmen sind für alle verpflichtend. Die Spezialbrille findest du im Inventar (Taste I), das Bad ist in einem abgelegenen Haus im Südosten der Stadt.
 
 login_failed@@Anmeldung fehlgeschlagen.|Prüfen Sie, ob Sie Ihr Token richtig geschrieben haben.
 too_early_login@@Sie können sich momentan nicht in das Spiel einloggen.|Bitte kommen Sie morgen wieder.|Vielen Dank.
 
-died_in_group_members@@Gestorbene Mitglieder der Gruppe:
-died_out_group_members@@Gestorbene Mitglieder der Out-Group:
+died_in_group_members@@Gestorbene Rothüte:
+died_out_group_members@@Gestorbene Hornlinge:

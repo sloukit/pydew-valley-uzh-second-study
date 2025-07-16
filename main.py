@@ -367,7 +367,7 @@ class Game:
         self.tutorial = Tutorial(
             self.all_sprites, self.player, self.level, self.round_config
         )
-        self._has_displayed_goggles_tutorial = False
+        self._has_displayed_initial_gov_statement = False
 
         # intro to game and in-group msg.
         self.last_intro_txt_rendered = False
@@ -503,10 +503,10 @@ class Game:
         )
 
     @property
-    def _can_notify_goggles_tutorial(self):
+    def _can_notify_initial_gov_statement(self):
         return (
             self.round == 7
-            and not self._has_displayed_goggles_tutorial
+            and not self._has_displayed_initial_gov_statement
             and self.round_end_timer > _GOGGLES_TUT_TSTAMP
         )
 
@@ -583,7 +583,7 @@ class Game:
                 self.game_version = DEBUG_MODE_VERSION
             else:
                 raise ValueError("Invalid token value")
-            self.set_round(1)
+            self.set_round(7)
             self.check_hat_condition()
         else:  # online deployed version with db access
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
@@ -595,7 +595,7 @@ class Game:
                 ]  # these are day task completions
                 max_complete_level = max(d["game_round"] for d in response["status"])
                 xplat.log("Max completed level so far: {}".format(max_complete_level))
-                if max_complete_level >= 6:
+                if max_complete_level >= 12:
                     raise ValueError(
                         "All levels are already completed for this player token."
                     )
@@ -610,7 +610,7 @@ class Game:
                 ]
                 most_recent_completion = max(timestamps)
                 current_time = datetime.now(timezone.utc)
-                if max_complete_level > 6:
+                if max_complete_level > 12:
                     self.level.npcs_state_registry.restore_registry(
                         dict(
                             filter(
@@ -684,8 +684,9 @@ class Game:
         print(self.round_config["level_name_text"])
 
     def increment_round(self) -> None:
-        if self.round < 12:
+        if self.round < 13:
             self.set_round(self.round + 1)
+            print("incremented round to {}".format(self.round))
 
     def switch_state(self, state: GameState) -> None:
         self.set_cursor(CustomCursor.ARROW)
@@ -1004,10 +1005,10 @@ class Game:
                         self.round_config["sickness"] = True
                         self.npc_sickness_mgr.apply_sickness_enable_to_existing_npcs()
                         self.level.npcs_state_registry.enable()
-                    elif self._can_notify_goggles_tutorial:
-                        self._has_displayed_goggles_tutorial = True
+                    elif self._can_notify_initial_gov_statement:
+                        self._has_displayed_initial_gov_statement = True
                         self.notification_menu.set_message(
-                            get_translated_msg("goggles_tutorial")
+                            get_translated_msg("initial_gov_statement")
                         )
                         self.switch_state(GameState.NOTIFICATION_MENU)
                     elif self._can_notify_questionnaire:

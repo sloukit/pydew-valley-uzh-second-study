@@ -214,14 +214,14 @@ class RoundMenu(GeneralMenu):
             title_box_height = 50
         else:
             if (
-                self.get_round() in {1, 7}
+                self.get_round() in {1, 13}
             ):  # corresponsds to last level, config overflows in some cases, this is why we have 1 in here
                 self.title = get_translated_msg("whole_finish").format(
-                    money=self.player.money
+                    round_no=self.get_round() - 1, money=self.player.money
                 )
             else:  # daily task completion
                 self.title = get_translated_msg("temp_finish").format(
-                    money=self.player.money
+                    round_no=self.get_round() - 1, money=self.player.money
                 )
             title_box_width = 1020
             title_box_height = 90
