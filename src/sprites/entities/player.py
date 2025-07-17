@@ -412,7 +412,6 @@ class Player(Character):
             # If not sick, draw normally
             super().draw(display_surface, rect, camera)
 
-
     # sets the player's transparency and speed according to their health
 
     def set_speed_asper_health(self):
