@@ -458,7 +458,6 @@ class Player(Character):
 
     def update(self, dt):
         self.set_speed_asper_health()
-        # self.set_transparency_asper_health()
         self.check_bath_bool()
         self.handle_controls()
         super().update(dt)
