@@ -1,10 +1,22 @@
 from __future__ import annotations
 
+# Colours:
+#   Main Character Fur Colour: RGB 243, 242, 192 or (243, 242, 192)
+#   Main Character Cheek Colour: RGB 243, 216, 197 or (243, 216, 197)
+#   Main Character Accentuation Colour: RGB 221, 213, 222 or (221, 213, 222)
+#   Main Character Ear Colour: RGB 232, 181, 172 or (232, 181, 172)
+# Sick Colours:
+#   Main Character Sick Fur Colour : RGB 103, 131, 92 or (103, 131, 92)
+#   Main Character Sick Cheek Colour: RGB 86, 101, 96 or (86, 101, 96)
+#   Main Character Sick Accentuation Colour: RGB 134, 81, 97 or (134, 81, 97)
+#   Main Character Sick Ear Colour: RGB 107, 75, 91 or (107, 75, 91)
+#
+# IMPORTS
 import time
+from random import random
 from typing import Any, Callable, Type
 
 import pygame  # noqa
-from random import random
 
 from src.controls import Controls
 from src.enums import FarmingTool, InventoryResource, ItemToUse, StudyGroup
