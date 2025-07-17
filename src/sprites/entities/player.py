@@ -387,7 +387,6 @@ class Player(Character):
         self.set_transparency_asper_health()
         self.check_bath_bool()
         self.handle_controls()
-        # self.sick_look()
         super().update(dt)
         self.emote_manager.update_obj(
             self, (self.rect.centerx - 47, self.rect.centery - 128)
