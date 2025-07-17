@@ -1,5 +1,17 @@
 from __future__ import annotations
 
+#Colours:
+#   Main Character Fur Colour: RGB 243, 242, 192 or (243, 242, 192)
+#   Main Character Cheek Colour: RGB 243, 216, 197 or (243, 216, 197)
+#   Main Character Accentuation Colour: RGB 221, 213, 222 or (221, 213, 222)
+#   Main Character Ear Colour: RGB 232, 181, 172 or (232, 181, 172)
+
+# Sick Colours:
+#   Main Character Sick Fur Colour : RGB 103, 131, 92 or (103, 131, 92)
+#   Main Character Sick Cheek Colour: RGB 86, 101, 96 or (86, 101, 96)
+#   Main Character Sick Accentuation Colour: RGB 134, 81, 97 or (134, 81, 97)
+#   Main Character Sick Ear Colour: RGB 107, 75, 91 or (107, 75, 91)
+
 import time
 from typing import Any, Callable, Type
 
@@ -138,18 +150,6 @@ class Player(Character):
     def get_sick(self):
         self.is_sick = True
         self.emote_manager.show_emote(self, "sad_sick_ani")
-
-#    def set_sick_look(self): 
-        """
-            Changes the look of the player to a sick look by sending a new palette on its sprite.
-        """
-#        for item in super().frames.items:
-#            new_palette = item.get_palette()
-#            item: pygame.Surface
-#            for color in item.get_palette():
-#                match color:
-#                    case _:
-#                        print(f"Color {color} not handled in sick look")
 
     def recover(self):
         self.is_sick = False
@@ -394,18 +394,61 @@ class Player(Character):
         if sound:
             self.sounds[sound].play()
 
+    def apply_sick_color_effect(self, surf: pygame.Surface) -> pygame.Surface:
+        """Applies a green-ish tint to the player sprite to represent sickness."""
+        if not self.is_sick:
+            return surf #when the player is not sick, simply return the original surface
+        
+        sick_surface = surf.copy()
+
+
+
+    def apply_sick_color_effect(self, surface: pygame.Surface) -> pygame.Surface:
+        """Apply a greenish tint to the surface to represent sickness"""
+        if not self.is_sick:
+            return surface
+
+        # Create a copy of the surface to avoid modifying the original
+        sick_surface = surface.copy()
+
+        # Create a green overlay
+        green_overlay = pygame.Surface(sick_surface.get_size(), pygame.SRCALPHA)
+        green_overlay.fill((0, 120, 0, 80))  # Semi-transparent green
+
+        # Apply the green tint using blend mode
+        sick_surface.blit(green_overlay, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+
+        return sick_surface
+
+    def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
+        """Override draw method to apply sick color effect"""
+        if self.is_sick:
+            # Store the original image temporarily
+            original_image = self.image
+
+            # Apply the sick color effect to the current image
+            self.image = self.apply_sick_color_effect(self.image)
+
+            # Call the parent draw method with the modified image
+            super().draw(display_surface, rect, camera)
+
+            # Restore the original image
+            self.image = original_image
+        else:
+            # If not sick, draw normally
+            super().draw(display_surface, rect, camera)
+
     def update(self, dt):
         self.set_speed_asper_health()
         self.set_transparency_asper_health()
         self.check_bath_bool()
         self.handle_controls()
-        #self.sick_look()
+        # self.sick_look()
         super().update(dt)
         self.emote_manager.update_obj(
             self, (self.rect.centerx - 47, self.rect.centery - 128)
         )
         self.emote_manager.update_emote_wheel(self.rect.center)
-        
 
     def update_blocked(self, dt):
         """the scripted sequence needs to display emote box even when Player is blocked"""
