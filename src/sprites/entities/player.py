@@ -5,14 +5,13 @@ from __future__ import annotations
 #   Main Character Cheek Colour: RGB 243, 216, 197 or (243, 216, 197)
 #   Main Character Accentuation Colour: RGB 221, 213, 222 or (221, 213, 222)
 #   Main Character Ear Colour: RGB 232, 181, 172 or (232, 181, 172)
-
 # Sick Colours:
 #   Main Character Sick Fur Colour : RGB 103, 131, 92 or (103, 131, 92)
 #   Main Character Sick Cheek Colour: RGB 86, 101, 96 or (86, 101, 96)
 #   Main Character Sick Accentuation Colour: RGB 134, 81, 97 or (134, 81, 97)
 #   Main Character Sick Ear Colour: RGB 107, 75, 91 or (107, 75, 91)
-
-import math
+#
+# IMPORTS
 import time
 from random import random
 from typing import Any, Callable, Type
@@ -360,16 +359,12 @@ class Player(Character):
 
     def set_speed_asper_health(self):
         current_time = time.time()
-        health_factor = math.sqrt(self.hp / 100)
-        min_speed_factor = 0.45
-        scaled_factor = min_speed_factor + (1 - min_speed_factor) * health_factor
-
         if current_time - self.created_time >= self.delay_time_speed:
-            self.speed = self.original_speed * scaled_factor
+            self.speed = self.original_speed * (self.hp / 100)
 
-    # def set_transparency_asper_health(self):
-    # alpha_value = int(255 * (self.hp / 100))
-    # self.image.set_alpha(alpha_value)
+    def set_transparency_asper_health(self):
+        alpha_value = int(255 * (self.hp / 100))
+        self.image.set_alpha(alpha_value)
 
     def check_bath_bool(self):
         if (round(time.time() - self.bath_time)) == BATH_STATUS_TIMEOUT:
@@ -399,65 +394,9 @@ class Player(Character):
         if sound:
             self.sounds[sound].play()
 
-    def apply_sick_color_effect(self, surf: pygame.Surface) -> pygame.Surface:
-        """Applies a green-ish tint to the player sprite to represent sickness."""
-        if not self.is_sick:
-            return (
-                surf  # when the player is not sick, simply return the original surface
-            )
-
-        # Create a copy of the surface and ensure it has per-pixel alpha
-        sick_surface = surf.convert_alpha()
-
-        # Define color mappings from normal to sick colors
-        color_mappings = {
-            (243, 242, 192): (103, 131, 92),  # Fur Colour -> Sick Fur Colour
-            (243, 216, 197): (86, 101, 96),  # Cheek Colour -> Sick Cheek Colour
-            (221, 213, 222): (
-                134,
-                81,
-                97,
-            ),  # Accentuation Colour -> Sick Accentuation Colour
-            (232, 181, 172): (107, 75, 91),  # Ear Colour -> Sick Ear Colour
-        }
-
-        # Use pixel-by-pixel replacement (slower but more compatible)
-        width = sick_surface.get_width()
-        height = sick_surface.get_height()
-
-        for x in range(width):
-            for y in range(height):
-                pixel_color = sick_surface.get_at((x, y))
-                rgb = (pixel_color.r, pixel_color.g, pixel_color.b)
-
-                if rgb in color_mappings:
-                    new_color = color_mappings[rgb]
-                    sick_surface.set_at((x, y), (*new_color, pixel_color.a))
-
-        return sick_surface
-
-    def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
-        """Override draw method to apply sick color effect"""
-        if self.is_sick:
-            # Store the original image temporarily
-            original_image = self.image
-            try:
-                # Apply the sick color effect to the current image
-                self.image = self.apply_sick_color_effect(self.image)
-            finally:
-                pass
-
-            # Call the parent draw method with the modified image
-            super().draw(display_surface, rect, camera)
-
-            # Restore the original image
-            self.image = original_image
-        else:
-            # If not sick, draw normally
-            super().draw(display_surface, rect, camera)
-
     def update(self, dt):
         self.set_speed_asper_health()
+        self.set_transparency_asper_health()
         self.check_bath_bool()
         self.handle_controls()
         super().update(dt)
