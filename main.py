@@ -423,10 +423,10 @@ class Game:
     @property
     def _can_notify_government(self):
         return (
-            self.round_config.get("gov_statement_text", "")
-            and self.round_config["gov_statement_timestamp"]
+            self.round_config.get("notify_gov_statement_text", "")
+            and self.round_config["notify_gov_statement_timestamp"]
             and self.round_end_timer
-            > self.round_config["gov_statement_timestamp"][0]
+            > self.round_config["notify_gov_statement_timestamp"][0]
         )
 
     @property

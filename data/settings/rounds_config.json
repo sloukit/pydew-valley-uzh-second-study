@@ -79,8 +79,8 @@
             "group_market_active_player_sequence_text": "",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -166,8 +166,8 @@
             "group_market_active_player_sequence_text": "",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -250,8 +250,8 @@
             "group_market_active_player_sequence_text": "",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -337,8 +337,8 @@
             "group_market_active_player_sequence_text": "",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -425,8 +425,8 @@
             "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -514,8 +514,8 @@
             "group_market_active_player_sequence_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -600,8 +600,8 @@
                 600
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -689,10 +689,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -781,10 +781,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -874,10 +874,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -968,10 +968,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1063,10 +1063,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         }
@@ -1151,8 +1151,8 @@
             "group_market_active_player_sequence_text": "",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1238,8 +1238,8 @@
             "group_market_active_player_sequence_text": "",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1322,8 +1322,8 @@
             "group_market_active_player_sequence_text": "",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1409,8 +1409,8 @@
             "group_market_active_player_sequence_text": "",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1497,8 +1497,8 @@
             "group_market_active_player_sequence_text": "Deine Freundesfarm versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1586,8 +1586,8 @@
             "group_market_active_player_sequence_text": "Deine Freundesfarm versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
             "market_active_post_eruption_timestamp": [],
             "market_active_post_eruption_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1672,8 +1672,8 @@
                 600
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1761,10 +1761,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1853,10 +1853,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1946,10 +1946,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2040,10 +2040,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2135,10 +2135,10 @@
                 120
             ],
             "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         }
@@ -2217,8 +2217,8 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": false,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2296,8 +2296,8 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": false,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2378,8 +2378,8 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": false,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2459,8 +2459,8 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": false,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2541,8 +2541,8 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": false,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2624,8 +2624,8 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": false,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2706,8 +2706,8 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [],
-            "gov_statement_text": "",
+            "notify_gov_statement_timestamp": [],
+            "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2791,10 +2791,10 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2879,10 +2879,10 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2968,10 +2968,10 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -3058,10 +3058,10 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -3149,10 +3149,10 @@
             "group_market_passive_player_sequence_text": "",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "gov_statement_timestamp": [
+            "notify_gov_statement_timestamp": [
                 20
             ],
-            "gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         }
