@@ -1021,8 +1021,8 @@ class Game:
                         )
                         self.switch_state(GameState.NOTIFICATION_MENU)
                     elif self._can_notify_government:
-                        message = self.round_config["gov_statement_text"]
-                        self._notify(message, "government_statement")
+                        message = self.round_config["notify_gov_statement_text"]
+                        self._notify(message, "gov_statement")
                     elif self._can_notify_questionnaire:
                         message = self.round_config["notify_questionnaire_text"]
                         self._notify(message, "questionnaire")
