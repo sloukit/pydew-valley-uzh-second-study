@@ -12,6 +12,7 @@ from __future__ import annotations
 #   Main Character Sick Ear Colour: RGB 107, 75, 91 or (107, 75, 91)
 #
 # IMPORTS
+import math
 import time
 from random import random
 from typing import Any, Callable, Type
@@ -86,7 +87,7 @@ class Player(Character):
             plant_collision=plant_collision,
         )
 
-        self.is_sick = True
+        self.is_sick = False
         self.round_config = round_config
         self.get_game_version = get_game_version
         self.send_telemetry = send_telemetry
@@ -416,12 +417,12 @@ class Player(Character):
 
     def set_speed_asper_health(self):
         current_time = time.time()
-        if current_time - self.created_time >= self.delay_time_speed:
-            self.speed = self.original_speed * (self.hp / 100)
+        health_factor = math.sqrt(self.hp / 100)
+        min_speed_factor = 0.45
+        scaled_factor = min_speed_factor + (1 - min_speed_factor) * health_factor
 
-    def set_transparency_asper_health(self):
-        alpha_value = int(255 * (self.hp / 100))
-        self.image.set_alpha(alpha_value)
+        if current_time - self.created_time >= self.delay_time_speed:
+            self.speed = int(self.original_speed * scaled_factor)
 
     def check_bath_bool(self):
         if (round(time.time() - self.bath_time)) == BATH_STATUS_TIMEOUT:
@@ -453,7 +454,6 @@ class Player(Character):
 
     def update(self, dt):
         self.set_speed_asper_health()
-        self.set_transparency_asper_health()
         self.check_bath_bool()
         self.handle_controls()
         super().update(dt)

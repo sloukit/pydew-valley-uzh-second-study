@@ -162,8 +162,7 @@ cython_debug/
 .idea/
 *.iml
 
-
-/.DS_Store
+*.DS_Store*
 /.vscode
 __pycache__
 
