@@ -15,7 +15,7 @@ from __future__ import annotations
 import math
 import time
 from random import random
-from typing import Any, Callable, Type
+from typing import Any, Callable, Final, Type
 
 import pygame  # noqa
 
@@ -366,8 +366,12 @@ class Player(Character):
         # Create a copy of the surface and ensure it has per-pixel alpha
         sick_surface = surf.convert_alpha()
 
+        # Use pixel-by-pixel replacement (slower but more compatible)
+        width: Final[int] = sick_surface.get_width()
+        height: Final[int] = sick_surface.get_height()
+
         # Define color mappings from normal to sick colors
-        color_mappings = {
+        color_mappings: Final[dict[tuple[int, int, int], tuple[int, int, int]]] = {
             (243, 242, 192): (103, 131, 92),  # Fur Colour -> Sick Fur Colour
             (243, 216, 197): (86, 101, 96),  # Cheek Colour -> Sick Cheek Colour
             (221, 213, 222): (
@@ -377,10 +381,6 @@ class Player(Character):
             ),  # Accentuation Colour -> Sick Accentuation Colour
             (232, 181, 172): (107, 75, 91),  # Ear Colour -> Sick Ear Colour
         }
-
-        # Use pixel-by-pixel replacement (slower but more compatible)
-        width = sick_surface.get_width()
-        height = sick_surface.get_height()
 
         for x in range(width):
             for y in range(height):
@@ -412,8 +412,6 @@ class Player(Character):
         else:
             # If not sick, draw normally
             super().draw(display_surface, rect, camera)
-
-    # sets the player's transparency and speed according to their health
 
     def set_speed_asper_health(self):
         current_time = time.time()
