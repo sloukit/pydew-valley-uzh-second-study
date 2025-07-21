@@ -314,7 +314,6 @@ def create_new_farmland(context: NPCIndividualContext) -> bool:
     )
 
     def on_path_completion():
-        # added to prevent npcs from being able to farm while sick
         if context.npc.is_sick:
             return
 
