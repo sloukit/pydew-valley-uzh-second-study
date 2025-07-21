@@ -266,7 +266,7 @@ class Player(Character):
                 )
 
             # tool use
-            if self.controls.USE.click:
+            if self.controls.USE.click and not self.is_sick:
                 self.tool_active = True
                 self.frame_index = 0
                 self.direction = pygame.Vector2()
@@ -278,7 +278,7 @@ class Player(Character):
                 self.current_seed = self.get_next_seed(self.current_seed)
 
             # seed used
-            if self.controls.PLANT.click:
+            if self.controls.PLANT.click and not self.is_sick:
                 self.use_tool(ItemToUse.SEED)
 
             # interact
