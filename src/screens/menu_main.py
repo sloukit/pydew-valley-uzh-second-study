@@ -1,3 +1,4 @@
+# import traceback
 from collections.abc import Callable
 from typing import Any
 
@@ -16,7 +17,6 @@ from src.settings import (
     # USE_SERVER,
 )
 from src.support import get_translated_string as get_translated_msg
-import traceback
 
 _SCREEN_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 # MAX_TOKEN_LEN = 3

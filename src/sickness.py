@@ -54,10 +54,14 @@ class SicknessManager:
 
     def update_ply_sickness(self):
         current_time = self.get_rend_timer()
-        if self.get_round() < 7 or current_time < 300: # cannot get sick before round 7 or 5mins in
+        if (
+            self.get_round() < 7 or current_time < 300
+        ):  # cannot get sick before round 7 or 5mins in
             return
 
-        if (self.sickness_calc_count == 0) or (current_time >= 600 and self.sickness_calc_count == 1): # do at 5mins and 10mins
+        if (self.sickness_calc_count == 0) or (
+            current_time >= 600 and self.sickness_calc_count == 1
+        ):  # do at 5mins and 10mins
             self.sickness_calc_count += 1
             if self.should_make_player_sick():
                 self._make_ply_sick()

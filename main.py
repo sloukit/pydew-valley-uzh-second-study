@@ -585,9 +585,11 @@ class Game:
             else:
                 raise ValueError("Invalid token value")
 
-            self.npc_sickness_mgr.adherence = bool(token_int%10)
-            xplat.log(f"NPC adherence is set to {bool(token_int%10)}")
-            self.npc_sickness_mgr._setup_from_returned_data({"data":None}) # workaround fake npc server response
+            self.npc_sickness_mgr.adherence = bool(token_int % 10)
+            xplat.log(f"NPC adherence is set to {bool(token_int % 10)}")
+            self.npc_sickness_mgr._setup_from_returned_data(
+                {"data": None}
+            )  # workaround fake npc server response
             self.set_round(7)
             self.check_hat_condition()
         else:  # online deployed version with db access

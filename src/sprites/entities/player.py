@@ -13,7 +13,6 @@ from __future__ import annotations
 #
 # IMPORTS
 import math
-import time
 from random import random
 from typing import Any, Callable, Type
 
@@ -22,11 +21,11 @@ import pygame  # noqa
 from src.controls import Controls
 from src.enums import FarmingTool, InventoryResource, ItemToUse, StudyGroup
 from src.events import OPEN_INVENTORY, START_QUAKE, post_event
+from src.gui.health_bar import PLAYER_HP, PLAYER_HP_STATE, PLAYER_IS_SICK
 from src.gui.interface.emotes import PlayerEmoteManager
 from src.npc.bases.npc_base import NPCBase
 from src.savefile import SaveFile
 from src.settings import (
-    BATH_STATUS_TIMEOUT,
     DEBUG_MODE_VERSION,
     POS_MIN_LOG_INTERVAL,
     POS_MOVE_LOG_INTERVAL,
@@ -37,7 +36,6 @@ from src.sprites.entities.character import Character
 from src.sprites.entities.entity import Entity
 from src.sprites.setup import EntityAsset
 from src.support import load_data, parse_crop_types, save_data
-from src.gui.health_bar import PLAYER_HP, PLAYER_HP_STATE, PLAYER_IS_SICK
 
 _NONSEED_INVENTORY_DEFAULT_AMOUNT = 20
 _SEED_INVENTORY_DEFAULT_AMOUNT = 5
@@ -457,8 +455,7 @@ class Player(Character):
             self.sounds[sound].play()
 
     def update(self, dt):
-
-        #only do the speed adjustment every second, no need for more
+        # only do the speed adjustment every second, no need for more
         self.dt_speed += dt
         if self.dt_speed > 1:
             self.dt_speed = 0

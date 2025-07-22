@@ -55,7 +55,6 @@ from src.settings import (
     DEFAULT_ANIMATION_NAME,
     EMOTES_LIST,
     GAME_MAP,
-    HEALTH_DECAY_VALUE,
     SCALED_TILE_SIZE,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
@@ -1231,9 +1230,9 @@ class Level:
 
     def decay_health(self, dt):
         if self.player.is_sick:
-            if int(self.get_rnd_timer())%300 < 150 : # first 2.5 mins decrease health
-                self.overlay.health_bar.apply_damage(90/150*dt)
-            else: # second 2.5mins increase health again
+            if int(self.get_rnd_timer()) % 300 < 150:  # first 2.5 mins decrease health
+                self.overlay.health_bar.apply_damage(90 / 150 * dt)
+            else:  # second 2.5mins increase health again
                 self.overlay.health_bar.apply_health(90 / 150 * dt)
 
     def check_map_exit(self):
