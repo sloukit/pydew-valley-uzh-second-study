@@ -376,14 +376,6 @@ class Game:
     def _reset_goggles_timer(self):
         self.goggles_delta = 0.0
 
-    def tick_bath_if_in_range(self):
-        if self.took_bath:
-            return
-        if self.round > 7 and self.round_end_timer <= 180:
-            self.took_bath = True
-        if self.round == 7 and 60 <= self.round_end_timer <= 300:
-            self.took_bath = True
-
     def add_npc_to_mgr(self, npc_id: int, npc: NPC):
         self.npc_sickness_mgr.add_npc(npc_id, npc)
 
@@ -538,7 +530,7 @@ class Game:
 
     def send_telemetry(self, event: str, payload: dict[str, int]) -> None:
         if event == "bath_taken":
-            self.tick_bath_if_in_range()
+            self.took_bath = True
         if USE_SERVER:
             telemetry = {
                 "event": event,

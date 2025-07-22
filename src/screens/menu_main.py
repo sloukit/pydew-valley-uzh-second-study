@@ -16,6 +16,7 @@ from src.settings import (
     # USE_SERVER,
 )
 from src.support import get_translated_string as get_translated_msg
+import traceback
 
 _SCREEN_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 # MAX_TOKEN_LEN = 3
@@ -169,6 +170,8 @@ class MainMenu(GeneralMenu):
         xplat.log("error login callback")
         # TODO: remove this print once testing is finished.
         print(login_error)
+        # Print full traceback
+        # traceback.print_exception(type(login_error), login_error, login_error.__traceback__)
         self.display_error.set_error_message(login_error)
 
     def do_login(self, token: str) -> None:
