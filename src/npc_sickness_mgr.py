@@ -239,7 +239,7 @@ class NPCSicknessManager:
                     evt["npc_id"], i, evt["timestamp"], evt["change_type"]
                 )
                 self.computed_status_changes[int(i)].append(computed)
-                _summarise_event(computed)
+                _summarise_event(computed)  # this print the event to the terminal
                 if computed.change_type == NPCSicknessStatusChange.DIE:
                     self.death_tstamps[computed.npc_id] = (int(i), computed.timestamp)
                 if computed.change_type == NPCSicknessStatusChange.GO_TO_BATHHOUSE:
@@ -337,9 +337,10 @@ class NPCSicknessManager:
                     current_ingrp_sick_npcs.clear()
 
             # Selection for the ingroup (adhering NPCs)
-            current_ingrp_adherent = choice(ingrp_adherence_pickable)
-            ingrp_adherence_pickable.remove(current_ingrp_adherent)
-            current_ingrp_sick_npcs.append(current_ingrp_adherent)
+            if len(ingrp_adherence_pickable) > 0:
+                current_ingrp_adherent = choice(ingrp_adherence_pickable)
+                ingrp_adherence_pickable.remove(current_ingrp_adherent)
+                current_ingrp_sick_npcs.append(current_ingrp_adherent)
 
             # Selection for the outgroup (non-adhering NPCs)
             if outgrp_sick_eligible:

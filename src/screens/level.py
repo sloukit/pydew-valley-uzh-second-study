@@ -55,7 +55,6 @@ from src.settings import (
     DEFAULT_ANIMATION_NAME,
     EMOTES_LIST,
     GAME_MAP,
-    HEALTH_DECAY_VALUE,
     SCALED_TILE_SIZE,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
@@ -248,7 +247,6 @@ class Level:
             emote_manager=self.player_emote_manager,
             sounds=self.sounds,
             hp=0,
-            bathstat=False,
             bath_time=0,
             save_file=self.save_file,
             round_config=self.round_config,
@@ -537,7 +535,6 @@ class Level:
             if map_name == "bathhouse":
                 if self.round_config["accessible_bathhouse"]:
                     if self.player.hp < 80:
-                        self.overlay.health_bar.apply_health(9999999)
                         self.player.bathstat = True
                         self.send_telemetry(
                             PLAYER_HP_STATE,
@@ -1231,16 +1228,12 @@ class Level:
         self.map_transition.activate()
         self.start_transition()
 
-    def decay_health(self):
-        if self.player.hp > 10 and self.player.is_sick:
-            if not self.player.bathstat and not self.player.has_goggles:
-                self.overlay.health_bar.apply_damage(HEALTH_DECAY_VALUE)
-            elif not self.player.has_goggles and self.player.bathstat:
-                self.overlay.health_bar.apply_damage((HEALTH_DECAY_VALUE / 2))
-            self.send_telemetry(
-                PLAYER_HP_STATE,
-                {PLAYER_HP: self.player.hp, PLAYER_IS_SICK: self.player.is_sick},
-            )
+    def decay_health(self, dt):
+        if self.player.is_sick:
+            if int(self.get_rnd_timer()) % 300 < 150:  # first 2.5 mins decrease health
+                self.overlay.health_bar.apply_damage(90 / 150 * dt)
+            else:  # second 2.5mins increase health again
+                self.overlay.health_bar.apply_health(90 / 150 * dt)
 
     def check_map_exit(self):
         if not self.map_transition:
@@ -1462,7 +1455,7 @@ class Level:
                 dt,
             )
             if self.round_config.get("sickness", False) and self.player.is_sick:
-                self.decay_health()
+                self.decay_health(dt)
 
         self.draw(dt, move_things)
 

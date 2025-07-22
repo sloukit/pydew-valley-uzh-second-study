@@ -13,7 +13,6 @@ from __future__ import annotations
 #
 # IMPORTS
 import math
-import time
 from random import random
 from typing import Any, Callable, Type
 
@@ -22,11 +21,11 @@ import pygame  # noqa
 from src.controls import Controls
 from src.enums import FarmingTool, InventoryResource, ItemToUse, StudyGroup
 from src.events import OPEN_INVENTORY, START_QUAKE, post_event
+from src.gui.health_bar import PLAYER_HP, PLAYER_HP_STATE, PLAYER_IS_SICK
 from src.gui.interface.emotes import PlayerEmoteManager
 from src.npc.bases.npc_base import NPCBase
 from src.savefile import SaveFile
 from src.settings import (
-    BATH_STATUS_TIMEOUT,
     DEBUG_MODE_VERSION,
     POS_MIN_LOG_INTERVAL,
     POS_MOVE_LOG_INTERVAL,
@@ -70,7 +69,6 @@ class Player(Character):
         emote_manager: PlayerEmoteManager,
         sounds: SoundDict,
         hp: int,
-        bathstat: bool,
         bath_time: float,
         save_file: SaveFile,
         round_config: dict[str, Any],
@@ -100,7 +98,6 @@ class Player(Character):
         self.blocked = False
         self.paused = False
         self.interact = interact
-        self.bathstat = bathstat
         self.bath_time = bath_time
         self.has_goggles = save_file.has_goggles
         self.has_necklace = save_file.has_necklace
@@ -125,8 +122,9 @@ class Player(Character):
         self.sounds = sounds
 
         self.hp = hp
-        self.created_time = time.time()
-        self.delay_time_speed = 0.25
+        # self.created_time = time.time() # used for speed unclear why
+        # self.delay_time_speed = 0.25
+        self.dt_speed = 0
 
         # check if the zoom is allowed
         self.zoom_allowed = False
@@ -151,10 +149,18 @@ class Player(Character):
     def get_sick(self):
         self.is_sick = True
         self.emote_manager.show_emote(self, "sad_sick_ani")
+        self.send_telemetry(
+            PLAYER_HP_STATE,
+            {PLAYER_HP: self.hp, PLAYER_IS_SICK: self.is_sick},
+        )
 
     def recover(self):
         self.is_sick = False
         self.hp = 100
+        self.send_telemetry(
+            PLAYER_HP_STATE,
+            {PLAYER_HP: self.hp, PLAYER_IS_SICK: self.is_sick},
+        )
 
     def save(self):
         # We compact the inventory first,
@@ -416,17 +422,13 @@ class Player(Character):
     # sets the player's transparency and speed according to their health
 
     def set_speed_asper_health(self):
-        current_time = time.time()
+        # current_time = time.time()
         health_factor = math.sqrt(self.hp / 100)
         min_speed_factor = 0.45
         scaled_factor = min_speed_factor + (1 - min_speed_factor) * health_factor
 
-        if current_time - self.created_time >= self.delay_time_speed:
-            self.speed = int(self.original_speed * scaled_factor)
-
-    def check_bath_bool(self):
-        if (round(time.time() - self.bath_time)) == BATH_STATUS_TIMEOUT:
-            self.bathstat = False
+        # if current_time - self.created_time >= self.delay_time_speed: #why is this here? removed by manuel
+        self.speed = int(self.original_speed * scaled_factor)
 
     def teleport(self, pos: tuple[float, float]):
         """
@@ -453,8 +455,12 @@ class Player(Character):
             self.sounds[sound].play()
 
     def update(self, dt):
-        self.set_speed_asper_health()
-        self.check_bath_bool()
+        # only do the speed adjustment every second, no need for more
+        self.dt_speed += dt
+        if self.dt_speed > 1:
+            self.dt_speed = 0
+            self.set_speed_asper_health()
+
         self.handle_controls()
         super().update(dt)
         self.emote_manager.update_obj(

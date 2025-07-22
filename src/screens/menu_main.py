@@ -1,3 +1,4 @@
+# import traceback
 from collections.abc import Callable
 from typing import Any
 
@@ -169,6 +170,8 @@ class MainMenu(GeneralMenu):
         xplat.log("error login callback")
         # TODO: remove this print once testing is finished.
         print(login_error)
+        # Print full traceback
+        # traceback.print_exception(type(login_error), login_error, login_error.__traceback__)
         self.display_error.set_error_message(login_error)
 
     def do_login(self, token: str) -> None:

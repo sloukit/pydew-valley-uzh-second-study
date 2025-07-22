@@ -43,7 +43,7 @@ class SicknessManager:
 
     @property
     def _sickness_likelihood(self) -> float:
-        if self.get_round() < 7 or self.get_rend_timer() < 300 or self._is_ply_sick():
+        if self.get_round() < 7 or self.get_rend_timer() < 300:
             return 0.0
         return _SICKNESS_PROBABILITIES[(self._bath_status(), self._goggles_status())][
             self.get_round() > 9
@@ -53,18 +53,15 @@ class SicknessManager:
         return _random_from_probability(self._sickness_likelihood)
 
     def update_ply_sickness(self):
-        current_round = self.get_round()
-        if current_round < 7 or self.get_rend_timer() < 300:
+        current_time = self.get_rend_timer()
+        if (
+            self.get_round() < 7 or current_time < 300
+        ):  # cannot get sick before round 7 or 5mins in
             return
 
-        current_timer = self.get_rend_timer()
-
-        if (
-            self.get_rend_timer() >= 300
-            and not self.sickness_calc_count
-            or current_timer >= 600
-            and self.sickness_calc_count < 2
-        ):
+        if (self.sickness_calc_count == 0) or (
+            current_time >= 600 and self.sickness_calc_count == 1
+        ):  # do at 5mins and 10mins
             self.sickness_calc_count += 1
             if self.should_make_player_sick():
                 self._make_ply_sick()
