@@ -5,12 +5,13 @@ This file holds some useful info for sickness probability and statistics for the
 ## Sickness symptoms
 
 Sickness is decided every five minutes after the first five minutes have passed.
-If the player gets sick, they first suffer severe symptoms for three minutes, then they gradually recover (players cannot die, unlike NPCs).
+If the player gets sick, they first suffer severe symptoms for 2.5, then they gradually recover (players cannot die, unlike NPCs).
 
 | Symptom               | Severe                                  | Recovery                                |
 |-----------------------|-----------------------------------------|-----------------------------------------|
 | Reduced walking speed | 50% of normal speed                     | 75% of normal speed                     |
 | Ability to use tools  | 30% chance to fail using any given tool | 10% chance to fail using any given tool |
+| Green colour          | Character turns green                   |
 
 NPCs will also suffer from these same symptoms, but unlike the player, their recovery/death is determined in advance.
 If, for a given condition, enough NPCs died, NPCs cannot die anymore if they fulfill that condition.
@@ -25,8 +26,8 @@ This could potentially be saved in the database so everything can be computed wh
 This is a list of criteria used to determine when the player is considered as following the health 
 measures. All durations shown here are in real time.
 
-- A player is assumed to adhere to the bath health measure **when they take a bath within the first three minutes of each level**. If they do not take a bath in that period of time, they will be locked out of taking a bath for the duration of the round.
-- A player is considered to adhere to the goggles measure **if over the past five minutes, the player has worn the goggles for at least 4mn**. This check will be run twice per round, after five minutes have passed, and then after 10 minutes have passed.
+- A player is assumed to adhere to the bath health measure **when they took a bath once each level**. Taking a bath after the tenth minute of the game will not affect your probability of getting sick, since this is calculated based on your behaviour in the previous five minutes, and is done so once in the fifth minute and once in the tenth minute.
+- A player is considered to adhere to the goggles measure **if over the past five minutes, the player has worn the goggles for at least 4min**. This check will be run twice per round, after five minutes have passed, and then after 10 minutes have passed.
 
 
 ## Player's probability to get sick
