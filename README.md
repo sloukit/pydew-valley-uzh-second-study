@@ -10,7 +10,7 @@ For more information, please contact s.kittelberger[at]psychologie.uzh.ch.
 
 ## Setup Instructions
 
-This project requires Python 3.12 or above.
+This project requires Python3.12. Python3.13 may cause issues, and free-threaded Python is not supported.
 
 1. **Clone this repository:**
     ```
