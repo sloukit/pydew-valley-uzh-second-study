@@ -1169,8 +1169,6 @@ class Level:
 
             self.activate_music()  # Activating the old music
 
-            if self.volcano_event:
-                self.intro_shown.pop(Map.VOLCANO)
             self.current_map = self.prev_map
             self.prev_map = Map.VOLCANO
             self.map_transition.reset = partial(self.switch_to_map, self.current_map)
