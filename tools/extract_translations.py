@@ -53,8 +53,10 @@ def append_new_strings(
     with open(path, "a") as file:
         if comment:
             file.write(f"\n# {comment}\n\n")
-        for new_string in new_strings:
-            file.write(f"{new_string}@@{translations_prefix}{new_string}\n")
+        file.writelines(
+            f"{new_string}@@{translations_prefix}{new_string}\n"
+            for new_string in new_strings
+        )
 
     # print(f"[yellow] * [/][blue] loaded [magenta]{len(lines)}[/] strings ✅")
 

@@ -19,7 +19,7 @@ if len(sys.argv) > 1:
     print(f"Trying to convert: '{excel_filepath}'")
 else:
     print("Usage: python excel-convert.py <file>")
-    print("")
+    print()
     print("   Example: python excel_to_json.py 'data/game design.xlsx'")
     exit(1)
 

@@ -198,11 +198,7 @@ class PlayerTask(AbstractMenu):
             Linebreak((0, 12)),
         )
         box_min_width = 400
-        box_width = (
-            box_min_width
-            if box_min_width > text.surface_rect.width
-            else text.surface_rect.width
-        )
+        box_width = max(text.surface_rect.width, box_min_width)
         box_size = (
             box_width,
             text.surface_rect.height + button_area_height,

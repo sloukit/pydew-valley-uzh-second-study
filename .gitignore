@@ -162,8 +162,8 @@ cython_debug/
 .idea/
 *.iml
 
-
-/.DS_Store
+.DS_Store
+*.DS_Store*
 /.vscode
 __pycache__
 
@@ -183,3 +183,10 @@ images/characters/rabbit/temp_hat.png
 .env_name.leave
 .envrc
 .ignore
+
+# Directories that declare they should be ignored
+ignore/*
+ignore_this/*
+ignore_folder/*
+*.ignore*
+*_ignore*
