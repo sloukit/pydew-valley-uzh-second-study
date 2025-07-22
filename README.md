@@ -65,7 +65,7 @@ We use [Ruff](https://docs.astral.sh/ruff/) for linting and formatting. Run `pip
 > ```
 
 ## Use of AI
-We do not to use AI for visual and design tasks.
+We do not use AI for visual and design tasks.
 
 ## Contributing
 
