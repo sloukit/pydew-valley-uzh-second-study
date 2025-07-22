@@ -568,7 +568,6 @@ class Game:
         self.jwt = response["jwt"]
         # `game_version` is stored in the player database
         self.game_version = response["game_version"]
-        self.npc_sickness_mgr.adherence = response["adherence"]
         xplat.log(f"token: {self.token}")
         xplat.log(f"jwt: {self.jwt}")
 
@@ -578,6 +577,7 @@ class Game:
             # token 380-659 triggers game version 2,
             # token 660-939 triggers game version 3
             # token 0 triggers game in debug mode (all features enabled)
+            # last digit determines adherence of ingroup: 0 is non-adherence, >0 is adherence
             try:
                 token_int = int(self.token)
             except ValueError:
@@ -592,12 +592,17 @@ class Game:
                 self.game_version = DEBUG_MODE_VERSION
             else:
                 raise ValueError("Invalid token value")
+
+            self.npc_sickness_mgr.adherence = bool(token_int%10)
+            xplat.log(f"NPC adherence is set to {bool(token_int%10)}")
+            self.npc_sickness_mgr._setup_from_returned_data({"data":None}) # workaround fake npc server response
             self.set_round(7)
             self.check_hat_condition()
         else:  # online deployed version with db access
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
             day_completions = []
             max_complete_level = 0
+            self.npc_sickness_mgr.adherence = response["adherence"]
             if response["status"]:  # has at least 1 completed level
                 day_completions = [
                     d for d in response["status"] if d["game_round"] % 2 == 0
@@ -611,7 +616,10 @@ class Game:
 
             else:
                 xplat.log("First login ever with this token, start level 1!")
+
+            # this supposedly loads npc status (e.g., previous deaths etc.) but seems to be untested / not implemented server side?
             self.npc_sickness_mgr.get_status_from_server(self.jwt)
+
             # max_complete_level = 6
             if len(day_completions) > 0:
                 timestamps = [

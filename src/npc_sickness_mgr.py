@@ -337,9 +337,10 @@ class NPCSicknessManager:
                     current_ingrp_sick_npcs.clear()
 
             # Selection for the ingroup (adhering NPCs)
-            current_ingrp_adherent = choice(ingrp_adherence_pickable)
-            ingrp_adherence_pickable.remove(current_ingrp_adherent)
-            current_ingrp_sick_npcs.append(current_ingrp_adherent)
+            if len(ingrp_adherence_pickable) > 0:
+                current_ingrp_adherent = choice(ingrp_adherence_pickable)
+                ingrp_adherence_pickable.remove(current_ingrp_adherent)
+                current_ingrp_sick_npcs.append(current_ingrp_adherent)
 
             # Selection for the outgroup (non-adhering NPCs)
             if outgrp_sick_eligible:
