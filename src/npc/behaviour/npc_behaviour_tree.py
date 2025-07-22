@@ -209,7 +209,7 @@ def will_farm(context: NPCIndividualContext) -> bool:
     :return: 2/3 true | 1/3 false
     """
     if context.npc.is_sick:
-        return
+        return False
 
     return random.randint(0, 2) < 2
 
@@ -255,7 +255,7 @@ def will_create_new_farmland(context: NPCIndividualContext) -> bool:
     (all other farmland planted and watered OR 1/3), otherwise False
     """
     if context.npc.is_sick:
-        return
+        return False
 
     untilled_tiles = context.npc.get_personal_soil_area_tiles("untilled")
     if not untilled_tiles:
@@ -315,7 +315,7 @@ def create_new_farmland(context: NPCIndividualContext) -> bool:
 
     def on_path_completion():
         if context.npc.is_sick:
-            return
+            return False
 
         context.npc.tool_active = True
         context.npc.current_tool = FarmingTool.HOE
@@ -474,7 +474,7 @@ def water_farmland(context: NPCIndividualContext) -> bool:
 
     def on_path_completion():
         if context.npc.is_sick:
-            return
+            return False
 
         context.npc.tool_active = True
         context.npc.current_tool = FarmingTool.WATERING_CAN
@@ -584,10 +584,7 @@ def chop_tree(context: NPCIndividualContext) -> bool:
 
     def on_path_completion(tree: Tree, direction_: Direction):
         def inner():
-            if tree.alive:
-                if context.npc.is_sick:
-                    return
-
+            if tree.alive and not context.npc.is_sick:
                 context.npc.tool_active = True
                 context.npc.current_tool = FarmingTool.AXE
                 context.npc.tool_index = context.npc.current_tool.value - 1
