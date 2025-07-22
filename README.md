@@ -10,35 +10,35 @@ For more information, please contact s.kittelberger[at]psychologie.uzh.ch.
 
 ## Setup Instructions
 
-This project requires Python 3.12 or above.
+This project requires Python 3.12. (Python 3.13 may cause issues, and free-threaded Python is not supported.)
 
 1. **Clone this repository:**
-    ```
+    ```bash
     git clone https://github.com/sloukit/pydew-valley-uzh-second-study.git
     ```
 
 2. **Create and activate a virtual environment:**
 
     **Linux/MacOS**
-    ```
+    ```bash
     python3 -m venv venv
     source venv/bin/activate
     ```
     **For Windows**
-    ```
+    ```bash
     python -m venv venv
     venv\Scripts\activate
     ```
 
 3. **Install dependencies**
-    ```
+    ```bash
     pip install -r requirements.txt # For running the game (runtime dependencies)
     pip install -r requirements-dev.txt # For local development
     pip install -r requirements-test.txt # For running tests
     ```
 
 4. Run this project
-    ```
+    ```bash
     python main.py
     ```
 
@@ -65,7 +65,7 @@ We use [Ruff](https://docs.astral.sh/ruff/) for linting and formatting. Run `pip
 > ```
 
 ## Use of AI
-We do not to use AI for visual and design tasks.
+We do not use AI for visual and design tasks.
 
 ## Contributing
 

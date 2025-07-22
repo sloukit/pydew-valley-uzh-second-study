@@ -421,6 +421,15 @@ class Game:
         )
 
     @property
+    def _can_notify_government(self):
+        return (
+            self.round_config.get("notify_gov_statement_text", "")
+            and self.round_config["notify_gov_statement_timestamp"]
+            and self.round_end_timer
+            > self.round_config["notify_gov_statement_timestamp"][0]
+        )
+
+    @property
     def _can_start_self_assessment_sequence(self):
         return (
             len(self.round_config.get("self_assessment_timestamp", [])) > 0
@@ -1011,6 +1020,9 @@ class Game:
                             get_translated_msg("initial_gov_statement")
                         )
                         self.switch_state(GameState.NOTIFICATION_MENU)
+                    elif self._can_notify_government:
+                        message = self.round_config["notify_gov_statement_text"]
+                        self._notify(message, "gov_statement")
                     elif self._can_notify_questionnaire:
                         message = self.round_config["notify_questionnaire_text"]
                         self._notify(message, "questionnaire")

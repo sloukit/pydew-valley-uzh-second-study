@@ -56,6 +56,7 @@ class Tutorial:
         }
         self.tasks_achieved = -1
         self.n_tasks = max(self.instructions.keys()) + 1
+        # self.deactivate() #Uncomment this to skip tutorials
 
     # show instructions text boxes
 
