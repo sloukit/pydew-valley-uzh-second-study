@@ -368,7 +368,7 @@ class Player(Character):
     def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera) -> None:
         """Override draw method to apply sick color effect"""
 
-        self.is_sick = True
+        #self.is_sick = True
         # override for debugging sickness. In the future, might be better to create a debug keybind for this
 
         if self.is_sick:
