@@ -16,8 +16,8 @@ from src.enums import (
 )
 from src.fblitter import FBLITTER
 from src.sprites.entities.entity import Entity
-from src.sprites.setup import EntityAsset
 from src.sprites.entities.sick_color_effect import apply_sick_color_effect
+from src.sprites.setup import EntityAsset
 
 
 class Character(Entity, ABC):
@@ -232,7 +232,7 @@ class Character(Entity, ABC):
 
             # not needed as we've already using sick_color_effect
             # change if goggles need to be coloured green
-            #goggles_frame = apply_sick_color_effect(goggles_frame)
+            # goggles_frame = apply_sick_color_effect(goggles_frame)
 
             FBLITTER.schedule_blit(goggles_frame, rect)
 
