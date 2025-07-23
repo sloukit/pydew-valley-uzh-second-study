@@ -16,6 +16,7 @@ from src.enums import (
 )
 from src.fblitter import FBLITTER
 from src.sprites.entities.entity import Entity
+from src.sprites.entities.sick_color_effect import apply_sick_color_effect
 from src.sprites.setup import EntityAsset
 
 
@@ -151,12 +152,14 @@ class Character(Entity, ABC):
     def in_outgroup(self):
         return self.study_group == StudyGroup.OUTGROUP
 
-    def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
-        # super().draw(display_surface, rect, camera)
+    def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera, sick):
+        # See src.sprites.entities.sick_color_effect and .player for more info on sickness
+
+        # super().draw(display_surface, rect, camera, sick)
         # blit_list = []
 
         # Render the necklace if the character has it and is in the ingroup
-        is_in_ingroup = self.study_group == StudyGroup.INGROUP
+        is_in_ingroup = not self.in_outgroup
 
         if is_in_ingroup:
             super().draw(display_surface, rect, camera)
@@ -176,29 +179,47 @@ class Character(Entity, ABC):
                 # hat_frame.set_alpha(self.image_alpha)  # hat is always visible, looks silly otherwise
                 FBLITTER.schedule_blit(hat_frame, rect)
 
-        elif self.study_group == StudyGroup.OUTGROUP:
+        elif not is_in_ingroup:
             if self.has_outgroup_skin:
                 skin_state = EntityState(f"outgroup_{self.state.value}")
                 skin_ani = self.assets[skin_state][self.facing_direction]
                 skin_frame = skin_ani.get_frame(self.frame_index)
+
+                # sickness fix here
+                if sick:
+                    skin_frame = apply_sick_color_effect(skin_frame)
+
                 skin_frame.set_alpha(self.image_alpha)
                 FBLITTER.schedule_blit(skin_frame, rect)
             else:
-                # if transition to outgroup has not finished, drew the ingroup body
+                # if transition to outgroup has not finished, draw the ingroup body
                 self.image.set_alpha(self.image_alpha)
+
+                original_image = self.image
+                if sick:
+                    self.image = apply_sick_color_effect(self.image)
+
                 super().draw(display_surface, rect, camera)
+                self.image = original_image
 
                 if self.has_hat:
                     hat_state = EntityState(f"hat_{self.state.value}")
                     hat_ani = self.assets[hat_state][self.facing_direction]
                     hat_frame = hat_ani.get_frame(self.frame_index)
+
+                    # seems not needed
+                    # if sick:
+                    #     hat_frame = apply_sick_color_effect(hat_frame)
+
                     hat_frame.set_alpha(self.image_alpha)
                     FBLITTER.schedule_blit(hat_frame, rect)
 
             if self.has_horn:
+                # no sickness setup required.. we've already hit a previous sick check
                 horn_state = EntityState(f"horn_{self.state.value}")
                 horn_ani = self.assets[horn_state][self.facing_direction]
                 horn_frame = horn_ani.get_frame(self.frame_index)
+
                 horn_frame.set_alpha(self.image_alpha)
                 FBLITTER.schedule_blit(horn_frame, rect)
 
@@ -208,6 +229,11 @@ class Character(Entity, ABC):
             goggles_ani = self.assets[goggles_state][self.facing_direction]
             goggles_frame = goggles_ani.get_frame(self.frame_index)
             goggles_frame.set_alpha(self.image_alpha)
+
+            # not needed as we've already using sick_color_effect
+            # change if goggles need to be coloured green
+            # goggles_frame = apply_sick_color_effect(goggles_frame)
+
             FBLITTER.schedule_blit(goggles_frame, rect)
 
         # display_surface.fblits(blit_list)

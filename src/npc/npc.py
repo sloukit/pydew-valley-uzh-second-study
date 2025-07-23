@@ -18,6 +18,7 @@ from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.overlay.soil import SoilManager
 from src.settings import Coordinate
 from src.sprites.entities.character import Character
+from src.sprites.entities.sick_color_effect import apply_sick_color_effect
 from src.sprites.setup import EntityAsset
 
 
@@ -286,4 +287,7 @@ class NPC(NPCBase):
         if self.is_dead:
             return
 
-        super().draw(display_surface, rect, camera)
+        if self.is_sick:
+            self.image = apply_sick_color_effect(self.image)
+
+        super().draw(display_surface, rect, camera, self.is_sick)
