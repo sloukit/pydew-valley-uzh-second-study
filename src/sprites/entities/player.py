@@ -2,14 +2,22 @@ from __future__ import annotations
 
 # Colours:
 #   Main Character Fur Colour: RGB 243, 242, 192 or (243, 242, 192)
+#   Out-group Character Fur Colour: RGB 192, 208, 255 or (220, 212, 220)
 #   Main Character Cheek Colour: RGB 243, 216, 197 or (243, 216, 197)
+#   Out-group Character Cheek Colour: RGB 92, 78, 146 or (92, 78, 146)
 #   Main Character Accentuation Colour: RGB 221, 213, 222 or (221, 213, 222)
+#   Out-group Character Accentuation Colour: RGB 152, 167, 212 or (152, 167, 212)
 #   Main Character Ear Colour: RGB 232, 181, 172 or (232, 181, 172)
+#   Out-group Character Ear Colour: RGB 118, 109, 170 or (118, 109, 170)
 # Sick Colours:
 #   Main Character Sick Fur Colour : RGB 103, 131, 92 or (103, 131, 92)
+#   Out-group Character Sick Fur Colour: RGB 192, 208, 255 or (192, 208, 255)
 #   Main Character Sick Cheek Colour: RGB 86, 101, 96 or (86, 101, 96)
+#   Out-group Character Sick Cheek Colour: RGB 92, 78, 146 or (92, 78, 146)
 #   Main Character Sick Accentuation Colour: RGB 134, 81, 97 or (134, 81, 97)
+#   Out-group Character Sick Accentuation Colour: RGB 134, 81, 97 or (134, 81, 97)
 #   Main Character Sick Ear Colour: RGB 107, 75, 91 or (107, 75, 91)
+#   Out-group Character Sick Ear Colour: RGB 103, 131, 92 or (103, 131, 92)
 #
 # IMPORTS
 import math
@@ -35,6 +43,7 @@ from src.settings import (
 )
 from src.sprites.entities.character import Character
 from src.sprites.entities.entity import Entity
+from src.sprites.entities.sick_color_effect import apply_sick_color_effect
 from src.sprites.setup import EntityAsset
 from src.support import load_data, parse_crop_types, save_data
 
@@ -44,7 +53,6 @@ _INV_DEFAULT_AMOUNTS = (
     _NONSEED_INVENTORY_DEFAULT_AMOUNT,
     _SEED_INVENTORY_DEFAULT_AMOUNT,
 )
-
 
 class Player(Character):
     keybinds: dict
@@ -356,62 +364,33 @@ class Player(Character):
             )
             self.dt_last_pos_log = 0
 
-    def apply_sick_color_effect(self, surf: pygame.Surface) -> pygame.Surface:
-        """Applies a green-ish tint to the player sprite to represent sickness."""
-        if not self.is_sick:
-            return (
-                surf  # when the player is not sick, simply return the original surface
-            )
-
-        # Create a copy of the surface and ensure it has per-pixel alpha
-        sick_surface = surf.convert_alpha()
-
-        # Define color mappings from normal to sick colors
-        color_mappings = {
-            (243, 242, 192): (103, 131, 92),  # Fur Colour -> Sick Fur Colour
-            (243, 216, 197): (86, 101, 96),  # Cheek Colour -> Sick Cheek Colour
-            (221, 213, 222): (
-                134,
-                81,
-                97,
-            ),  # Accentuation Colour -> Sick Accentuation Colour
-            (232, 181, 172): (107, 75, 91),  # Ear Colour -> Sick Ear Colour
-        }
-
-        # Use pixel-by-pixel replacement (slower but more compatible)
-        width = sick_surface.get_width()
-        height = sick_surface.get_height()
-
-        for x in range(width):
-            for y in range(height):
-                pixel_color = sick_surface.get_at((x, y))
-                rgb = (pixel_color.r, pixel_color.g, pixel_color.b)
-
-                if rgb in color_mappings:
-                    new_color = color_mappings[rgb]
-                    sick_surface.set_at((x, y), (*new_color, pixel_color.a))
-
-        return sick_surface
-
     def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera) -> None:
         """Override draw method to apply sick color effect"""
+
+        # self.is_sick = True 
+        # override for debugging sickness. In the future, might be better to create a debug keybind for this
+
         if self.is_sick:
             # Store the original image temporarily
             original_image = self.image
             try:
                 # Apply the sick color effect to the current image
-                self.image = self.apply_sick_color_effect(self.image)
+                self.image = apply_sick_color_effect(self.image)
             finally:
                 pass
 
             # Call the parent draw method with the modified image
-            super().draw(display_surface, rect, camera)
+            """
+            We call apply_sick_colour_effect again for animations. 
+            This is due to animations and blits being applied after self.image (or not using it).
+            """
+            super().draw(display_surface, rect, camera, self.is_sick)
 
             # Restore the original image
             self.image = original_image
         else:
-            # If not sick, draw normally
-            super().draw(display_surface, rect, camera)
+            # If not sick, draw normally (though still pass self.is_sick as False)
+            super().draw(display_surface, rect, camera, self.is_sick)
 
     # sets the player's transparency and speed according to their health
 

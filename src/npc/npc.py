@@ -286,4 +286,4 @@ class NPC(NPCBase):
         if self.is_dead:
             return
 
-        super().draw(display_surface, rect, camera)
+        super().draw(display_surface, rect, camera, self.is_sick)
