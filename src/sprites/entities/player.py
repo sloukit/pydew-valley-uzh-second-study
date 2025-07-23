@@ -381,7 +381,7 @@ class Player(Character):
 
             # Call the parent draw method with the modified image
             """
-            We call apply_sick_colour_effect again for animations. 
+            We call apply_sick_colour_effect again for animations.
             This is due to animations and blits being applied after self.image (or not using it).
             """
             super().draw(display_surface, rect, camera, self.is_sick)
