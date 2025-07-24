@@ -9,8 +9,8 @@ def apply_sick_color_effect(surf: pygame.Surface) -> pygame.Surface:
 
     # Define color mappings from normal to sick colors
     color_mappings = {
-        (243, 242, 192): (103, 131, 92),  # Fur Colour -> Sick Fur Colour
-        (220, 212, 220): (103, 131, 92),  # Out-group Fur Colour -> Sick Fur Colour
+        (243, 242, 192): (131, 165, 131),  # Fur Colour -> Sick Fur Colour
+        (220, 212, 220): (131, 165, 131),  # Out-group Fur Colour -> Sick Fur Colour
         (243, 216, 197): (86, 101, 96),  # Cheek Colour -> Sick Cheek Colour
         (92, 78, 146): (86, 101, 96),  # Out-group Cheek Colour -> Sick Cheek Colour
         (221, 213, 222): (
