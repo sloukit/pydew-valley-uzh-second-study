@@ -7,11 +7,13 @@ If you want to suggest a new feature, please open an issue first to discuss the 
 
 ## Contributing Code
 
-For the intial creation phase of the game, tasks for main features will be assigned using the [Tasklist](https://github.com/users/sloukit/projects/1) in GitHub.
+For the initial creation phase of the game, tasks for main features will be assigned using the [Tasklist](https://github.com/users/sloukit/projects/1) in GitHub.
 
 For code contributions outside of the tasklist, please open an issue first to discuss the idea.
 
-Please note that Python 3.12 or above is required to run and develop the project.
+Please note that Python 3.12 is required to run and develop the project.
+
+It is strongly recommended to comment your code or, when adding functions, to use docstrings in order to explain steps, arguments, expected results and overall your implementation.
 
 
 ### Linting and Formatting
@@ -28,7 +30,7 @@ We use [Ruff](https://docs.astral.sh/ruff/) for linting and formatting. Run `pip
 > python formatlint.py
 > ```
 >
-> Or alternatively, run the following commands individually:
+> Or, alternatively, run the following commands individually:
 >
 > ```sh
 > ruff format . && ruff check --select I --fix . #  format code and sort imports
@@ -37,9 +39,9 @@ We use [Ruff](https://docs.astral.sh/ruff/) for linting and formatting. Run `pip
 
 ## Translations
 
-The game supports for now English 🇬🇧 (abbreviated to `en` ) and German 🇩🇪 (abbreviated to `de` )
+The game supports, for now, English 🇬🇧 (abbreviated to `en` ) and German 🇩🇪 (abbreviated to `de` )
 
-Now, all strings that are displayed, need to be kept in 2 files:
+Now, all strings that are displayed need to be kept in 2 files:
 
 - `data/translations/en.txt`
 - `data/translations/de.txt`
@@ -67,9 +69,9 @@ do this:
 If this hardcoded string is in a python file that has not used translations so far, add this import:
 `from src.support import get_translated_string as _`
 
-You can read more about this functionality in [extract_translations.sh](extract_translations.sh) script.
+You can read more about this functionality in the [extract_translations.sh](extract_translations.sh) script.
 
-To run the game in a given language, set the environment variable `GAME_LANGUAGE` to either `en` or `de`. See [run_game.sh](run_game.sh) for example in Linux/MacOS. On Windows the command is `set GAME_LANGUAGE=en`. English is used as default.
+To run the game in a given language, set the environment variable `GAME_LANGUAGE` to either `en` or `de`. See [run_game.sh](run_game.sh) for example in Linux/MacOS. On Windows, the command is `set GAME_LANGUAGE=en`. English is used as default.
 
 If there is a text starting `N/A: ` visible in the game, it means the string is missing in `data/translations/en.txt` or `data/translations/de.txt` file - this needs to be fixed.
 
@@ -80,11 +82,11 @@ If the text starts with `EN: ` it means it's not translated yet - nothing to wor
 ### Characters
 All the imports happen in the `Game.load_assets()` method in [main.py](./main.py) and the `Game.character_importer()` method imports the content of [images/characters/](images/characters/). The name of the subfolder will be a key in the dictionary
 and the files within that subfolder should be tileset images with each tile being 48x48. Each of these images will be stored in a sub dictionary attached to the subfolder key; the first row
-should be the up animation, the second one the down animation and the third row the left aimation; animations for the right side will be a flipped copy of the left side.
-If you want to add more character animations just check out the rabbit folder in characters to understand how it works.
+should be the up animation, the second one the down animation and the third row the left animation; animations for the right side will be a flipped copy of the left side.
+If you want to add more character animations, just check out the rabbit folder in characters to understand how it works.
 
-In sprites.py there is a Player class that currently controls the rabbit in the game you could inherit from that and overwrite methods or use the Entity class as a parent and add more to it.
-(The Player class currently has too many methods, quite a few of those could be stored in Entity to make the whole setup more flexible)
+In sprites.py, there is a Player class that currently controls the rabbit in the game. You could inherit from that and overwrite methods, or use the Entity class as a parent and add more to it.
+(The Player class currently has too many methods; quite a few of those could be stored in Entity to make the whole setup more flexible)
 
 ### Tileset
 All maps were created using [Tiled](https://mapeditor.org). The layers are fairly self-explanatory.
@@ -100,4 +102,4 @@ To do this, simply open the corresponding tileset and click on the tile you want
 (If you don't see the Tile Collision Editor, open it under `View -> Views and Toolbars -> Tile Collision Editor` while in the tileset overview)
 
 ## Extracting Data
-in the [Level](./src/screens/level.py) class there is an `apply_tool()` method that lets an entity interact with the world (i.e. use a tool or plant a seed); if you want to measure what's going on in the game this should be a good starting point.
+In the [Level](./src/screens/level.py) class, there is an `apply_tool()` method that lets an entity interact with the world (i.e. use a tool or plant a seed); if you want to measure what's going on in the game, this should be a good starting point.
