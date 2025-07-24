@@ -170,7 +170,7 @@ class Entity(CollideableSprite, ABC):
         movement_y: float,
         collision_check_func,
         max_movement_per_step: float = 8.0,
-    ):
+    ) -> None:
         """
         Move hitbox_rect by the given movement amounts, checking collision at intermediate steps
         if the movement is large. This prevents boundary bypassing during lag spikes.
@@ -184,19 +184,18 @@ class Entity(CollideableSprite, ABC):
         """
         max_movement = max(abs(movement_x), abs(movement_y))
 
-        if max_movement > max_movement_per_step:
-            # Calculate number of steps needed
+        if (
+            max_movement > max_movement_per_step
+        ):  # Checks needed steps if the movement is fast
             steps = int(max_movement / max_movement_per_step) + 1
             step_x = movement_x / steps
             step_y = movement_y / steps
 
-            # Move in smaller increments, checking collision at each step
-            for _ in range(steps):
+            for _ in range(steps):  # Each step checks for collision
                 hitbox_rect.x += step_x
                 hitbox_rect.y += step_y
                 collision_check_func()
-        else:
-            # Movement is small enough to do in one step
+        else:  # if the movement is small enough to do in one step
             hitbox_rect.x += movement_x
             hitbox_rect.y += movement_y
             collision_check_func()

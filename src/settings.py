@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import Final
 
 import pygame  # noqa
 import pytmx  # type: ignore [import-untyped]
@@ -156,3 +157,9 @@ TOMATO_OR_CORN_LIST = [
     "tomato",
     "corn",
 ]
+
+# Clamp delta time to prevent extreme movement during lag spikes
+# Maximum of 1/12 second (~83ms) to maintain reasonable collision detection
+# Used in player.py
+# Changing the divisor with the minimum supported FPS will result in different tolerated lag spikes
+MAX_DT: Final[float] = 1.0 / 12.0

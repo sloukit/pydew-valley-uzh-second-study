@@ -35,6 +35,7 @@ from src.npc.bases.npc_base import NPCBase
 from src.savefile import SaveFile
 from src.settings import (
     DEBUG_MODE_VERSION,
+    MAX_DT,
     POS_MIN_LOG_INTERVAL,
     POS_MOVE_LOG_INTERVAL,
     Coordinate,
@@ -343,16 +344,13 @@ class Player(Character):
             self._current_hitbox.size,
         )
 
-        # Clamp delta time to prevent extreme movement during lag spikes
-        # Maximum of 1/12 second (~83ms) to maintain reasonable collision detection
-        max_dt = 1.0 / 12.0
-        clamped_dt = min(dt, max_dt)
+        clamped_dt = min(dt, MAX_DT)
 
-        # Calculate total movement for this frame
+        # Calculate movement for frame
         movement_x = self.direction.x * self.speed * clamped_dt
         movement_y = self.direction.y * self.speed * clamped_dt
 
-        # Use interpolated movement to prevent boundary bypassing
+        # movement is caluclated with interpolation to prevent clipping through boundaries
         self._interpolated_move(
             self.hitbox_rect, movement_x, movement_y, self.check_collision
         )
