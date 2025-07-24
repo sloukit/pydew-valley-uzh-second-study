@@ -164,12 +164,17 @@ class Entity(CollideableSprite, ABC):
         )
 
     @staticmethod
-    def _interpolated_move(hitbox_rect: pygame.Rect, movement_x: float, movement_y: float, 
-                          collision_check_func, max_movement_per_step: float = 8.0):
+    def _interpolated_move(
+        hitbox_rect: pygame.Rect,
+        movement_x: float,
+        movement_y: float,
+        collision_check_func,
+        max_movement_per_step: float = 8.0,
+    ):
         """
         Move hitbox_rect by the given movement amounts, checking collision at intermediate steps
         if the movement is large. This prevents boundary bypassing during lag spikes.
-        
+
         Args:
             hitbox_rect: The rect to move
             movement_x: Total x movement for this frame
@@ -178,13 +183,13 @@ class Entity(CollideableSprite, ABC):
             max_movement_per_step: Maximum movement per step before interpolation kicks in
         """
         max_movement = max(abs(movement_x), abs(movement_y))
-        
+
         if max_movement > max_movement_per_step:
             # Calculate number of steps needed
             steps = int(max_movement / max_movement_per_step) + 1
             step_x = movement_x / steps
             step_y = movement_y / steps
-            
+
             # Move in smaller increments, checking collision at each step
             for _ in range(steps):
                 hitbox_rect.x += step_x

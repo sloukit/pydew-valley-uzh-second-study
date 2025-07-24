@@ -347,13 +347,15 @@ class Player(Character):
         # Maximum of 1/12 second (~83ms) to maintain reasonable collision detection
         max_dt = 1.0 / 12.0
         clamped_dt = min(dt, max_dt)
-        
+
         # Calculate total movement for this frame
         movement_x = self.direction.x * self.speed * clamped_dt
         movement_y = self.direction.y * self.speed * clamped_dt
-        
+
         # Use interpolated movement to prevent boundary bypassing
-        self._interpolated_move(self.hitbox_rect, movement_x, movement_y, self.check_collision)
+        self._interpolated_move(
+            self.hitbox_rect, movement_x, movement_y, self.check_collision
+        )
 
         self.rect.update(
             (
