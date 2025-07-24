@@ -246,7 +246,6 @@ class Level:
             interact=self.interact,
             emote_manager=self.player_emote_manager,
             sounds=self.sounds,
-            hp=0,
             bath_time=0,
             save_file=self.save_file,
             round_config=self.round_config,
@@ -1339,7 +1338,6 @@ class Level:
         self.overlay.display()
 
     def draw(self, dt: float, move_things: bool):
-        self.player.hp = self.overlay.health_bar.hp
         # self.display_surface.fill((130, 168, 132))
         self.all_sprites.draw(self.camera, False)
 
@@ -1454,8 +1452,6 @@ class Level:
                 ),
                 dt,
             )
-            if self.round_config.get("sickness", False) and self.player.is_sick:
-                self.decay_health(dt)
 
         self.draw(dt, move_things)
 

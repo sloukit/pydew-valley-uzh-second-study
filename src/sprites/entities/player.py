@@ -40,6 +40,7 @@ from src.settings import (
     POS_MOVE_LOG_INTERVAL,
     Coordinate,
     SoundDict,
+    MAX_HP,
 )
 from src.sprites.entities.character import Character
 from src.sprites.entities.entity import Entity
@@ -78,7 +79,6 @@ class Player(Character):
         interact: Callable[[], None],
         emote_manager: PlayerEmoteManager,
         sounds: SoundDict,
-        hp: int,
         bath_time: float,
         save_file: SaveFile,
         round_config: dict[str, Any],
@@ -95,7 +95,7 @@ class Player(Character):
             plant_collision=plant_collision,
         )
 
-        self.is_sick = False
+        self.is_sick = True
         self.round_config = round_config
         self.get_game_version = get_game_version
         self.send_telemetry = send_telemetry
@@ -131,7 +131,7 @@ class Player(Character):
         # sounds
         self.sounds = sounds
 
-        self.hp = hp
+        self.hp = 100
         # self.created_time = time.time() # used for speed unclear why
         # self.delay_time_speed = 0.25
         self.dt_speed = 0
@@ -164,9 +164,13 @@ class Player(Character):
             {PLAYER_HP: self.hp, PLAYER_IS_SICK: self.is_sick},
         )
 
+    def set_hp(self, hp):
+        self.hp = pygame.math.clamp(hp, 0, MAX_HP)
+
+
     def recover(self):
         self.is_sick = False
-        self.hp = 100
+        self.set_hp(MAX_HP)
         self.send_telemetry(
             PLAYER_HP_STATE,
             {PLAYER_HP: self.hp, PLAYER_IS_SICK: self.is_sick},

@@ -254,14 +254,11 @@ class Game:
         NPCSharedContext.get_rnd_timer = self.get_rnd_timer
         NPCSharedContext.get_round = self.get_round
         self.sickness_man = SicknessManager(
+            self.player,
             self.get_round,
             self.get_rnd_timer,
             lambda: self.goggles_delta >= 240,
             lambda: self.took_bath,
-            lambda: self.player.is_sick,
-            self.send_telemetry,
-            self.player.get_sick,
-            self.player.recover,
             self._reset_goggles_timer,
         )
 
@@ -614,7 +611,7 @@ class Game:
             # this supposedly loads npc status (e.g., previous deaths etc.) but seems to be untested / not implemented server side?
             self.npc_sickness_mgr.get_status_from_server(self.jwt)
 
-            # max_complete_level = 6
+            max_complete_level = 7 # debug, remove later
             if len(day_completions) > 0:
                 timestamps = [
                     datetime.fromisoformat(d["timestamp"]) for d in day_completions
