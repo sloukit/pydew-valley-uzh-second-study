@@ -35,6 +35,7 @@ from src.npc.bases.npc_base import NPCBase
 from src.savefile import SaveFile
 from src.settings import (
     DEBUG_MODE_VERSION,
+    MAX_DT,
     POS_MIN_LOG_INTERVAL,
     POS_MOVE_LOG_INTERVAL,
     Coordinate,
@@ -343,9 +344,16 @@ class Player(Character):
             self._current_hitbox.size,
         )
 
-        self.hitbox_rect.x += self.direction.x * self.speed * dt
-        self.hitbox_rect.y += self.direction.y * self.speed * dt
-        self.check_collision()  # Why is the bool unassigned?
+        clamped_dt = min(dt, MAX_DT)
+
+        # Calculate movement for frame
+        movement_x = self.direction.x * self.speed * clamped_dt
+        movement_y = self.direction.y * self.speed * clamped_dt
+
+        # movement is caluclated with interpolation to prevent clipping through boundaries
+        self._interpolated_move(
+            self.hitbox_rect, movement_x, movement_y, self.check_collision
+        )
 
         self.rect.update(
             (
