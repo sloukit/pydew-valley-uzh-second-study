@@ -25,6 +25,7 @@ from src.enums import (
 from src.events import (
     DIALOG_ADVANCE,
     DIALOG_SHOW,
+    SHOW_BATH_INFO,
     SHOW_BOX_KEYBINDINGS,
     START_QUAKE,
     VOLCANO_ERUPTION,
@@ -727,6 +728,9 @@ class Level:
         elif event.type == VOLCANO_ERUPTION:
             self.volcano(True)
 
+        elif event.type == SHOW_BATH_INFO:
+            self.overlay.bath_info.toggle_visibility()
+
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.switch_screen(GameState.PAUSE)
@@ -764,8 +768,8 @@ class Level:
             if self.controls.DEBUG_APPLY_DAMAGE.click:
                 self.overlay.health_bar.apply_damage(1)
 
-            if self.controls.DEBUG_PLAYER_TASK.click:
-                self.switch_screen(GameState.PLAYER_TASK)
+            if self.controls.SHOW_BATH_INFO.click:
+                post_event(SHOW_BATH_INFO)
 
             if self.controls.DEBUG_SELF_ASSESSMENT.click:
                 self.switch_screen(GameState.SELF_ASSESSMENT)
@@ -1336,7 +1340,7 @@ class Level:
 
     def draw_overlay(self):
         self.sky.display(self.get_round(), self.get_rnd_timer())
-        self.overlay.display()
+        self.overlay.display(self.get_round())
 
     def draw(self, dt: float, move_things: bool):
         self.player.hp = self.overlay.health_bar.hp

@@ -59,7 +59,7 @@ class _EventDefinition:
         self,
         name: str,
         code: int,
-        **attrs: Union[Type, SpecialForm],
+        **attrs: Union[Type, SpecialForm], # pyright: ignore[reportInvalidTypeForm]
     ):
         self.__name__ = self.name = name
         self._attrs = attrs
@@ -172,7 +172,7 @@ def get_event_def_from_name(name: str) -> _EventDefinition:
 
 
 def create_custom_event_type(
-    name: str, **attributes: Union[Type, SpecialForm, UnionType]
+    name: str, **attributes: Union[Type, SpecialForm, UnionType] # pyright: ignore[reportInvalidTypeForm]
 ) -> int:
     """Register a new event type and its specifications.
 
@@ -190,7 +190,7 @@ def create_custom_event_type(
     return created_code
 
 
-def post_event(code: int, **attrs: Type | SpecialForm):
+def post_event(code: int, **attrs: Type | SpecialForm): # pyright: ignore[reportInvalidTypeForm]
     """Create and post an event of the given type with attributes listed
     as keyword arguments.
 
@@ -215,6 +215,7 @@ OPEN_INVENTORY = create_custom_event_type("OpenInventory")
 DIALOG_SHOW = create_custom_event_type("DIALOG_SHOW", dial=str, is_gvt=bool | None)
 DIALOG_ADVANCE = create_custom_event_type("DIALOG_ADVANCE")
 SHOW_BOX_KEYBINDINGS = create_custom_event_type("SHOW_BOX_KEYBINDINGS")
+SHOW_BATH_INFO = create_custom_event_type("SHOW_BATH_INFO")
 
 START_QUAKE = create_custom_event_type("StartQuake", duration=float, debug=bool)
 

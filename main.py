@@ -33,6 +33,7 @@ from src.events import (
     DIALOG_SHOW,
     OPEN_INVENTORY,
     SET_CURSOR,
+    SHOW_BATH_INFO,
     SHOW_BOX_KEYBINDINGS,
 )
 from src.exceptions import TooEarlyLoginError
@@ -118,6 +119,7 @@ _CAMERA_TARGET_TO_TEXT_SOLO = (
 _TARG_SKIP_IDX_SOLO = _CAMERA_TARGET_TO_TEXT_SOLO.index("outgroup_introduction_text")
 _GOGGLES_TUT_TSTAMP = 35
 _ENABLE_SICKNESS_TSTAMP = 33
+_ENABLE_BATH_INFO_TSTAMP = 30  # 30 seconds after volcano eruption
 _BLUR_FACTOR = 1
 
 
@@ -953,6 +955,10 @@ class Game:
             if not self.level.cutscene_animation.active:
                 self.level.overlay.box_keybindings.toggle_visibility()
             return True
+        elif event.type == SHOW_BATH_INFO:
+            if not self.level.cutscene_animation.active:
+                self.level.overlay.bath_info.toggle_visibility()
+            return True
         elif event.type == SET_CURSOR:
             self.set_cursor(event.cursor)
             return True
@@ -1016,6 +1022,13 @@ class Game:
                         self.round_config["sickness"] = True
                         self.npc_sickness_mgr.apply_sickness_enable_to_existing_npcs()
                         self.level.npcs_state_registry.enable()
+                    elif (
+                        self.round >= 7
+                        and self.round_end_timer > _ENABLE_BATH_INFO_TSTAMP
+                        and self.level.volcano_erupt_once  # Only enable after volcano eruption
+                        and not self.level.overlay.bath_info.enabled
+                    ):
+                        self.level.overlay.bath_info.enable()
                     elif self._can_notify_initial_gov_statement:
                         self._has_displayed_initial_gov_statement = True
                         self.notification_menu.set_message(
