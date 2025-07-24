@@ -62,10 +62,6 @@ from src.settings import (
     VOLCANO_POS,
     MapDict,
     SoundDict,
-    PLAYER_HP_STR,
-    PLAYER_HP_STATE_STR,
-    PLAYER_IS_SICK_STR,
-    PLAYER_IS_BSICK_STR,
 )
 from src.sprites.base import AnimatedSprite, Sprite
 from src.sprites.bath_bubble import BubbleMgr

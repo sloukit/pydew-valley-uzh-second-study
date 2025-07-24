@@ -35,7 +35,6 @@ class NPC(NPCBase):
         soil_manager: SoilManager,
         emote_manager: NPCEmoteManager,
         tree_sprites: pygame.sprite.Group,
-        sickness_allowed: bool,
         has_hat: bool,
         has_necklace: bool,
         special_features: str | None,
@@ -67,7 +66,6 @@ class NPC(NPCBase):
         self.special_features = special_features
         self.has_horn = False
         self.has_outgroup_skin = False
-        self.sickness_allowed = sickness_allowed
 
         self.inventory = {
             InventoryResource.WOOD: 0,
@@ -115,7 +113,6 @@ class NPC(NPCBase):
 
         self.is_sick = False
         self.is_dead = False
-        self.will_die = False
         self.hp = 100
         # how fast the NPC dies after getting sick
         self.die_rate = random.randint(35, 75)
@@ -129,11 +126,6 @@ class NPC(NPCBase):
         # but not sure how to set it :-(
         self.behaviour_tree_context.allowed_seeds = seed_types
 
-    def set_sickness_allowed(self, sickness_allowed: bool) -> None:
-        self.sickness_allowed = sickness_allowed
-        if not self.sickness_allowed:
-            self.is_sick = False
-            self.hp = 100
 
     def get_personal_soil_area_tiles(self, tile_type: str) -> list[tuple[int, int]]:
         """
@@ -229,10 +221,8 @@ class NPC(NPCBase):
         self.is_sick = True
         self.emote_manager.show_emote(self, "sad_sick_ani")
         if death_tstamp is None:
-            self.will_die = False
             self.die_rate = random.randint(1, 10)
             return
-        self.will_die = True
         sickness_duration = death_tstamp - sick_tstamp
         self.die_rate = 100 / sickness_duration
 
@@ -265,8 +255,7 @@ class NPC(NPCBase):
             and self.behaviour_tree_context.adhering_to_measures
         ):
             self.has_goggles = True
-        if self.sickness_allowed:
-            self.manage_sickness(dt)
+        self.manage_sickness(dt)
         super().update(dt)
 
         self.emote_manager.update_obj(

@@ -244,7 +244,8 @@ class Game:
             self.get_world_time,
             self.dialogue_manager,
             self.send_telemetry,
-            self.add_npc_to_mgr,
+            # self.add_npc_to_mgr,
+            self.npc_sickness_mgr.add_npc,
         )
         self.player = self.level.player
 
@@ -365,8 +366,8 @@ class Game:
         self.last_intro_txt_rendered = False
         self.switched_to_tutorial = False
 
-    def add_npc_to_mgr(self, npc_id: int, npc: NPC):
-        self.npc_sickness_mgr.add_npc(npc_id, npc)
+    # def add_npc_to_mgr(self, npc_id: int, npc: NPC):
+    #     self.npc_sickness_mgr.add_npc(npc_id, npc)
 
     def _empty_round_config_notify(self, cfg_id: str):
         self.round_config[f"notify_{cfg_id}_text"] = ""
@@ -1001,7 +1002,6 @@ class Game:
                     ):
                         self.round_config["healthbar"] = True
                         self.round_config["sickness"] = True
-                        self.npc_sickness_mgr.apply_sickness_enable_to_existing_npcs()
                         self.level.npcs_state_registry.enable()
                     elif self._can_notify_initial_gov_statement:
                         self._has_displayed_initial_gov_statement = True

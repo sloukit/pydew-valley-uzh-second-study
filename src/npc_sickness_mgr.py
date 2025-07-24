@@ -14,6 +14,10 @@ from math import ceil, floor
 from random import choice, randint, random, sample
 from typing import Callable
 
+from src.settings import (
+    SICK_INTERVAL,
+)
+
 from src.client import get_npc_status  # noqa: F401
 from src.enums import NPCSicknessStatusChange
 from src.npc.npc import NPC
@@ -25,25 +29,16 @@ _OUTGRP_ID_SAMPLING_LST = list(range(12, 24))
 _OUTGRP_ID_SAMPLING = set(_OUTGRP_ID_SAMPLING_LST)
 
 # Number of NPCs per group.
-_ID_POOL_SIZE = 12
-# Proportion of adhering NPCs in the ingroup during the "adherence" condition
-_ADHERENCE_INGRP_COUNT = _ID_POOL_SIZE * 0.8
-# Proportion of adhering NPCs in the ingroup during the "non-adherence" condition.
-_REBEL_ADHERENCE_INGRP_COUNT = _ID_POOL_SIZE * 0.2
+NPC_POOL_SIZE = 12
+
+# adherent / non-adherent setting: how many adherent ingroup npc
+ADH_NPC_INGRP = [int(0.2*NPC_POOL_SIZE), int(0.8*NPC_POOL_SIZE)] # share of adhering npc if ingroup is adherent
+
+
 # Halve the NPC count for NPC adherence in the outgroup.
-_ADHERENCE_OUTGRP_COUNT = _MAXIMUM_DEATH_COUNT = _ID_POOL_SIZE // 2
+_MAXIMUM_DEATH_COUNT = NPC_POOL_SIZE // 2
 
 _DEATH_LIKELIHOOD = 0.5
-
-
-def _get_ingrp_adhering_count(adherence: bool = False):
-    """Return the exact number of NPCs adhering to the health measures in the ingroup.
-    Since exact proportions might equal non-integer numbers, the number is randomly selected between the
-    ceiling and floor of the exact count for the given condition."""
-
-    exact_nb = _ADHERENCE_INGRP_COUNT if adherence else _REBEL_ADHERENCE_INGRP_COUNT
-
-    return randint(floor(exact_nb), ceil(exact_nb))
 
 
 @dataclass
@@ -55,12 +50,12 @@ class NPCSicknessStatus:
     timestamp: float
     change_type: NPCSicknessStatusChange
 
-    def as_dict(self):
-        return {
-            "npc_id": self.npc_id,
-            "timestamp": self.timestamp,
-            "change_type": self.change_type.value,
-        }
+
+    def __iter__(self):
+        # Yield key-value pairs to allow dict(NPCSicknessStatus_object)
+        yield 'npc_id', self.npc_id
+        yield 'timestamp', self.timestamp
+        yield 'change_type', self.change_type.value
 
 
 def _summarise_event(evt: NPCSicknessStatus):
@@ -80,13 +75,9 @@ def _summarise_event(evt: NPCSicknessStatus):
 
 def _get_death(npc_id: int, death_round: int) -> NPCSicknessStatus:
     """Define a death timestamp for a certain NPC id."""
-
-    # Select when the NPC will start being sick, and work out the exact time at which the NPC will die
-    # from that. Players and NPCs can only get sick at fixed intervals, i.e. at 5:00 and 10:00 on the in-game timer.
-    base_tstamp = 300 * randint(1, 2)
-    # Since we don't actually want the NPC to immediately die when it gets sick,
-    # we add some randomisation to how long it will survive if it is doomed.
-    final_tstamp = base_tstamp + 120 + 180 * random()
+    # Get sick at 5 or 10 mins (discrete possible times)
+    base_tstamp = SICK_INTERVAL * randint(1, 2)
+    final_tstamp = base_tstamp + 60 + 120 * random() # die some time after
 
     return NPCSicknessStatus(
         npc_id, death_round, final_tstamp, NPCSicknessStatusChange.DIE
@@ -101,20 +92,15 @@ def _roll_death_count_for_ingrp(
     current_count: int, current_round: int, adherence: bool
 ):
     """Roll how many NPCs will die in the ingroup for the current round."""
-    if adherence and current_round > 9:
-        # Force every remaining NPC to survive in this case.
+    if adherence and current_round > 9: # no deaths in this scenario
         return 0
-    computed = 0
-    computed += _roll_death()
+    computed = _roll_death()
     if (
         current_count + computed < _MAXIMUM_DEATH_COUNT
         and not adherence
         and current_round < 10
     ):
-        # Roll a second time if not in the adherence condition,
-        # the round allows it, and there are few enough deaths that
-        # a successful roll won't go past the maximum death count.
-        computed += _roll_death()
+        computed += _roll_death() # second roll for non-adherence
     return computed
 
 
@@ -166,31 +152,23 @@ class NPCSicknessManager:
             # This also allows it to go to the bathhouse.
             obj.behaviour_tree_context.adhering_to_measures = True
 
-    def apply_sickness_enable_to_existing_npcs(self):
-        for npc in self._npcs.values():
-            npc.sickness_allowed = True
-
     @property
     def _next_event(self):
-        return self.computed_status_changes[self.get_round()][0]
+        if len(self.computed_status_changes[self.get_round()])>0:
+            return self.computed_status_changes[self.get_round()][0]
+        return None
 
     def update_npc_status(self):
         current_round = self.get_round()
-        if not self.computed_status_changes[7]:
+        if current_round < 7 or self._next_event is None: # earlier rounds: do nothing, or no events left
             return
-        if current_round < 7:
-            # Don't do anything if in the earlier rounds.
-            return
-        time_elapsed = self.get_rnd_timer()
-        next_evt = self._next_event
-        timestamp = next_evt.timestamp
-        if timestamp > time_elapsed:
-            # Too early.
-            return
+        timestamp = self._next_event.timestamp
+        if timestamp > self.get_rnd_timer():
+            return # Too early.
 
-        target_npc: int = next_evt.npc_id
+        target_npc: int = self._next_event.npc_id
 
-        match next_evt.change_type:
+        match self._next_event.change_type:
             case NPCSicknessStatusChange.SICKNESS:
                 # Check if the NPC is scheduled to die
                 death_tstamp = self.death_tstamps.get(target_npc)
@@ -198,11 +176,7 @@ class NPCSicknessManager:
                     death_tstamp is None
                     or death_tstamp[0] < current_round
                     or timestamp + 300 < death_tstamp[1]
-                ):
-                    # Regular sickness if any of these three conditions is not fulfilled:
-                    # - There is no death timestamp for this NPC.
-                    # - The current round is lower than the one in the death timestamp for the NPC.
-                    # - There is more than 5 minutes between the sickness timestamp and the death timestamp.
+                ): # regular sickness
                     self._npcs[target_npc].get_sick(timestamp)
                     self.computed_status_changes[current_round].popleft()
                     return
@@ -212,12 +186,6 @@ class NPCSicknessManager:
                 self._npcs[target_npc].die()
                 self.computed_status_changes[current_round].popleft()
             case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
-                # print(f"NPC {target_npc} is going to the bathhouse")
-                # self._npcs[
-                #     target_npc
-                # ].conditional_behaviour_tree = _MAP_TO_BATH_BEHAVIOUR[
-                #     NPCSharedContext.current_map
-                # ]
                 self.computed_status_changes[current_round].popleft()
 
     def _setup_from_returned_data(self, received: dict | None):
@@ -243,7 +211,7 @@ class NPCSicknessManager:
                 if computed.change_type == NPCSicknessStatusChange.DIE:
                     self.death_tstamps[computed.npc_id] = (int(i), computed.timestamp)
                 if computed.change_type == NPCSicknessStatusChange.GO_TO_BATHHOUSE:
-                    if computed.npc_id < _ID_POOL_SIZE:
+                    if computed.npc_id < NPC_POOL_SIZE:
                         self._ingrp_adhering_ids.add(computed.npc_id)
                     else:
                         self._outgrp_adhering_ids.add(computed.npc_id)
@@ -273,11 +241,7 @@ class NPCSicknessManager:
                 curr_ingrp_rnd_deaths = _roll_death_count_for_ingrp(
                     ingrp_death_count, rnd, self.adherence
                 )
-                if curr_ingrp_rnd_deaths:
-                    # Don't perform these checks if no NPC was selected to die in the ingroup
-                    # for this round.
-                    # We can't use "continue" here because the checks still need to be performed
-                    # for the outgroup.
+                if curr_ingrp_rnd_deaths>0:
                     selected_ids = sample(ingrp_eligible, curr_ingrp_rnd_deaths)
                     for npc_id in selected_ids:
                         computed = _get_death(npc_id, rnd)
@@ -406,7 +370,7 @@ class NPCSicknessManager:
         ingrp_adherence_pickable = list(self._ingrp_adhering_ids)
         outgrp_adherence_pickable = list(self._outgrp_adhering_ids)
 
-        status_changes: dict[int, list[NPCSicknessStatus]] = {
+        status_changes: dict[int, list[NPCSicknessStatus]] = { #split into rounds
             n: [] for n in range(7, 13)
         }
 
@@ -438,7 +402,7 @@ class NPCSicknessManager:
             )
 
             current_npc = death_event.npc_id
-            is_ingrp = current_npc < _ID_POOL_SIZE
+            is_ingrp = current_npc < NPC_POOL_SIZE
             deaths[death_event.round_no][not is_ingrp].append(death_event.npc_id)
 
         # Pick which NPCs will suffer from nonlethal sickness in each round.
@@ -462,7 +426,7 @@ class NPCSicknessManager:
         # Send the status to the server.
         self.send_telemetry(
             "npc_status",
-            {n: [evt.as_dict() for evt in val] for n, val in status_changes.items()},
+            {n: [dict(evt) for evt in val] for n, val in status_changes.items()},
         )
 
     def select_adhering_npcs(self):
@@ -471,10 +435,10 @@ class NPCSicknessManager:
         The adherence parameter only affects the ingroup.
         The outgroup always has a 50/50 proportion of adherence."""
         self._ingrp_adhering_ids = set(
-            sample(_INGRP_ID_SAMPLING_LST, _get_ingrp_adhering_count(self.adherence))
+            sample(_INGRP_ID_SAMPLING_LST, ADH_NPC_INGRP[self.adherence])
         )
         self._outgrp_adhering_ids = set(
-            sample(_OUTGRP_ID_SAMPLING_LST, _ADHERENCE_OUTGRP_COUNT)
+            sample(_OUTGRP_ID_SAMPLING_LST, NPC_POOL_SIZE // 2)
         )
 
     def compute_sickness_events(self):
