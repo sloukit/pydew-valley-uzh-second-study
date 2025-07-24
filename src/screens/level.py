@@ -33,7 +33,6 @@ from src.events import (
 from src.exceptions import GameMapWarning
 from src.fblitter import FBLITTER
 from src.groups import AllSprites, PersistentSpriteGroup
-from src.gui.health_bar import PLAYER_HP, PLAYER_HP_STATE, PLAYER_IS_SICK
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
@@ -63,6 +62,10 @@ from src.settings import (
     VOLCANO_POS,
     MapDict,
     SoundDict,
+    PLAYER_HP_STR,
+    PLAYER_HP_STATE_STR,
+    PLAYER_IS_SICK_STR,
+    PLAYER_IS_BSICK_STR,
 )
 from src.sprites.base import AnimatedSprite, Sprite
 from src.sprites.bath_bubble import BubbleMgr
@@ -246,7 +249,6 @@ class Level:
             interact=self.interact,
             emote_manager=self.player_emote_manager,
             sounds=self.sounds,
-            bath_time=0,
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=get_game_version,
@@ -509,7 +511,11 @@ class Level:
 
     def warp_to_map(self, map_name: str):
         if map_name == "bathhouse":
-            self.send_telemetry("bath_taken", {})
+            if not(self.player.is_bath_sick or self.player.is_sick):
+                self.player.get_bath_sick(self.get_rnd_timer())
+                self.send_telemetry("bath_taken", {"has_effect":True})
+            else:
+                self.send_telemetry("bath_taken", {"has_effect":False})
             self.bubble_mgr.start()
         if map_name == "minigame":
             self.cow_herding_count += 1
@@ -533,17 +539,7 @@ class Level:
         else:
             if map_name == "bathhouse":
                 if self.round_config["accessible_bathhouse"]:
-                    if self.player.hp < 80:
-                        self.player.bathstat = True
-                        self.send_telemetry(
-                            PLAYER_HP_STATE,
-                            {
-                                PLAYER_HP: self.player.hp,
-                                PLAYER_IS_SICK: self.player.is_sick,
-                            },
-                        )
-                        self.player.bath_time = time.time()
-                    self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
+                    # self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
                     self.load_map(self.current_map, from_map=map_name)
             else:
                 warnings.warn(f'Error loading map: Map "{map_name}" not found')
@@ -1226,13 +1222,6 @@ class Level:
     def start_map_transition(self):
         self.map_transition.activate()
         self.start_transition()
-
-    def decay_health(self, dt):
-        if self.player.is_sick:
-            if int(self.get_rnd_timer()) % 300 < 150:  # first 2.5 mins decrease health
-                self.overlay.health_bar.apply_damage(90 / 150 * dt)
-            else:  # second 2.5mins increase health again
-                self.overlay.health_bar.apply_health(90 / 150 * dt)
 
     def check_map_exit(self):
         if not self.map_transition:

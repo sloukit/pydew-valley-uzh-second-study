@@ -249,17 +249,12 @@ class Game:
         self.player = self.level.player
 
         # Sickness management
-        self.took_bath = False
-        self.goggles_delta = 0.0
         NPCSharedContext.get_rnd_timer = self.get_rnd_timer
         NPCSharedContext.get_round = self.get_round
         self.sickness_man = SicknessManager(
             self.player,
             self.get_round,
             self.get_rnd_timer,
-            lambda: self.goggles_delta >= 240,
-            lambda: self.took_bath,
-            self._reset_goggles_timer,
         )
 
         self.tutorial = None
@@ -369,9 +364,6 @@ class Game:
         # intro to game and in-group msg.
         self.last_intro_txt_rendered = False
         self.switched_to_tutorial = False
-
-    def _reset_goggles_timer(self):
-        self.goggles_delta = 0.0
 
     def add_npc_to_mgr(self, npc_id: int, npc: NPC):
         self.npc_sickness_mgr.add_npc(npc_id, npc)
@@ -526,8 +518,6 @@ class Game:
         return (min, sec)
 
     def send_telemetry(self, event: str, payload: dict[str, int]) -> None:
-        if event == "bath_taken":
-            self.took_bath = True
         if USE_SERVER:
             telemetry = {
                 "event": event,
@@ -650,8 +640,8 @@ class Game:
 
     def set_round(self, round_no: int) -> None:
         self.round = round_no
-        self.took_bath = False
-        self.goggles_delta = 0.0
+        self.player.took_bath = False
+        self.player.goggle_time = 0.0
         self.level.cow_herding_count = 0
         # if config for given round number not found, use first one as fall back
         if self.game_version < 0:
@@ -1128,7 +1118,7 @@ class Game:
                 self.all_sprites.update(dt)
 
             if self.player.has_goggles:
-                self.goggles_delta += dt
+                self.player.goggle_time += dt
             # this draw duplicates the same call in level.py, but without it, dialog box won't be visible
             self.all_sprites.draw(
                 self.level.camera,

@@ -7,11 +7,6 @@ from src.settings import SCALE_FACTOR
 from src.support import import_image
 from src.settings import MAX_HP
 
-PLAYER_HP = "player_hp"
-PLAYER_IS_SICK = "player_is_sick"
-PLAYER_HP_STATE = "player_hp_state"
-
-
 class HealthProgressBar:
     def __init__(self, player):
         self.player = player
