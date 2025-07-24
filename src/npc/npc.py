@@ -20,6 +20,7 @@ from src.settings import Coordinate
 from src.sprites.entities.character import Character
 from src.sprites.entities.sick_color_effect import apply_sick_color_effect
 from src.sprites.setup import EntityAsset
+from src.timer import Timer
 
 
 class NPC(NPCBase):
@@ -119,6 +120,8 @@ class NPC(NPCBase):
         self.hp = 100
         # how fast the NPC dies after getting sick
         self.die_rate = random.randint(35, 75)
+
+        # self.get_sick(None) # for testing with recovery
 
     def set_allowed_seeds(self, allowed_seeds: dict[str]) -> None:
         seed_types = []
@@ -224,17 +227,38 @@ class NPC(NPCBase):
             self.has_outgroup_skin = True
 
     # NPC sickness
-    def get_sick(self, sick_tstamp: float, death_tstamp: float | None = None):
+    def get_sick(
+        self, sick_tstamp: float, death_tstamp: float | None = None, recover=True
+    ):
         # if wearing goggles, the probability of getting sick is halved
+
+        # setup recovery countdown for 5 minutes if allowed
+        if recover:
+            self.recovery_timer = Timer(
+                60 * 1000 * 5, repeat=False, autostart=True, func=self.recover
+            )
+
         self.is_sick = True
         self.emote_manager.show_emote(self, "sad_sick_ani")
+
+        # permanently become sick
         if death_tstamp is None:
             self.will_die = False
             self.die_rate = random.randint(1, 10)
             return
+
+        # otherwise die (or recover if recover=True and it's longer then 5 minutes)
         self.will_die = True
         sickness_duration = death_tstamp - sick_tstamp
         self.die_rate = 100 / sickness_duration
+
+    def recover(self):
+        # recover reverses the effect of get_sick, but doesn't heal any health or revive
+        if self.is_sick:
+            self.is_sick = False
+            self.emote_manager.show_emote(self, "cheer_ani")
+            self.will_die = False
+            self.die_rate = 99
 
     def die(self):
         self.is_dead = True
@@ -254,6 +278,10 @@ class NPC(NPCBase):
             self.image_alpha = 30 + int(150 * (self.hp / 100))
             self.image.set_alpha(self.image_alpha)
             self.health_update_callback(self)
+
+            if self.recovery_timer:
+                self.recovery_timer.update()  # doesn't take delta time, factors in itself
+
             # if self.hp <= 0:
             #     self.die()
 
