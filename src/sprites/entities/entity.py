@@ -167,7 +167,7 @@ class Entity(CollideableSprite, ABC):
     def move(self, dt: float):
         pass
 
-    def check_collision(self):
+    def check_collision(self) -> bool:
         """
         :return: true: Entity collides with a sprite in self.collision_sprites,
         otherwise false

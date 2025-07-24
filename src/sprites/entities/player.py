@@ -345,7 +345,7 @@ class Player(Character):
 
         self.hitbox_rect.x += self.direction.x * self.speed * dt
         self.hitbox_rect.y += self.direction.y * self.speed * dt
-        self.check_collision()
+        self.check_collision() #Why is the bool unassigned?
 
         self.rect.update(
             (
