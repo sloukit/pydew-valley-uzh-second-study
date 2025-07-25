@@ -200,7 +200,6 @@ class CowHerding(Minigame):
             has_necklace=False,
             special_features=None,
         )
-        opponent.probability_to_get_sick = 1
         self._state.game_map.npcs.append(opponent)
         side_map = {StudyGroup.INGROUP: "L", StudyGroup.OUTGROUP: "R"}
 

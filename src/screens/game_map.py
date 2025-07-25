@@ -776,8 +776,6 @@ class GameMap:
         if gmap == Map.MINIGAME and obj.name and obj.name == "opponent":
             if npc.study_group == self.player.study_group:
                 npc.kill()
-        if gmap == Map.MINIGAME:
-            npc.probability_to_get_sick = 1
 
         cheering = gmap == Map.MINIGAME
 

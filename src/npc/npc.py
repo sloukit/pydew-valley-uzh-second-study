@@ -106,11 +106,6 @@ class NPC(NPCBase):
         self.assign_outfit_ingroup()
 
         # NPC health / sickness / death
-
-        self.probability_to_get_sick = (
-            0.3 if self.has_goggles else 0.6
-        ) < random.random()
-
         self.is_sick = False
         self.is_dead = False
         self.hp = 100

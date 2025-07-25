@@ -575,7 +575,7 @@ class Game:
 
             self.npc_sickness_mgr.adherence = bool(token_int % 10)
             xplat.log(f"NPC adherence is set to {bool(token_int % 10)}")
-            self.npc_sickness_mgr._setup_from_returned_data(
+            self.npc_sickness_mgr.setup_from_db_data(
                 {"data": None}
             )  # workaround fake npc server response
             self.set_round(7)
