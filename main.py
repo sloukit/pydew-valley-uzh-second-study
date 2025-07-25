@@ -1151,11 +1151,4 @@ class Game:
 
 if __name__ == "__main__":
     game = Game()
-    try:
-        asyncio.run(game.run())
-    except Exception as e:
-        # print the error type and message that was raised
-        print(f"{type(e).__name__}: {e}")
-    finally:
-        pygame.quit()
-        sys.exit()
+    asyncio.run(game.run())
