@@ -495,6 +495,19 @@ class Game:
         )
 
     @property
+    def _can_start_active_post_eruption_market_seq(self):
+        return (
+            len(
+                self.round_config.get(
+                    "market_active_post_eruption_timestamp", []
+                )
+            )
+            > 0
+            and self.round_end_timer
+            > self.round_config["market_active_post_eruption_timestamp"][0]
+        )
+
+    @property
     def _can_prompt_allocation(self):
         return (
             self.round_config.get("resource_allocation_text", "")
@@ -1096,6 +1109,17 @@ class Game:
                                 "group_market_active_player_sequence_timestamp"
                             ] = self.round_config[
                                 "group_market_active_player_sequence_timestamp"
+                            ][1:]
+                        self.level.start_scripted_sequence(
+                            ScriptedSequence.GROUP_MARKET_ACTIVE
+                        )
+                    elif self._can_start_active_post_eruption_market_seq:
+                        # remove first timestamp from list after transition to Town ends not to repeat infinitely
+                        if self.level.current_map == Map.TOWN:
+                            self.round_config[
+                                "market_active_post_eruption_timestamp"
+                            ] = self.round_config[
+                                "market_active_post_eruption_timestamp"
                             ][1:]
                         self.level.start_scripted_sequence(
                             ScriptedSequence.GROUP_MARKET_ACTIVE
