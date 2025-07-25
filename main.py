@@ -601,7 +601,7 @@ class Game:
             # this supposedly loads npc status (e.g., previous deaths etc.) but seems to be untested / not implemented server side?
             self.npc_sickness_mgr.get_status_from_server(self.jwt)
 
-            max_complete_level = 7  # debug, remove later
+            # max_complete_level = 7  # debug, remove later
             if len(day_completions) > 0:
                 timestamps = [
                     datetime.fromisoformat(d["timestamp"]) for d in day_completions

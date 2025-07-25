@@ -137,7 +137,7 @@ class Player(Character):
         # sounds
         self.sounds = sounds
 
-        self.hp = 100
+        self.hp = MAX_HP
         # self.created_time = time.time() # used for speed unclear why
         # self.delay_time_speed = 0.25
         self.dt_speed = 0
