@@ -172,8 +172,7 @@ MAX_HP = 100
 # interval at which to determine sickness
 # changing this is untested and may break the game, leave it at 300s / 5min if possible
 SICK_INTERVAL = 60 * 5
-# experimental interval for recovery
-# RECOVERY_INTERVAL = 60 * 5
+RECOVERY_INTERVAL = 60 * 5
 
 MIN_GOGGLE_TIME = 240  # time per each SICK INTERVAL for goggles to be effective
 

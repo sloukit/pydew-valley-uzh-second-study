@@ -16,7 +16,7 @@ from src.gui.interface.emotes import NPCEmoteManager
 from src.npc.bases.npc_base import NPCBase
 from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.overlay.soil import SoilManager
-from src.settings import SICK_INTERVAL, Coordinate
+from src.settings import RECOVERY_INTERVAL, Coordinate
 from src.sprites.entities.character import Character
 from src.sprites.entities.sick_color_effect import apply_sick_color_effect
 from src.sprites.setup import EntityAsset
@@ -232,14 +232,13 @@ class NPC(NPCBase):
         # get sick but do not die (recover)
         if sick_tstamp is None or death_tstamp is None:
             self.die_rate = random.randint(1, 10)
-            self.recovery_timer = Timer(
-                SICK_INTERVAL * 1000, repeat=False, autostart=True, func=self.recover
-            )
 
-            # experimental recovery interval, see settings.py
-            # self.recovery_timer = Timer(
-            #     RECOVERY_INTERVAL * 1000, repeat=False, autostart=True, func=self.recover
-            # )
+            self.recovery_timer = Timer(
+                RECOVERY_INTERVAL * 1000,
+                repeat=False,
+                autostart=True,
+                func=self.recover,
+            )
 
         # otherwise die
         else:
