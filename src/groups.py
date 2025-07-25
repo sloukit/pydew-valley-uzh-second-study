@@ -43,22 +43,19 @@ class AllSprites(PersistentSpriteGroup):
         self.display_surface = pygame.display.get_surface()
         self.offset = pygame.Vector2()
         self.cam_surf = pygame.Surface(self.display_surface.get_size())
-        self._sorted_sprites = None
 
     def update_blocked(self, dt: float):
         for sprite in self:
             getattr(sprite, "update_blocked", sprite.update)(dt)
 
     def draw(self, camera: Camera, game_paused: bool):
-        # if self._sorted_sprites is None:
-        self._sorted_sprites = sorted(self, key=lambda spr: spr.hitbox_rect.bottom)
-        print(len(self._sorted_sprites))
+        _sorted_sprites = sorted(self, key=lambda spr: (spr.z, spr.hitbox_rect.bottom))
+
         camera_rect = camera.get_viewport_rect()
-        for layer in Layer:
-            for sprite in self._sorted_sprites:
-                # including game_paused condition to prevent drawing overlaps between tutorial text boxes and menus
-                if sprite.z == layer and not game_paused and sprite.hitbox_rect.colliderect(camera_rect):
-                    sprite.draw(self.display_surface, camera.apply(sprite), camera)
+        for sprite in _sorted_sprites:
+            # including game_paused condition to prevent drawing overlaps between tutorial text boxes and menus
+            if not game_paused and sprite.hitbox_rect.colliderect(camera_rect):
+                sprite.draw(self.display_surface, camera.apply(sprite), camera)
 
         FBLITTER.reset_to_default_surf()
         FBLITTER.blit_all()

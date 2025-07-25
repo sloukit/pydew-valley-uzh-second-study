@@ -57,7 +57,7 @@ class Camera:
     def set_quake_vec(self, vec: pygame.Vector2 | None):
         self._quake_vec = vec
 
-    def get_viewport_rect(self) -> pygame.Rect:a
+    def get_viewport_rect(self) -> pygame.Rect:
         """
         Returns the current visible area in world coordinates.
         """
