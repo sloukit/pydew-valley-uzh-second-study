@@ -1,7 +1,6 @@
 import pygame
 
 from src.camera import Camera
-from src.enums import Layer
 from src.fblitter import FBLITTER
 
 
