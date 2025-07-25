@@ -41,7 +41,6 @@ from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
 from src.npc.behaviour.context import NPCSharedContext
-from src.npc.npc import NPC
 from src.npc.npcs_state_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
 from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.fast_forward import FastForward
@@ -244,25 +243,18 @@ class Game:
             self.get_world_time,
             self.dialogue_manager,
             self.send_telemetry,
-            self.add_npc_to_mgr,
+            # self.add_npc_to_mgr,
+            self.npc_sickness_mgr.add_npc,
         )
         self.player = self.level.player
 
         # Sickness management
-        self.took_bath = False
-        self.goggles_delta = 0.0
         NPCSharedContext.get_rnd_timer = self.get_rnd_timer
         NPCSharedContext.get_round = self.get_round
         self.sickness_man = SicknessManager(
+            self.player,
             self.get_round,
             self.get_rnd_timer,
-            lambda: self.goggles_delta >= 240,
-            lambda: self.took_bath,
-            lambda: self.player.is_sick,
-            self.send_telemetry,
-            self.player.get_sick,
-            self.player.recover,
-            self._reset_goggles_timer,
         )
 
         self.tutorial = None
@@ -373,11 +365,8 @@ class Game:
         self.last_intro_txt_rendered = False
         self.switched_to_tutorial = False
 
-    def _reset_goggles_timer(self):
-        self.goggles_delta = 0.0
-
-    def add_npc_to_mgr(self, npc_id: int, npc: NPC):
-        self.npc_sickness_mgr.add_npc(npc_id, npc)
+    # def add_npc_to_mgr(self, npc_id: int, npc: NPC):
+    #     self.npc_sickness_mgr.add_npc(npc_id, npc)
 
     def _empty_round_config_notify(self, cfg_id: str):
         self.round_config[f"notify_{cfg_id}_text"] = ""
@@ -529,8 +518,6 @@ class Game:
         return (min, sec)
 
     def send_telemetry(self, event: str, payload: dict[str, int]) -> None:
-        if event == "bath_taken":
-            self.took_bath = True
         if USE_SERVER:
             telemetry = {
                 "event": event,
@@ -587,7 +574,7 @@ class Game:
 
             self.npc_sickness_mgr.adherence = bool(token_int % 10)
             xplat.log(f"NPC adherence is set to {bool(token_int % 10)}")
-            self.npc_sickness_mgr._setup_from_returned_data(
+            self.npc_sickness_mgr.setup_from_db_data(
                 {"data": None}
             )  # workaround fake npc server response
             self.set_round(7)
@@ -614,7 +601,7 @@ class Game:
             # this supposedly loads npc status (e.g., previous deaths etc.) but seems to be untested / not implemented server side?
             self.npc_sickness_mgr.get_status_from_server(self.jwt)
 
-            # max_complete_level = 6
+            # max_complete_level = 7  # debug, remove later
             if len(day_completions) > 0:
                 timestamps = [
                     datetime.fromisoformat(d["timestamp"]) for d in day_completions
@@ -653,8 +640,8 @@ class Game:
 
     def set_round(self, round_no: int) -> None:
         self.round = round_no
-        self.took_bath = False
-        self.goggles_delta = 0.0
+        self.player.took_bath = False
+        self.player.goggle_time = 0.0
         self.level.cow_herding_count = 0
         # if config for given round number not found, use first one as fall back
         if self.game_version < 0:
@@ -1014,7 +1001,6 @@ class Game:
                     ):
                         self.round_config["healthbar"] = True
                         self.round_config["sickness"] = True
-                        self.npc_sickness_mgr.apply_sickness_enable_to_existing_npcs()
                         self.level.npcs_state_registry.enable()
                     elif self._can_notify_initial_gov_statement:
                         self._has_displayed_initial_gov_statement = True
@@ -1131,7 +1117,7 @@ class Game:
                 self.all_sprites.update(dt)
 
             if self.player.has_goggles:
-                self.goggles_delta += dt
+                self.player.goggle_time += dt
             # this draw duplicates the same call in level.py, but without it, dialog box won't be visible
             self.all_sprites.draw(
                 self.level.camera,

@@ -43,9 +43,6 @@ class NpcsStateRegistry:
         self.last_health_update_timestamp = datetime.now()
         self._store_registry()
 
-    def get_current_time(self):
-        return datetime.now()
-
     def register_death(self, dying_npc: NPC):
         if not self.enabled:
             return

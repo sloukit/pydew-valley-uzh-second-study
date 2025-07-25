@@ -163,3 +163,35 @@ TOMATO_OR_CORN_LIST = [
 # Used in player.py
 # Changing the divisor with the minimum supported FPS will result in different tolerated lag spikes
 MAX_DT: Final[float] = 1.0 / 12.0
+
+
+# health related
+# =================
+MAX_HP = 100
+
+# interval at which to determine sickness
+# changing this is untested and may break the game, leave it at 300s / 5min if possible
+SICK_INTERVAL = 60 * 5
+# experimental interval for recovery
+# RECOVERY_INTERVAL = 60 * 5
+
+MIN_GOGGLE_TIME = 240  # time per each SICK INTERVAL for goggles to be effective
+
+# regular sickness
+SICK_DURATION = 240  # duration of sickness
+SICK_DECLINE = 120  # decline time of sickness
+SICK_INCLINE = SICK_DURATION - SICK_DECLINE  # incline time of sickness
+SICK_MIN_HP = 10  # min hp to go to
+
+# sickness after bath
+BSICK_DURATION = 60  # duration of sickness
+BSICK_DECLINE = 30  # decline time of sickness
+BSICK_INCLINE = SICK_DURATION - SICK_DECLINE  # incline time of sickness
+BSICK_MIN_HP = 50  # min hp to go to
+
+
+# db logging terms
+PLAYER_HP_STR = "player_hp"
+PLAYER_IS_SICK_STR = "player_is_sick"
+PLAYER_IS_BSICK_STR = "player_is_bath_sick"
+PLAYER_HP_STATE_STR = "player_hp_state"
