@@ -1,5 +1,7 @@
 from functools import cache
+
 import pygame
+
 
 @cache
 def apply_sick_color_effect(surf: pygame.Surface) -> pygame.Surface:
