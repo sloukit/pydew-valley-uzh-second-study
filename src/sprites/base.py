@@ -31,9 +31,6 @@ class Sprite(pygame.sprite.Sprite):
         self.custom_properties: dict[str, Any] = custom_properties or {}
         self.hitbox_rect = self.rect.copy()
 
-    def is_on_screen(self, camera_rect: pygame.Rect) -> bool:
-        return self.rect.colliderect(camera_rect)
-
     def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
         FBLITTER.reset_to_default_surf()
         FBLITTER.schedule_blit(self.image, rect)
