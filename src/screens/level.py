@@ -1,6 +1,5 @@
 import gc
 import random
-import time
 import warnings
 from collections.abc import Callable
 from functools import partial
@@ -507,11 +506,11 @@ class Level:
 
     def warp_to_map(self, map_name: str):
         if map_name == "bathhouse":
-            if not(self.player.is_bath_sick or self.player.is_sick):
+            if not (self.player.is_bath_sick or self.player.is_sick):
                 self.player.get_bath_sick(self.get_rnd_timer())
-                self.send_telemetry("bath_taken", {"has_effect":True})
+                self.send_telemetry("bath_taken", {"has_effect": True})
             else:
-                self.send_telemetry("bath_taken", {"has_effect":False})
+                self.send_telemetry("bath_taken", {"has_effect": False})
             self.bubble_mgr.start()
         if map_name == "minigame":
             self.cow_herding_count += 1

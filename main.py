@@ -41,7 +41,6 @@ from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
 from src.npc.behaviour.context import NPCSharedContext
-from src.npc.npc import NPC
 from src.npc.npcs_state_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
 from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.fast_forward import FastForward
@@ -602,7 +601,7 @@ class Game:
             # this supposedly loads npc status (e.g., previous deaths etc.) but seems to be untested / not implemented server side?
             self.npc_sickness_mgr.get_status_from_server(self.jwt)
 
-            max_complete_level = 7 # debug, remove later
+            max_complete_level = 7  # debug, remove later
             if len(day_completions) > 0:
                 timestamps = [
                     datetime.fromisoformat(d["timestamp"]) for d in day_completions

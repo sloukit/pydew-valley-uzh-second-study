@@ -121,7 +121,6 @@ class NPC(NPCBase):
         # but not sure how to set it :-(
         self.behaviour_tree_context.allowed_seeds = seed_types
 
-
     def get_personal_soil_area_tiles(self, tile_type: str) -> list[tuple[int, int]]:
         """
         Get the soil area that the NPC is responsible for (row of farmable tiles)

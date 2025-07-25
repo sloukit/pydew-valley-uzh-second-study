@@ -35,15 +35,15 @@ from src.savefile import SaveFile
 from src.settings import (
     DEBUG_MODE_VERSION,
     MAX_DT,
+    MAX_HP,
+    PLAYER_HP_STATE_STR,
+    PLAYER_HP_STR,
+    PLAYER_IS_BSICK_STR,
+    PLAYER_IS_SICK_STR,
     POS_MIN_LOG_INTERVAL,
     POS_MOVE_LOG_INTERVAL,
     Coordinate,
     SoundDict,
-    MAX_HP,
-    PLAYER_HP_STR,
-    PLAYER_HP_STATE_STR,
-    PLAYER_IS_SICK_STR,
-    PLAYER_IS_BSICK_STR,
 )
 from src.sprites.entities.character import Character
 from src.sprites.entities.entity import Entity
@@ -167,7 +167,11 @@ class Player(Character):
         self.emote_manager.show_emote(self, "sad_sick_ani")
         self.send_telemetry(
             PLAYER_HP_STATE_STR,
-            {PLAYER_HP_STR: self.hp, PLAYER_IS_SICK_STR: self.is_sick, PLAYER_IS_BSICK_STR: self.is_bath_sick},
+            {
+                PLAYER_HP_STR: self.hp,
+                PLAYER_IS_SICK_STR: self.is_sick,
+                PLAYER_IS_BSICK_STR: self.is_bath_sick,
+            },
         )
 
     def get_bath_sick(self, round_time):
@@ -178,12 +182,15 @@ class Player(Character):
         self.emote_manager.show_emote(self, "sad_sick_ani")
         self.send_telemetry(
             PLAYER_HP_STATE_STR,
-            {PLAYER_HP_STR: self.hp, PLAYER_IS_SICK_STR: self.is_sick, PLAYER_IS_BSICK_STR: self.is_bath_sick},
+            {
+                PLAYER_HP_STR: self.hp,
+                PLAYER_IS_SICK_STR: self.is_sick,
+                PLAYER_IS_BSICK_STR: self.is_bath_sick,
+            },
         )
 
     def set_hp(self, hp):
         self.hp = pygame.math.clamp(hp, 0, MAX_HP)
-
 
     def recover(self):
         self.is_sick = False
@@ -191,7 +198,11 @@ class Player(Character):
         self.set_hp(MAX_HP)
         self.send_telemetry(
             PLAYER_HP_STATE_STR,
-            {PLAYER_HP_STR: self.hp, PLAYER_IS_SICK_STR: self.is_sick, PLAYER_IS_BSICK_STR: self.is_bath_sick},
+            {
+                PLAYER_HP_STR: self.hp,
+                PLAYER_IS_SICK_STR: self.is_sick,
+                PLAYER_IS_BSICK_STR: self.is_bath_sick,
+            },
         )
 
     def save(self):

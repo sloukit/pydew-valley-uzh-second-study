@@ -3,9 +3,9 @@ import random
 import pygame
 
 from src.fblitter import FBLITTER
-from src.settings import SCALE_FACTOR
+from src.settings import MAX_HP, SCALE_FACTOR
 from src.support import import_image
-from src.settings import MAX_HP
+
 
 class HealthProgressBar:
     def __init__(self, player):

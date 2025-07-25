@@ -1,21 +1,20 @@
 from random import random
 from typing import Callable
-from src.sprites.entities.player import Player
-from src.settings import GogglesStatus
+
 from src.settings import (
-    SICK_DURATION,
-    SICK_DECLINE,
-    SICK_INCLINE,
-    SICK_MIN_HP,
-    BSICK_DURATION,
     BSICK_DECLINE,
+    BSICK_DURATION,
     BSICK_INCLINE,
     BSICK_MIN_HP,
     MAX_HP,
-    SICK_INTERVAL,
     MIN_GOGGLE_TIME,
+    SICK_DECLINE,
+    SICK_DURATION,
+    SICK_INCLINE,
+    SICK_INTERVAL,
+    SICK_MIN_HP,
 )
-
+from src.sprites.entities.player import Player
 
 # Key format: (bath, goggles)
 # Value format: (rds 7-9, rds 10-12)
@@ -47,9 +46,9 @@ class SicknessManager:
     def _sickness_likelihood(self) -> float:
         if self.get_round() < 7 or self.get_rend_timer() < SICK_INTERVAL:
             return 0.0
-        return _SICKNESS_PROBABILITIES[(self.player.took_bath, self.player.goggle_time >= MIN_GOGGLE_TIME)][
-            self.get_round() > 9
-        ]
+        return _SICKNESS_PROBABILITIES[
+            (self.player.took_bath, self.player.goggle_time >= MIN_GOGGLE_TIME)
+        ][self.get_round() > 9]
 
     def should_make_player_sick(self):
         return _random_from_probability(self._sickness_likelihood)
@@ -58,19 +57,29 @@ class SicknessManager:
         if not self.player.round_config.get("sickness", False):
             return
 
-        current_time = int(self.get_rend_timer()) # need int for modulo at bottom
+        current_time = int(self.get_rend_timer())  # need int for modulo at bottom
 
         if self.player.is_bath_sick:
             bsick_interval_time = current_time - self.player.bath_start_t
             if bsick_interval_time < BSICK_DECLINE:  # first decrease health
-                self.player.set_hp(MAX_HP - (MAX_HP-BSICK_MIN_HP)*bsick_interval_time/BSICK_DECLINE)
-            elif not(bsick_interval_time > BSICK_DURATION):  # then increase health again
-                self.player.set_hp(BSICK_MIN_HP + (MAX_HP-BSICK_MIN_HP)*(bsick_interval_time-BSICK_DECLINE)/BSICK_INCLINE)
+                self.player.set_hp(
+                    MAX_HP
+                    - (MAX_HP - BSICK_MIN_HP) * bsick_interval_time / BSICK_DECLINE
+                )
+            elif not (
+                bsick_interval_time > BSICK_DURATION
+            ):  # then increase health again
+                self.player.set_hp(
+                    BSICK_MIN_HP
+                    + (MAX_HP - BSICK_MIN_HP)
+                    * (bsick_interval_time - BSICK_DECLINE)
+                    / BSICK_INCLINE
+                )
             else:
                 self.player.recover()
 
         # at 5mins and 10mins determine whether a player is sick
-        if current_time >= SICK_INTERVAL*(self.sickness_calc_count + 1):
+        if current_time >= SICK_INTERVAL * (self.sickness_calc_count + 1):
             self.sickness_calc_count += 1
             if self.should_make_player_sick():
                 self.player.get_sick()
@@ -78,11 +87,19 @@ class SicknessManager:
 
         # at 9mins and 14mins make potentially sick player recover, otherwise change hp
         if self.player.is_sick:
-            if current_time>=SICK_INTERVAL*self.sickness_calc_count+SICK_DURATION:
+            if current_time >= SICK_INTERVAL * self.sickness_calc_count + SICK_DURATION:
                 self.player.recover()
-            else: #adjust hp logic
+            else:  # adjust hp logic
                 sick_interval_time = current_time % SICK_INTERVAL
                 if sick_interval_time < SICK_DECLINE:  # first decrease health
-                    self.player.set_hp(MAX_HP - (MAX_HP-SICK_MIN_HP)*sick_interval_time/SICK_DECLINE)
+                    self.player.set_hp(
+                        MAX_HP
+                        - (MAX_HP - SICK_MIN_HP) * sick_interval_time / SICK_DECLINE
+                    )
                 else:  # then increase health again
-                    self.player.set_hp(SICK_MIN_HP + (MAX_HP-SICK_MIN_HP)*(sick_interval_time-SICK_DECLINE)/SICK_INCLINE)
+                    self.player.set_hp(
+                        SICK_MIN_HP
+                        + (MAX_HP - SICK_MIN_HP)
+                        * (sick_interval_time - SICK_DECLINE)
+                        / SICK_INCLINE
+                    )
