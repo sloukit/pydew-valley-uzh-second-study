@@ -1,3 +1,5 @@
+from urllib.error import HTTPError
+
 import pygame
 
 from src.exceptions import LoginError, TooEarlyLoginError
@@ -55,7 +57,7 @@ class DisplayError:
     def set_error_message(self, error: Exception | None):
         if isinstance(error, TooEarlyLoginError):
             translation_key = "too_early_login"
-        elif isinstance(error, (LoginError, ValueError)):
+        elif isinstance(error, (LoginError, ValueError, HTTPError)):
             translation_key = "login_failed"
         else:
             self.error_message = None
