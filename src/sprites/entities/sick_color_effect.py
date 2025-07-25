@@ -1,8 +1,11 @@
+from functools import cache
+
 import pygame
 
 
+@cache
 def apply_sick_color_effect(surf: pygame.Surface) -> pygame.Surface:
-    """Applies a green-ish tint to the player sprite to represent sickness. In a separate due to circular imports (character + player both need this function)"""
+    """Applies a green-ish tint to the player sprite to represent sickness. In a separate file due to circular imports (character + player both need this function)"""
 
     # Create a copy of the surface and ensure it has per-pixel alpha
     sick_surface = surf.convert_alpha()
@@ -35,7 +38,6 @@ def apply_sick_color_effect(surf: pygame.Surface) -> pygame.Surface:
     # Use pixel-by-pixel replacement (slower but more compatible)
     width = sick_surface.get_width()
     height = sick_surface.get_height()
-    # print(f'sick colour: {width}, {height}')
 
     for x in range(width):
         for y in range(height):
@@ -45,8 +47,5 @@ def apply_sick_color_effect(surf: pygame.Surface) -> pygame.Surface:
             if rgb in color_mappings:
                 new_color = color_mappings[rgb]
                 sick_surface.set_at((x, y), (*new_color, pixel_color.a))
-                # print('colour mapping worked and set a value')
 
-    # print(f'sick colour returned: {sick_surface}')
-    # pygame.image.save(sick_surface, r"""C:\Users\willi\OneDrive\Desktop/imageout2.png""")
     return sick_surface
