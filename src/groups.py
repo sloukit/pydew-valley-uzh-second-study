@@ -48,12 +48,16 @@ class AllSprites(PersistentSpriteGroup):
             getattr(sprite, "update_blocked", sprite.update)(dt)
 
     def draw(self, camera: Camera, game_paused: bool):
-        _sorted_sprites = sorted(self, key=lambda spr: (spr.z, spr.hitbox_rect.bottom))
+        sorted_sprites = sorted(self, key=lambda spr: (spr.z, spr.hitbox_rect.bottom))
 
         camera_rect = camera.get_viewport_rect()
-        for sprite in _sorted_sprites:
+        for sprite in sorted_sprites:
             # including game_paused condition to prevent drawing overlaps between tutorial text boxes and menus
-            if not game_paused and sprite.hitbox_rect.colliderect(camera_rect):
+            if (
+                sprite.z > 0
+                and not game_paused
+                and sprite.hitbox_rect.colliderect(camera_rect)
+            ):
                 sprite.draw(self.display_surface, camera.apply(sprite), camera)
 
         FBLITTER.reset_to_default_surf()
