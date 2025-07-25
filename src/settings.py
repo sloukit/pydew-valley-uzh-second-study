@@ -33,6 +33,11 @@ ENABLE_NPCS = True
 TEST_ANIMALS = True
 
 GAME_LANGUAGE = os.environ.get("GAME_LANGUAGE", "en")
+
+# Check if Python is running in opt-1 or opt-2 mode
+debug_opt0 = True if __debug__ else False
+
+
 DEBUG_MODE_VERSION = 0
 # True  => virtual game time
 # False => real world time

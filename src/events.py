@@ -59,7 +59,7 @@ class _EventDefinition:
         self,
         name: str,
         code: int,
-        **attrs: Union[Type, SpecialForm], # pyright: ignore[reportInvalidTypeForm]
+        **attrs: Union[Type, SpecialForm],  # pyright: ignore[reportInvalidTypeForm]
     ):
         self.__name__ = self.name = name
         self._attrs = attrs
@@ -172,7 +172,8 @@ def get_event_def_from_name(name: str) -> _EventDefinition:
 
 
 def create_custom_event_type(
-    name: str, **attributes: Union[Type, SpecialForm, UnionType] # pyright: ignore[reportInvalidTypeForm]
+    name: str,
+    **attributes: Union[Type, SpecialForm, UnionType],  # pyright: ignore[reportInvalidTypeForm]
 ) -> int:
     """Register a new event type and its specifications.
 
@@ -190,7 +191,7 @@ def create_custom_event_type(
     return created_code
 
 
-def post_event(code: int, **attrs: Type | SpecialForm): # pyright: ignore[reportInvalidTypeForm]
+def post_event(code: int, **attrs: Type | SpecialForm):  # pyright: ignore[reportInvalidTypeForm]
     """Create and post an event of the given type with attributes listed
     as keyword arguments.
 

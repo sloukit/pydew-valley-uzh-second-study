@@ -729,6 +729,10 @@ class Level:
             self.volcano(True)
 
         elif event.type == SHOW_BATH_INFO:
+            if __debug__:
+                print(
+                    f"SHOW_BATH_INFO event received: enabled={self.overlay.bath_info.enabled}, visible={self.overlay.bath_info.visible}"
+                )
             self.overlay.bath_info.toggle_visibility()
 
         elif event.type == pygame.KEYDOWN:
@@ -769,6 +773,10 @@ class Level:
                 self.overlay.health_bar.apply_damage(1)
 
             if self.controls.SHOW_BATH_INFO.click:
+                if __debug__:
+                    print(
+                        f"B key pressed: bath_info enabled={self.overlay.bath_info.enabled}"
+                    )
                 post_event(SHOW_BATH_INFO)
 
             if self.controls.DEBUG_SELF_ASSESSMENT.click:
