@@ -16,9 +16,10 @@ from src.gui.interface.emotes import NPCEmoteManager
 from src.npc.bases.npc_base import NPCBase
 from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.overlay.soil import SoilManager
-from src.settings import Coordinate
+from src.settings import Coordinate, SICK_INTERVAL
 from src.sprites.entities.character import Character
 from src.sprites.entities.sick_color_effect import apply_sick_color_effect
+from src.timer import Timer
 from src.sprites.setup import EntityAsset
 
 
@@ -111,6 +112,8 @@ class NPC(NPCBase):
         self.hp = 100
         # how fast the NPC dies after getting sick
         self.die_rate = random.randint(35, 75)
+
+        # self.get_sick(None, None) # debug for testing sickness
 
     def set_allowed_seeds(self, allowed_seeds: dict[str]) -> None:
         seed_types = []
@@ -209,16 +212,40 @@ class NPC(NPCBase):
             self.has_horn = True
             self.has_outgroup_skin = True
 
+    # NPC recovery
+    def recover(self):
+        # recover reverses the effect of get_sick, but doesn't heal any health or revive
+        if self.is_sick:
+            self.is_sick = False
+            self.emote_manager.show_emote(self, "cheer_ani")
+            self.will_die = False
+            self.die_rate = 0
+        
+        self.recovery_timer = None
+
     # NPC sickness
     def get_sick(self, sick_tstamp: float, death_tstamp: float | None = None):
-        # if wearing goggles, the probability of getting sick is halved
+        # sick_tstamp is filled in for all cases, https://github.com/search?q=repo%3Asloukit%2Fpydew-valley-uzh-second-study+get_sick&type=code
         self.is_sick = True
         self.emote_manager.show_emote(self, "sad_sick_ani")
-        if death_tstamp is None:
+
+        # get sick but do not die (recover)
+        if sick_tstamp is None or death_tstamp is None:
             self.die_rate = random.randint(1, 10)
-            return
-        sickness_duration = death_tstamp - sick_tstamp
-        self.die_rate = 100 / sickness_duration
+            self.recovery_timer = Timer(
+                SICK_INTERVAL * 1000, repeat=False, autostart=True, func=self.recover
+            )
+
+            # experimental recovery interval, see settings.py
+            # self.recovery_timer = Timer(
+            #     RECOVERY_INTERVAL * 1000, repeat=False, autostart=True, func=self.recover
+            # ) 
+
+        # otherwise die
+        else:
+          self.will_die = True
+          sickness_duration = death_tstamp - sick_tstamp
+          self.die_rate = 100 / sickness_duration
 
     def die(self):
         self.is_dead = True
@@ -238,6 +265,10 @@ class NPC(NPCBase):
             self.image_alpha = 30 + int(150 * (self.hp / 100))
             self.image.set_alpha(self.image_alpha)
             self.health_update_callback(self)
+
+            if hasattr(self, 'recovery_timer') and self.recovery_timer:
+                self.recovery_timer.update() # doesn't take delta time, factors in itself
+
             # if self.hp <= 0:
             #     self.die()
 
