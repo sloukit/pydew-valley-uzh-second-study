@@ -1,52 +1,5 @@
 from functools import cache
-
 import pygame
-
-# using cache
-# apply_sick_color_effect took 0.000005 seconds
-# apply_sick_color_effect took 0.000006 seconds
-# apply_sick_color_effect took 0.000006 seconds
-# apply_sick_color_effect took 0.000005 seconds
-# apply_sick_color_effect took 0.000006 seconds
-# apply_sick_color_effect took 0.000008 seconds
-# apply_sick_color_effect took 0.000005 seconds
-# apply_sick_color_effect took 0.000004 seconds
-# apply_sick_color_effect took 0.000004 seconds
-# apply_sick_color_effect took 0.000004 seconds
-# apply_sick_color_effect took 0.000004 seconds
-# apply_sick_color_effect took 0.000004 seconds
-# apply_sick_color_effect took 0.000004 seconds
-# apply_sick_color_effect took 0.000005 seconds
-# apply_sick_color_effect took 0.000003 seconds
-# apply_sick_color_effect took 0.000003 seconds
-# apply_sick_color_effect took 0.000003 seconds
-# apply_sick_color_effect took 0.000002 seconds
-
-
-# without the cache
-# apply_sick_color_effect took 0.030930 seconds
-# apply_sick_color_effect took 0.030964 seconds
-# apply_sick_color_effect took 0.032071 seconds
-# apply_sick_color_effect took 0.037817 seconds
-# apply_sick_color_effect took 0.038521 seconds
-# apply_sick_color_effect took 0.033641 seconds
-# apply_sick_color_effect took 0.040135 seconds
-# apply_sick_color_effect took 0.044454 seconds
-# apply_sick_color_effect took 0.044409 seconds
-# apply_sick_color_effect took 0.045047 seconds
-# apply_sick_color_effect took 0.043131 seconds
-# apply_sick_color_effect took 0.032540 seconds
-# apply_sick_color_effect took 0.038410 seconds
-# apply_sick_color_effect took 0.041751 seconds
-# apply_sick_color_effect took 0.042381 seconds
-# apply_sick_color_effect took 0.041693 seconds
-# apply_sick_color_effect took 0.173787 seconds
-# apply_sick_color_effect took 0.075202 seconds
-# apply_sick_color_effect took 0.081068 seconds
-# apply_sick_color_effect took 0.069109 seconds
-# apply_sick_color_effect took 0.149018 seconds
-# apply_sick_color_effect took 0.148739 seconds
-
 
 @cache
 def apply_sick_color_effect(surf: pygame.Surface) -> pygame.Surface:
