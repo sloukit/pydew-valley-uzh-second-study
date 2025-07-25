@@ -225,32 +225,6 @@ class NPC(NPCBase):
         self.recovery_timer = None
 
     # NPC sickness
-<<<<<<< HEAD
-    def get_sick(
-        self, sick_tstamp: float, death_tstamp: float | None = None, recover=True
-    ):
-        # if wearing goggles, the probability of getting sick is halved
-
-        # setup recovery countdown for 5 minutes if allowed
-        if recover:
-            self.recovery_timer = Timer(
-                60 * 1000 * 5, repeat=False, autostart=True, func=self.recover
-            )
-
-        self.is_sick = True
-        self.emote_manager.show_emote(self, "sad_sick_ani")
-
-        # permanently become sick
-        if death_tstamp is None:
-            self.will_die = False
-            self.die_rate = random.randint(1, 10)
-            return
-
-        # otherwise die (or recover if recover=True and it's longer then 5 minutes)
-        self.will_die = True
-        sickness_duration = death_tstamp - sick_tstamp
-        self.die_rate = 100 / sickness_duration
-=======
     def get_sick(self, sick_tstamp: float, death_tstamp: float | None = None):
         # sick_tstamp is filled in for all cases, https://github.com/search?q=repo%3Asloukit%2Fpydew-valley-uzh-second-study+get_sick&type=code
         self.is_sick = True
@@ -273,7 +247,6 @@ class NPC(NPCBase):
           self.will_die = True
           sickness_duration = death_tstamp - sick_tstamp
           self.die_rate = 100 / sickness_duration
->>>>>>> sick-colour-optimization
 
     def recover(self):
         # recover reverses the effect of get_sick, but doesn't heal any health or revive
@@ -302,13 +275,8 @@ class NPC(NPCBase):
             self.image.set_alpha(self.image_alpha)
             self.health_update_callback(self)
 
-<<<<<<< HEAD
-            if self.recovery_timer:
-                self.recovery_timer.update()  # doesn't take delta time, factors in itself
-=======
             if hasattr(self, 'recovery_timer') and self.recovery_timer:
                 self.recovery_timer.update() # doesn't take delta time, factors in itself
->>>>>>> sick-colour-optimization
 
             # if self.hp <= 0:
             #     self.die()
