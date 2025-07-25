@@ -57,6 +57,15 @@ class Camera:
     def set_quake_vec(self, vec: pygame.Vector2 | None):
         self._quake_vec = vec
 
+    def get_viewport_rect(self) -> pygame.Rect:a
+        """
+        Returns the current visible area in world coordinates.
+        """
+        viewport = self.state.copy()
+        x, y = viewport.topleft
+        viewport.topleft = (-x, -y)  # Negate each coordinate individually
+        return viewport
+
     def apply(self, target: Sprite):
         ret = target.rect.move(self.state.topleft)
         if self._quake_vec is not None:
