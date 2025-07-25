@@ -2,7 +2,11 @@ from functools import lru_cache
 
 import pygame
 
-@lru_cache(8192) #It is better to use lru_cache instead of cache due to it reducing memory usage and improving performance.
+
+@lru_cache(
+    8192,
+    typed=True,
+)  # It is better to use lru_cache instead of cache due to it reducing memory usage and improving performance.
 def apply_sick_color_effect(surf: pygame.Surface) -> pygame.Surface:
     """Applies a green-ish tint to the player sprite to represent sickness. In a separate file due to circular imports (character + player both need this function)"""
 
