@@ -278,11 +278,10 @@ class InventoryMenu(AbstractMenu):
                 ):
                     btn.selected = btn.text == text
         if text == "goggles":
-            has_goggles = not self.player.has_goggles
-            self.player.has_goggles = has_goggles
+            self.player.has_goggles = not self.player.has_goggles
             for btn in self._special_btns:
                 if btn.text == "goggles":
-                    btn.selected = has_goggles
+                    btn.selected = self.player.has_goggles
                     break
 
     def button_setup(self, player):
