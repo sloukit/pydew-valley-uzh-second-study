@@ -16,10 +16,9 @@ from src.gui.interface.emotes import NPCEmoteManager
 from src.npc.bases.npc_base import NPCBase
 from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.overlay.soil import SoilManager
-from src.settings import Coordinate, SICK_INTERVAL
+from src.settings import SICK_INTERVAL, Coordinate
 from src.sprites.entities.character import Character
 from src.sprites.entities.sick_color_effect import apply_sick_color_effect
-from src.timer import Timer
 from src.sprites.setup import EntityAsset
 from src.timer import Timer
 
@@ -221,7 +220,7 @@ class NPC(NPCBase):
             self.emote_manager.show_emote(self, "cheer_ani")
             self.will_die = False
             self.die_rate = 0
-        
+
         self.recovery_timer = None
 
     # NPC sickness
@@ -240,21 +239,13 @@ class NPC(NPCBase):
             # experimental recovery interval, see settings.py
             # self.recovery_timer = Timer(
             #     RECOVERY_INTERVAL * 1000, repeat=False, autostart=True, func=self.recover
-            # ) 
+            # )
 
         # otherwise die
         else:
-          self.will_die = True
-          sickness_duration = death_tstamp - sick_tstamp
-          self.die_rate = 100 / sickness_duration
-
-    def recover(self):
-        # recover reverses the effect of get_sick, but doesn't heal any health or revive
-        if self.is_sick:
-            self.is_sick = False
-            self.emote_manager.show_emote(self, "cheer_ani")
-            self.will_die = False
-            self.die_rate = 99
+            self.will_die = True
+            sickness_duration = death_tstamp - sick_tstamp
+            self.die_rate = 100 / sickness_duration
 
     def die(self):
         self.is_dead = True
@@ -275,8 +266,8 @@ class NPC(NPCBase):
             self.image.set_alpha(self.image_alpha)
             self.health_update_callback(self)
 
-            if hasattr(self, 'recovery_timer') and self.recovery_timer:
-                self.recovery_timer.update() # doesn't take delta time, factors in itself
+            if hasattr(self, "recovery_timer") and self.recovery_timer:
+                self.recovery_timer.update()  # doesn't take delta time, factors in itself
 
             # if self.hp <= 0:
             #     self.die()
