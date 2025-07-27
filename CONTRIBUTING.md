@@ -1,5 +1,7 @@
 # Contributing
 
+Before contributing a [new idea/feature](#feature-requests) or signaling a bug, please check [the known issues and refused ideas](know_issues_or_refused_ideas/known_issues_or_refused_ideas.md).
+
 ## Feature Requests
 
 If you want to suggest a new feature, please open an issue first to discuss the idea.
@@ -26,15 +28,23 @@ We use [Ruff](https://docs.astral.sh/ruff/) for linting and formatting. Run `pip
 > [!IMPORTANT]
 > **Before opening a PR, please run the following command to ensure that your code is formatted and doesn't upset the Ruff linter:**
 >
-> ```sh
+> ```bash
 > python formatlint.py
 > ```
 >
 > Or, alternatively, run the following commands individually:
 >
-> ```sh
-> ruff format . && ruff check --select I --fix . #  format code and sort imports
+> On Linux/MacOS:
+> ```bash
+> ruff format . && ruff check --select I --fix . # format code and sort imports
 > ruff check . # Run linting and perform fixes accordingly, or use '# noqa: <RULE>' followed by a comment justifying why the rule is ignored
+> ```
+> 
+> On Windows:
+> ```powershell
+> ruff format . # format code
+> ruff check --select I --fix . #Sort Imports
+> ruff check .  # Run linting and perform fixes accordingly, or use '# noqa: <RULE>' followed by a comment justifying why the rule is ignored
 > ```
 
 ## Translations
