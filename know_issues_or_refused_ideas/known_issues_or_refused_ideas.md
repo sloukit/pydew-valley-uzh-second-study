@@ -13,9 +13,9 @@ Before posting a [new feature request (in the issues tab of the Github repo)](ht
 
 ## Issues
 
-### Manually activating Volcano causes crash
+### Manually activating Volcano causes crashing
 
-To see more informations, check [#84](https://github.com/sloukit/pydew-valley-uzh-second-study/issues/84)
+To see more information, check [#84](https://github.com/sloukit/pydew-valley-uzh-second-study/issues/84)
 
 Typical output log on Windows:
 ```py
