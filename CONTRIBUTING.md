@@ -43,7 +43,7 @@ We use [Ruff](https://docs.astral.sh/ruff/) for linting and formatting. Run `pip
 > On Windows:
 > ```powershell
 > ruff format . # format code
-> ruff check --select I --fix . #Sort Imports
+> ruff check --select I --fix . # Sort Imports
 > ruff check .  # Run linting and perform fixes accordingly, or use '# noqa: <RULE>' followed by a comment justifying why the rule is ignored
 > ```
 
