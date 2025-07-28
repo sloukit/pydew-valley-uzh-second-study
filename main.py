@@ -1023,12 +1023,11 @@ class Game:
                         self.npc_sickness_mgr.apply_sickness_enable_to_existing_npcs()
                         self.level.npcs_state_registry.enable()
                     elif (
-                        self.round >= 8  # Bath info only available from round 8
-                        and self.round_end_timer > _ENABLE_BATH_INFO_TSTAMP
+                        self.round >= 8  # Bath info available immediately from round 8
                         and not self.level.overlay.bath_info.enabled
                     ):
                         print(
-                            f"Enabling bath info: round={self.round}, timer={self.round_end_timer}, enabled={self.level.overlay.bath_info.enabled}"
+                            f"Enabling bath info: round={self.round}, enabled={self.level.overlay.bath_info.enabled}"
                         )
                         self.level.overlay.bath_info.enable()
                     elif self._can_notify_initial_gov_statement:
