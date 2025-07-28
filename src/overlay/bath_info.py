@@ -8,7 +8,7 @@ class BathInfo:
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
         self.visible = False
-        self.enabled = False  # Will be enable in round 8.
+        self.enabled = False  # Will be enabled in round 8.
 
         # Load bath and goggles images separately
         self.bath_images = {}
