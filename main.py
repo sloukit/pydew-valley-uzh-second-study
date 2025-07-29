@@ -12,9 +12,11 @@ import copy
 import gc
 import random
 import sys
+import ast
 from datetime import datetime, timezone
 from functools import partial
 from typing import Any
+from src.enums import  InventoryResource
 
 import pygame
 
@@ -593,6 +595,20 @@ class Game:
                         "All levels are already completed for this player token."
                     )
 
+                # load inventory from db
+                latest_inventory = ast.literal_eval(max(
+                    (d for d in response["status"] if d["event"] == "round_end_content"),
+                    key=lambda d: d["timestamp"],
+                    default=None
+                )['data'])
+                print(latest_inventory)
+                for k in latest_inventory:
+                    if k != "money":
+                        kk = InventoryResource.from_serialised_string(k.replace(" ", "_"))
+                        # print("inventory update from db: ", kk, self.player.inventory[kk], latest_inventory[k])
+                        self.player.inventory[kk] = int(latest_inventory[k])
+                self.player.money = int(latest_inventory["money"])
+                # print("money update from db: ", self.player.money)
             else:
                 xplat.log("First login ever with this token, start level 1!")
 
