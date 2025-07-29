@@ -42,8 +42,8 @@ class BathInfo:
             )
 
             # Scale images to fit screen better if needed
-            max_width = 400  # Reduced since we're showing two side by side
-            max_height = 400
+            max_width = 524 # Reduced since we're showing two side by side
+            max_height = 524
 
             # Scale bath images
             for round_key, image in self.bath_images.items():
@@ -131,6 +131,9 @@ class BathInfo:
             return self.bath_images[(11, 12)], self.goggles_images[(11, 12)]
         else:
             # Default to round 8 images for any other round (shouldn't happen in normal gameplay)
+            print(
+                f"Round {current_round} not handled, defaulting to round 8 images. \033[1mTHIS IS AN ERROR\033[0m"
+            )
             return self.bath_images[8], self.goggles_images[8]
 
     def toggle_visibility(self):
