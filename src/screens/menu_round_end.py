@@ -146,7 +146,7 @@ class RoundMenu(GeneralMenu):
             telemetry[item_name] = str(values[index])
 
         self.min_scroll = self.get_min_scroll()
-        telemetry['money'] = self.player.money
+        telemetry["money"] = self.player.money
         self.send_telemetry(telemetry)
 
     def get_min_scroll(self):

@@ -290,7 +290,9 @@ class NPC(NPCBase):
             self, (self.rect.centerx - 47, self.rect.centery - 128)
         )
 
-    def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera, **kwargs):
+    def draw(
+        self, display_surface: pygame.Surface, rect: pygame.Rect, camera, **kwargs
+    ):
         if self.is_dead:
             return
 

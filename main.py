@@ -7,16 +7,15 @@
 # ]
 # ///
 
+import ast
 import asyncio
 import copy
 import gc
 import random
 import sys
-import ast
 from datetime import datetime, timezone
 from functools import partial
 from typing import Any
-from src.enums import  InventoryResource
 
 import pygame
 
@@ -25,6 +24,7 @@ from src import client, support, xplat
 from src.enums import (
     CustomCursor,
     GameState,
+    InventoryResource,
     Map,
     ScriptedSequence,
     SelfAssessmentDimension,
@@ -596,15 +596,23 @@ class Game:
                     )
 
                 # load inventory from db
-                latest_inventory = ast.literal_eval(max(
-                    (d for d in response["status"] if d["event"] == "round_end_content"),
-                    key=lambda d: d["timestamp"],
-                    default=None
-                )['data'])
+                latest_inventory = ast.literal_eval(
+                    max(
+                        (
+                            d
+                            for d in response["status"]
+                            if d["event"] == "round_end_content"
+                        ),
+                        key=lambda d: d["timestamp"],
+                        default=None,
+                    )["data"]
+                )
                 print(latest_inventory)
                 for k in latest_inventory:
                     if k != "money":
-                        kk = InventoryResource.from_serialised_string(k.replace(" ", "_"))
+                        kk = InventoryResource.from_serialised_string(
+                            k.replace(" ", "_")
+                        )
                         # print("inventory update from db: ", kk, self.player.inventory[kk], latest_inventory[k])
                         self.player.inventory[kk] = int(latest_inventory[k])
                 self.player.money = int(latest_inventory["money"])
@@ -612,9 +620,12 @@ class Game:
             else:
                 xplat.log("First login ever with this token, start level 1!")
 
-
-            self.npc_sickness_mgr.adherence = response["adherence"] # ingroup adherent (true/false) from db
-            self.npc_sickness_mgr.get_status_from_server(self.jwt) # load npc status (e.g., previous deaths etc.) from db
+            self.npc_sickness_mgr.adherence = response[
+                "adherence"
+            ]  # ingroup adherent (true/false) from db
+            self.npc_sickness_mgr.get_status_from_server(
+                self.jwt
+            )  # load npc status (e.g., previous deaths etc.) from db
 
             max_complete_level = 8  # debug, remove later
 

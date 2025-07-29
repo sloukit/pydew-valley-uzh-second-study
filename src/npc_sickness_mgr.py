@@ -111,7 +111,7 @@ class NPCSicknessManager:
         # Using deques so we can pull the events out as time passes in the game.
         self.evt_list = []
         self.enabled = enabled
-        self.dead_npcs = [] # keep track of dead npcs from previous rounds during runtime
+        self.dead_npcs = []  # keep track of dead npcs from previous rounds during runtime
 
     def add_npc(self, npc_id: int, obj: NPC):
         self._npcs[npc_id] = obj
@@ -207,7 +207,7 @@ class NPCSicknessManager:
             case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
                 return  # debug: how does it work?
 
-    def count_dead(self, include_igrp: bool = True,  include_outgrp: bool = True) -> int:
+    def count_dead(self, include_igrp: bool = True, include_outgrp: bool = True) -> int:
         dead = 0
         for npc in self._npcs.values():
             if npc.is_dead:

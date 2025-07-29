@@ -37,8 +37,8 @@ from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
 from src.npc.behaviour.context import NPCSharedContext
 from src.npc.npc import NPC
-from src.npc_sickness_mgr import NPCSicknessManager
 from src.npc.setup import AIData
+from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.game_time import GameTime
 from src.overlay.overlay import Overlay
 from src.overlay.sky import Rain, Sky
@@ -389,7 +389,6 @@ class Level:
             disable_minigame=self.can_disable_minigame,
             round_no=self.get_round(),
         )
-
 
         self.camera.change_size(*self.game_map.size)
 
