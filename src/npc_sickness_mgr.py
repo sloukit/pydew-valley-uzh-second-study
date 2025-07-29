@@ -99,6 +99,7 @@ class NPCSicknessManager:
         get_rnd_timer: Callable[[], float],
         send_telemetry: Callable[[str, dict], None],
         adherence: bool = False,
+        enabled: bool = False,
     ):
         self.get_round = get_round
         self.get_rnd_timer = get_rnd_timer
@@ -109,6 +110,8 @@ class NPCSicknessManager:
         self.outgrp_adhering_ids = set()
         # Using deques so we can pull the events out as time passes in the game.
         self.evt_list = []
+        self.enabled = enabled
+        self.dead_npcs = []  # keep track of dead npcs from previous rounds during runtime
 
     def add_npc(self, npc_id: int, obj: NPC):
         self._npcs[npc_id] = obj
@@ -159,14 +162,31 @@ class NPCSicknessManager:
                 ids.append(evt.npc_id)
         return ids
 
+    def enable(self):
+        self.enabled = True
+
+    def is_enabled(self):
+        return self.enabled
+
     def update_npc_status(self):
         current_round = self.get_round()
         if (
-            current_round < 7 or self.next_event_this_round is None
+            not self.enabled or self.next_event_this_round is None
         ):  # earlier rounds: do nothing, or no events left
             return
-        timestamp = self.next_event_this_round.timestamp
-        if timestamp > self.get_rnd_timer():
+
+        # remove events in the pipeline from previous rounds if there are any
+        while self.next_event_this_round.round_no < current_round:
+            evt = self.evt_list.pop()
+            if evt.change_type == NPCSicknessStatusChange.DIE:
+                self.dead_npcs.append(evt.npc_id)
+        # make sure previously perished npcs are actually dead
+        for dead_npc in self.dead_npcs:
+            if not self._npcs[dead_npc].is_dead:
+                self._npcs[dead_npc].die()
+
+        evt_ts = self.next_event_this_round.timestamp
+        if evt_ts > self.get_rnd_timer():
             return  # Too early.
 
         evt = self.evt_list.pop()
@@ -177,15 +197,25 @@ class NPCSicknessManager:
                 # Check if the NPC is scheduled to die
                 death_evt = self.get_death_evt(target_npc, current_round)
                 if (
-                    death_evt is None or timestamp + 300 < death_evt.timestamp
+                    death_evt is None or evt_ts + 300 < death_evt.timestamp
                 ):  # regular sickness
-                    self._npcs[target_npc].get_sick(timestamp)
+                    self._npcs[target_npc].get_sick(evt_ts)
                 else:  # sickness leading to death
-                    self._npcs[target_npc].get_sick(timestamp, death_evt.timestamp)
+                    self._npcs[target_npc].get_sick(evt_ts, death_evt.timestamp)
             case NPCSicknessStatusChange.DIE:
                 self._npcs[target_npc].die()
             case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
                 return  # debug: how does it work?
+
+    def count_dead(self, include_igrp: bool = True, include_outgrp: bool = True) -> int:
+        dead = 0
+        for npc in self._npcs.values():
+            if npc.is_dead:
+                if include_igrp and npc.npc_id in INGRP_IDS:
+                    dead += 1
+                elif include_outgrp and npc.npc_id in OUTGRP_IDS:
+                    dead += 1
+        return dead
 
     def setup_from_db_data(self, received: dict | None):
         print(received)

@@ -37,8 +37,8 @@ from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
 from src.npc.behaviour.context import NPCSharedContext
 from src.npc.npc import NPC
-from src.npc.npcs_state_registry import NpcsStateRegistry
 from src.npc.setup import AIData
+from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.game_time import GameTime
 from src.overlay.overlay import Overlay
 from src.overlay.sky import Rain, Sky
@@ -163,7 +163,7 @@ class Level:
         get_world_time: Callable[[], tuple[int, int]],
         dialogue_manager: DialogueManager,
         send_telemetry: Callable[[str, dict[str, Any]], None],
-        reference_npc_in_mgr: Callable[[int, NPC], None],
+        npc_mgr: NPCSicknessManager,
     ) -> None:
         # main setup
         self.display_surface = pygame.display.get_surface()
@@ -171,7 +171,7 @@ class Level:
         self.save_file = save_file
         self.dialogue_manager = dialogue_manager
         self.send_telemetry = send_telemetry
-        self.reference_npc_in_mgr = reference_npc_in_mgr
+        self.npc_mgr = npc_mgr
 
         # cutscene
         # target_points = [(100, 100), (200, 200), (300, 100), (800, 900)]
@@ -221,11 +221,6 @@ class Level:
 
         self.controls = Controls
 
-        self.npcs_state_registry = NpcsStateRegistry(
-            self.current_map.name if self.current_map is not None else None,
-            self.send_telemetry,
-        )
-
         # level interactions
         self.get_round = get_set_round[0]
         self.set_round = get_set_round[1]
@@ -273,7 +268,7 @@ class Level:
             get_world_time,
             clock,
             round_config,
-            self.npcs_state_registry,
+            self.npc_mgr,
         )
         self.show_hitbox_active = False
         self.show_pf_overlay = False
@@ -369,9 +364,6 @@ class Level:
         # manual memory cleaning
         gc.collect()
 
-        # update current map for remembering dead npcs
-        self.npcs_state_registry.set_current_map_name(game_map)
-
         self.game_map = GameMap(
             selected_map=game_map,
             tilemap=self.tmx_maps[game_map],
@@ -393,8 +385,7 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
-            npcs_state_registry=self.npcs_state_registry,
-            reference_npc_in_mgr=self.reference_npc_in_mgr,
+            reference_npc_in_mgr=self.npc_mgr.add_npc,
             disable_minigame=self.can_disable_minigame,
             round_no=self.get_round(),
         )
