@@ -1,3 +1,5 @@
+from typing import Final
+
 import pygame
 
 from src.fblitter import FBLITTER
@@ -5,6 +7,10 @@ from src.support import import_image
 
 
 class BathInfo:
+    """
+    Bath Information class to display bath and goggles graphs side by side.
+    """
+
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
         self.visible = False
@@ -18,7 +24,7 @@ class BathInfo:
         # Position and sizing for side-by-side display
         self.setup_positioning()
 
-    def _load_images(self):
+    def _load_images(self) -> None:
         """Load actual bath and goggles images for different round ranges."""
         try:
             # Load bath images
@@ -42,8 +48,8 @@ class BathInfo:
             )
 
             # Scale images to fit screen better if needed
-            max_width = 524 # Reduced since we're showing two side by side
-            max_height = 524
+            max_width: Final[int] = 524
+            max_height: Final[int] = 524
 
             # Scale bath images
             for round_key, image in self.bath_images.items():
@@ -71,7 +77,7 @@ class BathInfo:
 
         except Exception as e:
             print(f"Error loading bath/goggles images: {e}")
-            # If images don't exist, create placeholder rectangles
+            # If images don't exist, create placeholders
             placeholder_bath = pygame.Surface((300, 250))
             placeholder_bath.fill((100, 150, 200))  # Light blue for bath
             placeholder_goggles = pygame.Surface((300, 250))
@@ -89,7 +95,7 @@ class BathInfo:
                 (11, 12): placeholder_goggles.copy(),
             }
 
-    def setup_positioning(self):
+    def setup_positioning(self) -> None:
         """Setup the positioning for bath and goggles images side by side."""
         screen_width = self.display_surface.get_width()
         screen_height = self.display_surface.get_height()
@@ -136,30 +142,40 @@ class BathInfo:
             )
             return self.bath_images[8], self.goggles_images[8]
 
-    def toggle_visibility(self):
+    def toggle_visibility(self) -> None:
         """Toggle the visibility of the bath info display."""
         if self.enabled:
             self.visible = not self.visible
 
-    def show(self):
+    def show(self) -> None:
         """Show the bath info display."""
         if self.enabled:
             self.visible = True
 
-    def hide(self):
+    def hide(self) -> None:
         """Hide the bath info display."""
         self.visible = False
 
-    def enable(self):
+    def enable(self) -> None:
         """Enable the bath info functionality."""
         self.enabled = True
 
-    def disable(self):
+    def disable(self) -> None:
         """Disable the bath info functionality."""
         self.enabled = False
         self.visible = False
 
-    def display(self, current_round: int):
+    @property
+    def is_enabled(self) -> bool:
+        """Check if the bath info functionality is enabled."""
+        return self.enabled
+
+    @property
+    def is_visible(self) -> bool:
+        """Check if the bath info display is currently visible."""
+        return self.visible
+
+    def display(self, current_round: int) -> None:
         """Display the bath and goggles images side by side if visible and enabled."""
         if not self.visible or not self.enabled:
             return
