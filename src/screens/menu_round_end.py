@@ -87,7 +87,6 @@ class RoundMenu(GeneralMenu):
         self.scroll = 0
         self.get_round = get_round
         self.send_telemetry = send_telemetry
-        self.telemetry: dict[str, int] = {}
         # note that this is config from previous round (the one that has just ended)
         self.round_config = round_config
         self.item_frames: dict[str, pygame.Surface] = frames["items"]
@@ -129,7 +128,7 @@ class RoundMenu(GeneralMenu):
         basic_rect.centerx = self.rect.centerx
 
         self.text_uis = []
-        self.telemetry = {}
+        telemetry = {}
         values = list(self.player.inventory.values())
         for index, item in enumerate(list(self.player.inventory)):
             if item.as_serialised_string() not in self.allowed_crops:
@@ -144,10 +143,11 @@ class RoundMenu(GeneralMenu):
             self.text_uis.append(item_ui)
             basic_rect = basic_rect.move(0, 60)
 
-            self.telemetry[item_name] = str(values[index])
+            telemetry[item_name] = str(values[index])
 
         self.min_scroll = self.get_min_scroll()
-        self.send_telemetry(self.telemetry)
+        telemetry['money'] = self.player.money
+        self.send_telemetry(telemetry)
 
     def get_min_scroll(self):
         return -60 * len(self.text_uis) + 460
