@@ -7,6 +7,7 @@ from src.enums import ClockVersion
 from src.fblitter import FBLITTER
 from src.gui.health_bar import HealthProgressBar
 from src.npc.npcs_state_registry import NpcsStateRegistry
+from src.overlay.bath_info import BathInfo
 from src.overlay.box_keybindings import BoxKeybindings, BoxKeybindingsLabel
 from src.overlay.clock import Clock
 from src.overlay.dead_npcs_box import DeadNpcsBox
@@ -33,6 +34,7 @@ class Overlay:
 
         self.box_keybindings = BoxKeybindings()
         self.dead_npcs_box = DeadNpcsBox(npcs_state_registry)
+        self.bath_info = BathInfo()
 
         # imports
         self.item_frames = item_frames
@@ -50,7 +52,7 @@ class Overlay:
         self.round_config = round_config
         self.is_debug_mode_version: bool = False
 
-    def display(self):
+    def display(self, current_round: int = 1):
         if not self.visible:
             return
 
@@ -83,3 +85,6 @@ class Overlay:
         # health bar
         if self.round_config.get("healthbar", False):
             self.health_bar.draw(self.display_surface, self.player.in_outgroup)
+
+        # bath info display
+        self.bath_info.display(current_round)

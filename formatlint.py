@@ -7,6 +7,7 @@ import sys
 GRAY = "\033[90m"
 RED = "\033[91m"
 GREEN = "\033[92m"
+BOLD = "\033[1m"
 RESET = "\033[0m"
 
 # Define the commands to be run
@@ -84,7 +85,7 @@ def run_command(command, description, index):
         )
     else:
         print(
-            f"{GRAY}└── {RED}{description} [{command}] failed with return code {return_code}.{RESET}"
+            f"{GRAY}└── {BOLD}{RED}{description} [{command}] failed with return code {return_code}.{RESET}"
         )
 
     return return_code

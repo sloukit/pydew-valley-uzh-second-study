@@ -216,6 +216,7 @@ OPEN_INVENTORY = create_custom_event_type("OpenInventory")
 DIALOG_SHOW = create_custom_event_type("DIALOG_SHOW", dial=str, is_gvt=bool | None)
 DIALOG_ADVANCE = create_custom_event_type("DIALOG_ADVANCE")
 SHOW_BOX_KEYBINDINGS = create_custom_event_type("SHOW_BOX_KEYBINDINGS")
+SHOW_BATH_INFO = create_custom_event_type("SHOW_BATH_INFO")
 
 START_QUAKE = create_custom_event_type("StartQuake", duration=float, debug=bool)
 
