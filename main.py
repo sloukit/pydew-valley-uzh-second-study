@@ -1026,9 +1026,6 @@ class Game:
                         self.round >= 8  # Bath info available immediately from round 8
                         and not self.level.overlay.bath_info.enabled
                     ):
-                        print(
-                            f"Enabling bath info: round={self.round}, enabled={self.level.overlay.bath_info.enabled}"
-                        )
                         self.level.overlay.bath_info.enable()
                     elif self._can_notify_initial_gov_statement:
                         self._has_displayed_initial_gov_statement = True

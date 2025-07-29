@@ -760,6 +760,14 @@ class Level:
         if self.controls.DEBUG_END_ROUND.click:
             self.switch_screen(GameState.ROUND_END)
 
+        # Bath info display available in all game modes (not just debug)
+        if self.controls.SHOW_BATH_INFO.click:
+            if __debug__:
+                print(
+                    f"B key pressed: bath_info enabled={self.overlay.bath_info.enabled}"
+                )
+            post_event(SHOW_BATH_INFO)
+
         if self.get_game_version() == DEBUG_MODE_VERSION:
             # if self.controls.DEBUG_QUAKE.click:
             #     post_event(START_QUAKE, duration=2.0, debug=True)
@@ -771,13 +779,6 @@ class Level:
 
             if self.controls.DEBUG_APPLY_DAMAGE.click:
                 self.overlay.health_bar.apply_damage(1)
-
-            if self.controls.SHOW_BATH_INFO.click:
-                if __debug__:
-                    print(
-                        f"B key pressed: bath_info enabled={self.overlay.bath_info.enabled}"
-                    )
-                post_event(SHOW_BATH_INFO)
 
             if self.controls.DEBUG_SELF_ASSESSMENT.click:
                 self.switch_screen(GameState.SELF_ASSESSMENT)
