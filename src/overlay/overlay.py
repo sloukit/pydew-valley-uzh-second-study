@@ -42,7 +42,7 @@ class Overlay:
         self.visible = True
 
         # ui objects
-        self.health_bar = HealthProgressBar(100)
+        self.health_bar = HealthProgressBar(self.player)
 
         self.clock = Clock(game_time, get_world_time, ClockVersion.DIGITAL)
         self.FPS = FPS(clock)

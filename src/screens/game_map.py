@@ -401,7 +401,6 @@ class GameMap:
 
         self.number_of_hats_to_exclude = 2
         for npc in self.npcs:
-            npc.set_sickness_allowed(self.round_config.get("sickness", False))
             npc.set_allowed_seeds(allowed_seeds)
             npc.assign_outfit_ingroup(
                 self.round_config.get("ingroup_40p_hat_necklace_appearance", False)
@@ -751,7 +750,6 @@ class GameMap:
             soil_manager=self.soil_manager,
             emote_manager=self.npc_emote_manager,
             tree_sprites=self.tree_sprites,
-            sickness_allowed=self.round_config.get("sickness", False),
             has_hat=has_hat,
             has_necklace=has_necklace,
             special_features=features,
@@ -778,8 +776,6 @@ class GameMap:
         if gmap == Map.MINIGAME and obj.name and obj.name == "opponent":
             if npc.study_group == self.player.study_group:
                 npc.kill()
-        if gmap == Map.MINIGAME:
-            npc.probability_to_get_sick = 1
 
         cheering = gmap == Map.MINIGAME
 

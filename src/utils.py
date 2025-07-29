@@ -110,7 +110,7 @@ def get_credentials() -> str:
 
 
 def send_telemetry(url: str, jwt: str, data: dict):
-    import js  # pyright: ignore[reportMissingImports]
+    import js  # type: ignore
 
     js.console.log("sending telemetry")
     print("sending telemetry")

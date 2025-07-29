@@ -16,10 +16,11 @@ from src.gui.interface.emotes import NPCEmoteManager
 from src.npc.bases.npc_base import NPCBase
 from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.overlay.soil import SoilManager
-from src.settings import Coordinate
+from src.settings import RECOVERY_INTERVAL, Coordinate
 from src.sprites.entities.character import Character
 from src.sprites.entities.sick_color_effect import apply_sick_color_effect
 from src.sprites.setup import EntityAsset
+from src.timer import Timer
 
 
 class NPC(NPCBase):
@@ -35,7 +36,6 @@ class NPC(NPCBase):
         soil_manager: SoilManager,
         emote_manager: NPCEmoteManager,
         tree_sprites: pygame.sprite.Group,
-        sickness_allowed: bool,
         has_hat: bool,
         has_necklace: bool,
         special_features: str | None,
@@ -67,7 +67,6 @@ class NPC(NPCBase):
         self.special_features = special_features
         self.has_horn = False
         self.has_outgroup_skin = False
-        self.sickness_allowed = sickness_allowed
 
         self.inventory = {
             InventoryResource.WOOD: 0,
@@ -108,17 +107,13 @@ class NPC(NPCBase):
         self.assign_outfit_ingroup()
 
         # NPC health / sickness / death
-
-        self.probability_to_get_sick = (
-            0.3 if self.has_goggles else 0.6
-        ) < random.random()
-
         self.is_sick = False
         self.is_dead = False
-        self.will_die = False
         self.hp = 100
         # how fast the NPC dies after getting sick
         self.die_rate = random.randint(35, 75)
+
+        # self.get_sick(None, None) # debug for testing sickness
 
     def set_allowed_seeds(self, allowed_seeds: dict[str]) -> None:
         seed_types = []
@@ -128,12 +123,6 @@ class NPC(NPCBase):
         # using NPCIndividualContext, however it would make more sense to use NPCSharedContext,
         # but not sure how to set it :-(
         self.behaviour_tree_context.allowed_seeds = seed_types
-
-    def set_sickness_allowed(self, sickness_allowed: bool) -> None:
-        self.sickness_allowed = sickness_allowed
-        if not self.sickness_allowed:
-            self.is_sick = False
-            self.hp = 100
 
     def get_personal_soil_area_tiles(self, tile_type: str) -> list[tuple[int, int]]:
         """
@@ -223,18 +212,39 @@ class NPC(NPCBase):
             self.has_horn = True
             self.has_outgroup_skin = True
 
+    # NPC recovery
+    def recover(self):
+        # recover reverses the effect of get_sick, but doesn't heal any health or revive
+        if self.is_sick:
+            self.is_sick = False
+            self.emote_manager.show_emote(self, "cheer_ani")
+            self.will_die = False
+            self.die_rate = 0
+
+        self.recovery_timer = None
+
     # NPC sickness
     def get_sick(self, sick_tstamp: float, death_tstamp: float | None = None):
-        # if wearing goggles, the probability of getting sick is halved
+        # sick_tstamp is filled in for all cases, https://github.com/search?q=repo%3Asloukit%2Fpydew-valley-uzh-second-study+get_sick&type=code
         self.is_sick = True
         self.emote_manager.show_emote(self, "sad_sick_ani")
-        if death_tstamp is None:
-            self.will_die = False
+
+        # get sick but do not die (recover)
+        if sick_tstamp is None or death_tstamp is None:
             self.die_rate = random.randint(1, 10)
-            return
-        self.will_die = True
-        sickness_duration = death_tstamp - sick_tstamp
-        self.die_rate = 100 / sickness_duration
+
+            self.recovery_timer = Timer(
+                RECOVERY_INTERVAL * 1000,
+                repeat=False,
+                autostart=True,
+                func=self.recover,
+            )
+
+        # otherwise die
+        else:
+            self.will_die = True
+            sickness_duration = death_tstamp - sick_tstamp
+            self.die_rate = 100 / sickness_duration
 
     def die(self):
         self.is_dead = True
@@ -254,6 +264,10 @@ class NPC(NPCBase):
             self.image_alpha = 30 + int(150 * (self.hp / 100))
             self.image.set_alpha(self.image_alpha)
             self.health_update_callback(self)
+
+            if hasattr(self, "recovery_timer") and self.recovery_timer:
+                self.recovery_timer.update()  # doesn't take delta time, factors in itself
+
             # if self.hp <= 0:
             #     self.die()
 
@@ -265,8 +279,7 @@ class NPC(NPCBase):
             and self.behaviour_tree_context.adhering_to_measures
         ):
             self.has_goggles = True
-        if self.sickness_allowed:
-            self.manage_sickness(dt)
+        self.manage_sickness(dt)
         super().update(dt)
 
         self.emote_manager.update_obj(

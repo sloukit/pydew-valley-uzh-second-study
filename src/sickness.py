@@ -1,7 +1,20 @@
 from random import random
 from typing import Callable
 
-from src.settings import GogglesStatus
+from src.settings import (
+    BSICK_DECLINE,
+    BSICK_DURATION,
+    BSICK_INCLINE,
+    BSICK_MIN_HP,
+    MAX_HP,
+    MIN_GOGGLE_TIME,
+    SICK_DECLINE,
+    SICK_DURATION,
+    SICK_INCLINE,
+    SICK_INTERVAL,
+    SICK_MIN_HP,
+)
+from src.sprites.entities.player import Player
 
 # Key format: (bath, goggles)
 # Value format: (rds 7-9, rds 10-12)
@@ -20,51 +33,73 @@ def _random_from_probability(prob: float):
 class SicknessManager:
     def __init__(
         self,
+        player: Player,
         get_round: Callable[[], int],
         get_round_end_timer: Callable[[], float],
-        get_goggles_status: Callable[[], GogglesStatus],
-        get_bath_status: Callable[[], bool],
-        is_ply_sick: Callable[[], bool],
-        send_telemetry: Callable[[str, dict], None],
-        make_player_sick: Callable[[], None],
-        make_ply_recover: Callable[[], None],
-        reset_goggles_delta: Callable[[], None],
     ):
         self.get_round = get_round
         self.get_rend_timer = get_round_end_timer
-        self._goggles_status = get_goggles_status
-        self._bath_status = get_bath_status
-        self._is_ply_sick = is_ply_sick
-        self.send_telemetry = send_telemetry
-        self._make_ply_sick = make_player_sick
-        self._make_ply_recover = make_ply_recover
-        self.reset_goggles_delta = reset_goggles_delta
+        self.player = player
         self.sickness_calc_count = 0
 
     @property
     def _sickness_likelihood(self) -> float:
-        if self.get_round() < 7 or self.get_rend_timer() < 300:
+        if self.get_round() < 7 or self.get_rend_timer() < SICK_INTERVAL:
             return 0.0
-        return _SICKNESS_PROBABILITIES[(self._bath_status(), self._goggles_status())][
-            self.get_round() > 9
-        ]
+        return _SICKNESS_PROBABILITIES[
+            (self.player.took_bath, self.player.goggle_time >= MIN_GOGGLE_TIME)
+        ][self.get_round() > 9]
 
     def should_make_player_sick(self):
         return _random_from_probability(self._sickness_likelihood)
 
     def update_ply_sickness(self):
-        current_time = self.get_rend_timer()
-        if (
-            self.get_round() < 7 or current_time < 300
-        ):  # cannot get sick before round 7 or 5mins in
+        if not self.player.round_config.get("sickness", False):
             return
 
-        if (self.sickness_calc_count == 0) or (
-            current_time >= 600 and self.sickness_calc_count == 1
-        ):  # do at 5mins and 10mins
+        current_time = int(self.get_rend_timer())  # need int for modulo at bottom
+
+        if self.player.is_bath_sick:
+            bsick_interval_time = current_time - self.player.bath_start_t
+            if bsick_interval_time < BSICK_DECLINE:  # first decrease health
+                self.player.set_hp(
+                    MAX_HP
+                    - (MAX_HP - BSICK_MIN_HP) * bsick_interval_time / BSICK_DECLINE
+                )
+            elif not (
+                bsick_interval_time > BSICK_DURATION
+            ):  # then increase health again
+                self.player.set_hp(
+                    BSICK_MIN_HP
+                    + (MAX_HP - BSICK_MIN_HP)
+                    * (bsick_interval_time - BSICK_DECLINE)
+                    / BSICK_INCLINE
+                )
+            else:
+                self.player.recover()
+
+        # at 5mins and 10mins determine whether a player is sick
+        if current_time >= SICK_INTERVAL * (self.sickness_calc_count + 1):
             self.sickness_calc_count += 1
             if self.should_make_player_sick():
-                self._make_ply_sick()
-            else:
-                self._make_ply_recover()
-            self.reset_goggles_delta()
+                self.player.get_sick()
+            self.player.goggle_time = 0
+
+        # at 9mins and 14mins make potentially sick player recover, otherwise change hp
+        if self.player.is_sick:
+            if current_time >= SICK_INTERVAL * self.sickness_calc_count + SICK_DURATION:
+                self.player.recover()
+            else:  # adjust hp logic
+                sick_interval_time = current_time % SICK_INTERVAL
+                if sick_interval_time < SICK_DECLINE:  # first decrease health
+                    self.player.set_hp(
+                        MAX_HP
+                        - (MAX_HP - SICK_MIN_HP) * sick_interval_time / SICK_DECLINE
+                    )
+                else:  # then increase health again
+                    self.player.set_hp(
+                        SICK_MIN_HP
+                        + (MAX_HP - SICK_MIN_HP)
+                        * (sick_interval_time - SICK_DECLINE)
+                        / SICK_INCLINE
+                    )

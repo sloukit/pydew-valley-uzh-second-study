@@ -1,7 +1,6 @@
 import pygame
 
 from src.camera import Camera
-from src.enums import Layer
 from src.fblitter import FBLITTER
 
 
@@ -49,13 +48,17 @@ class AllSprites(PersistentSpriteGroup):
             getattr(sprite, "update_blocked", sprite.update)(dt)
 
     def draw(self, camera: Camera, game_paused: bool):
-        sorted_sprites = sorted(self, key=lambda spr: spr.hitbox_rect.bottom)
+        sorted_sprites = sorted(self, key=lambda spr: (spr.z, spr.hitbox_rect.bottom))
 
-        for layer in Layer:
-            for sprite in sorted_sprites:
-                # including game_paused condition to prevent drawing overlaps between tutorial text boxes and menus
-                if sprite.z == layer and not game_paused:
-                    sprite.draw(self.display_surface, camera.apply(sprite), camera)
+        camera_rect = camera.get_viewport_rect()
+        for sprite in sorted_sprites:
+            # including game_paused condition to prevent drawing overlaps between tutorial text boxes and menus
+            if (
+                sprite.z > 0
+                and not game_paused
+                and sprite.hitbox_rect.colliderect(camera_rect)
+            ):
+                sprite.draw(self.display_surface, camera.apply(sprite), camera)
 
         FBLITTER.reset_to_default_surf()
         FBLITTER.blit_all()
