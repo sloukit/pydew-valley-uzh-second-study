@@ -41,7 +41,6 @@ from src.npc.behaviour.npc_behaviour_tree import NPCBehaviourTree
 from src.npc.chicken import Chicken
 from src.npc.cow import Cow
 from src.npc.npc import NPC
-from src.npc.npcs_state_registry import NpcsStateRegistry
 from src.npc.setup import AIData
 from src.npc.utils import pf_add_matrix_collision
 from src.overlay.soil import SoilManager
@@ -309,7 +308,6 @@ class GameMap:
         round_config: dict[str, Any],
         # NPC-related stuff
         get_game_version: Callable[[], int],
-        npcs_state_registry: NpcsStateRegistry,
         reference_npc_in_mgr: Callable[[int, NPC], None],
         disable_minigame: bool = False,
         round_no: int = 0,
@@ -317,7 +315,6 @@ class GameMap:
         self.get_game_version = get_game_version
         self.number_of_hats_to_exclude = 2
         self._tilemap = tilemap
-        self.npcs_state_registry: NpcsStateRegistry = npcs_state_registry
         self._reference_npc_in_mgr = reference_npc_in_mgr
 
         if "Player" not in self._tilemap.layernames:
@@ -734,10 +731,6 @@ class GameMap:
                     GameMapWarning,
                 )
 
-        # skip NPC if it's id is registered in the DNR
-        if self.npcs_state_registry.is_npc_dead(npc_id, study_group):
-            return None
-
         npc = NPC(
             pos=pos,
             assets=ENTITY_ASSETS.RABBIT,
@@ -754,8 +747,6 @@ class GameMap:
             has_necklace=has_necklace,
             special_features=features,
             npc_id=npc_id,
-            death_callback=self.npcs_state_registry.register_death,
-            health_update_callback=self.npcs_state_registry.register_health_update,
         )
         npc.teleport(pos)
         self._reference_npc_in_mgr(npc_id, npc)

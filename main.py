@@ -41,7 +41,6 @@ from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
 from src.npc.behaviour.context import NPCSharedContext
-from src.npc.npcs_state_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
 from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
@@ -225,7 +224,7 @@ class Game:
         )
 
         self.npc_sickness_mgr = NPCSicknessManager(
-            self.get_round, self.get_rnd_timer, self.send_telemetry, False
+            self.get_round, self.get_rnd_timer, self.send_telemetry
         )
 
         # screens
@@ -244,7 +243,7 @@ class Game:
             self.dialogue_manager,
             self.send_telemetry,
             # self.add_npc_to_mgr,
-            self.npc_sickness_mgr.add_npc,
+            self.npc_sickness_mgr,
         )
         self.player = self.level.player
 
@@ -585,10 +584,9 @@ class Game:
             max_complete_level = 0
             self.npc_sickness_mgr.adherence = response["adherence"]
             if response["status"]:  # has at least 1 completed level
-                day_completions = [
-                    d for d in response["status"] if d["game_round"] % 2 == 0
-                ]  # these are day task completions
-                max_complete_level = max(d["game_round"] for d in response["status"])
+                lvls_done = [d for d in response["status"] if d["event"] == "round_end"]
+                max_complete_level = max([d["game_round"] for d in lvls_done])
+                day_completions = [d for d in lvls_done if d["game_round"] % 2 == 0]
                 xplat.log("Max completed level so far: {}".format(max_complete_level))
                 if max_complete_level >= 12:
                     raise ValueError(
@@ -598,25 +596,18 @@ class Game:
             else:
                 xplat.log("First login ever with this token, start level 1!")
 
-            # this supposedly loads npc status (e.g., previous deaths etc.) but seems to be untested / not implemented server side?
-            self.npc_sickness_mgr.get_status_from_server(self.jwt)
 
-            # max_complete_level = 7  # debug, remove later
+            self.npc_sickness_mgr.adherence = response["adherence"] # ingroup adherent (true/false) from db
+            self.npc_sickness_mgr.get_status_from_server(self.jwt) # load npc status (e.g., previous deaths etc.) from db
+
+            max_complete_level = 8  # debug, remove later
+
             if len(day_completions) > 0:
                 timestamps = [
                     datetime.fromisoformat(d["timestamp"]) for d in day_completions
                 ]
                 most_recent_completion = max(timestamps)
                 current_time = datetime.now(timezone.utc)
-                if max_complete_level > 12:
-                    self.level.npcs_state_registry.restore_registry(
-                        dict(
-                            filter(
-                                lambda d: d["timestamp"] == most_recent_completion,
-                                day_completions,
-                            )
-                        )[NPC_STATE_REGISTRY_UPDATE_EVENT]
-                    )
 
                 # Check if the newest timestamp is more than 12 hours ago
                 time_difference = (
@@ -648,7 +639,7 @@ class Game:
             self.game_version = DEBUG_MODE_VERSION
 
         if self.round > 7:
-            self.level.npcs_state_registry.enable()
+            self.npc_sickness_mgr.enable()
 
         # round end menu needs to get config from previous round,
         # since when this menu is activated it's already new round
@@ -997,11 +988,11 @@ class Game:
                     elif (
                         self.round == 7
                         and self.round_end_timer > _ENABLE_SICKNESS_TSTAMP
-                        and not self.level.npcs_state_registry.enabled
+                        and not self.npc_sickness_mgr.is_enabled()
                     ):
                         self.round_config["healthbar"] = True
                         self.round_config["sickness"] = True
-                        self.level.npcs_state_registry.enable()
+                        self.npc_sickness_mgr.enable()
                     elif self._can_notify_initial_gov_statement:
                         self._has_displayed_initial_gov_statement = True
                         self.notification_menu.set_message(
