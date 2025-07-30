@@ -176,7 +176,10 @@ class NPCSicknessManager:
             return
 
         # remove events in the pipeline from previous rounds if there are any
-        while self.next_event_this_round.round_no < current_round:
+        while (
+            self.next_event_this_round is not None
+            and self.next_event_this_round.round_no < current_round
+        ):
             evt = self.evt_list.pop()
             if evt.change_type == NPCSicknessStatusChange.DIE:
                 self.dead_npcs.append(evt.npc_id)
@@ -184,6 +187,10 @@ class NPCSicknessManager:
         for dead_npc in self.dead_npcs:
             if not self._npcs[dead_npc].is_dead:
                 self._npcs[dead_npc].die()
+
+        # if there are no events left in the current round, return
+        if self.next_event_this_round is None:
+            return
 
         evt_ts = self.next_event_this_round.timestamp
         if evt_ts > self.get_rnd_timer():
