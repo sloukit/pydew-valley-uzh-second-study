@@ -1,4 +1,5 @@
 from typing import Final
+
 import pygame
 
 from src.fblitter import FBLITTER
@@ -206,11 +207,11 @@ class BoxKeybindings:
             "E",
             "ESC",
         ]
-        
+
         # Add B key from round 8 onwards
         if current_round >= 8:
             info_order.append("B")
-        
+
         # Add empty entry for player task description
         info_order.append("")
 

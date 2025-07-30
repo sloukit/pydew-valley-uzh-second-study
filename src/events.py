@@ -1,8 +1,8 @@
 """Expansion over Pygame's event management system."""
 
-from types import NoneType, UnionType
-from typing import NoReturn, Self, Type, Any, Union
 from functools import lru_cache
+from types import NoneType, UnionType
+from typing import NoReturn, Self, Type, Union
 
 import pygame
 
@@ -60,7 +60,7 @@ class _EventDefinition:
         self,
         name: str,
         code: int,
-        **attrs: Union[Type | SpecialForm]  # pyright: ignore[reportInvalidTypeForm]
+        **attrs: Union[Type | SpecialForm],  # pyright: ignore[reportInvalidTypeForm]
     ):
         self.__name__ = self.name = name
         self._attrs = attrs
@@ -76,7 +76,7 @@ class _EventDefinition:
         )
 
     @property
-    def attrs(self) -> dict[str, Union[Type, SpecialForm]]: # pyright: ignore[reportInvalidTypeForm]
+    def attrs(self) -> dict[str, Union[Type, SpecialForm]]:  # pyright: ignore[reportInvalidTypeForm]
         return self._attrs
 
     def set_default_for_attr(self, attr: str, value):
@@ -155,6 +155,7 @@ class _EventDefinition:
                 )
         return pygame.event.Event(self.code, **attrs)
 
+
 @lru_cache(maxsize=16, typed=False)
 def get_event_def(code: int) -> _EventDefinition:
     """Return the corresponding event type specification for the given code.
@@ -162,6 +163,7 @@ def get_event_def(code: int) -> _EventDefinition:
     :param code: The code you wish to retrive the event specs of.
     :return: The corresponding definition."""
     return _EventDefinition.from_code(code)
+
 
 @lru_cache(maxsize=16, typed=False)
 def get_event_def_from_name(name: str) -> _EventDefinition:
