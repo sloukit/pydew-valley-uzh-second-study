@@ -1,3 +1,4 @@
+from typing import Final
 import pygame
 
 from src.fblitter import FBLITTER
@@ -56,9 +57,9 @@ class BoxKeybindings:
         self.image = self.load_and_scale_image_by_factor(
             "images/ui/KeyBindUI_Placeholder-new.png"
         )
-        self.width = self.image.get_width()
+        self.width: Final[int] = self.image.get_width()
         self.info = []
-        self.visible = False
+        self.visible: bool = False
         self.pos = OVERLAY_POSITIONS["box_info"]
         self.font = import_font(self.font_size, "font/LycheeSoda.ttf")
         self.box_keybindings_rect = pygame.Rect(
@@ -129,6 +130,12 @@ class BoxKeybindings:
                 "rel_pos": (10, 347),
                 "descr_pos": (55, 12),
             },
+            {
+                "key": "B",
+                "descr": self.get_text("box info b"),
+                "rel_pos": (10, 395),
+                "descr_pos": (55, 12),
+            },
         ]
         self.info_order = [
             "lclick",
@@ -163,6 +170,9 @@ class BoxKeybindings:
             "I": self.load_and_scale_image(
                 "images/ui/keys/I-white.png", self.key_image_size
             ),
+            "B": self.load_and_scale_image(
+                "images/ui/keys/B-white.png", self.key_image_size
+            ),
             "generic": self.load_and_scale_image(
                 "images/ui/keys/generic.png", self.key_image_size
             ),
@@ -181,16 +191,35 @@ class BoxKeybindings:
     def toggle_visibility(self):
         self.visible = not self.visible
 
-    def draw(self, display_surface):
+    def draw(self, display_surface, current_round: int = 1):
         if not self.visible:
             return
+
+        # Create info_order dynamically based on current round
+        info_order = [
+            "lclick",
+            "tab",
+            "rclick",
+            "lshift",
+            "space",
+            "I",
+            "E",
+            "ESC",
+        ]
+        
+        # Add B key from round 8 onwards
+        if current_round >= 8:
+            info_order.append("B")
+        
+        # Add empty entry for player task description
+        info_order.append("")
 
         # display box
         FBLITTER.schedule_blit(self.image, self.box_keybindings_rect)
 
         start_key_topleft = self.box_keybindings_rect.topleft
         # iterate over text list
-        for info_key in self.info_order:
+        for info_key in info_order:
             current_info = self.get_ordered_info(info_key)
             key = current_info["key"]
             key_rel_pos = current_info["rel_pos"]

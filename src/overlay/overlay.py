@@ -70,7 +70,7 @@ class Overlay:
 
         # Box keybindings label display
         self.box_keybindings_label.display()
-        self.box_keybindings.draw(self.display_surface)
+        self.box_keybindings.draw(self.display_surface, current_round)
 
         # tool
         tool_surf = self.item_frames[self.player.get_current_tool_string()]
