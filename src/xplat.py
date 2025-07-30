@@ -189,7 +189,8 @@ window._HTTP_HANDLER.post = function * post(
             )
             log(f"POST {url}: complete")
             json_response = json.loads(response)
-            if json_response["error"]:
+            # print("server response: ", response)
+            if json_response.get("error"):
                 log(
                     f"POST {url}: failed. Request: {payload}. Response: {json_response}"
                 )
