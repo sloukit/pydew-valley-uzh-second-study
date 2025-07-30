@@ -319,7 +319,7 @@ class NPCSicknessManager:
         for rnd in range(7, 13):
             # dying npcs for this round (remove from sickness possibility)
             die_ids = self.get_death_ids(round=rnd)
-            print("die ids round {} {}".format(rnd, die_ids))
+            # print("die ids round {} {}".format(rnd, die_ids))
             # ingroup non-adhering
             available_ingr_nonadh = available_ingr_nonadh.difference(die_ids)
             sick_count = len(available_ingr_nonadh) - 1  # all but one get sick
