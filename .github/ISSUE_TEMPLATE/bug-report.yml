@@ -35,7 +35,6 @@ body:
       label: Version
       description: If applicable, what version of the game are you running?
       options:
-        - None
         - 0.1.0
       default: 0
     validations:
