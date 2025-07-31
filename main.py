@@ -1149,7 +1149,8 @@ class Game:
                 # box blur is too slow, so use smoothscale instead
                 surface = pygame.transform.smoothscale(
                     pygame.transform.smoothscale(
-                        self.display_surface, (SCREEN_WIDTH // _BLUR_FACTOR, SCREEN_HEIGHT // _BLUR_FACTOR)
+                        self.display_surface,
+                        (SCREEN_WIDTH // _BLUR_FACTOR, SCREEN_HEIGHT // _BLUR_FACTOR),
                     ),
                     (SCREEN_WIDTH, SCREEN_HEIGHT),
                 )
