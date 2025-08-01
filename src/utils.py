@@ -113,7 +113,6 @@ def send_telemetry(url: str, jwt: str, data: dict):
     import js  # type: ignore
 
     js.console.log("sending telemetry")
-    print("sending telemetry")
     headers = {
         "Authorization": f"Bearer {jwt}",
         "x-api-key": "tAXb3oVtqI6KBO6p9Ca1M3TdPCcYj021aUwU6QKc",
@@ -130,15 +129,11 @@ def send_telemetry(url: str, jwt: str, data: dict):
     try:
         with urllib.request.urlopen(request) as response:
             response_data = response.read().decode("utf-8")
-            print(f"Response status: {response.status}")
-            print(f"Response data: {response_data}")
     except urllib.request.HTTPError as e:
         # TODO: error handling
-        print(f"HTTP Error: {e.code} - {e.reason}")
         js.console.log(f"HTTP Error: {e.code} - {e.reason}")
     except urllib.request.URLError as e:
         # TODO: error handling
-        print(f"URL Error: {e.reason}")
         js.console.log(f"URL Error: {e.reason}")
 
 

@@ -192,14 +192,13 @@ class InventoryMenu(AbstractMenu):
                 filter(_get_resource_count, self._inventory.items()),
             )
         ):
-            print(ir.name)
+
             calc_img, btn_name = self._prepare_img_for_ir_button(ir, count)
             row, column = divmod(button_no, 7)
             btn_rect = generic_rect.copy()
             btn_rect.x = _LEFT_MARGIN + button_size[0] * column + x_spacing * column
             btn_rect.y = _TOP_MARGIN + (button_size[1] + _SPACING_BETWEEN_ROWS) * row
             if ir.is_seed():
-                print(btn_rect)
                 # Keep track of equip buttons so we can toggle whether they display
                 # a checkmark when equipped
                 self._assignable_irs.add(btn_name)

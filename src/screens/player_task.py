@@ -79,7 +79,6 @@ class PlayerTask(AbstractMenu):
 
             self.allocation_item = " ".join(elements[1:])
         else:
-            print(f"Error! Could not parse allocation items: '{allocation_items}'")
             self.max_allocation = 2
             self.allocation_item = "<GENERIC_ITEM_NAME>"
         self.total_items = self.max_allocation

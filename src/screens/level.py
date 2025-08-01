@@ -1216,7 +1216,6 @@ class Level:
                     warp_hitbox.name != "bathhouse"
                     or self.round_config["accessible_bathhouse"]
                 ):
-                    print(warp_hitbox.name)
                     self.map_transition.reset = partial(
                         self.warp_to_map, warp_hitbox.name
                     )

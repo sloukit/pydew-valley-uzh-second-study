@@ -258,7 +258,6 @@ class Player(Character):
             ):
                 proceed = False
 
-        print(current_seed)
         return current_seed
 
     def handle_controls(self):

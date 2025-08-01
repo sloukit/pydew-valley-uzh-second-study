@@ -144,7 +144,6 @@ class MainMenu(GeneralMenu):
 
     def post_login_callback(self, login_response: dict) -> None:
         """Meant to be used as a callback function post-login."""
-        xplat.log("post login callback")
         # jwt = login_response["jwt"]
         # Pass the JWT back to the main Game object:
         # self.set_token(jwt)
@@ -155,10 +154,8 @@ class MainMenu(GeneralMenu):
         self.input_text = ""
         # get players_name only if used in introduction
         if self.round_config.get("character_introduction_text", ""):
-            xplat.log("round config has character introduction")
             self.players_name_active = True
         else:
-            xplat.log("round config DOES NOT have character introduction")
             self.players_name_active = True
             self.set_players_name("")
             self.play_button_enabled = True
@@ -168,13 +165,6 @@ class MainMenu(GeneralMenu):
 
     def error_login_callback(self, login_error: Exception) -> None:
         """Meant to be used as an error callback function post-login."""
-        xplat.log("error login callback")
-        # TODO: remove this print once testing is finished.
-        print(login_error)
-        # Print full traceback
-        traceback.print_exception(
-            type(login_error), login_error, login_error.__traceback__
-        )
         self.display_error.set_error_message(login_error)
 
     def do_login(self, token: str) -> None:

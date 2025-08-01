@@ -225,8 +225,6 @@ class NPCSicknessManager:
         return dead
 
     def setup_from_db_data(self, received: dict | None):
-        print(received)
-
         if received is None:
             return
 
@@ -234,7 +232,6 @@ class NPCSicknessManager:
             self.compute_event_list()
             return
 
-        print("=================NPC SICKNESS EVENTS FROM DB=====================")
         for i, db_evt_list in received["data"].items():
             for db_evt in db_evt_list:
                 evt = NPCSicknessStatus(
@@ -244,7 +241,6 @@ class NPCSicknessManager:
                     NPCSicknessStatusChange(db_evt["change_type"]),
                 )
                 self.evt_list.append(evt)
-                print(str(evt))  # this print the event to the terminal
                 if evt.change_type == NPCSicknessStatusChange.GO_TO_BATHHOUSE:
                     if evt.npc_id < NPC_POOL_SIZE:
                         self.ingrp_adhering_ids.add(evt.npc_id)
@@ -269,11 +265,10 @@ class NPCSicknessManager:
         # Generate random timings for the NPCs to head to the bathhouse for each round.
         self.compute_bathhouse_timings()
 
-        print("=================NPC SICKNESS EVENTS GENERATED=====================")
         # Sort events in reverse, so that we can pop them from the back of the list
         self.evt_list.sort(key=lambda s: (s.round_no, s.timestamp), reverse=True)
         for evt in self.evt_list:
-            print(str(evt))
+            pass
 
         # Send the status to the server.
         self.send_telemetry(
@@ -326,7 +321,6 @@ class NPCSicknessManager:
         for rnd in range(7, 13):
             # dying npcs for this round (remove from sickness possibility)
             die_ids = self.get_death_ids(round=rnd)
-            # print("die ids round {} {}".format(rnd, die_ids))
             # ingroup non-adhering
             available_ingr_nonadh = available_ingr_nonadh.difference(die_ids)
             sick_count = len(available_ingr_nonadh) - 1  # all but one get sick
