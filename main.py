@@ -11,20 +11,21 @@ import ast
 import asyncio
 import copy
 import gc
+
+# Hides the pygame support prompt to clean up the console example output: pygame-ce 2.5.5 (SDL 2.32.6, Python 3.12.8)
+import os
 import random
 import sys
 from datetime import datetime, timezone
 from functools import partial
 from typing import Any
 
-# Hides the pygame support prompt to clean up the console example output: pygame-ce 2.5.5 (SDL 2.32.6, Python 3.12.8)
-import os
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
 import pygame
 
 import src.utils  # noqa [ to patch utf-8 on top of file without linting errors ]
-from src import client, support, xplat
+from src import client, support
 from src.enums import (
     CustomCursor,
     GameState,
@@ -88,7 +89,6 @@ from src.tutorial import Tutorial
 # memory cleaning settings
 allocs, g1, g2 = gc.get_threshold()
 # gc.set_threshold(50000, g1, g2)
-
 
 
 # set random seed. It has to be set first before any other random function is called.
@@ -611,8 +611,6 @@ class Game:
 
                         self.player.inventory[kk] = int(latest_inventory[k])
                 self.player.money = int(latest_inventory["money"])
-
-
 
             self.npc_sickness_mgr.adherence = response[
                 "adherence"

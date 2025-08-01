@@ -267,8 +267,6 @@ class NPCSicknessManager:
 
         # Sort events in reverse, so that we can pop them from the back of the list
         self.evt_list.sort(key=lambda s: (s.round_no, s.timestamp), reverse=True)
-        for evt in self.evt_list:
-            pass
 
         # Send the status to the server.
         self.send_telemetry(

@@ -192,7 +192,6 @@ class InventoryMenu(AbstractMenu):
                 filter(_get_resource_count, self._inventory.items()),
             )
         ):
-
             calc_img, btn_name = self._prepare_img_for_ir_button(ir, count)
             row, column = divmod(button_no, 7)
             btn_rect = generic_rect.copy()

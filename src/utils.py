@@ -128,7 +128,7 @@ def send_telemetry(url: str, jwt: str, data: dict):
 
     try:
         with urllib.request.urlopen(request) as response:
-            response_data = response.read().decode("utf-8")
+            response.read().decode("utf-8")
     except urllib.request.HTTPError as e:
         # TODO: error handling
         js.console.log(f"HTTP Error: {e.code} - {e.reason}")
