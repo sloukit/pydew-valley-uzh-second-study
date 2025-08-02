@@ -2,7 +2,24 @@ import pygame
 
 from src.camera import Camera
 from src.fblitter import FBLITTER
-
+from src.settings import (
+    DEBUG_MODE_VERSION,
+    EMOTE_SIZE,
+    GAME_LANGUAGE,
+    GVT_TB_SIZE,
+    RANDOM_SEED,
+    SCREEN_HEIGHT,
+    SCREEN_WIDTH,
+    TB_SIZE,
+    TUTORIAL_TB_LEFT,
+    TUTORIAL_TB_TOP,
+    USE_SERVER,
+    WORLD_TIME_MULTIPLIER,
+    AniFrames,
+    MapDict,
+    SoundDict,
+)
+_BLUR_FACTOR = 4
 
 class PersistentSpriteGroup(pygame.sprite.Group):
     _persistent_sprites: list[pygame.sprite.Sprite]
@@ -47,8 +64,22 @@ class AllSprites(PersistentSpriteGroup):
         for sprite in self:
             getattr(sprite, "update_blocked", sprite.update)(dt)
 
-    def draw(self, camera: Camera, game_paused: bool):
+    def draw(self, camera: Camera, game_paused: bool, has_goggles, state=True):
         sorted_sprites = sorted(self, key=lambda spr: (spr.z, spr.hitbox_rect.bottom))
+
+        # Apply blur effect only if the player has goggles equipped
+        # State only matters when drawn from main
+        if has_goggles and state:
+            # box blur is too slow, so use smoothscale instead
+            surface = pygame.transform.smoothscale(
+                pygame.transform.smoothscale(
+                    self.display_surface,
+                    (SCREEN_WIDTH // _BLUR_FACTOR, SCREEN_HEIGHT // _BLUR_FACTOR),
+                ),
+                (SCREEN_WIDTH, SCREEN_HEIGHT),
+            )
+            self.display_surface.blit(surface, (0, 0))
+            #FBLITTER.schedule_blit(surface, (0, 0)) # breaks?
 
         camera_rect = camera.get_viewport_rect()
         for sprite in sorted_sprites:
