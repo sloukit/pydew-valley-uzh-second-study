@@ -118,7 +118,6 @@ _CAMERA_TARGET_TO_TEXT_SOLO = (
 _TARG_SKIP_IDX_SOLO = _CAMERA_TARGET_TO_TEXT_SOLO.index("outgroup_introduction_text")
 _GOGGLES_TUT_TSTAMP = 35
 _ENABLE_SICKNESS_TSTAMP = 33
-_BLUR_FACTOR = 1
 
 
 def _get_alloc_text(alloc_id: str):
@@ -1136,18 +1135,15 @@ class Game:
 
             if self.player.has_goggles:
                 self.player.goggle_time += dt
-            # this draw duplicates the same call in level.py, but without it, dialog box won't be visible
+            # this draw call handles dialogues
             self.all_sprites.draw(
                 self.level.camera,
                 is_game_paused,
+                self.player.has_goggles,
+                self.current_state == GameState.PLAY,
             )
 
             FBLITTER.blit_all()
-
-            # Apply blur effect only if the player has goggles equipped
-            if self.player.has_goggles and self.current_state == GameState.PLAY:
-                surface = pygame.transform.box_blur(self.display_surface, _BLUR_FACTOR)
-                FBLITTER.schedule_blit(surface, (0, 0))
 
             # Into and Tutorial
             self.show_intro_msg()
