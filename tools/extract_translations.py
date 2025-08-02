@@ -20,9 +20,10 @@ def read_extracted_strings(file_name: str) -> list[str]:
         file_name,
     )
 
-    print(
-        f'[yellow] * [/][blue] loading extracted strings from [magenta]"{path}"[/] ⌛'
-    )
+    if __debug__:  # Only print debug information if running in debug mode
+        print(
+            f'[yellow] * [/][blue] loading extracted strings from [magenta]"{path}"[/] ⌛'
+        )
 
     with open(path, "r") as file:
         text = file.read()
@@ -30,8 +31,8 @@ def read_extracted_strings(file_name: str) -> list[str]:
     lines = text.splitlines()
     if lines and lines[0] == "":
         lines = lines[1:]
-
-    print(f"[yellow] * [/][blue] loaded [magenta]{len(lines)}[/] strings ✅")
+    if __debug__:  # Only print debug information if running in debug mode
+        print(f"[yellow] * [/][blue] loaded [magenta]{len(lines)}[/] strings ✅")
 
     return lines
 
@@ -48,7 +49,8 @@ def append_new_strings(
         f"{lang}.txt",
     )
 
-    print(f'[yellow] * [/][blue] appending new strings to [magenta]"{path}"[/] ⌛')
+    if __debug__:  # Only print debug information if running in debug mode
+        print(f'[yellow] * [/][blue] appending new strings to [magenta]"{path}"[/] ⌛')
 
     with open(path, "a") as file:
         if comment:
@@ -58,19 +60,18 @@ def append_new_strings(
             for new_string in new_strings
         )
 
-    # print(f"[yellow] * [/][blue] loaded [magenta]{len(lines)}[/] strings ✅")
-
 
 def load_existing_translations() -> dict[str, dict[str, str]]:
     translations = {}
     for lang in LANGS:
-        print(
-            f'[yellow] * [/][blue] loading existing translations for [magenta]"{lang}"[/] {LANGS[lang]}'
-        )
-        translations[lang] = load_translations(lang)
-        print(
-            f"[yellow] * [/][blue] loaded [magenta]{len(translations[lang])}[/] translations ✅"
-        )
+        if __debug__:  # Only print debug information if running in debug mode
+            print(
+                f'[yellow] * [/][blue] loading existing translations for [magenta]"{lang}"[/] {LANGS[lang]}'
+            )
+            translations[lang] = load_translations(lang)
+            print(
+                f"[yellow] * [/][blue] loaded [magenta]{len(translations[lang])}[/] translations ✅"
+            )
 
     return translations
 
@@ -83,7 +84,9 @@ def check_existing_translations(translations: dict[str, dict[str, str]]) -> None
 
         return res
 
-    print("[yellow] * [/][blue] checking current translations ⌛")
+    if __debug__:  # Only print debug information if running in debug mode
+        print("[yellow] * [/][blue] checking current translations ⌛")
+
     base_translations = translations[GAME_LANGUAGE]
     for lang in LANGS:
         if lang != GAME_LANGUAGE:
@@ -91,21 +94,26 @@ def check_existing_translations(translations: dict[str, dict[str, str]]) -> None
             result = compare_dicts(base_translations, other_translations)
             got_errors = False
             for key in result["not_in_source"]:
-                print(
-                    f' 🔴 [red]string present in [magenta]"{lang}"[/] '
-                    f'and not present in [magenta]"{GAME_LANGUAGE}"[/]: "[magenta]{key}[/]"'
-                )
+                if __debug__:
+                    print(
+                        f' 🔴 [red]string present in [magenta]"{lang}"[/] '
+                        f'and not present in [magenta]"{GAME_LANGUAGE}"[/]: "[magenta]{key}[/]"'
+                    )
                 got_errors = True
             for key in result["not_in_dest"]:
-                print(
-                    f' 🔴 [red]string present in [magenta]"{GAME_LANGUAGE}"[/] '
-                    f'and not present in [magenta]"{lang}"[/]: "[magenta]{key}[/]"'
-                )
+                if __debug__:
+                    print(
+                        f' 🔴 [red]string present in [magenta]"{GAME_LANGUAGE}"[/] '
+                        f'and not present in [magenta]"{lang}"[/]: "[magenta]{key}[/]"'
+                    )
                 got_errors = True
             if got_errors:
-                print("\n[red]fix above problems before continuing❗\n")
+                if __debug__:  # Only print debug information if running in debug mode
+                    print("\n[red]fix above problems before continuing❗\n")
+
                 exit(1)
-    print("[yellow] * [/][blue] current translations look good ✅")
+    if __debug__:  # Only print debug information if running in debug mode
+        print("[yellow] * [/][blue] current translations look good ✅")
     return
 
 
@@ -115,17 +123,24 @@ def process_extracted_strings(
     comment: str | None,
 ) -> None:
     new_strings = []
-    print("[yellow] * [/][blue] searching for new strings ⌛")
+
+    if __debug__:  # Only print debug information if running in debug mode
+        print("[yellow] * [/][blue] searching for new strings ⌛")
+
     for extracted_string in extracted_strings:
         if extracted_string not in translations[GAME_LANGUAGE]:
             # print(f"[blue]  found new string: {extracted_string}")
             new_strings.append(extracted_string)
     if len(new_strings) == 0:
-        print("[yellow] * [/][blue] no new strings found ⚠️")
+        if __debug__:  # Only print debug information if running in debug mode
+            print("[yellow] * [/][blue] no new strings found ⚠️")
+
     else:
-        print(
-            f"[yellow] * [/][blue] found [magenta]{len(new_strings)}[/] new strings ✅"
-        )
+        if __debug__:  # Only print debug information if running in debug mode
+            print(
+                f"[yellow] * [/][blue] found [magenta]{len(new_strings)}[/] new strings ✅"
+            )
+
         append_new_strings(GAME_LANGUAGE, new_strings, comment)
         for lang in LANGS:
             if lang != GAME_LANGUAGE:

@@ -20,6 +20,7 @@ from datetime import datetime, timezone
 from functools import partial
 from typing import Any
 
+import os
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
 import pygame
@@ -87,8 +88,14 @@ from src.support import get_translated_string as get_translated_msg
 from src.tutorial import Tutorial
 
 # memory cleaning settings
+if __debug__:  # Only print debug information if running in debug mode
+    print(f"gc.get_threshold: {gc.get_threshold()}")
+    print("setting new threshold:")
 allocs, g1, g2 = gc.get_threshold()
 # gc.set_threshold(50000, g1, g2)
+
+if __debug__:  # Only print debug information if running in debug mode
+    print(f"gc.get_threshold: {gc.get_threshold()}")
 
 
 # set random seed. It has to be set first before any other random function is called.
@@ -541,6 +548,10 @@ class Game:
             self.send_telemetry("players_name", {"players_name": players_name})
 
     def set_token(self, response: dict[str, Any]) -> dict[str, Any]:
+        if __debug__:  # Only print debug information if running in debug mode
+            xplat.log("Login successful!")
+            xplat.log(f"Response content: {response}")
+
         # `token` is the play token the player entered
         self.token = response["token"]
         # `jwt` is the creds used to send telemetry to the backend
@@ -548,7 +559,13 @@ class Game:
         # `game_version` is stored in the player database
         self.game_version = response["game_version"]
 
+        if __debug__:  # Only print debug information if running in debug mode
+            xplat.log(f"token: {self.token}")
+            xplat.log(f"jwt: {self.jwt}")
+
         if not USE_SERVER:  # offline dev / debug version
+            if __debug__:  # Only print debug information if running in debug mode
+                xplat.log("Not using server!")
             # token 100-379 triggers game version 1,
             # token 380-659 triggers game version 2,
             # token 660-939 triggers game version 3
@@ -570,6 +587,10 @@ class Game:
                 raise ValueError("Invalid token value")
 
             self.npc_sickness_mgr.adherence = bool(token_int % 10)
+
+            if __debug__:  # Only print debug information if running in debug mode
+                xplat.log(f"NPC adherence is set to {bool(token_int % 10)}")
+
             self.npc_sickness_mgr.setup_from_db_data(
                 {"data": None}
             )  # workaround fake npc server response
@@ -584,6 +605,11 @@ class Game:
                 lvls_done = [d for d in response["status"] if d["event"] == "round_end"]
                 max_complete_level = max([d["game_round"] for d in lvls_done])
                 day_completions = [d for d in lvls_done if d["game_round"] % 2 == 0]
+
+                if __debug__:  # Only log() debug information if running in debug mode
+                    xplat.log(
+                        "Max completed level so far: {}".format(max_complete_level)
+                    )
 
                 if max_complete_level >= 12:
                     raise ValueError(
@@ -602,7 +628,8 @@ class Game:
                         default=None,
                     )["data"]
                 )
-
+                if __debug__:  # Only print debug information if running in debug mode
+                    print(latest_inventory)
                 for k in latest_inventory:
                     if k != "money":
                         kk = InventoryResource.from_serialised_string(
@@ -611,6 +638,10 @@ class Game:
 
                         self.player.inventory[kk] = int(latest_inventory[k])
                 self.player.money = int(latest_inventory["money"])
+
+            else:
+                if __debug__:  # Only log() debug information if running in debug mode
+                    xplat.log("First login ever with this token, start level 1!")
 
             self.npc_sickness_mgr.adherence = response[
                 "adherence"
@@ -636,10 +667,18 @@ class Game:
                     raise TooEarlyLoginError(
                         "Last daily task completion is less than 12 hours ago."
                     )
-
+                else:
+                    if (
+                        __debug__
+                    ):  # Only log() debug information if running in debug mode
+                        xplat.log(
+                            f"Login successful: Time since last level completion: {time_difference:.2f} hours"
+                        )
             self.set_round(max_complete_level + 1)
             self.check_hat_condition()  # in levels above 2, the player should wear a hat unless it's version 3
 
+        if __debug__:  # Only log() debug information if running in debug mode
+            xplat.log(f"Game version {self.game_version}")
         self.send_telemetry("player_login", {"token": self.token})
 
         return self.round_config
@@ -664,6 +703,10 @@ class Game:
         if round_no <= len(self.rounds_config[self.game_version]):
             self.round_config = self.rounds_config[self.game_version][round_no - 1]
         else:
+            if __debug__:  # Only print debug information if running in debug mode
+                print(
+                    f"ERROR: No config found for round {round_no}! Using config for round 1."
+                )
             self.round_config = self.rounds_config[self.game_version][0]
         self.level.round_config_changed(self.round_config)
         if self.inventory_menu:
@@ -682,10 +725,14 @@ class Game:
 
         self.round_end_timer = 0.0
         self.ROUND_END_TIME_IN_MINUTES = self.round_config["level_duration"] / 60  # 15
+        if __debug__:  # Only print debug information if running in debug mode
+            print(self.round_config["level_name_text"])
 
     def increment_round(self) -> None:
         if self.round < 13:
             self.set_round(self.round + 1)
+            if __debug__:  # Only print debug information if running in debug mode
+                print("incremented round to {}".format(self.round))
 
     def switch_state(self, state: GameState) -> None:
         self.set_cursor(CustomCursor.ARROW)

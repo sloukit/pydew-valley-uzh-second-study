@@ -90,7 +90,11 @@ def go_to_bathhouse(context: NPCIndividualContext) -> bool:
     context.timing_for_bathhouse = NPCSharedContext.get_rnd_timer()
     context.going_to_bathhouse = True
     is_outgrp = context.npc.study_group == StudyGroup.OUTGROUP
-    return walk_to_pos(context, (24 + 30 * is_outgrp, 40))
+    return walk_to_pos(
+        context,
+        (24 + 30 * is_outgrp, 40),
+        lambda: print("Finished" if __debug__ else None),
+    )
 
 
 def will_return_to_farm_from_bathhouse(context: NPCIndividualContext) -> bool:
@@ -138,7 +142,9 @@ def will_leave_forest_for_bathhouse(context: NPCIndividualContext) -> bool:
 
 def go_to_bathhouse_forest(context: NPCIndividualContext):
     context.timing_for_bathhouse = NPCSharedContext.get_rnd_timer()
-    return walk_to_pos(context, (9, 18))
+    return walk_to_pos(
+        context, (9, 18), lambda: print("Finished moving") if __debug__ else None
+    )
 
 
 def will_return_to_forest(context: NPCIndividualContext):
@@ -178,7 +184,9 @@ def will_leave_to_bathhouse(context: NPCIndividualContext) -> bool:
 
 
 def go_to_bathhouse_town(context: NPCIndividualContext) -> bool:
-    return walk_to_pos(context, (54, 43))
+    return walk_to_pos(
+        context, (54, 43), lambda: print("Finished moving") if __debug__ else None
+    )
 
 
 def will_leave_bathhouse(context: NPCIndividualContext):

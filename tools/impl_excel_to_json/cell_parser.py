@@ -129,6 +129,7 @@ def _strip_trailing_brackets(s: Optional[str]) -> Optional[str]:
     Strips trailing bracketed content (including brackets) from the input string.
     Example: "hello [ world ]" -> "hello".
     """
+
     # For any non-string types (None, dt.time, ..) return original object and delegate to parsing fns.
     if not isinstance(s, str):
         return s
