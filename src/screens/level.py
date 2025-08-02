@@ -1332,7 +1332,9 @@ class Level:
 
     def draw_overlay(self):
         self.sky.display(self.get_round(), self.get_rnd_timer())
-        self.overlay.display(self.get_round())
+        # The volcano erupts in round 7, so round 8+ is post-volcano
+        post_volcano = self.volcano_erupt_once or self.get_round() >= 8
+        self.overlay.display(self.get_round(), post_volcano)
 
     def draw(self, dt: float, move_things: bool):
         # self.display_surface.fill((130, 168, 132))

@@ -75,13 +75,15 @@ class BoxKeybindings:
         # prepare texts
         self.setup_text_list()
 
-    def setup_text_list(self):
+    def setup_text_list(self, post_volcano: bool = False) -> None:
+        task_key = "box info player task post volcano" if post_volcano else "box info player task"
+        # Lower the task description by two lines (36 pixels) after volcano eruption
         self.info = [
             {
                 "key": "",
-                "descr": self.get_text("box info player task"),
+                "descr": self.get_text(task_key),
                 "rel_pos": (10, 10),
-                "descr_pos": (5, 382),
+                "descr_pos": (5, 428 if post_volcano else 382),
             },
             {
                 "key": "lclick",
@@ -192,9 +194,14 @@ class BoxKeybindings:
     def toggle_visibility(self):
         self.visible = not self.visible
 
-    def draw(self, display_surface, current_round: int = 1):
+    def draw(self, display_surface, current_round: int = 1, post_volcano: bool = False):
         if not self.visible:
             return
+
+        # Update text list if post-volcano state has changed
+        current_task_key = "box info player task post volcano" if post_volcano else "box info player task"
+        if self.info[0]["descr"] != self.get_text(current_task_key):
+            self.setup_text_list(post_volcano)
 
         # Create info_order dynamically based on current round
         info_order = [

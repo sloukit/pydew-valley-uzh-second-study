@@ -52,7 +52,7 @@ class Overlay:
         self.round_config = round_config
         self.is_debug_mode_version: bool = False
 
-    def display(self, current_round: int = 1):
+    def display(self, current_round: int = 1, post_volcano: bool = False):
         if not self.visible:
             return
 
@@ -70,7 +70,7 @@ class Overlay:
 
         # Box keybindings label display
         self.box_keybindings_label.display()
-        self.box_keybindings.draw(self.display_surface, current_round)
+        self.box_keybindings.draw(self.display_surface, current_round, post_volcano)
 
         # tool
         tool_surf = self.item_frames[self.player.get_current_tool_string()]
