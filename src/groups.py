@@ -53,12 +53,12 @@ class AllSprites(PersistentSpriteGroup):
         for sprite in self:
             getattr(sprite, "update_blocked", sprite.update)(dt)
 
-    def draw(self, camera: Camera, game_paused: bool, has_goggles, state=True):
+    def draw(self, camera: Camera, game_paused: bool, has_goggles, is_main_draw=True):
         sorted_sprites = sorted(self, key=lambda spr: (spr.z, spr.hitbox_rect.bottom))
 
         # Apply blur effect only if the player has goggles equipped
-        # State only matters when drawn from main
-        if has_goggles and state:
+        # Blur only matters when drawn from main
+        if has_goggles and is_main_draw:
             # box blur is too slow, so use smoothscale instead
             surface = pygame.transform.smoothscale(
                 pygame.transform.smoothscale(
