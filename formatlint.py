@@ -2,8 +2,9 @@ import os
 import shutil
 import subprocess
 import sys
+from typing import Literal
 
-# Define ANSI escape codes for colors
+# Define ANSI escape codes for colors and styling
 GRAY = "\033[90m"
 RED = "\033[91m"
 GREEN = "\033[92m"
@@ -18,7 +19,7 @@ commands = [
 ]
 
 
-def find_ruff_executable():
+def find_ruff_executable() -> Literal["ruff", "ruff.exe"]:
     """Find the ruff executable, handling Windows .exe extension."""
     # Try to find ruff in PATH
     ruff_path = shutil.which("ruff")
