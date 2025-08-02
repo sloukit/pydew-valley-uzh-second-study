@@ -38,7 +38,10 @@ class Transition:
     def activate(self):
         if self.timer.active:
             return
-        print("Activated")
+
+        if __debug__:  # Only print debug information if running in debug mode
+            print("Transition activated")
+
         self.timer.activate()
         self.peaked = False
 

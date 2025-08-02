@@ -243,7 +243,6 @@ class SelfAssessmentMenu(AbstractMenu):
         assessment = int(self.selected_sam._name)
         self._sam_results[dimension] = assessment
 
-        # print(f"{self._current_dimension.name} - {self._selected_scale}")
         self.selected_sam.deselect()
         self.selected_sam = None
 

@@ -258,7 +258,8 @@ class Player(Character):
             ):
                 proceed = False
 
-        print(current_seed)
+        if __debug__:  # Only print debug information if running in debug mode
+            print(current_seed)
         return current_seed
 
     def handle_controls(self):

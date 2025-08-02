@@ -96,9 +96,7 @@ def _to_seconds(time: dt.time | dt.timedelta, from_excel: bool = False) -> int:
 
 
 def _parse_duration(value: str) -> int:
-    # print(f"parse_duration: '{value}'")
     min_text = value.rstrip("min")
-    # print(f"  -> mins: '{mins}'")
 
     mins = _str_to_int(min_text, f"Invalid duration '{value}'. Must be 'X min'")
     return 60 * mins
@@ -131,8 +129,6 @@ def _strip_trailing_brackets(s: Optional[str]) -> Optional[str]:
     Strips trailing bracketed content (including brackets) from the input string.
     Example: "hello [ world ]" -> "hello".
     """
-
-    # print(f"strip_trailing_brackets: '{s}'")
 
     # For any non-string types (None, dt.time, ..) return original object and delegate to parsing fns.
     if not isinstance(s, str):
