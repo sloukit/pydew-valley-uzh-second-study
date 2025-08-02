@@ -3,23 +3,12 @@ import pygame
 from src.camera import Camera
 from src.fblitter import FBLITTER
 from src.settings import (
-    DEBUG_MODE_VERSION,
-    EMOTE_SIZE,
-    GAME_LANGUAGE,
-    GVT_TB_SIZE,
-    RANDOM_SEED,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
-    TB_SIZE,
-    TUTORIAL_TB_LEFT,
-    TUTORIAL_TB_TOP,
-    USE_SERVER,
-    WORLD_TIME_MULTIPLIER,
-    AniFrames,
-    MapDict,
-    SoundDict,
 )
+
 _BLUR_FACTOR = 4
+
 
 class PersistentSpriteGroup(pygame.sprite.Group):
     _persistent_sprites: list[pygame.sprite.Sprite]
@@ -79,7 +68,7 @@ class AllSprites(PersistentSpriteGroup):
                 (SCREEN_WIDTH, SCREEN_HEIGHT),
             )
             self.display_surface.blit(surface, (0, 0))
-            #FBLITTER.schedule_blit(surface, (0, 0)) # breaks?
+            # FBLITTER.schedule_blit(surface, (0, 0)) # breaks?
 
         camera_rect = camera.get_viewport_rect()
         for sprite in sorted_sprites:

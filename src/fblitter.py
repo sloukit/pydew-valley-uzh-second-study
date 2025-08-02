@@ -56,7 +56,7 @@ class _FBlitterType:
         """Blits everything saved for the current surface and then resets the current surface to the default display surface.
 
         Blits saved for the display surface are NOT performed if the current surface isn't the display surface.
-        
+
         This only happens during the first section of the menu, all other blits are normal
 
         Called mainly by groups.py (draw extra sprite details) and main.py (draw cursor on top)

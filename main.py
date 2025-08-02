@@ -1140,7 +1140,7 @@ class Game:
                 self.level.camera,
                 is_game_paused,
                 self.player.has_goggles,
-                self.current_state == GameState.PLAY
+                self.current_state == GameState.PLAY,
             )
 
             FBLITTER.blit_all()
