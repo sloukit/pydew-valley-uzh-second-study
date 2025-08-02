@@ -1,11 +1,12 @@
 # import traceback
+import traceback
 from collections.abc import Callable
 from typing import Any
 
 import pygame
 from pygame.mouse import get_pressed as mouse_buttons
 
-from src import client
+from src import client, xplat
 from src.enums import CustomCursor, GameState
 from src.events import SET_CURSOR, post_event
 from src.fblitter import FBLITTER

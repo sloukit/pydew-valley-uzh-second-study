@@ -20,13 +20,12 @@ from datetime import datetime, timezone
 from functools import partial
 from typing import Any
 
-import os
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
 import pygame
 
 import src.utils  # noqa [ to patch utf-8 on top of file without linting errors ]
-from src import client, support
+from src import client, support, xplat
 from src.enums import (
     CustomCursor,
     GameState,
