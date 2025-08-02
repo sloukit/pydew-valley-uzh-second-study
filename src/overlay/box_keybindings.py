@@ -76,7 +76,11 @@ class BoxKeybindings:
         self.setup_text_list()
 
     def setup_text_list(self, post_volcano: bool = False) -> None:
-        task_key = "box info player task post volcano" if post_volcano else "box info player task"
+        task_key = (
+            "box info player task post volcano"
+            if post_volcano
+            else "box info player task"
+        )
         # Lower the task description by two lines (36 pixels) after volcano eruption
         self.info = [
             {
@@ -199,7 +203,11 @@ class BoxKeybindings:
             return
 
         # Update text list if post-volcano state has changed
-        current_task_key = "box info player task post volcano" if post_volcano else "box info player task"
+        current_task_key = (
+            "box info player task post volcano"
+            if post_volcano
+            else "box info player task"
+        )
         if self.info[0]["descr"] != self.get_text(current_task_key):
             self.setup_text_list(post_volcano)
 
