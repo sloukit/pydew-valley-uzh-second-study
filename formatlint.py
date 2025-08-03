@@ -94,7 +94,7 @@ def main():
     script_dir = os.path.dirname(os.path.realpath(__file__))
     os.chdir(script_dir)
 
-    # Print diagnostic information
+    # Prints diagnostic information
     print(f"{GRAY}Platform: {sys.platform}{RESET}")
     print(f"{GRAY}Working directory: {os.getcwd()}{RESET}")
 

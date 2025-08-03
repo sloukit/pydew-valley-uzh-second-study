@@ -16,13 +16,11 @@ EAGER_FAIL = False
 
 if len(sys.argv) > 1:
     excel_filepath = sys.argv[1]
-    if __debug__:  # Only print debug information if running in debug mode
-        print(f"Trying to convert: '{excel_filepath}'")
+    print(f"Trying to convert: '{excel_filepath}'")
 else:
-    if __debug__:  # Only print debug information if running in debug mode
-        print("Usage: python excel-convert.py <file>")
-        print()
-        print("   Example: python excel_to_json.py 'data/game design.xlsx'")
+    print("Usage: python excel-convert.py <file>")
+    print()
+    print("   Example: python excel_to_json.py 'data/game design.xlsx'")
     exit(1)
 
 # Load the existing Excel file
@@ -30,18 +28,16 @@ else:
 try:
     workbook = load_workbook(excel_filepath)
 except Exception as e:
-    if __debug__:  # Only print debug information if running in debug mode
-        print("\nERROR: could not open Excel file. Reason:")
-        print(f"\t{e}")
+    print("\nERROR: could not open Excel file. Reason:")
+    print(f"\t{e}")
     exit(1)
 
 # sheet = workbook.active  # active tab in Excel
 final = []
 for sheet_name in workbook.sheetnames:
     sheet = workbook[sheet_name]
-    if __debug__:  # Only print debug information if running in debug mode
-        print("------------------------------------")
-        print(f"Processing sheet: '{sheet}'")
+    print("------------------------------------")
+    print(f"Processing sheet: '{sheet}'")
 
     headers = [
         parse_cell("level_name_text", cell_value(sheet, cell.coordinate))
@@ -49,8 +45,7 @@ for sheet_name in workbook.sheetnames:
         if cell.column >= FIRST_DATA_COL  # Start from column B (column index >= 2)
     ]
 
-    if __debug__:  # Only print debug information if running in debug mode
-        print(f"headers: {headers}")
+    print(f"headers: {headers}")
 
     col_letters = [
         get_column_letter(i) for i in range(FIRST_DATA_COL, sheet.max_column + 1)
@@ -87,15 +82,13 @@ for sheet_name in workbook.sheetnames:
     final.append(levels)
 
     if errors:
-        if __debug__:  # Only print debug information if running in debug mode
-            print("\nERROR: failed to validate input format:")
-            for e in errors:
-                print(f"* {e}")
+        print("\nERROR: failed to validate input format:")
+        for e in errors:
+            print(f"* {e}")
         exit(1)
 
-if __debug__:  # Only print debug information if running in debug mode
-    print("------------------------------------")
-    print("Success!")
+print("------------------------------------")
+print("Success!")
 
 # Directory and file paths
 directory = "tools/output"
@@ -106,5 +99,4 @@ os.makedirs(directory, exist_ok=True)
 with open(file_path, "w") as file:
     json.dump(final, file, indent=4)  # Writing with pretty-printing
 
-if __debug__:  # Only print debug information if running in debug mode
-    print(f"JSON data written to {file_path}")
+print(f"JSON data written to {file_path}")

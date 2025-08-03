@@ -11,16 +11,11 @@ import ast
 import asyncio
 import copy
 import gc
-
-# Hides the pygame support prompt to clean up the console example output: pygame-ce 2.5.5 (SDL 2.32.6, Python 3.12.8)
-import os
 import random
 import sys
 from datetime import datetime, timezone
 from functools import partial
 from typing import Any
-
-os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
 import pygame
 

@@ -42,10 +42,9 @@ for lang in ("en", "de"):
 
     key_sets[lang] = set(lang_dicts[lang].keys())
 
-if __debug__:  # Only print debug information if running in debug mode
-    print(
-        f"Entries in English left untranslated in German: {key_sets['en'].difference(key_sets['de'])}"
-    )
-    print(
-        f"Entries in German left untranslated in English: {key_sets['de'].difference(key_sets['en'])}"
-    )
+print(
+    f"Entries in English left untranslated in German: {key_sets['en'].difference(key_sets['de'])}"
+)
+print(
+    f"Entries in German left untranslated in English: {key_sets['de'].difference(key_sets['en'])}"
+)
