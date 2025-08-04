@@ -32,8 +32,6 @@ except Exception as e:
     print(f"\t{e}")
     exit(1)
 
-# print(workbook.sheetnames)
-# print(workbook.active)
 # sheet = workbook.active  # active tab in Excel
 final = []
 for sheet_name in workbook.sheetnames:
@@ -91,8 +89,6 @@ for sheet_name in workbook.sheetnames:
 
 print("------------------------------------")
 print("Success!")
-
-# print(json.dumps(final, indent=4))
 
 # Directory and file paths
 directory = "tools/output"
