@@ -124,6 +124,7 @@ _ENABLE_SICKNESS_TSTAMP = 33
 _ENABLE_BATH_INFO_TSTAMP = 30  # 30 seconds after volcano eruption
 _BLUR_FACTOR = 1
 
+
 def _get_alloc_text(alloc_id: str):
     potential_alloc_ids = alloc_id.split(";")
     if len(potential_alloc_ids) > 1:

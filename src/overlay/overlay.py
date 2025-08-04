@@ -6,8 +6,8 @@ import pygame
 from src.enums import ClockVersion
 from src.fblitter import FBLITTER
 from src.gui.health_bar import HealthProgressBar
-from src.overlay.bath_info import BathInfo
 from src.npc_sickness_mgr import NPCSicknessManager
+from src.overlay.bath_info import BathInfo
 from src.overlay.box_keybindings import BoxKeybindings, BoxKeybindingsLabel
 from src.overlay.clock import Clock
 from src.overlay.dead_npcs_box import DeadNpcsBox
