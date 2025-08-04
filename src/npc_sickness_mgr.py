@@ -99,6 +99,7 @@ class NPCSicknessManager:
         get_rnd_timer: Callable[[], float],
         send_telemetry: Callable[[str, dict], None],
         adherence: bool = False,
+        enabled: bool = False,
     ):
         self.get_round = get_round
         self.get_rnd_timer = get_rnd_timer
@@ -109,6 +110,8 @@ class NPCSicknessManager:
         self.outgrp_adhering_ids = set()
         # Using deques so we can pull the events out as time passes in the game.
         self.evt_list = []
+        self.enabled = enabled
+        self.dead_npcs = []  # keep track of dead npcs from previous rounds during runtime
 
     def add_npc(self, npc_id: int, obj: NPC):
         self._npcs[npc_id] = obj
@@ -159,14 +162,38 @@ class NPCSicknessManager:
                 ids.append(evt.npc_id)
         return ids
 
+    def enable(self):
+        self.enabled = True
+
+    def is_enabled(self):
+        return self.enabled
+
     def update_npc_status(self):
         current_round = self.get_round()
         if (
-            current_round < 7 or self.next_event_this_round is None
+            not self.enabled or self.next_event_this_round is None
         ):  # earlier rounds: do nothing, or no events left
             return
-        timestamp = self.next_event_this_round.timestamp
-        if timestamp > self.get_rnd_timer():
+
+        # remove events in the pipeline from previous rounds if there are any
+        while (
+            self.next_event_this_round is not None
+            and self.next_event_this_round.round_no < current_round
+        ):
+            evt = self.evt_list.pop()
+            if evt.change_type == NPCSicknessStatusChange.DIE:
+                self.dead_npcs.append(evt.npc_id)
+        # make sure previously perished npcs are actually dead
+        for dead_npc in self.dead_npcs:
+            if not self._npcs[dead_npc].is_dead:
+                self._npcs[dead_npc].die()
+
+        # if there are no events left in the current round, return
+        if self.next_event_this_round is None:
+            return
+
+        evt_ts = self.next_event_this_round.timestamp
+        if evt_ts > self.get_rnd_timer():
             return  # Too early.
 
         evt = self.evt_list.pop()
@@ -177,18 +204,29 @@ class NPCSicknessManager:
                 # Check if the NPC is scheduled to die
                 death_evt = self.get_death_evt(target_npc, current_round)
                 if (
-                    death_evt is None or timestamp + 300 < death_evt.timestamp
+                    death_evt is None or evt_ts + 300 < death_evt.timestamp
                 ):  # regular sickness
-                    self._npcs[target_npc].get_sick(timestamp)
+                    self._npcs[target_npc].get_sick(evt_ts)
                 else:  # sickness leading to death
-                    self._npcs[target_npc].get_sick(timestamp, death_evt.timestamp)
+                    self._npcs[target_npc].get_sick(evt_ts, death_evt.timestamp)
             case NPCSicknessStatusChange.DIE:
                 self._npcs[target_npc].die()
             case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
                 return  # debug: how does it work?
 
+    def count_dead(self, include_igrp: bool = True, include_outgrp: bool = True) -> int:
+        dead = 0
+        for npc in self._npcs.values():
+            if npc.is_dead:
+                if include_igrp and npc.npc_id in INGRP_IDS:
+                    dead += 1
+                elif include_outgrp and npc.npc_id in OUTGRP_IDS:
+                    dead += 1
+        return dead
+
     def setup_from_db_data(self, received: dict | None):
-        print(received)
+        if __debug__:  # Only print debug information if running in debug mode
+            print(received)
 
         if received is None:
             return
@@ -196,8 +234,8 @@ class NPCSicknessManager:
         if received["data"] is None:
             self.compute_event_list()
             return
-
-        print("=================NPC SICKNESS EVENTS FROM DB=====================")
+        if __debug__:  # Only print debug information if running in debug mode
+            print("=================NPC SICKNESS EVENTS FROM DB=====================")
         for i, db_evt_list in received["data"].items():
             for db_evt in db_evt_list:
                 evt = NPCSicknessStatus(
@@ -207,7 +245,8 @@ class NPCSicknessManager:
                     NPCSicknessStatusChange(db_evt["change_type"]),
                 )
                 self.evt_list.append(evt)
-                print(str(evt))  # this print the event to the terminal
+                if __debug__:  # Only print debug information if running in debug mode
+                    print(str(evt))  # this print the event to the terminal
                 if evt.change_type == NPCSicknessStatusChange.GO_TO_BATHHOUSE:
                     if evt.npc_id < NPC_POOL_SIZE:
                         self.ingrp_adhering_ids.add(evt.npc_id)
@@ -232,11 +271,13 @@ class NPCSicknessManager:
         # Generate random timings for the NPCs to head to the bathhouse for each round.
         self.compute_bathhouse_timings()
 
-        print("=================NPC SICKNESS EVENTS GENERATED=====================")
+        if __debug__:  # Only print debug information if running in debug mode
+            print("=================NPC SICKNESS EVENTS GENERATED=====================")
         # Sort events in reverse, so that we can pop them from the back of the list
         self.evt_list.sort(key=lambda s: (s.round_no, s.timestamp), reverse=True)
         for evt in self.evt_list:
-            print(str(evt))
+            if __debug__:  # Only print debug information if running in debug mode
+                print(str(evt))
 
         # Send the status to the server.
         self.send_telemetry(
@@ -289,7 +330,7 @@ class NPCSicknessManager:
         for rnd in range(7, 13):
             # dying npcs for this round (remove from sickness possibility)
             die_ids = self.get_death_ids(round=rnd)
-            print("die ids round {} {}".format(rnd, die_ids))
+
             # ingroup non-adhering
             available_ingr_nonadh = available_ingr_nonadh.difference(die_ids)
             sick_count = len(available_ingr_nonadh) - 1  # all but one get sick

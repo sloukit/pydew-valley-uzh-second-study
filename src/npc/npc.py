@@ -40,12 +40,8 @@ class NPC(NPCBase):
         has_necklace: bool,
         special_features: str | None,
         npc_id: int = 0,
-        death_callback: Callable[[NPC], None] = None,
-        health_update_callback: Callable[[NPC], None] = None,
     ):
         self.tree_sprites = tree_sprites
-        self.death_callback = death_callback
-        self.health_update_callback = health_update_callback
 
         super().__init__(
             pos=pos,
@@ -253,7 +249,6 @@ class NPC(NPCBase):
         self.has_horn = False
         self.image = None
         self.remove(self.collision_sprites)
-        self.death_callback(self)
 
     def manage_sickness(self, dt):
         if self.is_sick and not self.is_dead:
@@ -263,7 +258,6 @@ class NPC(NPCBase):
             self.speed = self.hp
             self.image_alpha = 30 + int(150 * (self.hp / 100))
             self.image.set_alpha(self.image_alpha)
-            self.health_update_callback(self)
 
             if hasattr(self, "recovery_timer") and self.recovery_timer:
                 self.recovery_timer.update()  # doesn't take delta time, factors in itself
@@ -296,7 +290,9 @@ class NPC(NPCBase):
             self, (self.rect.centerx - 47, self.rect.centery - 128)
         )
 
-    def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
+    def draw(
+        self, display_surface: pygame.Surface, rect: pygame.Rect, camera, **kwargs
+    ):
         if self.is_dead:
             return
 

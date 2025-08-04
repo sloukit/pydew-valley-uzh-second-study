@@ -44,7 +44,8 @@ class NotificationMenu(GeneralMenu):
         btn.initial_rect.center = btn.rect.center
 
     def button_action(self, text: str):
-        print(text)
+        if __debug__:  # Only print debug information if running in debug mode
+            print(text)
         if text == get_translated_msg("ok"):
             self.switch_screen(GameState.PLAY)
         # if text == "Quit":
