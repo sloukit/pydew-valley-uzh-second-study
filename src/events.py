@@ -1,5 +1,6 @@
 """Expansion over Pygame's event management system."""
 
+from functools import lru_cache
 from types import NoneType, UnionType
 from typing import NoReturn, Self, Type, Union
 
@@ -59,23 +60,23 @@ class _EventDefinition:
         self,
         name: str,
         code: int,
-        **attrs: Union[Type, SpecialForm],  # pyright: ignore[reportInvalidTypeForm]
+        **attrs: Union[Type | SpecialForm],  # pyright: ignore[reportInvalidTypeForm]
     ):
         self.__name__ = self.name = name
         self._attrs = attrs
         self.default_values_for_attrs = {}
         self.code = code
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<EventDefinition(name='{self.__name__}', code={self.code}, {', '.join((f'{attr}:{value}' for attr, value in self.attrs.items()))}>"
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(
             (self.__name__, self.code) + tuple(itm for itm in self.attrs.items())
         )
 
     @property
-    def attrs(self):
+    def attrs(self) -> dict[str, Union[Type, SpecialForm]]:  # pyright: ignore[reportInvalidTypeForm]
         return self._attrs
 
     def set_default_for_attr(self, attr: str, value):
@@ -155,6 +156,7 @@ class _EventDefinition:
         return pygame.event.Event(self.code, **attrs)
 
 
+@lru_cache(maxsize=16, typed=False)
 def get_event_def(code: int) -> _EventDefinition:
     """Return the corresponding event type specification for the given code.
 
@@ -163,6 +165,7 @@ def get_event_def(code: int) -> _EventDefinition:
     return _EventDefinition.from_code(code)
 
 
+@lru_cache(maxsize=16, typed=False)
 def get_event_def_from_name(name: str) -> _EventDefinition:
     """Return the corresponding event type specification for the given name.
 
@@ -191,7 +194,7 @@ def create_custom_event_type(
     return created_code
 
 
-def post_event(code: int, **attrs: Type | SpecialForm):  # pyright: ignore[reportInvalidTypeForm]
+def post_event(code: int, **attrs: Union[Type, SpecialForm]):  # pyright: ignore[reportInvalidTypeForm]
     """Create and post an event of the given type with attributes listed
     as keyword arguments.
 
@@ -216,6 +219,7 @@ OPEN_INVENTORY = create_custom_event_type("OpenInventory")
 DIALOG_SHOW = create_custom_event_type("DIALOG_SHOW", dial=str, is_gvt=bool | None)
 DIALOG_ADVANCE = create_custom_event_type("DIALOG_ADVANCE")
 SHOW_BOX_KEYBINDINGS = create_custom_event_type("SHOW_BOX_KEYBINDINGS")
+SHOW_BATH_INFO = create_custom_event_type("SHOW_BATH_INFO")
 
 START_QUAKE = create_custom_event_type("StartQuake", duration=float, debug=bool)
 

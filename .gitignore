@@ -190,3 +190,7 @@ ignore_this/*
 ignore_folder/*
 *.ignore*
 *_ignore*
+
+# Memory Profiling
+mprofile*
+mprofile/
