@@ -1007,6 +1007,10 @@ class Game:
 
             if not is_game_paused or is_first_frame:
                 if self.level.cutscene_animation.active:
+                    # if cutscene animation is active and box keybindings are visible, then hide them
+                    if self.level.overlay.box_keybindings.visible:
+                        self.level.overlay.box_keybindings.visible = False
+
                     event = pygame.key.get_pressed()
                     if (
                         event[pygame.K_RSHIFT]
