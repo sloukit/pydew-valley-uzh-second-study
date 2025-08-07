@@ -19,16 +19,24 @@ class PauseMenu(GeneralMenu):
 
     def button_action(self, text: str):
         if text == get_translated_msg("resume"):
+            # unpause from clicking resume
+            pygame.mixer.unpause()
             self.switch_screen(GameState.PLAY)
         if text == get_translated_msg("options"):
             self.switch_screen(GameState.SETTINGS)
 
     def handle_event(self, event: pygame.event.Event) -> bool:
+        # pause music
+        if pygame.mixer.get_busy():
+            pygame.mixer.pause()
+
         if super().handle_event(event):
             return True
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
+                # unpause from pressing esc
+                pygame.mixer.unpause()
                 self.switch_screen(GameState.PLAY)
                 return True
 
