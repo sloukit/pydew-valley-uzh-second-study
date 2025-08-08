@@ -1053,7 +1053,7 @@ class Game:
                     ):
                         self.round_config["healthbar"] = True
                         self.round_config["sickness"] = True
-                        self.level.npc_sickness_mgr.enable()
+                        self.npc_sickness_mgr.enable()
                     elif (
                         self.round >= 8  # Bath info available immediately from round 8
                         and not self.level.overlay.bath_info.enabled
