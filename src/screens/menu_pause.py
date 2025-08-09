@@ -17,9 +17,12 @@ class PauseMenu(GeneralMenu):
         size = (400, 400)
         super().__init__(title, options, switch_screen, size)
 
+        self._music_paused = False
+
     def button_action(self, text: str):
         if text == get_translated_msg("resume"):
             # unpause from clicking resume
+            self._music_paused = False
             pygame.mixer.unpause()
             self.switch_screen(GameState.PLAY)
         if text == get_translated_msg("options"):
@@ -27,7 +30,8 @@ class PauseMenu(GeneralMenu):
 
     def handle_event(self, event: pygame.event.Event) -> bool:
         # pause music
-        if pygame.mixer.get_busy():
+        if not self._music_paused and pygame.mixer.get_busy():
+            self._music_paused = True
             pygame.mixer.pause()
 
         if super().handle_event(event):
@@ -36,8 +40,13 @@ class PauseMenu(GeneralMenu):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 # unpause from pressing esc
+                self._music_paused = False
                 pygame.mixer.unpause()
                 self.switch_screen(GameState.PLAY)
                 return True
 
         return False
+
+    def setter(self, paused):
+        # setter api is easier for someone in the future
+        self._music_paused = paused
