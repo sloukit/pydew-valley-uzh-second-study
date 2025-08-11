@@ -60,7 +60,7 @@ def load_translations(lang: str = None) -> dict[str, str]:
         "translations",
         f"{game_language}.json",
     )
-    tr = dict()
+    tr = {}
     # lower case all keys for case insensitivity
     with open(path, "r") as file:
         for key, value in json.load(file).items():
