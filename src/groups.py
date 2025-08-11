@@ -74,7 +74,7 @@ class AllSprites(PersistentSpriteGroup):
         for sprite in sorted_sprites:
             # including game_paused condition to prevent drawing overlaps between tutorial text boxes and menus
             if (
-                sprite.z > 0
+                (sprite.z > 0 or sprite.z == 0)  # Allow water bodies with z=0
                 and not game_paused
                 and sprite.hitbox_rect.colliderect(camera_rect)
             ):
