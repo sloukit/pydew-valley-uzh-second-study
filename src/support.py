@@ -60,8 +60,12 @@ def load_translations(lang: str = None) -> dict[str, str]:
         "translations",
         f"{game_language}.json",
     )
+    tr = {}
+    # lower case all keys for case insensitivity
     with open(path, "r") as file:
-        return json.load(file)
+        for key, value in json.load(file).items():
+            tr[key.lower()] = value
+    return tr
 
 
 def load_translations_old(lang: str = None) -> dict[str, str]:  # noqa
@@ -115,7 +119,7 @@ def get_translated_string(text: str) -> str:
     Returns:
         str: translated literal string
     """
-    return TR.get(text, f"N/A: {text}")
+    return TR.get(text.lower(), f"N/A: {text}")
 
 
 def resource_path(relative_path: str) -> str:
