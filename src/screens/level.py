@@ -1144,7 +1144,6 @@ class Level:
             else:
                 self.volcano_sprite.kill()
 
-            # self.volcano_sounds[self.sound_no].set_volume(0.7)
             self.volcano_sounds[self.sound_no].play()
 
             self.volcano_erupt_count += 1
