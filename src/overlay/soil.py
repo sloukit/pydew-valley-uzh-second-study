@@ -325,7 +325,7 @@ class SoilArea:
         tile = self.tiles.get(pos)
         return self._hoe(tile)
 
-    def _water(self, tile):
+    def _water(self, tile) -> bool:
         """Water a tile.
 
         WARNING: this method is for internal usage.
