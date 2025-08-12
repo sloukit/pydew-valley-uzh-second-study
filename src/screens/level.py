@@ -472,7 +472,8 @@ class Level:
 
             self.current_minigame.start()
 
-    def activate_music(self):
+    def activate_music(self, _cutscene=False):
+        # _cutscene is used to prevent the volume from restarting after the volcano cutscene.
         volume = 0.1
         try:
             sound_data = load_data("volume.json")
@@ -482,9 +483,11 @@ class Level:
                 "sfx": 50,
             }
             save_data(sound_data, "volume.json")
+
         volume = sound_data["music"]
         # sfx = sound_data['sfx']
-        self.sounds["music"].set_volume(min((volume / 1000), 0.4))
+        if not _cutscene:
+            self.sounds["music"].set_volume(min((volume / 1000), 0.4))
         self.sounds["music"].play(-1)
 
     # plant collision
@@ -1141,7 +1144,7 @@ class Level:
             else:
                 self.volcano_sprite.kill()
 
-            self.volcano_sounds[self.sound_no].set_volume(0.7)
+            # self.volcano_sounds[self.sound_no].set_volume(0.7)
             self.volcano_sounds[self.sound_no].play()
 
             self.volcano_erupt_count += 1
@@ -1158,7 +1161,7 @@ class Level:
             self.volcano_erupt_count = 0
             self.sound_no = 0
 
-            self.activate_music()  # Activating the old music
+            self.activate_music(_cutscene=True)  # Activating the old music
 
             if self.volcano_event:
                 self.intro_shown.pop(Map.VOLCANO)
