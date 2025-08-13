@@ -590,7 +590,7 @@ class Game:
             self.npc_sickness_mgr.setup_from_db_data(
                 {"data": None}
             )  # workaround fake npc server response
-            self.set_round(7)
+            self.set_round(1) # CHANGE THIS BACK TO ROUND 7 BEFORE MERGING THE CODE!
             self.check_hat_condition()
         else:  # online deployed version with db access
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
