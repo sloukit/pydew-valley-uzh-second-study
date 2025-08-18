@@ -42,6 +42,7 @@ USE_GAME_TIME = False
 SECONDS_PER_GAME_MINUTE = 0.7
 # should be 1.0 - increase x10 for debug to speed-up round end
 WORLD_TIME_MULTIPLIER = 1.0
+# WORLD_TIME_MULTIPLIER = 12.0  # only for debug purposes, to speed-up round, please not use in production.
 # USE_SERVER = False
 USE_SERVER = True
 

@@ -7,6 +7,7 @@
 # ]
 # ///
 
+import ast
 import asyncio
 import copy
 import gc
@@ -23,6 +24,7 @@ from src import client, support, xplat
 from src.enums import (
     CustomCursor,
     GameState,
+    InventoryResource,
     Map,
     ScriptedSequence,
     SelfAssessmentDimension,
@@ -33,6 +35,7 @@ from src.events import (
     DIALOG_SHOW,
     OPEN_INVENTORY,
     SET_CURSOR,
+    SHOW_BATH_INFO,
     SHOW_BOX_KEYBINDINGS,
 )
 from src.exceptions import TooEarlyLoginError
@@ -41,8 +44,6 @@ from src.groups import AllSprites
 from src.gui.interface.dialog import DialogueManager
 from src.gui.setup import setup_gui
 from src.npc.behaviour.context import NPCSharedContext
-from src.npc.npc import NPC
-from src.npc.npcs_state_registry import NPC_STATE_REGISTRY_UPDATE_EVENT
 from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
@@ -82,12 +83,14 @@ from src.support import get_translated_string as get_translated_msg
 from src.tutorial import Tutorial
 
 # memory cleaning settings
-print(f"gc.get_threshold: {gc.get_threshold()}")
-
-print("setting new threshold:")
+if __debug__:  # Only print debug information if running in debug mode
+    print(f"gc.get_threshold: {gc.get_threshold()}")
+    print("setting new threshold:")
 allocs, g1, g2 = gc.get_threshold()
 # gc.set_threshold(50000, g1, g2)
-print(f"gc.get_threshold: {gc.get_threshold()}")
+
+if __debug__:  # Only print debug information if running in debug mode
+    print(f"gc.get_threshold: {gc.get_threshold()}")
 
 
 # set random seed. It has to be set first before any other random function is called.
@@ -118,6 +121,7 @@ _CAMERA_TARGET_TO_TEXT_SOLO = (
 _TARG_SKIP_IDX_SOLO = _CAMERA_TARGET_TO_TEXT_SOLO.index("outgroup_introduction_text")
 _GOGGLES_TUT_TSTAMP = 35
 _ENABLE_SICKNESS_TSTAMP = 33
+_ENABLE_BATH_INFO_TSTAMP = 30  # 30 seconds after volcano eruption
 _BLUR_FACTOR = 1
 
 
@@ -226,7 +230,7 @@ class Game:
         )
 
         self.npc_sickness_mgr = NPCSicknessManager(
-            self.get_round, self.get_rnd_timer, self.send_telemetry, False
+            self.get_round, self.get_rnd_timer, self.send_telemetry
         )
 
         # screens
@@ -244,25 +248,18 @@ class Game:
             self.get_world_time,
             self.dialogue_manager,
             self.send_telemetry,
-            self.add_npc_to_mgr,
+            # self.add_npc_to_mgr,
+            self.npc_sickness_mgr,
         )
         self.player = self.level.player
 
         # Sickness management
-        self.took_bath = False
-        self.goggles_delta = 0.0
         NPCSharedContext.get_rnd_timer = self.get_rnd_timer
         NPCSharedContext.get_round = self.get_round
         self.sickness_man = SicknessManager(
+            self.player,
             self.get_round,
             self.get_rnd_timer,
-            lambda: self.goggles_delta >= 240,
-            lambda: self.took_bath,
-            lambda: self.player.is_sick,
-            self.send_telemetry,
-            self.player.get_sick,
-            self.player.recover,
-            self._reset_goggles_timer,
         )
 
         self.tutorial = None
@@ -373,17 +370,22 @@ class Game:
         self.last_intro_txt_rendered = False
         self.switched_to_tutorial = False
 
-    def _reset_goggles_timer(self):
-        self.goggles_delta = 0.0
-
-    def add_npc_to_mgr(self, npc_id: int, npc: NPC):
-        self.npc_sickness_mgr.add_npc(npc_id, npc)
+    # def add_npc_to_mgr(self, npc_id: int, npc: NPC):
+    #     self.npc_sickness_mgr.add_npc(npc_id, npc)
 
     def _empty_round_config_notify(self, cfg_id: str):
         self.round_config[f"notify_{cfg_id}_text"] = ""
         tstamp = f"notify_{cfg_id}_timestamp"
         if tstamp in self.round_config:
             self.round_config[tstamp] = []
+            
+    @property
+    def _can_start_start_assessment_seq(self):
+        return (
+            self.round_config.get("_start_assessment_menu", False)
+            and len(self.round_config.get("_start_assessment_timestamp", [])) > 0
+            and self.round_end_timer > self.round_config["_start_assessment_timestamp"][0]
+        )
 
     # region Notification and event checks
     @property
@@ -512,7 +514,19 @@ class Game:
         )
 
     # endregion
+    @property
+    def _can_start_end_assessment_seq(self):
+        # ormai è alias di social_identity_* quindi non serve più se usi l’alias;
+        # lasciamo la logica esistente che già controlla social_identity_*
+        return False  # non usato
 
+    @property
+    def _can_start_start_assessment_seq(self):
+        return (
+            self.round_config.get("_start_assessment_menu", False)
+            and len(self.round_config.get("_start_assessment_timestamp", [])) > 0
+            and self.round_end_timer > self.round_config["_start_assessment_timestamp"][0]
+        )
     def _notify(self, message: str, id_to_empty: str):
         self.notification_menu.set_message(message)
         self.switch_state(GameState.NOTIFICATION_MENU)
@@ -529,8 +543,6 @@ class Game:
         return (min, sec)
 
     def send_telemetry(self, event: str, payload: dict[str, int]) -> None:
-        if event == "bath_taken":
-            self.took_bath = True
         if USE_SERVER:
             telemetry = {
                 "event": event,
@@ -552,19 +564,24 @@ class Game:
             self.send_telemetry("players_name", {"players_name": players_name})
 
     def set_token(self, response: dict[str, Any]) -> dict[str, Any]:
-        xplat.log("Login successful!")
-        xplat.log(f"Response content: {response}")
+        if __debug__:  # Only print debug information if running in debug mode
+            xplat.log("Login successful!")
+            xplat.log(f"Response content: {response}")
+
         # `token` is the play token the player entered
         self.token = response["token"]
         # `jwt` is the creds used to send telemetry to the backend
         self.jwt = response["jwt"]
         # `game_version` is stored in the player database
         self.game_version = response["game_version"]
-        xplat.log(f"token: {self.token}")
-        xplat.log(f"jwt: {self.jwt}")
+
+        if __debug__:  # Only print debug information if running in debug mode
+            xplat.log(f"token: {self.token}")
+            xplat.log(f"jwt: {self.jwt}")
 
         if not USE_SERVER:  # offline dev / debug version
-            xplat.log("Not using server!")
+            if __debug__:  # Only print debug information if running in debug mode
+                xplat.log("Not using server!")
             # token 100-379 triggers game version 1,
             # token 380-659 triggers game version 2,
             # token 660-939 triggers game version 3
@@ -586,8 +603,11 @@ class Game:
                 raise ValueError("Invalid token value")
 
             self.npc_sickness_mgr.adherence = bool(token_int % 10)
-            xplat.log(f"NPC adherence is set to {bool(token_int % 10)}")
-            self.npc_sickness_mgr._setup_from_returned_data(
+
+            if __debug__:  # Only print debug information if running in debug mode
+                xplat.log(f"NPC adherence is set to {bool(token_int % 10)}")
+
+            self.npc_sickness_mgr.setup_from_db_data(
                 {"data": None}
             )  # workaround fake npc server response
             self.set_round(7)
@@ -598,38 +618,62 @@ class Game:
             max_complete_level = 0
             self.npc_sickness_mgr.adherence = response["adherence"]
             if response["status"]:  # has at least 1 completed level
-                day_completions = [
-                    d for d in response["status"] if d["game_round"] % 2 == 0
-                ]  # these are day task completions
-                max_complete_level = max(d["game_round"] for d in response["status"])
-                xplat.log("Max completed level so far: {}".format(max_complete_level))
+                lvls_done = [d for d in response["status"] if d["event"] == "round_end"]
+                max_complete_level = max([d["game_round"] for d in lvls_done])
+                day_completions = [d for d in lvls_done if d["game_round"] % 2 == 0]
+
+                if __debug__:  # Only log() debug information if running in debug mode
+                    xplat.log(
+                        "Max completed level so far: {}".format(max_complete_level)
+                    )
+
                 if max_complete_level >= 12:
                     raise ValueError(
                         "All levels are already completed for this player token."
                     )
 
+                # load inventory from db
+                latest_inventory = ast.literal_eval(
+                    max(
+                        (
+                            d
+                            for d in response["status"]
+                            if d["event"] == "round_end_content"
+                        ),
+                        key=lambda d: d["timestamp"],
+                        default=None,
+                    )["data"]
+                )
+                if __debug__:  # Only print debug information if running in debug mode
+                    print(latest_inventory)
+                for k in latest_inventory:
+                    if k != "money":
+                        kk = InventoryResource.from_serialised_string(
+                            k.replace(" ", "_")
+                        )
+
+                        self.player.inventory[kk] = int(latest_inventory[k])
+                self.player.money = int(latest_inventory["money"])
+
             else:
-                xplat.log("First login ever with this token, start level 1!")
+                if __debug__:  # Only log() debug information if running in debug mode
+                    xplat.log("First login ever with this token, start level 1!")
 
-            # this supposedly loads npc status (e.g., previous deaths etc.) but seems to be untested / not implemented server side?
-            self.npc_sickness_mgr.get_status_from_server(self.jwt)
+            self.npc_sickness_mgr.adherence = response[
+                "adherence"
+            ]  # ingroup adherent (true/false) from db
+            self.npc_sickness_mgr.get_status_from_server(
+                self.jwt
+            )  # load npc status (e.g., previous deaths etc.) from db
 
-            # max_complete_level = 6
+            max_complete_level = 8  # debug, remove later
+
             if len(day_completions) > 0:
                 timestamps = [
                     datetime.fromisoformat(d["timestamp"]) for d in day_completions
                 ]
                 most_recent_completion = max(timestamps)
                 current_time = datetime.now(timezone.utc)
-                if max_complete_level > 12:
-                    self.level.npcs_state_registry.restore_registry(
-                        dict(
-                            filter(
-                                lambda d: d["timestamp"] == most_recent_completion,
-                                day_completions,
-                            )
-                        )[NPC_STATE_REGISTRY_UPDATE_EVENT]
-                    )
 
                 # Check if the newest timestamp is more than 12 hours ago
                 time_difference = (
@@ -640,28 +684,32 @@ class Game:
                         "Last daily task completion is less than 12 hours ago."
                     )
                 else:
-                    xplat.log(
-                        f"Login successful: Time since last level completion: {time_difference:.2f} hours"
-                    )
+                    if (
+                        __debug__
+                    ):  # Only log() debug information if running in debug mode
+                        xplat.log(
+                            f"Login successful: Time since last level completion: {time_difference:.2f} hours"
+                        )
             self.set_round(max_complete_level + 1)
             self.check_hat_condition()  # in levels above 2, the player should wear a hat unless it's version 3
 
-        xplat.log(f"Game version {self.game_version}")
+        if __debug__:  # Only log() debug information if running in debug mode
+            xplat.log(f"Game version {self.game_version}")
         self.send_telemetry("player_login", {"token": self.token})
 
         return self.round_config
-
+    
     def set_round(self, round_no: int) -> None:
         self.round = round_no
-        self.took_bath = False
-        self.goggles_delta = 0.0
+        self.player.took_bath = False
+        self.player.goggle_time = 0.0
         self.level.cow_herding_count = 0
         # if config for given round number not found, use first one as fall back
         if self.game_version < 0:
             self.game_version = DEBUG_MODE_VERSION
 
         if self.round > 7:
-            self.level.npcs_state_registry.enable()
+            self.npc_sickness_mgr.enable()
 
         # round end menu needs to get config from previous round,
         # since when this menu is activated it's already new round
@@ -670,10 +718,27 @@ class Game:
 
         if round_no <= len(self.rounds_config[self.game_version]):
             self.round_config = self.rounds_config[self.game_version][round_no - 1]
+            # ---- compat layer for new assessment keys ----
+            # Map end_assessment_* -> social_identity_assessment_* (usa lo stesso menu a fine round)
+            if "end_assessment_menu" in self.round_config:
+                self.round_config["social_identity_assessment_menu"] = \
+                    self.round_config.get("end_assessment_menu", False)
+            if "end_assessment_timestamp" in self.round_config:
+                self.round_config["social_identity_assessment_timestamp"] = \
+                    self.round_config.get("end_assessment_timestamp", [])
+
+            # Map start_assessment_* -> (nuovo trigger dedicato)
+            # Non esiste un menu specifico nel codice attuale: creiamo un flag/timestamp “interni”
+            # e poi lo gestiamo nel game loop per aprire SocialIdentityAssessmentMenu all’inizio round.
+            self.round_config["_start_assessment_menu"] = self.round_config.get("start_assessment_menu", False)
+            self.round_config["_start_assessment_timestamp"] = self.round_config.get("start_assessment_timestamp", [])
+            # ----------------------------------------------
+
         else:
-            print(
-                f"ERROR: No config found for round {round_no}! Using config for round 1."
-            )
+            if __debug__:  # Only print debug information if running in debug mode
+                print(
+                    f"ERROR: No config found for round {round_no}! Using config for round 1."
+                )
             self.round_config = self.rounds_config[self.game_version][0]
         self.level.round_config_changed(self.round_config)
         if self.inventory_menu:
@@ -692,12 +757,14 @@ class Game:
 
         self.round_end_timer = 0.0
         self.ROUND_END_TIME_IN_MINUTES = self.round_config["level_duration"] / 60  # 15
-        print(self.round_config["level_name_text"])
+        if __debug__:  # Only print debug information if running in debug mode
+            print(self.round_config["level_name_text"])
 
     def increment_round(self) -> None:
         if self.round < 13:
             self.set_round(self.round + 1)
-            print("incremented round to {}".format(self.round))
+            if __debug__:  # Only print debug information if running in debug mode
+                print("incremented round to {}".format(self.round))
 
     def switch_state(self, state: GameState) -> None:
         self.set_cursor(CustomCursor.ARROW)
@@ -953,6 +1020,10 @@ class Game:
             if not self.level.cutscene_animation.active:
                 self.level.overlay.box_keybindings.toggle_visibility()
             return True
+        elif event.type == SHOW_BATH_INFO:
+            if not self.level.cutscene_animation.active:
+                self.level.overlay.bath_info.toggle_visibility()
+            return True
         elif event.type == SET_CURSOR:
             self.set_cursor(event.cursor)
             return True
@@ -972,6 +1043,10 @@ class Game:
 
             if not is_game_paused or is_first_frame:
                 if self.level.cutscene_animation.active:
+                    # If cutscene animation is active and box keybindings are visible, then hide them
+                    if self.level.overlay.box_keybindings.visible:
+                        self.level.overlay.box_keybindings.visible = False
+
                     event = pygame.key.get_pressed()
                     if (
                         event[pygame.K_RSHIFT]
@@ -1010,12 +1085,16 @@ class Game:
                     elif (
                         self.round == 7
                         and self.round_end_timer > _ENABLE_SICKNESS_TSTAMP
-                        and not self.level.npcs_state_registry.enabled
+                        and not self.npc_sickness_mgr.is_enabled()
                     ):
                         self.round_config["healthbar"] = True
                         self.round_config["sickness"] = True
-                        self.npc_sickness_mgr.apply_sickness_enable_to_existing_npcs()
-                        self.level.npcs_state_registry.enable()
+                        self.npc_sickness_mgr.enable()
+                    elif (
+                        self.round >= 8  # Bath info available immediately from round 8
+                        and not self.level.overlay.bath_info.enabled
+                    ):
+                        self.level.overlay.bath_info.enable()
                     elif self._can_notify_initial_gov_statement:
                         self._has_displayed_initial_gov_statement = True
                         self.notification_menu.set_message(
@@ -1113,6 +1192,12 @@ class Game:
                         # set to empty not to repeat infinitely
                         self.round_config["resource_allocation_text"] = ""
                         self.round_config["resource_allocation_timestamp"] = []
+                    elif self._can_start_start_assessment_seq:
+                        # consuma il timestamp per non ripetersi
+                        self.round_config["_start_assessment_timestamp"] = self.round_config["_start_assessment_timestamp"][1:]
+                        # Usa il SocialIdentityAssessmentMenu anche per lo start (finché non esiste un menu dedicato)
+                        self.switch_state(GameState.SOCIAL_IDENTITY_ASSESSMENT)
+
 
             self.sickness_man.update_ply_sickness()
             self.npc_sickness_mgr.update_npc_status()
@@ -1131,19 +1216,16 @@ class Game:
                 self.all_sprites.update(dt)
 
             if self.player.has_goggles:
-                self.goggles_delta += dt
-            # this draw duplicates the same call in level.py, but without it, dialog box won't be visible
+                self.player.goggle_time += dt
+            # this draw call handles dialogues
             self.all_sprites.draw(
                 self.level.camera,
                 is_game_paused,
+                self.player.has_goggles,
+                self.current_state == GameState.PLAY,
             )
 
             FBLITTER.blit_all()
-
-            # Apply blur effect only if the player has goggles equipped
-            if self.player.has_goggles and self.current_state == GameState.PLAY:
-                surface = pygame.transform.box_blur(self.display_surface, _BLUR_FACTOR)
-                FBLITTER.schedule_blit(surface, (0, 0))
 
             # Into and Tutorial
             self.show_intro_msg()
