@@ -216,7 +216,7 @@ window._HTTP_HANDLER.post = function * post(
             headers = {}
 
         if self.is_emscripten:
-            # TODO: prob need async io run call here
+            # TODO: prob need asyncio run call here
             return await self._emscripten_get(url, headers)
         else:
             return await self._default_get(url, headers)
@@ -244,7 +244,7 @@ window._HTTP_HANDLER.post = function * post(
             headers["Content-Type"] = "application/json"
 
         if self.is_emscripten:
-            # TODO: probably need async io run call here
+            # TODO: probably need asyncio run call here
             return await self._emscripten_post(url, headers, data)
         else:
             return await self._default_post(url, headers, data)

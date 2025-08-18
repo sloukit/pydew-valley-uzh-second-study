@@ -184,7 +184,9 @@ class NPC(NPCBase):
         ]
         return adjacent_untilled_tiles
 
-    def assign_outfit_ingroup(self, ingroup_40p_hat_necklace_appearance: bool = False):
+    def assign_outfit_ingroup(
+        self, ingroup_40p_hat_necklace_appearance: bool = False
+    ) -> None:
         # 40% of the ingroup NPCs should wear a hat and a necklace, and 60% of the ingroup NPCs should only wear the hat
         if self.study_group == StudyGroup.INGROUP:
             # # if npc has special features set in Tiled map using 'features' custom field - do not change it
