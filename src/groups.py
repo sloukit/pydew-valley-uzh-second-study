@@ -37,7 +37,7 @@ class PersistentSpriteGroup(pygame.sprite.Group):
     def empty(self) -> None:
         """Empty the Group, but keep persistent Sprites.
 
-        This is useful for clearing the Group while keeping certain Sprites
+        This is useful for clearing the Group while keeping persistent Sprites.
         """
         super().empty()
         self.add(*self._persistent_sprites)
