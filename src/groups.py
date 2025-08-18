@@ -89,6 +89,5 @@ class AllSprites(PersistentSpriteGroup):
                 ):
                     sprite.draw(self.display_surface, camera.apply(sprite), camera)
 
-
         FBLITTER.reset_to_default_surf()
         FBLITTER.blit_all()
