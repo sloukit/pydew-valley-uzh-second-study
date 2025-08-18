@@ -83,11 +83,12 @@ class AllSprites(PersistentSpriteGroup):
         for sprite in sorted_sprites:
             # including game_paused condition to prevent drawing overlaps between tutorial text boxes and menus
             # Text boxes are UI elements and should be drawn regardless of camera/world position.
-            if not game_paused and sprite.z > 0:
+            if not game_paused and sprite.z >= 0:
                 if sprite.z >= Layer.TEXT_BOX or sprite.hitbox_rect.colliderect(
                     camera_rect
                 ):
                     sprite.draw(self.display_surface, camera.apply(sprite), camera)
+
 
         FBLITTER.reset_to_default_surf()
         FBLITTER.blit_all()
