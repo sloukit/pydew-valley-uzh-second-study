@@ -269,6 +269,12 @@ class Entity(CollideableSprite, ABC):
                 ),
                 self.focused_indicator.rect.size,
             )
+            # keep hitbox_rect in sync so the indicator is considered by camera culling
+            if hasattr(self.focused_indicator, "hitbox_rect") and self.focused_indicator.hitbox_rect:
+                self.focused_indicator.hitbox_rect.update(self.focused_indicator.rect.topleft, self.focused_indicator.rect.size)
+            else:
+                # ensure hitbox_rect exists for compatibility
+                self.focused_indicator.hitbox_rect = self.focused_indicator.rect.copy()
 
     def update(self, dt: float):
         self._do_common_update_ops()

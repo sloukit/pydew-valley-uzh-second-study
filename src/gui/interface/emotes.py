@@ -72,6 +72,9 @@ class EmoteBox(EmoteBoxBase):
     def pos(self, value: tuple[float, float]):
         self._pos = value
         self.rect.update(self._pos, self.rect.size)
+        # keep hitbox in sync so camera culling uses the correct position
+        if hasattr(self, "hitbox_rect") and self.hitbox_rect:
+            self.hitbox_rect.update(self.rect.topleft, self.rect.size)
 
     def on_finish_animation(self, func: Callable[[], None]):
         self.__on_finish_animation_funcs.append(func)
@@ -319,6 +322,9 @@ class EmoteWheel(EmoteWheelBase):
             (self._pos[0] - self.rect.width / 2, self._pos[1] - self.rect.height / 2),
             self.rect.size,
         )
+        # keep hitbox in sync so camera culling uses the correct position
+        if hasattr(self, "hitbox_rect") and self.hitbox_rect:
+            self.hitbox_rect.update(self.rect.topleft, self.rect.size)
 
     @property
     def visible(self):
