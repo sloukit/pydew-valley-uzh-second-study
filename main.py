@@ -378,13 +378,14 @@ class Game:
         tstamp = f"notify_{cfg_id}_timestamp"
         if tstamp in self.round_config:
             self.round_config[tstamp] = []
-            
+
     @property
     def _can_start_start_assessment_seq(self):
         return (
             self.round_config.get("_start_assessment_menu", False)
             and len(self.round_config.get("_start_assessment_timestamp", [])) > 0
-            and self.round_end_timer > self.round_config["_start_assessment_timestamp"][0]
+            and self.round_end_timer
+            > self.round_config["_start_assessment_timestamp"][0]
         )
 
     # region Notification and event checks
@@ -525,8 +526,10 @@ class Game:
         return (
             self.round_config.get("_start_assessment_menu", False)
             and len(self.round_config.get("_start_assessment_timestamp", [])) > 0
-            and self.round_end_timer > self.round_config["_start_assessment_timestamp"][0]
+            and self.round_end_timer
+            > self.round_config["_start_assessment_timestamp"][0]
         )
+
     def _notify(self, message: str, id_to_empty: str):
         self.notification_menu.set_message(message)
         self.switch_state(GameState.NOTIFICATION_MENU)
@@ -698,7 +701,7 @@ class Game:
         self.send_telemetry("player_login", {"token": self.token})
 
         return self.round_config
-    
+
     def set_round(self, round_no: int) -> None:
         self.round = round_no
         self.player.took_bath = False
@@ -721,17 +724,23 @@ class Game:
             # ---- compat layer for new assessment keys ----
             # Map end_assessment_* -> social_identity_assessment_* (usa lo stesso menu a fine round)
             if "end_assessment_menu" in self.round_config:
-                self.round_config["social_identity_assessment_menu"] = \
+                self.round_config["social_identity_assessment_menu"] = (
                     self.round_config.get("end_assessment_menu", False)
+                )
             if "end_assessment_timestamp" in self.round_config:
-                self.round_config["social_identity_assessment_timestamp"] = \
+                self.round_config["social_identity_assessment_timestamp"] = (
                     self.round_config.get("end_assessment_timestamp", [])
+                )
 
             # Map start_assessment_* -> (nuovo trigger dedicato)
             # Non esiste un menu specifico nel codice attuale: creiamo un flag/timestamp “interni”
             # e poi lo gestiamo nel game loop per aprire SocialIdentityAssessmentMenu all’inizio round.
-            self.round_config["_start_assessment_menu"] = self.round_config.get("start_assessment_menu", False)
-            self.round_config["_start_assessment_timestamp"] = self.round_config.get("start_assessment_timestamp", [])
+            self.round_config["_start_assessment_menu"] = self.round_config.get(
+                "start_assessment_menu", False
+            )
+            self.round_config["_start_assessment_timestamp"] = self.round_config.get(
+                "start_assessment_timestamp", []
+            )
             # ----------------------------------------------
 
         else:
@@ -1194,10 +1203,11 @@ class Game:
                         self.round_config["resource_allocation_timestamp"] = []
                     elif self._can_start_start_assessment_seq:
                         # consuma il timestamp per non ripetersi
-                        self.round_config["_start_assessment_timestamp"] = self.round_config["_start_assessment_timestamp"][1:]
+                        self.round_config["_start_assessment_timestamp"] = (
+                            self.round_config["_start_assessment_timestamp"][1:]
+                        )
                         # Usa il SocialIdentityAssessmentMenu anche per lo start (finché non esiste un menu dedicato)
                         self.switch_state(GameState.SOCIAL_IDENTITY_ASSESSMENT)
-
 
             self.sickness_man.update_ply_sickness()
             self.npc_sickness_mgr.update_npc_status()
