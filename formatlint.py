@@ -2,11 +2,13 @@ import os
 import shutil
 import subprocess
 import sys
+from typing import Literal
 
-# Define ANSI escape codes for colors
+# Define ANSI escape codes for colors and styling
 GRAY = "\033[90m"
 RED = "\033[91m"
 GREEN = "\033[92m"
+BOLD = "\033[1m"
 RESET = "\033[0m"
 
 # Define the commands to be run
@@ -17,7 +19,7 @@ commands = [
 ]
 
 
-def find_ruff_executable():
+def find_ruff_executable() -> Literal["ruff", "ruff.exe"]:
     """Find the ruff executable, handling Windows .exe extension."""
     # Try to find ruff in PATH
     ruff_path = shutil.which("ruff")
@@ -84,7 +86,7 @@ def run_command(command, description, index):
         )
     else:
         print(
-            f"{GRAY}└── {RED}{description} [{command}] failed with return code {return_code}.{RESET}"
+            f"{GRAY}└── {BOLD}{RED}{description} [{command}] failed with return code {return_code}.{RESET}"
         )
 
     return return_code
@@ -94,7 +96,7 @@ def main():
     script_dir = os.path.dirname(os.path.realpath(__file__))
     os.chdir(script_dir)
 
-    # Print diagnostic information
+    # Prints diagnostic information
     print(f"{GRAY}Platform: {sys.platform}{RESET}")
     print(f"{GRAY}Working directory: {os.getcwd()}{RESET}")
 

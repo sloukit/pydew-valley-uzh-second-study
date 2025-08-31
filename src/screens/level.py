@@ -1,6 +1,5 @@
 import gc
 import random
-import time
 import warnings
 from collections.abc import Callable
 from functools import partial
@@ -25,6 +24,7 @@ from src.enums import (
 from src.events import (
     DIALOG_ADVANCE,
     DIALOG_SHOW,
+    SHOW_BATH_INFO,
     SHOW_BOX_KEYBINDINGS,
     START_QUAKE,
     VOLCANO_ERUPTION,
@@ -33,14 +33,13 @@ from src.events import (
 from src.exceptions import GameMapWarning
 from src.fblitter import FBLITTER
 from src.groups import AllSprites, PersistentSpriteGroup
-from src.gui.health_bar import PLAYER_HP, PLAYER_HP_STATE, PLAYER_IS_SICK
 from src.gui.interface.dialog import DialogueManager
 from src.gui.interface.emotes import NPCEmoteManager, PlayerEmoteManager
 from src.gui.scene_animation import SceneAnimation
 from src.npc.behaviour.context import NPCSharedContext
 from src.npc.npc import NPC
-from src.npc.npcs_state_registry import NpcsStateRegistry
 from src.npc.setup import AIData
+from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.game_time import GameTime
 from src.overlay.overlay import Overlay
 from src.overlay.sky import Rain, Sky
@@ -165,7 +164,7 @@ class Level:
         get_world_time: Callable[[], tuple[int, int]],
         dialogue_manager: DialogueManager,
         send_telemetry: Callable[[str, dict[str, Any]], None],
-        reference_npc_in_mgr: Callable[[int, NPC], None],
+        npc_mgr: NPCSicknessManager,
     ) -> None:
         # main setup
         self.display_surface = pygame.display.get_surface()
@@ -173,7 +172,7 @@ class Level:
         self.save_file = save_file
         self.dialogue_manager = dialogue_manager
         self.send_telemetry = send_telemetry
-        self.reference_npc_in_mgr = reference_npc_in_mgr
+        self.npc_mgr = npc_mgr
 
         # cutscene
         # target_points = [(100, 100), (200, 200), (300, 100), (800, 900)]
@@ -223,11 +222,6 @@ class Level:
 
         self.controls = Controls
 
-        self.npcs_state_registry = NpcsStateRegistry(
-            self.current_map.name if self.current_map is not None else None,
-            self.send_telemetry,
-        )
-
         # level interactions
         self.get_round = get_set_round[0]
         self.set_round = get_set_round[1]
@@ -246,8 +240,6 @@ class Level:
             interact=self.interact,
             emote_manager=self.player_emote_manager,
             sounds=self.sounds,
-            hp=0,
-            bath_time=0,
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=get_game_version,
@@ -277,7 +269,7 @@ class Level:
             get_world_time,
             clock,
             round_config,
-            self.npcs_state_registry,
+            self.npc_mgr,
         )
         self.show_hitbox_active = False
         self.show_pf_overlay = False
@@ -373,9 +365,6 @@ class Level:
         # manual memory cleaning
         gc.collect()
 
-        # update current map for remembering dead npcs
-        self.npcs_state_registry.set_current_map_name(game_map)
-
         self.game_map = GameMap(
             selected_map=game_map,
             tilemap=self.tmx_maps[game_map],
@@ -397,8 +386,7 @@ class Level:
             save_file=self.save_file,
             round_config=self.round_config,
             get_game_version=self.get_game_version,
-            npcs_state_registry=self.npcs_state_registry,
-            reference_npc_in_mgr=self.reference_npc_in_mgr,
+            reference_npc_in_mgr=self.npc_mgr.add_npc,
             disable_minigame=self.can_disable_minigame,
             round_no=self.get_round(),
         )
@@ -484,7 +472,8 @@ class Level:
 
             self.current_minigame.start()
 
-    def activate_music(self):
+    def activate_music(self, _cutscene=False):
+        # _cutscene is used to prevent the volume from restarting after the volcano cutscene.
         volume = 0.1
         try:
             sound_data = load_data("volume.json")
@@ -494,9 +483,11 @@ class Level:
                 "sfx": 50,
             }
             save_data(sound_data, "volume.json")
+
         volume = sound_data["music"]
         # sfx = sound_data['sfx']
-        self.sounds["music"].set_volume(min((volume / 1000), 0.4))
+        if not _cutscene:
+            self.sounds["music"].set_volume(min((volume / 1000), 0.4))
         self.sounds["music"].play(-1)
 
     # plant collision
@@ -510,7 +501,11 @@ class Level:
 
     def warp_to_map(self, map_name: str):
         if map_name == "bathhouse":
-            self.send_telemetry("bath_taken", {})
+            if not (self.player.is_bath_sick or self.player.is_sick):
+                self.player.get_bath_sick(self.get_rnd_timer())
+                self.send_telemetry("bath_taken", {"has_effect": True})
+            else:
+                self.send_telemetry("bath_taken", {"has_effect": False})
             self.bubble_mgr.start()
         if map_name == "minigame":
             self.cow_herding_count += 1
@@ -534,17 +529,7 @@ class Level:
         else:
             if map_name == "bathhouse":
                 if self.round_config["accessible_bathhouse"]:
-                    if self.player.hp < 80:
-                        self.player.bathstat = True
-                        self.send_telemetry(
-                            PLAYER_HP_STATE,
-                            {
-                                PLAYER_HP: self.player.hp,
-                                PLAYER_IS_SICK: self.player.is_sick,
-                            },
-                        )
-                        self.player.bath_time = time.time()
-                    self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
+                    # self.player.emote_manager.show_emote(self.player, "sad_sick_ani")
                     self.load_map(self.current_map, from_map=map_name)
             else:
                 warnings.warn(f'Error loading map: Map "{map_name}" not found')
@@ -727,6 +712,13 @@ class Level:
         elif event.type == VOLCANO_ERUPTION:
             self.volcano(True)
 
+        elif event.type == SHOW_BATH_INFO:
+            if __debug__:
+                print(
+                    f"SHOW_BATH_INFO event received: enabled={self.overlay.bath_info.enabled}, visible={self.overlay.bath_info.visible}"
+                )
+            self.overlay.bath_info.toggle_visibility()
+
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.switch_screen(GameState.PAUSE)
@@ -752,6 +744,14 @@ class Level:
         if self.controls.DEBUG_END_ROUND.click:
             self.switch_screen(GameState.ROUND_END)
 
+        # Bath info display available in all game modes (not just debug)
+        if self.controls.SHOW_BATH_INFO.click:
+            if __debug__:
+                print(
+                    f"B key pressed: bath_info enabled={self.overlay.bath_info.enabled}"
+                )
+            post_event(SHOW_BATH_INFO)
+
         if self.get_game_version() == DEBUG_MODE_VERSION:
             # if self.controls.DEBUG_QUAKE.click:
             #     post_event(START_QUAKE, duration=2.0, debug=True)
@@ -763,9 +763,6 @@ class Level:
 
             if self.controls.DEBUG_APPLY_DAMAGE.click:
                 self.overlay.health_bar.apply_damage(1)
-
-            if self.controls.DEBUG_PLAYER_TASK.click:
-                self.switch_screen(GameState.PLAYER_TASK)
 
             if self.controls.DEBUG_SELF_ASSESSMENT.click:
                 self.switch_screen(GameState.SELF_ASSESSMENT)
@@ -1147,7 +1144,6 @@ class Level:
             else:
                 self.volcano_sprite.kill()
 
-            self.volcano_sounds[self.sound_no].set_volume(0.7)
             self.volcano_sounds[self.sound_no].play()
 
             self.volcano_erupt_count += 1
@@ -1164,7 +1160,7 @@ class Level:
             self.volcano_erupt_count = 0
             self.sound_no = 0
 
-            self.activate_music()  # Activating the old music
+            self.activate_music(_cutscene=True)  # Activating the old music
 
             if self.volcano_event:
                 self.intro_shown.pop(Map.VOLCANO)
@@ -1228,13 +1224,6 @@ class Level:
         self.map_transition.activate()
         self.start_transition()
 
-    def decay_health(self, dt):
-        if self.player.is_sick:
-            if int(self.get_rnd_timer()) % 300 < 150:  # first 2.5 mins decrease health
-                self.overlay.health_bar.apply_damage(90 / 150 * dt)
-            else:  # second 2.5mins increase health again
-                self.overlay.health_bar.apply_health(90 / 150 * dt)
-
     def check_map_exit(self):
         if not self.map_transition:
             for warp_hitbox in self.player_exit_warps:
@@ -1242,7 +1231,11 @@ class Level:
                     warp_hitbox.name != "bathhouse"
                     or self.round_config["accessible_bathhouse"]
                 ):
-                    print(warp_hitbox.name)
+                    if (
+                        __debug__
+                    ):  # Only print debug information if running in debug mode
+                        print(f"Player hit warp: {warp_hitbox.name}")
+
                     self.map_transition.reset = partial(
                         self.warp_to_map, warp_hitbox.name
                     )
@@ -1336,12 +1329,13 @@ class Level:
 
     def draw_overlay(self):
         self.sky.display(self.get_round(), self.get_rnd_timer())
-        self.overlay.display()
+        # The volcano erupts in round 7, so round 8+ is post-volcano
+        post_volcano = self.volcano_erupt_once or self.get_round() >= 8
+        self.overlay.display(self.get_round(), post_volcano)
 
     def draw(self, dt: float, move_things: bool):
-        self.player.hp = self.overlay.health_bar.hp
         # self.display_surface.fill((130, 168, 132))
-        self.all_sprites.draw(self.camera, False)
+        self.all_sprites.draw(self.camera, False, self.player.has_goggles)
 
         self.draw_pf_overlay()
         self.draw_hitboxes()
@@ -1454,8 +1448,6 @@ class Level:
                 ),
                 dt,
             )
-            if self.round_config.get("sickness", False) and self.player.is_sick:
-                self.decay_health(dt)
 
         self.draw(dt, move_things)
 

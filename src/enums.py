@@ -33,9 +33,6 @@ class ItemToUse(IntEnum):
     SEED = 1
 
 
-_FT_SERIALISED_STRINGS = ("none", "axe", "hoe", "water", "corn_seed", "tomato_seed")
-
-
 class GameState(IntEnum):
     MAIN_MENU = 0
     PLAY = 1

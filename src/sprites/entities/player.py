@@ -29,13 +29,17 @@ import pygame  # noqa
 from src.controls import Controls
 from src.enums import FarmingTool, InventoryResource, ItemToUse, StudyGroup
 from src.events import OPEN_INVENTORY, START_QUAKE, post_event
-from src.gui.health_bar import PLAYER_HP, PLAYER_HP_STATE, PLAYER_IS_SICK
 from src.gui.interface.emotes import PlayerEmoteManager
 from src.npc.bases.npc_base import NPCBase
 from src.savefile import SaveFile
 from src.settings import (
     DEBUG_MODE_VERSION,
     MAX_DT,
+    MAX_HP,
+    PLAYER_HP_STATE_STR,
+    PLAYER_HP_STR,
+    PLAYER_IS_BSICK_STR,
+    PLAYER_IS_SICK_STR,
     POS_MIN_LOG_INTERVAL,
     POS_MOVE_LOG_INTERVAL,
     Coordinate,
@@ -78,8 +82,6 @@ class Player(Character):
         interact: Callable[[], None],
         emote_manager: PlayerEmoteManager,
         sounds: SoundDict,
-        hp: int,
-        bath_time: float,
         save_file: SaveFile,
         round_config: dict[str, Any],
         get_game_version: Callable[[], int],
@@ -96,6 +98,11 @@ class Player(Character):
         )
 
         self.is_sick = False
+        self.is_bath_sick = False
+        self.took_bath = False
+        self.goggle_time = 0.0
+        self.bath_start_t = 0
+
         self.round_config = round_config
         self.get_game_version = get_game_version
         self.send_telemetry = send_telemetry
@@ -108,7 +115,6 @@ class Player(Character):
         self.blocked = False
         self.paused = False
         self.interact = interact
-        self.bath_time = bath_time
         self.has_goggles = save_file.has_goggles
         self.has_necklace = save_file.has_necklace
         self.has_hat = save_file.has_hat
@@ -131,7 +137,7 @@ class Player(Character):
         # sounds
         self.sounds = sounds
 
-        self.hp = hp
+        self.hp = MAX_HP
         # self.created_time = time.time() # used for speed unclear why
         # self.delay_time_speed = 0.25
         self.dt_speed = 0
@@ -160,16 +166,43 @@ class Player(Character):
         self.is_sick = True
         self.emote_manager.show_emote(self, "sad_sick_ani")
         self.send_telemetry(
-            PLAYER_HP_STATE,
-            {PLAYER_HP: self.hp, PLAYER_IS_SICK: self.is_sick},
+            PLAYER_HP_STATE_STR,
+            {
+                PLAYER_HP_STR: self.hp,
+                PLAYER_IS_SICK_STR: self.is_sick,
+                PLAYER_IS_BSICK_STR: self.is_bath_sick,
+            },
         )
+
+    def get_bath_sick(self, round_time):
+        self.is_bath_sick = True
+        self.took_bath = True
+        self.bath_start_t = round_time
+
+        self.emote_manager.show_emote(self, "sad_sick_ani")
+        self.send_telemetry(
+            PLAYER_HP_STATE_STR,
+            {
+                PLAYER_HP_STR: self.hp,
+                PLAYER_IS_SICK_STR: self.is_sick,
+                PLAYER_IS_BSICK_STR: self.is_bath_sick,
+            },
+        )
+
+    def set_hp(self, hp):
+        self.hp = pygame.math.clamp(hp, 0, MAX_HP)
 
     def recover(self):
         self.is_sick = False
-        self.hp = 100
+        self.is_bath_sick = False
+        self.set_hp(MAX_HP)
         self.send_telemetry(
-            PLAYER_HP_STATE,
-            {PLAYER_HP: self.hp, PLAYER_IS_SICK: self.is_sick},
+            PLAYER_HP_STATE_STR,
+            {
+                PLAYER_HP_STR: self.hp,
+                PLAYER_IS_SICK_STR: self.is_sick,
+                PLAYER_IS_BSICK_STR: self.is_bath_sick,
+            },
         )
 
     def save(self):
@@ -188,7 +221,7 @@ class Player(Character):
         self.save_file.save()
 
     def use_tool(self, option: ItemToUse):
-        if self.is_sick and random() < 0.3:
+        if (self.is_sick or self.is_bath_sick) and random() < 0.5:
             return
         super().use_tool(option)
 
@@ -225,7 +258,8 @@ class Player(Character):
             ):
                 proceed = False
 
-        print(current_seed)
+        if __debug__:  # Only print debug information if running in debug mode
+            print(current_seed)
         return current_seed
 
     def handle_controls(self):
@@ -282,7 +316,7 @@ class Player(Character):
                 )
 
             # tool use
-            if self.controls.USE.click and not self.is_sick:
+            if self.controls.USE.click:
                 self.tool_active = True
                 self.frame_index = 0
                 self.direction = pygame.Vector2()
@@ -294,7 +328,7 @@ class Player(Character):
                 self.current_seed = self.get_next_seed(self.current_seed)
 
             # seed used
-            if self.controls.PLANT.click and not self.is_sick:
+            if self.controls.PLANT.click:
                 self.use_tool(ItemToUse.SEED)
 
             # interact
@@ -385,7 +419,7 @@ class Player(Character):
         # self.is_sick = True
         # override for debugging sickness. In the future, might be better to create a debug keybind for this
 
-        if self.is_sick:
+        if self.is_sick or self.is_bath_sick:
             # Store the original image temporarily
             original_image = self.image
             try:

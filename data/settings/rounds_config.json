@@ -141,6 +141,7 @@
             ],
             "self_assessment_menu": true,
             "end_assessment_timestamp": [
+            "end_assessment_timestamp": [
                 895
             ],
             "end_assessment_menu": true,
@@ -229,6 +230,7 @@
                 660
             ],
             "self_assessment_menu": true,
+            "end_assessment_timestamp": [
             "end_assessment_timestamp": [
                 895
             ],
@@ -320,6 +322,7 @@
             ],
             "self_assessment_menu": true,
             "end_assessment_timestamp": [
+            "end_assessment_timestamp": [
                 895
             ],
             "end_assessment_menu": true,
@@ -408,6 +411,7 @@
                 660
             ],
             "self_assessment_menu": true,
+            "end_assessment_timestamp": [
             "end_assessment_timestamp": [
                 895
             ],
@@ -503,6 +507,7 @@
             ],
             "self_assessment_menu": true,
             "end_assessment_timestamp": [
+            "end_assessment_timestamp": [
                 895
             ],
             "end_assessment_menu": true,
@@ -591,6 +596,7 @@
                 660
             ],
             "self_assessment_menu": true,
+            "end_assessment_timestamp": [
             "end_assessment_timestamp": [
                 895
             ],
@@ -719,6 +725,7 @@
                 20
             ],
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -815,6 +822,7 @@
             "notify_gov_statement_timestamp": [
                 20
             ],
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
@@ -914,6 +922,7 @@
                 20
             ],
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1012,6 +1021,7 @@
             "notify_gov_statement_timestamp": [
                 20
             ],
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
@@ -1113,6 +1123,7 @@
                 20
             ],
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         }
@@ -1168,6 +1179,7 @@
                 780
             ],
             "self_assessment_menu": true,
+            "end_assessment_timestamp": [
             "end_assessment_timestamp": [
                 895
             ],
@@ -1259,6 +1271,7 @@
             ],
             "self_assessment_menu": true,
             "end_assessment_timestamp": [
+            "end_assessment_timestamp": [
                 895
             ],
             "end_assessment_menu": true,
@@ -1347,6 +1360,7 @@
                 660
             ],
             "self_assessment_menu": true,
+            "end_assessment_timestamp": [
             "end_assessment_timestamp": [
                 895
             ],
@@ -1438,6 +1452,7 @@
             ],
             "self_assessment_menu": true,
             "end_assessment_timestamp": [
+            "end_assessment_timestamp": [
                 895
             ],
             "end_assessment_menu": true,
@@ -1526,6 +1541,7 @@
                 660
             ],
             "self_assessment_menu": true,
+            "end_assessment_timestamp": [
             "end_assessment_timestamp": [
                 895
             ],
@@ -1621,6 +1637,7 @@
             ],
             "self_assessment_menu": true,
             "end_assessment_timestamp": [
+            "end_assessment_timestamp": [
                 895
             ],
             "end_assessment_menu": true,
@@ -1709,6 +1726,7 @@
                 660
             ],
             "self_assessment_menu": true,
+            "end_assessment_timestamp": [
             "end_assessment_timestamp": [
                 895
             ],
@@ -1837,6 +1855,7 @@
                 20
             ],
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -1933,6 +1952,7 @@
             "notify_gov_statement_timestamp": [
                 20
             ],
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
@@ -2031,6 +2051,7 @@
             "notify_gov_statement_timestamp": [
                 20
             ],
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
@@ -2131,6 +2152,7 @@
                 20
             ],
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2230,6 +2252,7 @@
             "notify_gov_statement_timestamp": [
                 20
             ],
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
@@ -2895,6 +2918,7 @@
                 20
             ],
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind stark sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, muss weiterhin und zu jeder Zeit die Spezialbrille getragen und t\u00e4glich das Bad genommen werden. Diese Schutzmassnahmen sind f\u00fcr alle verpflichtend. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
@@ -2983,6 +3007,7 @@
             "notify_gov_statement_timestamp": [
                 20
             ],
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
@@ -3073,6 +3098,7 @@
             "notify_gov_statement_timestamp": [
                 20
             ],
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs sind weiterhin sp\u00fcrbar: Viele Mikas haben sich infiziert und einige sind gestorben. Um sich selbst und andere Mikas zu sch\u00fctzen, wird weiterhin empfohlen, zu jeder Zeit die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen. Diese Schutzmassnahmen werden allen empfohlen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
@@ -3165,11 +3191,12 @@
                 20
             ],
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true
         },
         {
-            "level_name_text": "Level 12",
+            "level_name_text": "Level 13",
             "level_duration": 900,
             "town_area": true,
             "farm_area": true,
@@ -3348,6 +3375,7 @@
             "notify_gov_statement_timestamp": [
                 20
             ],
+            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
             "ingroup_40p_hat_necklace_appearance": true,
             "outgroup_npcs_identical_appearance": true

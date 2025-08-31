@@ -1,7 +1,7 @@
 import pygame
 
 from src.fblitter import FBLITTER
-from src.npc.npcs_state_registry import NpcsStateRegistry
+from src.npc_sickness_mgr import NPCSicknessManager
 from src.settings import OVERLAY_POSITIONS
 from src.support import get_translated_string, import_font, import_image
 
@@ -10,10 +10,10 @@ RED = "Red"
 
 
 class DeadNpcsBox:
-    def __init__(self, npcs_state_registry: NpcsStateRegistry):
+    def __init__(self, npc_mgr: NPCSicknessManager):
         # setup
         self.display_surface = pygame.display.get_surface()
-        self.npcs_state_registry = npcs_state_registry
+        self.npc_mgr = npc_mgr
         self.img_size = (15, 20)
         self.image = pygame.transform.scale(
             import_image("images/ui/grave.png"), self.img_size
@@ -31,7 +31,7 @@ class DeadNpcsBox:
         self.rect.topleft = OVERLAY_POSITIONS["dead_npcs_box"]
 
     def display(self):
-        if not self.npcs_state_registry.is_enabled():
+        if not self.npc_mgr.is_enabled():
             return
 
         background_color = RED
@@ -68,11 +68,11 @@ class DeadNpcsBox:
         # )
         self.draw_img_surface(
             dead_ingroup_members_rect.topright,
-            self.npcs_state_registry.get_ingroup_deaths_amount(),
+            self.npc_mgr.count_dead(include_igrp=True, include_outgrp=False),
         )
         self.draw_img_surface(
             dead_outgroup_members_rect.topright,
-            self.npcs_state_registry.get_outgroup_deaths_amount(),
+            self.npc_mgr.count_dead(include_igrp=False, include_outgrp=True),
         )
 
     def draw_img_surface(self, start_img_topleft, amount):

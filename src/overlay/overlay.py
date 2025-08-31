@@ -6,7 +6,8 @@ import pygame
 from src.enums import ClockVersion
 from src.fblitter import FBLITTER
 from src.gui.health_bar import HealthProgressBar
-from src.npc.npcs_state_registry import NpcsStateRegistry
+from src.npc_sickness_mgr import NPCSicknessManager
+from src.overlay.bath_info import BathInfo
 from src.overlay.box_keybindings import BoxKeybindings, BoxKeybindingsLabel
 from src.overlay.clock import Clock
 from src.overlay.dead_npcs_box import DeadNpcsBox
@@ -25,14 +26,15 @@ class Overlay:
         get_world_time: Callable[[None], tuple[int, int]],
         clock: pygame.time.Clock,
         round_config: dict[str, Any],
-        npcs_state_registry: NpcsStateRegistry,
+        npc_mgr: NPCSicknessManager,
     ) -> None:
         # general setup
         self.display_surface = pygame.display.get_surface()
         self.player = entity
 
         self.box_keybindings = BoxKeybindings()
-        self.dead_npcs_box = DeadNpcsBox(npcs_state_registry)
+        self.dead_npcs_box = DeadNpcsBox(npc_mgr)
+        self.bath_info = BathInfo()
 
         # imports
         self.item_frames = item_frames
@@ -40,7 +42,7 @@ class Overlay:
         self.visible = True
 
         # ui objects
-        self.health_bar = HealthProgressBar(100)
+        self.health_bar = HealthProgressBar(self.player)
 
         self.clock = Clock(game_time, get_world_time, ClockVersion.DIGITAL)
         self.FPS = FPS(clock)
@@ -50,7 +52,7 @@ class Overlay:
         self.round_config = round_config
         self.is_debug_mode_version: bool = False
 
-    def display(self):
+    def display(self, current_round: int = 1, post_volcano: bool = False):
         if not self.visible:
             return
 
@@ -68,7 +70,7 @@ class Overlay:
 
         # Box keybindings label display
         self.box_keybindings_label.display()
-        self.box_keybindings.draw(self.display_surface)
+        self.box_keybindings.draw(self.display_surface, current_round, post_volcano)
 
         # tool
         tool_surf = self.item_frames[self.player.get_current_tool_string()]
@@ -83,3 +85,6 @@ class Overlay:
         # health bar
         if self.round_config.get("healthbar", False):
             self.health_bar.draw(self.display_surface, self.player.in_outgroup)
+
+        # bath info display
+        self.bath_info.display(current_round)

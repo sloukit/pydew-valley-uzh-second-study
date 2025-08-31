@@ -61,7 +61,8 @@ def send_telemetry(encoded_jwt: str, payload: dict) -> None:
     """Send telemetry to the backend, asynchronously."""
     # TODO: If needed, we can restructure this to do async callbacks
     # as well, in case we need to react to this telemetry being sent.
-    xplat.log(f"Sending telemetry: {payload}")
+    if __debug__:  # Only log() debug information if running in debug mode
+        xplat.log(f"Sending telemetry: {payload}")
     url = f"{SERVER_URL}/telemetry"
     headers = {
         "Authorization": f"Bearer {encoded_jwt}",
@@ -69,12 +70,13 @@ def send_telemetry(encoded_jwt: str, payload: dict) -> None:
     asyncio.create_task(xplat.post_request(url, headers, payload))
 
 
-async def _get_npc_status_internal(encoded_jwt: str, callback: Callable) -> dict | None:
+async def _npc_events_server_call(encoded_jwt: str, callback: Callable) -> dict | None:
     url = f"{SERVER_URL}/telemetry/npc_status/"
     headers = {"Authorization": f"Bearer {encoded_jwt}"}
     callback(await xplat.get_request(url, headers))
 
 
-def get_npc_status(encoded_jwt: str, callback: Callable) -> None:
-    xplat.log("Retrieving NPC status...")
-    asyncio.create_task(_get_npc_status_internal(encoded_jwt, callback))
+def get_npc_events(encoded_jwt: str, callback: Callable) -> None:
+    if __debug__:  # Only log() debug information if running in debug mode
+        xplat.log("Retrieving NPC status...")
+    asyncio.create_task(_npc_events_server_call(encoded_jwt, callback))

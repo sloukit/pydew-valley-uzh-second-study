@@ -10,7 +10,8 @@ For more information, please contact s.kittelberger[at]psychologie.uzh.ch.
 
 ## Setup Instructions
 
-This project requires Python 3.12. (Python 3.13 may cause issues, and free-threaded Python is not supported.)
+This project requires Python 3.12. (Python 3.13 may cause issues, and free-threaded Python is **<ins>not</ins>** supported.)\
+PyPy is also unsupported.
 
 1. **Clone this repository:**
     ```bash

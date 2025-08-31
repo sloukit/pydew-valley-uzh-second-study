@@ -3,16 +3,13 @@ import random
 import pygame
 
 from src.fblitter import FBLITTER
-from src.settings import SCALE_FACTOR
+from src.settings import MAX_HP, SCALE_FACTOR
 from src.support import import_image
-
-PLAYER_HP = "player_hp"
-PLAYER_IS_SICK = "player_is_sick"
-PLAYER_HP_STATE = "player_hp_state"
 
 
 class HealthProgressBar:
-    def __init__(self, hp):
+    def __init__(self, player):
+        self.player = player
         self.pos = (80, 26)
 
         # storing all three cat images
@@ -47,9 +44,6 @@ class HealthProgressBar:
         )
         self.hp_rect.inflate_ip(0, -16)
 
-        # health points
-        self.hp = hp  # health points
-        self.max_hp = hp
         # self.per_width_hp will be substract / added as per intensity.
 
         # shake
@@ -63,7 +57,7 @@ class HealthProgressBar:
         }
 
     def render(self, screen, outgroup=False):
-        health_percent = self.hp / self.max_hp
+        health_percent = self.player.hp / MAX_HP
         # shake
         if health_percent <= 0.3:
             offset = (
@@ -112,14 +106,8 @@ class HealthProgressBar:
         FBLITTER.schedule_blit(cat_img, cat_rect.move(offset))
         # screen.blit(cat_img, (cat_rect.x + offset[0], cat_rect.y + offset[1]))
 
-    def apply_damage(self, intensity):
-        self.hp = pygame.math.clamp(self.hp - intensity, 0, self.max_hp)
-
-    def apply_health(self, intensity):
-        self.hp = pygame.math.clamp(self.hp + intensity, 0, self.max_hp)
-
     def change_color(self):
-        t = self.hp / self.max_hp
+        t = self.player.hp / MAX_HP
         if t >= 0.5:
             factor = 1 - (t - 0.5) * 2
             self.color = self.colors["Green"].lerp(self.colors["Yellow"], factor**1.5)
