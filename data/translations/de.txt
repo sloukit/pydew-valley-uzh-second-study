@@ -243,6 +243,11 @@ end_assessment_q3@@Wie wirksam ist es Ihrer Meinung nach als Mika {name} das Bad
 end_assessment_q4@@Die Rothüte würden es übertrieben finden wenn ich als Mika {name} die Spezialbrille trage.
 end_assessment_q5@@Die Rothüte würden es übertrieben finden wenn ich als Mika {name} das Bad nehme.
 
+start_assessment_left_info@@Trifft überhaupt nicht zu
+start_assessment_right_info@@Trifft genau zu
+start_assessment_q1@@Ich als Mika {name} bin mir sicher, dass ich es schaffen kann, die Spezialbrille zu tragen.
+start_assessment_q2@@Ich als Mika {name} bin mir sicher, dass ich es schaffen kann, das Bad zu nehmen.
+
 # Tutorial
 
 welcome@@Wilkommen!

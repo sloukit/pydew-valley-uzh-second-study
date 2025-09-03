@@ -247,6 +247,11 @@ end_assessment_q1@@In your opinion as Mika {name}, how effective is taking the b
 end_assessment_q2@@The Redhats would find it inappropriate if I, as Mika {name}, wore the goggles.
 end_assessment_q1@@The Redhats would find it inappropriate if I, as Mika {name}, took the bath.
 
+start_assessment_left_info@@Does not apply at all
+start_assessment_right_info@@Applies exactly
+start_assessment_q1@@As Mika {name}, I am confident that I can manage to wear the goggles.
+start_assessment_q2@@As Mika {name}, I am confident that I can manage to take the bath.
+
 # Tutorial
 
 welcome@@Welcome!

@@ -117,6 +117,10 @@ class Controls(Control, Enum):
         pygame.K_y,
         "Open end assessment menu",
     )
+    DEBUG_START_ASSESSMENT = (
+        pygame.K_v,
+        "Open start assessment menu",
+    )
     DEBUG_NOTIFICATION_MENU = (pygame.K_n, "Open notification menu")
     DEBUG_PLAYER_RECEIVES_HAT = (pygame.K_j, "Player receives hat")
     DEBUG_PLAYER_RECEIVES_NECKLACE = (pygame.K_k, "Player receives necklace")

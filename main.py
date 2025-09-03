@@ -30,6 +30,7 @@ from src.enums import (
     SelfAssessmentDimension,
     SocialIdentityAssessmentDimension,
     EndAssessmentDimension,
+    StartAssessmentDimension,
 )
 from src.events import (
     DIALOG_ADVANCE,
@@ -60,6 +61,7 @@ from src.screens.self_assessment_menu import SelfAssessmentMenu
 from src.screens.shop import ShopMenu
 from src.screens.social_identity_assessment import SocialIdentityAssessmentMenu
 from src.screens.end_assessment import EndAssessmentMenu
+from src.screens.start_assessment import StartAssessmentMenu
 from src.screens.switch_to_outgroup_menu import OutgroupMenu
 from src.settings import (
     DEBUG_MODE_VERSION,
@@ -347,6 +349,15 @@ class Game:
             self.player,
         )
 
+        self.start_assessment_menu = StartAssessmentMenu(
+            partial(self.send_telemetry_and_play, "start_assessment"),
+            (
+                StartAssessmentDimension.SEFFGOGGLES,
+                StartAssessmentDimension.SEFFBATH,
+            ),
+            self.player,
+        )
+
         self.notification_menu = NotificationMenu(
             self.switch_state,
             "This is a very long Test Message with German characters: üß",
@@ -371,6 +382,7 @@ class Game:
             GameState.SELF_ASSESSMENT: self.self_assessment_menu,
             GameState.SOCIAL_IDENTITY_ASSESSMENT: self.social_identity_assessment_menu,
             GameState.END_ASSESSMENT: self.end_assessment_menu,
+            GameState.START_ASSESSMENT: self.start_assessment_menu,
             GameState.NOTIFICATION_MENU: self.notification_menu,
         }
         self.current_state = GameState.MAIN_MENU
@@ -451,6 +463,14 @@ class Game:
             len(self.round_config.get("end_assessment_timestamp", [])) > 0
             and self.round_end_timer
             > self.round_config["end_assessment_timestamp"][0]
+        )
+    
+    @property
+    def _can_start_start_assessment_seq(self):
+        return (
+            len(self.round_config.get("start_assessment_timestamp", [])) > 0
+            and self.round_end_timer
+            > self.round_config["start_assessment_timestamp"][0]
         )
 
     @property
@@ -1122,6 +1142,14 @@ class Game:
                             ]
                         )
                         self.switch_state(GameState.END_ASSESSMENT)
+                    elif self._can_start_start_assessment_seq:
+                        # remove first timestamp from list not to repeat infinitely
+                        self.round_config["start_assessment_timestamp"] = (
+                            self.round_config["start_assessment_timestamp"][
+                                1:
+                            ]
+                        )
+                        self.switch_state(GameState.START_ASSESSMENT)
                     elif self._can_start_hat_sequence:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["player_hat_sequence_timestamp"] = (

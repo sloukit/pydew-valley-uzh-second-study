@@ -54,6 +54,7 @@ class GameState(IntEnum):
     NOTIFICATION_MENU = 15
     SOCIAL_IDENTITY_ASSESSMENT = 16
     END_ASSESSMENT = 17
+    START_ASSESSMENT = 18
 
 
 # NOTE : DO NOT pay attention to anything the IDE might complain about in this class, as the enum generation mechanisms
@@ -578,3 +579,7 @@ class EndAssessmentDimension(IntEnum):
     EFFBATH = 2
     NORMGOGGLES = 3
     NORMBATH = 4
+
+class StartAssessmentDimension(IntEnum):
+    SEFFGOGGLES = 0
+    SEFFBATH = 1
