@@ -602,7 +602,7 @@
             ],
             "social_identity_assessment_menu": true,
             "end_assessment_timestamp": [
-                5
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [],
@@ -701,7 +701,7 @@
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
-                10
+                25
             ],
             "start_assessment_menu": true,
             "minigame": false,
