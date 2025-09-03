@@ -53,6 +53,7 @@ class GameState(IntEnum):
     SELF_ASSESSMENT = 14
     NOTIFICATION_MENU = 15
     SOCIAL_IDENTITY_ASSESSMENT = 16
+    END_ASSESSMENT = 17
 
 
 # NOTE : DO NOT pay attention to anything the IDE might complain about in this class, as the enum generation mechanisms
@@ -570,3 +571,7 @@ class SocialIdentityAssessmentDimension(IntEnum):
     INGROUP = 0
     OUTGROUP = 1
     MIKA = 2
+
+class EndAssessmentDimension(IntEnum):
+    RISK = 0
+    EFFGOGGLES = 1

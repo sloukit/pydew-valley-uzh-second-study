@@ -235,10 +235,14 @@ box info player task@@How to make money:|Digging the soil, planting seeds,|water
 
 social_identity_assessment_left_info@@Not at all
 social_identity_assessment_right_info@@Very much
-
 social_identity_assessment_q1@@I am closer to the Red Hats.
 social_identity_assessment_q2@@I am closer to the Hornlings.
 social_identity_assessment_q3@@I identify myself to the Mika {name}.
+
+end_assessment_left_info@@Not at all likely
+end_assessment_right_info@@Very likely
+end_assessment_q1@@How likely do you think it is that you, as Mika {name}, will become infected with volcanic plague in the next round?
+end_assessment_q2@@In your opinion as Mika {name}, how effective are the goggles against infection with volcanic disease?
 
 # Tutorial
 

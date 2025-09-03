@@ -235,6 +235,11 @@ social_identity_assessment_q1@@Ich gehöre zur Gruppe der Rothüte.
 social_identity_assessment_q2@@Ich gehöre zur Gruppe der Hornlinge.
 social_identity_assessment_q3@@Ich identifiziere mich mit Mika {name}.
 
+end_assessment_left_info@@überhaupt nicht wirksam
+end_assessment_right_info@@sehr wirksam
+end_assessment_q1@@Für wie wahrscheinlich halten Sie es, dass Sie als Mika {name} sich in der nächsten Runde mit Vulkanseuche infizieren werden?
+end_assessment_q2@@Wie wirksam ist Ihrer Meinung nach als Mika {name} die Spezialbrille gegen die Ansteckung mit Vulkanseuche?
+
 # Tutorial
 
 welcome@@Wilkommen!

@@ -770,6 +770,9 @@ class Level:
             if self.controls.DEBUG_SOCIAL_IDENTITY_ASSESSMENT.click:
                 self.switch_screen(GameState.SOCIAL_IDENTITY_ASSESSMENT)
 
+            if self.controls.DEBUG_END_ASSESSMENT.click:
+                self.switch_screen(GameState.END_ASSESSMENT)
+
             if self.controls.DEBUG_NOTIFICATION_MENU.click:
                 self.switch_screen(GameState.NOTIFICATION_MENU)
 
