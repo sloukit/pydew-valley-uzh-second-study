@@ -214,8 +214,8 @@ class EndAssessmentMenu(AbstractMenu):
         )
 
         translations_map: dict[int, str] = {
-            0: f"end_assessment_q{q_index}_left",
-            6: f"end_assessment_q{q_index}_right",
+            0: "end_assessment_left_info",
+            6: "end_assessment_right_info",
         }
 
         for i in range(len(self._end_assessment_buttons)):

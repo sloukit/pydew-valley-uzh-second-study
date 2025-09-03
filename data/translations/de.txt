@@ -237,6 +237,16 @@ social_identity_assessment_q3@@Ich identifiziere mich mit Mika {name}.
 
 end_assessment_left_info@@überhaupt nicht wirksam
 end_assessment_right_info@@sehr wirksam
+end_assessment_q1_left@@aaa
+end_assessment_q1_right@@bbb
+end_assessment_q2_left@@ccc
+end_assessment_q2_right@@ddd
+end_assessment_q3_left@@eee
+end_assessment_q3_right@@fff
+end_assessment_q4_left@@ggg
+end_assessment_q4_right@@hhh
+end_assessment_q5_left@@iii
+end_assessment_q5_right@@jjj
 end_assessment_q1@@Für wie wahrscheinlich halten Sie es, dass Sie als Mika {name} sich in der nächsten Runde mit Vulkanseuche infizieren werden?
 end_assessment_q2@@Wie wirksam ist Ihrer Meinung nach als Mika {name} das Tragen der Spezialbrille gegen die Ansteckung mit Vulkanseuche?
 end_assessment_q3@@Wie wirksam ist es Ihrer Meinung nach als Mika {name} das Bad gegen die Ansteckung mit Vulkanseuche zu nehmen?
