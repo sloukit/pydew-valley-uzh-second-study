@@ -340,6 +340,9 @@ class Game:
             (
                 EndAssessmentDimension.RISK,
                 EndAssessmentDimension.EFFGOGGLES,
+                EndAssessmentDimension.EFFBATH,
+                EndAssessmentDimension.NORMGOGGLES,
+                EndAssessmentDimension.NORMBATH,
             ),
             self.player,
         )

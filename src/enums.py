@@ -575,3 +575,6 @@ class SocialIdentityAssessmentDimension(IntEnum):
 class EndAssessmentDimension(IntEnum):
     RISK = 0
     EFFGOGGLES = 1
+    EFFBATH = 2
+    NORMGOGGLES = 3
+    NORMBATH = 4

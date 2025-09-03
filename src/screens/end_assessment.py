@@ -24,7 +24,6 @@ from src.sprites.entities.player import Player
 from src.support import get_translated_string as get_translated_msg
 from src.support import import_font, resource_path
 
-
 class _EndAssessmentButton(AbstractButton):
     _name: str
     _selected: bool
@@ -154,7 +153,7 @@ class EndAssessmentMenu(AbstractMenu):
 
         self._surface = None
 
-        self.font_title = import_font(48, "font/LycheeSoda.ttf")
+        self.font_title = import_font(30, "font/LycheeSoda.ttf")
 
         self.setup()
 
