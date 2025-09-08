@@ -72,7 +72,7 @@ class EmoteBox(EmoteBoxBase):
     def pos(self, value: tuple[float, float]):
         self._pos = value
         self.rect.update(self._pos, self.rect.size)
-        # keep hitbox in sync so camera culling uses the correct position
+        # synchronize the hitbox to the camera - updates to the correct position [^1]
         if hasattr(self, "hitbox_rect") and self.hitbox_rect:
             self.hitbox_rect.update(self.rect.topleft, self.rect.size)
 
@@ -322,7 +322,7 @@ class EmoteWheel(EmoteWheelBase):
             (self._pos[0] - self.rect.width / 2, self._pos[1] - self.rect.height / 2),
             self.rect.size,
         )
-        # keep hitbox in sync so camera culling uses the correct position
+        # synchronize the hitbox to the camera - updates to the correct position [^1]
         if hasattr(self, "hitbox_rect") and self.hitbox_rect:
             self.hitbox_rect.update(self.rect.topleft, self.rect.size)
 
@@ -474,3 +474,12 @@ class PlayerEmoteManager(EmoteManager):
         else:
             for func in self.__on_emote_wheel_closed_funcs:
                 func()
+
+
+# Footnotes for explanations:
+# [1] - From testing, it seems that the camera would check culling colisions based on
+# "World-Space" (present in the game world instead of being fixed on screen - Not UI)
+# instead of checking the "Screen-Space" (fixed on screen - UI). This would prevent
+# the UI elements and certain layers from the rendering. By updating the hitbox
+# position, we bypass the issue and still let the culling work proprely.
+# (This is not a fix, just a workaround)
