@@ -120,6 +120,17 @@ class NPC(NPCBase):
         # but not sure how to set it :-(
         self.behaviour_tree_context.allowed_seeds = seed_types
 
+    def teleport(self, pos: tuple[float, float]):
+        """
+        Moves the Player rect directly to the specified point without checking
+        for collision
+        """
+        self.rect.update(
+            (pos[0] - self.rect.width / 2, pos[1] - self.rect.height / 2),
+            self.rect.size,
+        )
+        self.hitbox_rect.center = self.rect.center
+
     def get_personal_soil_area_tiles(self, tile_type: str) -> list[tuple[int, int]]:
         """
         Get the soil area that the NPC is responsible for (row of farmable tiles)

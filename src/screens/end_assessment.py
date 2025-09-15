@@ -317,17 +317,21 @@ class EndAssessmentMenu(AbstractMenu):
                     text_key = (
                         f"end_assessment_q{self.current_dimension_index + 1}_right"
                     )
-                # text_key: str = translations_map[i] if i in translations_map.keys() else ""
-                # if text_key:
                 text_surf = self.font.render(
                     get_translated_msg(text_key), False, "Black"
                 )
-                curr_button_pos = current_button.rect.midbottom
+                if i == 0:
+                    xpos = current_button.rect.bottomleft[0]
+                else:
+                    xpos = (
+                        current_button.rect.bottomright[0] - text_surf.get_frect().width
+                    )
+
                 FBLITTER.schedule_blit(
                     text_surf,
                     (
-                        curr_button_pos[0] - text_surf.get_frect().width / 2,
-                        curr_button_pos[1] + 10,
+                        xpos,
+                        current_button.rect.midbottom[1] + 10,
                     ),
                 )
 

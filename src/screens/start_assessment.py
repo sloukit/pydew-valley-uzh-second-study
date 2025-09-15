@@ -232,13 +232,17 @@ class StartAssessmentMenu(AbstractMenu):
                 text_surf = self.font.render(
                     get_translated_msg(text_key), False, "Black"
                 )
-                half_width_of_text = text_surf.get_frect().width / 2
-                current_button_bottom_left = current_button.rect.midbottom
+                if i == 0:
+                    xpos = current_button.rect.bottomleft[0]
+                else:
+                    xpos = (
+                        current_button.rect.bottomright[0] - text_surf.get_frect().width
+                    )
                 FBLITTER.schedule_blit(
                     text_surf,
                     (
-                        current_button_bottom_left[0] - half_width_of_text,
-                        current_button_bottom_left[1] + 10,
+                        xpos,
+                        current_button.rect.bottomleft[1] + 10,
                     ),
                 )
                 # self._surface.blit(
