@@ -23,13 +23,13 @@ import src.utils  # noqa [ to patch utf-8 on top of file without linting errors 
 from src import client, support, xplat
 from src.enums import (
     CustomCursor,
+    EndAssessmentDimension,
     GameState,
     InventoryResource,
     Map,
     ScriptedSequence,
     SelfAssessmentDimension,
     SocialIdentityAssessmentDimension,
-    EndAssessmentDimension,
     StartAssessmentDimension,
 )
 from src.events import (
@@ -49,6 +49,7 @@ from src.npc.behaviour.context import NPCSharedContext
 from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
+from src.screens.end_assessment import EndAssessmentMenu
 from src.screens.inventory import InventoryMenu, prepare_checkmark_for_buttons
 from src.screens.level import Level
 from src.screens.menu_main import MainMenu
@@ -60,7 +61,6 @@ from src.screens.player_task import PlayerTask
 from src.screens.self_assessment_menu import SelfAssessmentMenu
 from src.screens.shop import ShopMenu
 from src.screens.social_identity_assessment import SocialIdentityAssessmentMenu
-from src.screens.end_assessment import EndAssessmentMenu
 from src.screens.start_assessment import StartAssessmentMenu
 from src.screens.switch_to_outgroup_menu import OutgroupMenu
 from src.settings import (
@@ -461,10 +461,9 @@ class Game:
     def _can_start_end_assessment_seq(self):
         return (
             len(self.round_config.get("end_assessment_timestamp", [])) > 0
-            and self.round_end_timer
-            > self.round_config["end_assessment_timestamp"][0]
+            and self.round_end_timer > self.round_config["end_assessment_timestamp"][0]
         )
-    
+
     @property
     def _can_start_start_assessment_seq(self):
         return (
@@ -689,7 +688,7 @@ class Game:
                 self.jwt
             )  # load npc status (e.g., previous deaths etc.) from db
 
-            max_complete_level = 8  # debug, remove later
+            #max_complete_level = 6  # debug, remove later
 
             if len(day_completions) > 0:
                 timestamps = [
@@ -1137,17 +1136,13 @@ class Game:
                     elif self._can_start_end_assessment_seq:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["end_assessment_timestamp"] = (
-                            self.round_config["end_assessment_timestamp"][
-                                1:
-                            ]
+                            self.round_config["end_assessment_timestamp"][1:]
                         )
                         self.switch_state(GameState.END_ASSESSMENT)
                     elif self._can_start_start_assessment_seq:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["start_assessment_timestamp"] = (
-                            self.round_config["start_assessment_timestamp"][
-                                1:
-                            ]
+                            self.round_config["start_assessment_timestamp"][1:]
                         )
                         self.switch_state(GameState.START_ASSESSMENT)
                     elif self._can_start_hat_sequence:

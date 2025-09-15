@@ -573,12 +573,14 @@ class SocialIdentityAssessmentDimension(IntEnum):
     OUTGROUP = 1
     MIKA = 2
 
+
 class EndAssessmentDimension(IntEnum):
     RISK = 0
     EFFGOGGLES = 1
     EFFBATH = 2
     NORMGOGGLES = 3
     NORMBATH = 4
+
 
 class StartAssessmentDimension(IntEnum):
     SEFFGOGGLES = 0

@@ -24,6 +24,7 @@ from src.sprites.entities.player import Player
 from src.support import get_translated_string as get_translated_msg
 from src.support import import_font, resource_path
 
+
 class _StartAssessmentButton(AbstractButton):
     _name: str
     _selected: bool
@@ -126,12 +127,10 @@ class StartAssessmentMenu(AbstractMenu):
         self.start_assessment_button_h = SIA_BORDER_SIZE[1]
 
         self.start_assessment_button_wp = (
-            self.start_assessment_button_w
-            + self.start_assessment_button_padding
+            self.start_assessment_button_w + self.start_assessment_button_padding
         )
         self.start_assessment_button_hp = (
-            self.start_assessment_button_h
-            + self.start_assessment_button_padding
+            self.start_assessment_button_h + self.start_assessment_button_padding
         )
 
         self.box_center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -146,9 +145,7 @@ class StartAssessmentMenu(AbstractMenu):
         self._continue_button = None
         self._continue_button_text = get_translated_msg("continue")
 
-        self._start_assessment_buttons: list[
-            _StartAssessmentButton
-        ] = []
+        self._start_assessment_buttons: list[_StartAssessmentButton] = []
         self._start_assessment_results = {}
 
         self._surface = None
@@ -176,9 +173,7 @@ class StartAssessmentMenu(AbstractMenu):
     ):
         self._selected_start_assessment = start_assessment
         if self._selected_start_assessment is not None:
-            self._selected_scale = (
-                int(self._selected_start_assessment.text) + 1
-            )
+            self._selected_scale = int(self._selected_start_assessment.text) + 1
 
     def setup(self):
         padding = (16, 24)
@@ -227,9 +222,7 @@ class StartAssessmentMenu(AbstractMenu):
             current_button = self._start_assessment_buttons[i]
             current_button.move(
                 (
-                    self.box_center[0]
-                    + x_offset
-                    + self.start_assessment_button_wp * i,
+                    self.box_center[0] + x_offset + self.start_assessment_button_wp * i,
                     self.box_center[1] - self.start_assessment_button_h / 2,
                 )
             )
@@ -293,24 +286,16 @@ class StartAssessmentMenu(AbstractMenu):
         if name == self._continue_button.text:
             self._continue()
         elif (
-            name.isdigit()
-            and 0 <= int(name) <= len(self._start_assessment_buttons) - 1
+            name.isdigit() and 0 <= int(name) <= len(self._start_assessment_buttons) - 1
         ):
             if self.selected_start_assessment:
                 self.selected_start_assessment.deselect()
-            next_selected_start_assessment = (
-                self._start_assessment_buttons[int(name)]
-            )
-            if (
-                self.selected_start_assessment
-                == next_selected_start_assessment
-            ):
+            next_selected_start_assessment = self._start_assessment_buttons[int(name)]
+            if self.selected_start_assessment == next_selected_start_assessment:
                 self.selected_start_assessment = None
             else:
                 next_selected_start_assessment.select()
-                self.selected_start_assessment = (
-                    next_selected_start_assessment
-                )
+                self.selected_start_assessment = next_selected_start_assessment
 
     def button_setup(self):
         self._continue_button = _ReturnButton(self._continue_button_text)

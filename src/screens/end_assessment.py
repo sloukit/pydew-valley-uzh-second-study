@@ -114,16 +114,22 @@ class EndAssessmentMenu(AbstractMenu):
         self,
         return_func: Callable[[], None],
         selection: Iterable[EndAssessmentDimension],
-        player: Player
+        player: Player,
     ):
         self._player = player
         self._selection = tuple(selection)
-        super().__init__(title="", size=(SCREEN_WIDTH, SCREEN_HEIGHT)) # unneeded dummy data
+        super().__init__(
+            title="", size=(SCREEN_WIDTH, SCREEN_HEIGHT)
+        )  # unneeded dummy data
 
         self.button_top_margin = 32
         self.button_padding = 48
-        self.end_ass_button_wp = SIA_BORDER_SIZE[0] + self.button_padding # Button width
-        self.end_ass_button_hp = SIA_BORDER_SIZE[1] + self.button_padding # Button height
+        self.end_ass_button_wp = (
+            SIA_BORDER_SIZE[0] + self.button_padding
+        )  # Button width
+        self.end_ass_button_hp = (
+            SIA_BORDER_SIZE[1] + self.button_padding
+        )  # Button height
 
         self._return_func = return_func
 
@@ -135,11 +141,8 @@ class EndAssessmentMenu(AbstractMenu):
         self._continue_button = None
         self._continue_button_text = get_translated_msg("continue")
 
-        self._end_assessment_buttons: list[
-            _EndAssessmentButton
-        ] = []
+        self._end_assessment_buttons: list[_EndAssessmentButton] = []
         self._end_assessment_results = {}
-
 
         self.button_setup()
 
@@ -147,14 +150,12 @@ class EndAssessmentMenu(AbstractMenu):
         self.box_padding = (16, 24)
         self.box_size = (
             self.end_ass_button_wp * 7 + self.box_padding[0] * 2,
-            FONT_HEIGHT*3
+            FONT_HEIGHT * 3
             + self.end_ass_button_hp
             + self.box_padding[1] * 2
             + self._continue_button.rect.height
-            + self.button_top_margin
+            + self.button_top_margin,
         )
-
-
 
         self._surface = None
 
@@ -172,9 +173,7 @@ class EndAssessmentMenu(AbstractMenu):
     ):
         self._selected_end_assessment = end_assessment
         if self._selected_end_assessment is not None:
-            self._selected_scale = (
-                int(self._selected_end_assessment.text) + 1
-            )
+            self._selected_scale = int(self._selected_end_assessment.text) + 1
 
     def setup(self):
         self._surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
@@ -182,7 +181,10 @@ class EndAssessmentMenu(AbstractMenu):
         self._continue_button.move(
             (
                 self.box_center[0] - self._continue_button.rect.width / 2,
-                self.box_center[1] + self.box_size[1]/2 - self.box_padding[1] - self._continue_button.rect.height,
+                self.box_center[1]
+                + self.box_size[1] / 2
+                - self.box_padding[1]
+                - self._continue_button.rect.height,
             )
         )
 
@@ -191,7 +193,7 @@ class EndAssessmentMenu(AbstractMenu):
 
     def get_question_by_selection(self):
         description: str = get_translated_msg(
-            f"end_assessment_q{self.current_dimension_index + 1}" # 1 offset for 1-indexing
+            f"end_assessment_q{self.current_dimension_index + 1}"  # 1 offset for 1-indexing
         )
         return description.format(name=self._player.name or "")
 
@@ -221,25 +223,15 @@ class EndAssessmentMenu(AbstractMenu):
     def button_action(self, name: str):
         if name == self._continue_button.text:
             self._continue()
-        elif (
-            name.isdigit()
-            and 0 <= int(name) <= len(self._end_assessment_buttons) - 1
-        ):
+        elif name.isdigit() and 0 <= int(name) <= len(self._end_assessment_buttons) - 1:
             if self.selected_end_assessment:
                 self.selected_end_assessment.deselect()
-            next_selected_end_assessment = (
-                self._end_assessment_buttons[int(name)]
-            )
-            if (
-                self.selected_end_assessment
-                == next_selected_end_assessment
-            ):
+            next_selected_end_assessment = self._end_assessment_buttons[int(name)]
+            if self.selected_end_assessment == next_selected_end_assessment:
                 self.selected_end_assessment = None
             else:
                 next_selected_end_assessment.select()
-                self.selected_end_assessment = (
-                    next_selected_end_assessment
-                )
+                self.selected_end_assessment = next_selected_end_assessment
 
     def button_setup(self):
         self._continue_button = _ReturnButton(self._continue_button_text)
@@ -283,9 +275,8 @@ class EndAssessmentMenu(AbstractMenu):
         # Blit each line with spacing
         y = 0
         for i, surf in enumerate(line_surfaces):
-            text_surface.blit(surf, ((max_width - surf.get_frect().width)/2, y))
+            text_surface.blit(surf, ((max_width - surf.get_frect().width) / 2, y))
             y += line_heights[i] + (line_spacing if i < len(line_surfaces) - 1 else 0)
-
 
         # description_text = self.get_description_text()
         # text_surface = pygame.Surface(
@@ -300,7 +291,7 @@ class EndAssessmentMenu(AbstractMenu):
 
         description_position = (
             self.box_center[0] - text_surface.get_frect().width / 2,
-            self.box_center[1] - self.box_size[1]/2 + self.box_padding[1]
+            self.box_center[1] - self.box_size[1] / 2 + self.box_padding[1],
         )
         FBLITTER.schedule_blit(
             text_surface,
@@ -308,24 +299,24 @@ class EndAssessmentMenu(AbstractMenu):
         )
         for i in range(len(self._end_assessment_buttons)):
             x_offset = (
-                -(len(self._end_assessment_buttons) - 1)
-                / 1.75
-                * self.end_ass_button_wp
+                -(len(self._end_assessment_buttons) - 1) / 1.75 * self.end_ass_button_wp
             )
             current_button = self._end_assessment_buttons[i]
             current_button.move(
                 (
-                    self.box_center[0]
-                    + x_offset
-                    + self.end_ass_button_wp * i,
-                    self.box_center[1] - SIA_BORDER_SIZE[1] / 2, # button height
+                    self.box_center[0] + x_offset + self.end_ass_button_wp * i,
+                    self.box_center[1] - SIA_BORDER_SIZE[1] / 2,  # button height
                 )
             )
             if i == 0 or i == 6:
                 if i == 0:
-                    text_key = f"end_assessment_q{self.current_dimension_index + 1}_left"
+                    text_key = (
+                        f"end_assessment_q{self.current_dimension_index + 1}_left"
+                    )
                 else:
-                    text_key = f"end_assessment_q{self.current_dimension_index + 1}_right"
+                    text_key = (
+                        f"end_assessment_q{self.current_dimension_index + 1}_right"
+                    )
                 # text_key: str = translations_map[i] if i in translations_map.keys() else ""
                 # if text_key:
                 text_surf = self.font.render(
