@@ -829,7 +829,7 @@ class Level:
         else:
             animation_name = "outgroup_gathering"
 
-        if sequence_type in _DECIDE_SEQUENCE: # there is some vote
+        if sequence_type in _DECIDE_SEQUENCE:  # there is some vote
             if not self.current_map == Map.TOWN and not self.map_transition:
                 self.prev_player_pos = cast(tuple[int, int], self.player.rect.center)
                 self.prev_map = self.current_map
@@ -855,7 +855,10 @@ class Level:
                     for npc in npcs:
                         npc.has_hat = True
                         npc.has_necklace = True
-                        if self.get_round() >= 7 and npc.behaviour_tree_context.adhering_to_measures:
+                        if (
+                            self.get_round() >= 7
+                            and npc.behaviour_tree_context.adhering_to_measures
+                        ):
                             npc.has_goggles = True
 
                 other_npcs = [
@@ -1036,9 +1039,12 @@ class Level:
 
                 if buy_list[0] == _YES_OR_NO[0]:
                     for npc in self.game_map.npcs:
-                        if npc.study_group == self.player.study_group and not npc.is_dead:
-                            if npc.has_goggles: #adherent
-                                buy_item = buy_list[0] # yes to goggles/bath
+                        if (
+                            npc.study_group == self.player.study_group
+                            and not npc.is_dead
+                        ):
+                            if npc.has_goggles:  # adherent
+                                buy_item = buy_list[0]  # yes to goggles/bath
                                 first_item_votes += 1
                             else:
                                 buy_item = buy_list[1]
@@ -1046,14 +1052,17 @@ class Level:
                             total_votes += 1
                             npc.emote_manager.show_emote(npc, buy_item)
                     winner_item = (
-                        buy_list[0] if first_item_votes > total_votes / 2 else buy_list[1]
+                        buy_list[0]
+                        if first_item_votes > total_votes / 2
+                        else buy_list[1]
                     )
 
-
-
-                else: # random choice for veggies
+                else:  # random choice for veggies
                     for npc in self.game_map.npcs:
-                        if npc.study_group == self.player.study_group and not npc.is_dead:
+                        if (
+                            npc.study_group == self.player.study_group
+                            and not npc.is_dead
+                        ):
                             # each NPC needs to vote
                             total_votes += 1
                             buy_item = random.choice(buy_list)
@@ -1068,12 +1077,16 @@ class Level:
                             first_item_votes += 1
 
                     winner_item = (
-                        buy_list[0] if first_item_votes > total_votes / 2 else buy_list[1]
+                        buy_list[0]
+                        if first_item_votes > total_votes / 2
+                        else buy_list[1]
                     )
                 payload = {}
                 payload["winner_item"] = winner_item
                 payload["total_votes"] = total_votes
-                payload["winner_votes"] = max(first_item_votes, total_votes-first_item_votes)
+                payload["winner_votes"] = max(
+                    first_item_votes, total_votes - first_item_votes
+                )
                 self.send_telemetry("groups_decision", payload)
 
                 # restore backup EmoteManager

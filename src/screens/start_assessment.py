@@ -235,7 +235,9 @@ class StartAssessmentMenu(AbstractMenu):
                 if i == 0:
                     xpos = current_button.rect.bottomleft[0]
                 else:
-                    xpos = current_button.rect.bottomright[0]-text_surf.get_frect().width
+                    xpos = (
+                        current_button.rect.bottomright[0] - text_surf.get_frect().width
+                    )
                 FBLITTER.schedule_blit(
                     text_surf,
                     (
