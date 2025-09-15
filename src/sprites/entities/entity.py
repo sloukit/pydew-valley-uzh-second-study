@@ -269,6 +269,18 @@ class Entity(CollideableSprite, ABC):
                 ),
                 self.focused_indicator.rect.size,
             )
+            # synchronize the hitbox to the camera - updates to the correct position [^1]
+            if (
+                hasattr(self.focused_indicator, "hitbox_rect")
+                and self.focused_indicator.hitbox_rect
+            ):
+                self.focused_indicator.hitbox_rect.update(
+                    self.focused_indicator.rect.topleft,
+                    self.focused_indicator.rect.size,
+                )
+            else:
+                # forces the hitbox_rect to exist for compatibility reasons
+                self.focused_indicator.hitbox_rect = self.focused_indicator.rect.copy()
 
     def update(self, dt: float):
         self._do_common_update_ops()
@@ -281,3 +293,12 @@ class Entity(CollideableSprite, ABC):
         self._do_common_update_ops()
         self.animate(dt)
         self.image = self._current_frame
+
+
+# Footnotes for explanations:
+# [1] - From testing, it seems that the camera would check culling colisions based on
+# "World-Space" (present in the game world instead of being fixed on screen - Not UI)
+# instead of checking the "Screen-Space" (fixed on screen - UI). This would prevent
+# the UI elements and certain layers from the rendering. By updating the hitbox
+# position, we bypass the issue and still let the culling work proprely.
+# (This is not a fix, just a workaround)
