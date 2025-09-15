@@ -235,10 +235,32 @@ box info player task@@How to make money:|Digging the soil, planting seeds,|water
 
 social_identity_assessment_left_info@@Not at all
 social_identity_assessment_right_info@@Very much
-
 social_identity_assessment_q1@@I am closer to the Red Hats.
 social_identity_assessment_q2@@I am closer to the Hornlings.
 social_identity_assessment_q3@@I identify myself to the Mika {name}.
+
+end_assessment_left_info@@Not at all likely
+end_assessment_right_info@@Very likely
+end_assessment_q1_left@@aaa
+end_assessment_q1_right@@bbb
+end_assessment_q2_left@@ccc
+end_assessment_q2_right@@ddd
+end_assessment_q3_left@@eee
+end_assessment_q3_right@@fff
+end_assessment_q4_left@@ggg
+end_assessment_q4_right@@hhh
+end_assessment_q5_left@@iii
+end_assessment_q5_right@@jjj
+end_assessment_q1@@How likely do you think it is that you, as Mika {name}, will become infected with volcanic plague in the next round?
+end_assessment_q2@@In your opinion as Mika {name}, how effective are the goggles against infection with volcanic disease?
+end_assessment_q1@@In your opinion as Mika {name}, how effective is taking the bath against infection with volcanic plague?
+end_assessment_q2@@The Redhats would find it inappropriate if I, as Mika {name}, wore the goggles.
+end_assessment_q1@@The Redhats would find it inappropriate if I, as Mika {name}, took the bath.
+
+start_assessment_left_info@@Does not apply at all
+start_assessment_right_info@@Applies exactly
+start_assessment_q1@@As Mika {name}, I am confident that I can manage to wear the goggles.
+start_assessment_q2@@As Mika {name}, I am confident that I can manage to take the bath.
 
 # Tutorial
 

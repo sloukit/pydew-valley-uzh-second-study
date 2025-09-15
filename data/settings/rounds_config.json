@@ -50,10 +50,12 @@
                 780
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -139,10 +141,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -227,10 +231,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -316,10 +322,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -404,10 +412,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -497,10 +507,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -585,8 +597,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [],
@@ -676,8 +692,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -772,8 +792,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -869,8 +893,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -967,8 +995,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -1066,8 +1098,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -1156,10 +1192,12 @@
                 780
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -1245,10 +1283,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -1333,10 +1373,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -1422,10 +1464,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -1510,10 +1554,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -1603,10 +1649,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -1691,8 +1739,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [],
@@ -1782,8 +1834,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -1878,8 +1934,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -1975,8 +2035,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -2073,8 +2137,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -2172,8 +2240,12 @@
                 720
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -2262,10 +2334,12 @@
                 780
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -2343,10 +2417,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -2425,10 +2501,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -2510,10 +2588,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -2594,10 +2674,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -2679,10 +2761,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
             ],
-            "end_assessment_menu": true,
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [],
+            "end_assessment_menu": false,
             "start_assessment_timestamp": [],
             "start_assessment_menu": false,
             "minigame": true,
@@ -2763,8 +2847,12 @@
                 660
             ],
             "self_assessment_menu": true,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [],
@@ -2850,8 +2938,12 @@
                 720
             ],
             "self_assessment_menu": false,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -2942,8 +3034,12 @@
                 720
             ],
             "self_assessment_menu": false,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -3035,8 +3131,12 @@
                 720
             ],
             "self_assessment_menu": false,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -3129,8 +3229,12 @@
                 720
             ],
             "self_assessment_menu": false,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
@@ -3224,109 +3328,18 @@
                 720
             ],
             "self_assessment_menu": false,
-            "end_assessment_timestamp": [
+            "social_identity_assessment_timestamp": [
                 895
+            ],
+            "social_identity_assessment_menu": true,
+            "end_assessment_timestamp": [
+                896
             ],
             "end_assessment_menu": true,
             "start_assessment_timestamp": [
                 25
             ],
             "start_assessment_menu": true,
-            "minigame": false,
-            "minigame_rooting_npcs": false,
-            "ingroup_introduction_text": "",
-            "ingroup_hat_necklace_introduction_text": "",
-            "ingroup_hat_introduction_text": "",
-            "narrative_text": "",
-            "outgroup_introduction_text": "",
-            "player_hat_sequence_timestamp": [],
-            "player_hat_sequence_text": "",
-            "ingroup_necklace_sequence_timestamp": [],
-            "ingroup_necklace_sequence_text": "",
-            "player_necklace_sequence_timestamp": [],
-            "player_necklace_sequence_text": "",
-            "player_birthday_sequence_timestamp": [],
-            "player_birthday_sequence_text": "",
-            "group_market_passive_player_sequence_timestamp": [],
-            "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "notify_gov_statement_timestamp": [
-                20
-            ],
-            "notify_gov_statement_text": "Die Folgen des Vulkanausbruchs haben nachgelassen. Dennoch kann man sich immer noch infizieren, andere anstecken und sterben. Die Regierung hat diese Risiken gegen die Einschr\u00e4nkungen durch die Schutzmassnahmen abgewogen und gibt nun keine Empfehlungen mehr ab. Ob man die Spezialbrille tr\u00e4gt oder das t\u00e4gliche Bad einnimmt, ist jedem Mika selbst \u00fcberlassen. Dr\u00fccke \"I\" um im Inventar deine Brille anzuziehen. In der Stadt findest du Wegschilder, die dich zum Badehaus leiten. Das Bad wirkt nur, wenn man es gesund nimmt. Dr\u00fccke \"B\" um zu sehen, wie effektiv die Spezialbrille und das Bad sind, um vor der Vulkanseuche zu sch\u00fctzen.",
-            "ingroup_40p_hat_necklace_appearance": true,
-            "outgroup_npcs_identical_appearance": true
-        },
-        {
-            "level_name_text": "Level 13",
-            "level_duration": 900,
-            "town_area": true,
-            "farm_area": true,
-            "forest_area": true,
-            "path_signs": true,
-            "goggles_signs": true,
-            "bathtub_signs": true,
-            "sign_interaction": true,
-            "notify_new_crop_timestamp": [
-                15
-            ],
-            "notify_new_crop_text": "Hurra! Du kannst jetzt Brokkoli pflanzen!",
-            "notify_questionnaire_timestamp": [],
-            "notify_questionnaire_text": "",
-            "notify_round_end_outgroup_timestamp": [],
-            "notify_round_end_outgroup_text": "",
-            "round_end_screen": true,
-            "crop_types_list": [
-                "tomato",
-                "corn",
-                "beetroot",
-                "carrot",
-                "eggplant",
-                "pumpkin",
-                "parsnip",
-                "cabbage",
-                "green bean",
-                "cauliflower",
-                "blue cabbage",
-                "wheat",
-                "blue star"
-            ],
-            "playable_outgroup": true,
-            "healthbar": true,
-            "accessible_bathhouse": true,
-            "sickness": true,
-            "inventory_goggles": true,
-            "statistics": false,
-            "government_character": true,
-            "inventory_tools": true,
-            "inventory_crops": true,
-            "inventory_harvest": true,
-            "walking": true,
-            "farming": true,
-            "market": true,
-            "emote_wheel": true,
-            "government_statistics": true,
-            "resource_allocation_timestamp": [
-                660
-            ],
-            "resource_allocation_text": "Verteile sie frei! Die Decken helfen bei K\u00e4lte.",
-            "resource_allocation_item_text": "10 Decken",
-            "character_introduction_timestamp": [],
-            "character_introduction_text": "",
-            "self_assessment_timestamp": [
-                180,
-                720
-            ],
-            "self_assessment_menu": false,
-            "end_assessment_timestamp": [
-                890
-            ],
-            "end_assessment_menu": false,
-            "start_assessment_timestamp": [
-                891
-            ],
-            "start_assessment_menu": false,
             "minigame": false,
             "minigame_rooting_npcs": false,
             "ingroup_introduction_text": "",

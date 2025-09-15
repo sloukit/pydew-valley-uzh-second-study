@@ -81,6 +81,8 @@ class BoxKeybindings:
             if post_volcano
             else "box info player task"
         )
+        inventory_key = "box info i post volcano" if post_volcano else "box info i"
+
         # Lower the task description by two lines (36 pixels) after volcano eruption
         self.info = [
             {
@@ -121,7 +123,7 @@ class BoxKeybindings:
             },
             {
                 "key": "I",
-                "descr": self.get_text("box info i"),
+                "descr": self.get_text(inventory_key),
                 "rel_pos": (10, 252),
                 "descr_pos": (55, 12),
             },
