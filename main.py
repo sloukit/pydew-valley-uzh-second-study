@@ -688,7 +688,7 @@ class Game:
                 self.jwt
             )  # load npc status (e.g., previous deaths etc.) from db
 
-            #max_complete_level = 6  # debug, remove later
+            # max_complete_level = 6  # debug, remove later
 
             if len(day_completions) > 0:
                 timestamps = [
