@@ -287,8 +287,8 @@ market_inactive_family@@Dein Familienclan versammelt sich zur täglichen Abstimm
 market_inactive_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Du darfst noch nicht mitentscheiden, da du noch kein Vollmitglied bist. Drücke die Leertaste, um fortzufahren.
 market_active_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 market_active_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
-market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
-market_active_post_eruption_friends@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln immer die Spezialbrille zu tragen und täglich das Bad zu nehmen umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+market_active_post_eruption_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln immer die Spezialbrille zu tragen und täglich das Bad zu nehmen umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 
 # Government statements
 
