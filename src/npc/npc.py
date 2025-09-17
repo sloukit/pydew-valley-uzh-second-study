@@ -281,9 +281,10 @@ class NPC(NPCBase):
     def update(self, dt):
         if self.is_dead:
             return
-        if (
-            NPCSharedContext.get_round() >= 7
-            and self.behaviour_tree_context.adhering_to_measures
+        if self.behaviour_tree_context.adhering_to_measures and (
+            NPCSharedContext.get_round() >= 8
+            or NPCSharedContext.get_round() == 7
+            and NPCSharedContext.get_rnd_timer() > 30
         ):
             self.has_goggles = True
         self.manage_sickness(dt)

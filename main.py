@@ -1095,6 +1095,8 @@ class Game:
                     ):
                         self.round_config["healthbar"] = True
                         self.round_config["sickness"] = True
+                        self.round_config["inventory_goggles"] = True
+                        self.round_config["accessible_bathhouse"] = True
                         self.npc_sickness_mgr.enable()
                     elif (
                         self.round >= 8  # Bath info available immediately from round 8
