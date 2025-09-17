@@ -294,8 +294,8 @@ market_active_post_eruption_friends@@Deine Freundesfarm versammelt sich zur täg
 
 initial_gov_statement@@Die Regierung in Mikahausen meldet sich: Der Vulkanausbruch hat uns Mikas schwer getroffen: Durch die giftigen Stoffe in der Luft kann über die Augen und die Haut die Vulkanseuche, eine ansteckende und tödliche Krankheit, ausgelöst werden. Alle Mikas sind betroffen. Deshalb müssen alle Mikas ab sofort und zu jeder Zeit eine Spezialbrille tragen und täglich ein spezielles Bad nehmen. Diese Schutzmassnahmen sind für alle verpflichtend. Die Spezialbrille findest du im Inventar (Taste I), das Bad ist in einem abgelegenen Haus im Südosten der Stadt.
 
-login_failed@@Anmeldung fehlgeschlagen.|Prüfen Sie, ob Sie Ihr Token richtig geschrieben haben.
-too_early_login@@Sie können sich momentan nicht in das Spiel einloggen.|Bitte kommen Sie morgen wieder.|Vielen Dank.
+login_failed@@Token ungültig.|Bitte prüfen Sie, ob Sie Ihren Token|richtig geschrieben haben.
+too_early_login@@Log-in aktuell nicht möglich.|Bitte beachten Sie, dass Sie frühestens|12 Stunden nach dem Ende der vorherigen|Runde wieder spielen können.
 
 died_in_group_members@@Gestorbene Rothüte:
 died_out_group_members@@Gestorbene Hornlinge:

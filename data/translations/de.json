@@ -241,8 +241,8 @@
     "market_active_post_eruption_family": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln immer die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
     "market_active_post_eruption_friends": "Deine Freundesfarm versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln immer die Spezialbrille zu tragen und t\u00e4glich das Bad zu nehmen umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
     "initial_gov_statement": "Die Regierung in Mikahausen meldet sich: Der Vulkanausbruch hat uns Mikas schwer getroffen: Durch die giftigen Stoffe in der Luft kann über die Augen und die Haut die Vulkanseuche, eine ansteckende und t\u00f6dliche Krankheit, ausgel\u00f6st werden. Alle Mikas sind betroffen. Deshalb m\u00fcssen alle Mikas ab sofort und zu jeder Zeit eine Spezialbrille tragen und t\u00e4glich ein spezielles Bad nehmen. Diese Schutzmassnahmen sind für alle verpflichtend. Die Spezialbrille findest du im Inventar (Taste I), das Bad ist in einem abgelegenen Haus im S\u00fcdosten der Stadt.",
-    "login_failed": "Anmeldung fehlgeschlagen.|Pr\u00fcfen Sie, ob Sie Ihr Token richtig geschrieben haben.",
-    "too_early_login": "Sie k\u00f6nnen sich momentan nicht in das Spiel einloggen.|Bitte kommen Sie morgen wieder.|Vielen Dank.",
+    "login_failed": "Token ung\u00fcltig.|Bitte pr\u00fcfen Sie, ob Sie Ihren Token|richtig geschrieben haben.",
+    "too_early_login": "Log-in aktuell nicht m\u00f6glich.|Bitte beachten Sie, dass Sie fr\u00fchestens|12 Stunden nach dem Ende der vorherigen|Runde wieder spielen k\u00f6nnen.",
     "died_in_group_members": "Gestorbene Roth\u00fcte:",
     "died_out_group_members": "Gestorbene Hornlinge:"
 }
