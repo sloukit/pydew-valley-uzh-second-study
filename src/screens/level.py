@@ -941,13 +941,14 @@ class Level:
             dialog_name = f"scripted_sequence_{sequence_type.value}"
             post_event(DIALOG_SHOW, dial=dialog_name)
 
-
     def limit_npcs_amount(self, npcs):
         counter: int = 0
         restricted_npcs = []
 
         # Try to find an NPC with a necklace first, needed for necklace sequence
-        necklace_npc = next((npc for npc in npcs if getattr(npc, "has_necklace", False)), None)
+        necklace_npc = next(
+            (npc for npc in npcs if getattr(npc, "has_necklace", False)), None
+        )
         if necklace_npc:
             restricted_npcs.append(necklace_npc)
             counter += 1
