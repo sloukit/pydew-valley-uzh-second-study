@@ -867,7 +867,7 @@ class Level:
                     if npc.study_group != active_group and not npc.is_dead
                 ]
             if sequence_type == ScriptedSequence.INGROUP_NECKLACE:
-                npc_in_center = random.choice(npcs)
+                npc_in_center = npcs[1]
                 npcs.remove(npc_in_center)
                 npcs.append(self.player)
             else:
@@ -941,14 +941,26 @@ class Level:
             dialog_name = f"scripted_sequence_{sequence_type.value}"
             post_event(DIALOG_SHOW, dial=dialog_name)
 
+
     def limit_npcs_amount(self, npcs):
         counter: int = 0
         restricted_npcs = []
+
+        # Try to find an NPC with a necklace first, needed for necklace sequence
+        necklace_npc = next((npc for npc in npcs if getattr(npc, "has_necklace", False)), None)
+        if necklace_npc:
+            restricted_npcs.append(necklace_npc)
+            counter += 1
+
         for npc in npcs:
-            if counter >= len(npcs) or counter == 4:
+            if counter == 4:
                 break
+            # Skip the necklace NPC if it's already added
+            if npc is necklace_npc:
+                continue
             restricted_npcs.append(npc)
             counter += 1
+
         return restricted_npcs
 
     def end_scripted_sequence(
