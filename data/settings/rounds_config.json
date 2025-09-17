@@ -81,8 +81,6 @@
             "group_market_passive_player_sequence_text": "market_inactive_family",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -172,8 +170,6 @@
             "group_market_passive_player_sequence_text": "market_inactive_family",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -260,8 +256,6 @@
             "group_market_passive_player_sequence_text": "market_inactive_family",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -351,8 +345,6 @@
             "group_market_passive_player_sequence_text": "market_inactive_family",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -443,8 +435,6 @@
                 600
             ],
             "group_market_active_player_sequence_text": "market_active_family",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -536,8 +526,6 @@
                 120
             ],
             "group_market_active_player_sequence_text": "market_active_family",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -624,12 +612,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 600
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_family",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -721,12 +707,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_family",
             "notify_gov_statement_timestamp": [
                 20
             ],
@@ -821,12 +805,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_family",
             "notify_gov_statement_timestamp": [
                 20
             ],
@@ -922,12 +904,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_family",
             "notify_gov_statement_timestamp": [
                 20
             ],
@@ -1024,12 +1004,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_family",
             "notify_gov_statement_timestamp": [
                 20
             ],
@@ -1127,12 +1105,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_family",
             "notify_gov_statement_timestamp": [
                 20
             ],
@@ -1223,8 +1199,6 @@
             "group_market_passive_player_sequence_text": "market_inactive_friends",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -1314,8 +1288,6 @@
             "group_market_passive_player_sequence_text": "market_inactive_friends",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -1402,8 +1374,6 @@
             "group_market_passive_player_sequence_text": "market_inactive_friends",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -1493,8 +1463,6 @@
             "group_market_passive_player_sequence_text": "market_inactive_friends",
             "group_market_active_player_sequence_timestamp": [],
             "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -1585,8 +1553,6 @@
                 600
             ],
             "group_market_active_player_sequence_text": "market_active_friends",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -1678,8 +1644,6 @@
                 120
             ],
             "group_market_active_player_sequence_text": "market_active_friends",
-            "market_active_post_eruption_timestamp": [],
-            "market_active_post_eruption_text": "",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -1766,12 +1730,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 600
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_friends",
             "notify_gov_statement_timestamp": [],
             "notify_gov_statement_text": "",
             "ingroup_40p_hat_necklace_appearance": true,
@@ -1863,12 +1825,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_friends",
             "notify_gov_statement_timestamp": [
                 20
             ],
@@ -1963,12 +1923,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_friends",
             "notify_gov_statement_timestamp": [
                 20
             ],
@@ -2064,12 +2022,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_friends",
             "notify_gov_statement_timestamp": [
                 20
             ],
@@ -2166,12 +2122,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_friends",
             "notify_gov_statement_timestamp": [
                 20
             ],
@@ -2269,12 +2223,10 @@
             "player_birthday_sequence_text": "",
             "group_market_passive_player_sequence_timestamp": [],
             "group_market_passive_player_sequence_text": "",
-            "group_market_active_player_sequence_timestamp": [],
-            "group_market_active_player_sequence_text": "",
-            "market_active_post_eruption_timestamp": [
+            "group_market_active_player_sequence_timestamp": [
                 120
             ],
-            "market_active_post_eruption_text": "Dein Familienclan versammelt sich zur t\u00e4glichen Abstimmung dar\u00fcber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Roth\u00fcte bist, darfst auch du abstimmen! Dr\u00fccke die Leertaste, um fortzufahren.",
+            "group_market_active_player_sequence_text": "market_active_post_eruption_friends",
             "notify_gov_statement_timestamp": [
                 20
             ],
