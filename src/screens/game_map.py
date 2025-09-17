@@ -1063,7 +1063,7 @@ class GameMap:
         # in version 1 and 2 of the game we remove hats for two npcs without special features
         elif self.get_game_version() in [1, 2]:
             if (
-                npc.npc_id not in [368, 372]
+                npc.npc_id not in [11, 368, 372]
                 and npc.has_hat
                 and self.number_of_hats_to_exclude > 0
             ):

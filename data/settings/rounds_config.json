@@ -557,6 +557,7 @@
             "accessible_bathhouse": false,
             "sickness": false,
             "inventory_goggles": false,
+            "volcanic_eruption": true,
             "government_character": true,
             "inventory_tools": true,
             "inventory_crops": true,
