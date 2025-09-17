@@ -23,7 +23,7 @@ class DeadNpcsBox:
         self.left = 20
         self.top = 50
 
-        width, height = 700, 55
+        width, height = 400, 55
         self.font = import_font(20, "font/LycheeSoda.ttf")
 
         self.rect = pygame.Rect(self.left, self.top, width, height)
