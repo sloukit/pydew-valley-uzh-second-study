@@ -16,8 +16,8 @@ class OutgroupMenu(GeneralMenu):
         switch_screen: Callable[[GameState], None],
         send_switch_telemetry: Callable[[], None],
     ):
-        options = ["Yes", "No"]
-        title = "Would you like to join the outgroup?\n(Warning: You cannot go back after switching.)"
+        options = ["Ja", "Nein"]
+        title = "Möchtest zu den Hornlingen wechseln?\nAchtung: Diese Entscheidung ist endgültig!"
         size = (400, 400)
 
         self.player = player
@@ -25,10 +25,10 @@ class OutgroupMenu(GeneralMenu):
         super().__init__(title, options, switch_screen, size)
 
     def button_action(self, text):
-        if "Yes" in text:
+        if "Ja" in text:
             self.player.study_group = StudyGroup.OUTGROUP
             self.send_switch_telemetry()
-        elif "No" in text:
+        elif "Nein" in text:
             self.switch_screen(GameState.PLAY)
 
     def outgroup_handle_event(self, event: pygame.event.Event) -> bool:
