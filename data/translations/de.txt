@@ -83,8 +83,8 @@ reset@@Standard
 # round end menu
 
 round_end_info@@Runde {round_no} ist fertig. Besitz der Rothüte: ${money} und:
-temp_finish@@Runde {round_no} ist beendet, Sie sind für heute fertig! Beenden Sie nun die Studie auf Prolific. Sie können sich morgen für den nächsten Teil anmelden. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte: ${money} und:
-whole_finish@@Runde {round_no} ist fertig, damit ist das Spiel abgeschlossen! Bitte gehen Sie jetzt auf Prolific und öffnen den Link zum Fragebogen. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
+temp_finish@@Runde {round_no} ist beendet, Sie sind für heute fertig! Sie können sich morgen erneut anmelden. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte: ${money} und:
+whole_finish@@Runde {round_no} ist fertig, damit ist das Spiel abgeschlossen! Bitte füllen Sie jetzt noch den kurzen Fragebogen aus. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
 next_round@@Weiter in die nächste Runde
 outgroup_income_round_end@@Die Hornlinge haben letzte Runde {money}$ verdient.
 ingroup_income_round_end@@Die Rothüte haben letzte Runde {money}$ verdient.
@@ -287,8 +287,8 @@ market_inactive_family@@Dein Familienclan versammelt sich zur täglichen Abstimm
 market_inactive_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Du darfst noch nicht mitentscheiden, da du noch kein Vollmitglied bist. Drücke die Leertaste, um fortzufahren.
 market_active_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 market_active_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
-market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln immer die Spezialbrille zu tragen und täglich das Bad zu nehmen umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
-market_active_post_eruption_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln immer die Spezialbrille zu tragen und täglich das Bad zu nehmen umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln, immer die Spezialbrille zu tragen und täglich das Bad zu nehmen, umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+market_active_post_eruption_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln, immer die Spezialbrille zu tragen und täglich das Bad zu nehmen, umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 
 # Government statements
 
