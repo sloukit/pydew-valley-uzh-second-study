@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Final, Callable
 
 import pygame
 
@@ -36,7 +36,7 @@ class Tutorial:
         # check if the player moved in the four directions
         self.movement_axis = [0, 0, 0, 0]
 
-        self.instructions = {
+        self.instructions: Final[dict[int, Callable]] = {
             0: self.move,
             1: self.interact_with_ingroup_member,
             2: self.farm_tile,
@@ -54,6 +54,7 @@ class Tutorial:
             10: self.interact_with_outgroup_member,
             11: self.walk_around_outgroup_farm_and_switch_to_outgroup,
         }
+
         self.tasks_achieved = -1
         self.n_tasks = max(self.instructions.keys()) + 1
         # self.deactivate() #Uncomment this to skip tutorials

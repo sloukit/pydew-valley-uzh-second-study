@@ -7,10 +7,11 @@ from pygame.sprite import Group
 from src.fblitter import FBLITTER
 from src.settings import SCREEN_HEIGHT
 from src.sprites.base import Sprite
+from typing import Final, List
 
-_ANGLE_STEP = 15
-_BUBBLE_WAVE_EXTENT = 20
-_shufflable_angles = list(range(0, 180, 15))
+_ANGLE_STEP: Final[int] = 15
+_BUBBLE_WAVE_EXTENT: Final[int] = 20
+_shufflable_angles: Final[List[int]] = list(range(0, 180, 15))
 
 
 class BathBubble(Sprite):

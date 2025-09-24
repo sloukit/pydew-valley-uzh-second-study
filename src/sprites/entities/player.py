@@ -22,7 +22,7 @@ from __future__ import annotations
 # IMPORTS
 import math
 from random import random
-from typing import Any, Callable, Type
+from typing import Any, Callable, Type, Final, Tuple
 
 import pygame  # noqa
 
@@ -51,9 +51,9 @@ from src.sprites.entities.sick_color_effect import apply_sick_color_effect
 from src.sprites.setup import EntityAsset
 from src.support import load_data, parse_crop_types, save_data
 
-_NONSEED_INVENTORY_DEFAULT_AMOUNT = 20
-_SEED_INVENTORY_DEFAULT_AMOUNT = 5
-_INV_DEFAULT_AMOUNTS = (
+_NONSEED_INVENTORY_DEFAULT_AMOUNT: Final[int] = 20
+_SEED_INVENTORY_DEFAULT_AMOUNT: Final[int] = 5
+_INV_DEFAULT_AMOUNTS: Final[Tuple[int, int]] = (
     _NONSEED_INVENTORY_DEFAULT_AMOUNT,
     _SEED_INVENTORY_DEFAULT_AMOUNT,
 )

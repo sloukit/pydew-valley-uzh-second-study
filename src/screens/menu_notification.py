@@ -6,9 +6,10 @@ from src.enums import GameState
 from src.gui.menu.general_menu import GeneralMenu
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 from src.support import get_translated_string as get_translated_msg
+from typing import Final
 
-_NOTIFICATION_TXT_TOP = SCREEN_HEIGHT / 20 + 75
-_NOTIFICATION_TXT_CENTERX = SCREEN_WIDTH // 2
+_NOTIFICATION_TXT_TOP: Final[int] = SCREEN_HEIGHT / 20 + 75
+_NOTIFICATION_TXT_CENTERX: Final[int] = SCREEN_WIDTH // 2
 
 
 class NotificationMenu(GeneralMenu):

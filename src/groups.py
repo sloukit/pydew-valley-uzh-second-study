@@ -5,9 +5,8 @@ from src.fblitter import FBLITTER
 from src.settings import (
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
+    BLUR_FACTOR,
 )
-
-_BLUR_FACTOR = 4
 
 
 class PersistentSpriteGroup(pygame.sprite.Group):
@@ -63,7 +62,7 @@ class AllSprites(PersistentSpriteGroup):
             surface = pygame.transform.smoothscale(
                 pygame.transform.smoothscale(
                     self.display_surface,
-                    (SCREEN_WIDTH // _BLUR_FACTOR, SCREEN_HEIGHT // _BLUR_FACTOR),
+                    (SCREEN_WIDTH // BLUR_FACTOR, SCREEN_HEIGHT // BLUR_FACTOR),
                 ),
                 (SCREEN_WIDTH, SCREEN_HEIGHT),
             )

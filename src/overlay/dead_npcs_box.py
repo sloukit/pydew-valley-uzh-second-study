@@ -4,9 +4,10 @@ from src.fblitter import FBLITTER
 from src.npc_sickness_mgr import NPCSicknessManager
 from src.settings import OVERLAY_POSITIONS
 from src.support import get_translated_string, import_font, import_image
+from typing import Final
 
-BLACK = "Black"
-RED = "Red"
+BLACK: Final[str] = "Black"
+RED: Final[str] = "Red"
 
 
 class DeadNpcsBox:

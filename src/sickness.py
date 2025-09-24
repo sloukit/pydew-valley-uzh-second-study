@@ -1,5 +1,5 @@
 from random import random
-from typing import Callable
+from typing import Callable, Final, Dict, Tuple
 
 from src.settings import (
     BSICK_DECLINE,
@@ -18,7 +18,7 @@ from src.sprites.entities.player import Player
 
 # Key format: (bath, goggles)
 # Value format: (rds 7-9, rds 10-12)
-_SICKNESS_PROBABILITIES = {
+_SICKNESS_PROBABILITIES: Final[Dict[Tuple[bool, bool], Tuple[float, float]]] = {
     (False, False): (0.9, 0.7),
     (True, False): (0.5, 0.3),
     (False, True): (0.7, 0.5),
