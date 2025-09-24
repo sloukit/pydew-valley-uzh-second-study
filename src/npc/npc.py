@@ -120,6 +120,17 @@ class NPC(NPCBase):
         # but not sure how to set it :-(
         self.behaviour_tree_context.allowed_seeds = seed_types
 
+    def teleport(self, pos: tuple[float, float]):
+        """
+        Moves the Player rect directly to the specified point without checking
+        for collision
+        """
+        self.rect.update(
+            (pos[0] - self.rect.width / 2, pos[1] - self.rect.height / 2),
+            self.rect.size,
+        )
+        self.hitbox_rect.center = self.rect.center
+
     def get_personal_soil_area_tiles(self, tile_type: str) -> list[tuple[int, int]]:
         """
         Get the soil area that the NPC is responsible for (row of farmable tiles)
@@ -184,7 +195,9 @@ class NPC(NPCBase):
         ]
         return adjacent_untilled_tiles
 
-    def assign_outfit_ingroup(self, ingroup_40p_hat_necklace_appearance: bool = False):
+    def assign_outfit_ingroup(
+        self, ingroup_40p_hat_necklace_appearance: bool = False
+    ) -> None:
         # 40% of the ingroup NPCs should wear a hat and a necklace, and 60% of the ingroup NPCs should only wear the hat
         if self.study_group == StudyGroup.INGROUP:
             # # if npc has special features set in Tiled map using 'features' custom field - do not change it
@@ -268,9 +281,10 @@ class NPC(NPCBase):
     def update(self, dt):
         if self.is_dead:
             return
-        if (
-            NPCSharedContext.get_round() >= 7
-            and self.behaviour_tree_context.adhering_to_measures
+        if self.behaviour_tree_context.adhering_to_measures and (
+            NPCSharedContext.get_round() >= 8
+            or NPCSharedContext.get_round() == 7
+            and NPCSharedContext.get_rnd_timer() > 30
         ):
             self.has_goggles = True
         self.manage_sickness(dt)

@@ -38,7 +38,7 @@ class DisplayError:
         pad_y = 2
 
         message_surf = self.font.render(
-            f"Login error:\n \n{self.error_message}\n  \nPress Enter or Esc to continue",
+            f"Fehler:\n \n{self.error_message}\n  \nDr\u00fccken Sie Enter oder Esc, um fortzufahren.",
             False,
             foreground_color,
         )

@@ -36,7 +36,6 @@ TEST_ANIMALS: Final[bool] = True
 
 GAME_LANGUAGE: Final[str] = os.environ.get("GAME_LANGUAGE", "en")
 
-
 DEBUG_MODE_VERSION: Final[bool] = False
 # True  => virtual game time
 # False => real world time

@@ -31,10 +31,10 @@
         ["Versammlung", "Die Gruppe hat entschieden, heute Mais zu verkaufen. Auf geht's zum Markt! Drücke die Leertaste, um fortzufahren."]
     ],
     "scripted_sequence_buy_checkmark": [
-        ["Versammlung", "Die Gruppe beschloss, die Regeln zu befolgen! Drücke die Leertaste, um fortzufahren."]
+        ["Versammlung", "Die Gruppe hat entschieden, die Spezialbrille immer zu tragen und das Bad täglich zu nehmen. Drücke die Leertaste, um fortzufahren."]
     ],
     "scripted_sequence_buy_cross": [
-        ["Versammlung", "Die Gruppe beschloss, die Regeln nicht zu befolgen. Drücke die Leertaste, um fortzufahren."]
+        ["Versammlung", "Die Gruppe hat entschieden, die Spezialbrille nicht zu tragen und das Bad nicht zu nehmen. Drücke die Leertaste, um fortzufahren."]
     ],
     "label_not_available":[
         ["EN: Sign", "EN: label not available"],

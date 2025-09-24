@@ -83,8 +83,8 @@ reset@@Standard
 # round end menu
 
 round_end_info@@Runde {round_no} ist fertig. Besitz der Rothüte: ${money} und:
-temp_finish@@Runde {round_no} ist beendet, Sie sind für heute fertig! Beenden Sie nun die Studie auf Prolific. Sie können sich morgen für den nächsten Teil anmelden. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte: ${money} und:
-whole_finish@@Runde {round_no} ist fertig, damit ist das Spiel abgeschlossen! Bitte gehen Sie jetzt auf Prolific und öffnen den Link zum Fragebogen. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
+temp_finish@@Runde {round_no} ist beendet, Sie sind für heute fertig! Sie können sich morgen erneut anmelden. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte: ${money} und:
+whole_finish@@Runde {round_no} ist fertig, damit ist das Spiel abgeschlossen! Bitte füllen Sie jetzt noch den kurzen Fragebogen aus. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
 next_round@@Weiter in die nächste Runde
 outgroup_income_round_end@@Die Hornlinge haben letzte Runde {money}$ verdient.
 ingroup_income_round_end@@Die Rothüte haben letzte Runde {money}$ verdient.
@@ -235,6 +235,29 @@ social_identity_assessment_q1@@Ich gehöre zur Gruppe der Rothüte.
 social_identity_assessment_q2@@Ich gehöre zur Gruppe der Hornlinge.
 social_identity_assessment_q3@@Ich identifiziere mich mit Mika {name}.
 
+end_assessment_left_info@@überhaupt nicht wirksam
+end_assessment_right_info@@sehr wirksam
+end_assessment_q1_left@@überhaupt nicht wahrscheinlich
+end_assessment_q1_right@@sehr wahrscheinlich
+end_assessment_q2_left@@überhaupt nicht wirksam
+end_assessment_q2_right@@sehr wirksam
+end_assessment_q3_left@@überhaupt nicht wirksam
+end_assessment_q3_right@@sehr wirksam
+end_assessment_q4_left@@trifft überhaupt nicht zu
+end_assessment_q4_right@@trifft genau zu
+end_assessment_q5_left@@trifft überhaupt nicht zu
+end_assessment_q5_right@@trifft genau zu
+end_assessment_q1@@Für wie wahrscheinlich hälst Du es, dass Du dich in der nächsten Runde mit Vulkanseuche anstecken wirst? 
+end_assessment_q2@@Wie wirksam ist deiner Meinung nach das Tragen der Spezialbrille gegen die Ansteckung mit Vulkanseuche?
+end_assessment_q3@@Wie wirksam ist deiner Meinung nach das Bad gegen die Ansteckung mit Vulkanseuche?
+end_assessment_q4@@Die Rothüte würden es übertrieben finden, wenn ich die Spezialbrille immer trage.
+end_assessment_q5@@Die Rothüte würden es übertrieben finden, wenn ich das Bad täglich nehme.
+
+start_assessment_left_info@@Trifft überhaupt nicht zu
+start_assessment_right_info@@Trifft genau zu
+start_assessment_q1@@Ich bin mir sicher, dass ich es schaffen kann, die Spezialbrille immer zu tragen.
+start_assessment_q2@@Ich bin mir sicher, dass ich es schaffen kann, das Bad täglich zu nehmen.
+
 # Tutorial
 
 welcome@@Wilkommen!
@@ -264,15 +287,15 @@ market_inactive_family@@Dein Familienclan versammelt sich zur täglichen Abstimm
 market_inactive_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Du darfst noch nicht mitentscheiden, da du noch kein Vollmitglied bist. Drücke die Leertaste, um fortzufahren.
 market_active_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 market_active_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, was auf dem Markt gekauft werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
-market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
-market_active_post_eruption_friends@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+market_active_post_eruption_family@@Dein Familienclan versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln, immer die Spezialbrille zu tragen und täglich das Bad zu nehmen, umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
+market_active_post_eruption_friends@@Deine Freundesfarm versammelt sich zur täglichen Abstimmung darüber, wie mit den neuen Regeln, immer die Spezialbrille zu tragen und täglich das Bad zu nehmen, umgegangen werden soll. Da du ein Vollmitglied der Rothüte bist, darfst auch du abstimmen! Drücke die Leertaste, um fortzufahren.
 
 # Government statements
 
 initial_gov_statement@@Die Regierung in Mikahausen meldet sich: Der Vulkanausbruch hat uns Mikas schwer getroffen: Durch die giftigen Stoffe in der Luft kann über die Augen und die Haut die Vulkanseuche, eine ansteckende und tödliche Krankheit, ausgelöst werden. Alle Mikas sind betroffen. Deshalb müssen alle Mikas ab sofort und zu jeder Zeit eine Spezialbrille tragen und täglich ein spezielles Bad nehmen. Diese Schutzmassnahmen sind für alle verpflichtend. Die Spezialbrille findest du im Inventar (Taste I), das Bad ist in einem abgelegenen Haus im Südosten der Stadt.
 
-login_failed@@Anmeldung fehlgeschlagen.|Prüfen Sie, ob Sie Ihr Token richtig geschrieben haben.
-too_early_login@@Sie können sich momentan nicht in das Spiel einloggen.|Bitte kommen Sie morgen wieder.|Vielen Dank.
+login_failed@@Token ungültig.|Bitte prüfen Sie, ob Sie Ihren Token|richtig geschrieben haben.
+too_early_login@@Log-in aktuell nicht möglich.|Bitte beachten Sie, dass Sie frühestens|12 Stunden nach dem Ende der vorherigen|Runde wieder spielen können.
 
 died_in_group_members@@Gestorbene Rothüte:
 died_out_group_members@@Gestorbene Hornlinge:
