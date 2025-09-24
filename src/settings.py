@@ -1,6 +1,6 @@
 import os
 import sys
-from typing import Final, Tuple, Dict, List, Union, TypeAlias
+from typing import Dict, Final, List, Tuple, TypeAlias, Union
 
 import pygame  # noqa
 import pytmx  # type: ignore [import-untyped]
@@ -129,9 +129,11 @@ OVERLAY_POSITIONS: Final[Dict[str, Tuple[Union[int, float], Union[int, float]]]]
     "display_error": (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2),
     "dead_npcs_box": (15, SCREEN_HEIGHT - 60),
 }
-BLUR_FACTOR: Final[int] = 4 # blur overlay in groups.py; removed _ prefix since there is no getter/setter
+BLUR_FACTOR: Final[int] = (
+    4  # blur overlay in groups.py; removed _ prefix since there is no getter/setter
+)
 
-APPLE_POS: Final[Dict[str, List[Tuple[int, int]]]]  = {
+APPLE_POS: Final[Dict[str, List[Tuple[int, int]]]] = {
     "small": [(18, 17), (30, 37), (12, 50), (30, 45), (20, 30), (30, 10)],
     "default": [(12, 12), (46, 10), (40, 34), (3, 42), (65, 55), (32, 59)],
     "bush": [(10, 10), (8, 37), (25, 25), (40, 13), (33, 40)],
@@ -180,7 +182,9 @@ MAX_HP: Final[int] = 100
 SICK_INTERVAL: Final[int] = 60 * 5
 RECOVERY_INTERVAL: Final[int] = 60 * 5
 
-MIN_GOGGLE_TIME: Final[int] = 240  # time per each SICK INTERVAL for goggles to be effective
+MIN_GOGGLE_TIME: Final[int] = (
+    240  # time per each SICK INTERVAL for goggles to be effective
+)
 
 # regular sickness
 SICK_DURATION: Final[int] = 240  # duration of sickness

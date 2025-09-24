@@ -1,5 +1,5 @@
 import asyncio
-from typing import Callable, Final, Dict
+from typing import Callable, Dict, Final
 
 from src import xplat
 from src.settings import (

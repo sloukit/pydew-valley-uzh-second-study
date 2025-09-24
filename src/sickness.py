@@ -1,5 +1,5 @@
 from random import random
-from typing import Callable, Final, Dict, Tuple
+from typing import Callable, Dict, Final, Tuple
 
 from src.settings import (
     BSICK_DECLINE,

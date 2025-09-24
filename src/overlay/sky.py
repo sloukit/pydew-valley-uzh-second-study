@@ -1,4 +1,5 @@
 import random
+from typing import Dict, Final, Tuple
 
 import pygame
 
@@ -10,7 +11,6 @@ from src.settings import (
     SCREEN_WIDTH,
 )
 from src.sprites.water_drop import WaterDrop
-from typing import Final, Dict, Tuple
 
 
 class Sky:

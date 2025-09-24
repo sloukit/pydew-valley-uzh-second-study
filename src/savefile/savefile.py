@@ -1,5 +1,6 @@
 import json
 from itertools import chain
+from typing import Final, Tuple
 
 import pygame
 
@@ -15,7 +16,6 @@ from src.settings import (
     OutgroupSkinStatus,
 )
 from src.support import resource_path
-from typing import Final, Tuple
 
 _NONSEED_INVENTORY_DEFAULT_AMOUNT: Final[int] = 20
 _SEED_INVENTORY_DEFAULT_AMOUNT: Final[int] = 5

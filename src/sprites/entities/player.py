@@ -22,7 +22,7 @@ from __future__ import annotations
 # IMPORTS
 import math
 from random import random
-from typing import Any, Callable, Type, Final, Tuple
+from typing import Any, Callable, Final, Tuple, Type
 
 import pygame  # noqa
 

@@ -29,7 +29,9 @@ class _IMButton(ImageButton):
         return self._name
 
 
-_EQUIP_BTN_CHECKMARK_FRECT_KWARGS: Final[Tuple[Dict[str, tuple[int, int]], Dict[str, tuple[int, int]]]] = ({"bottomright": (64, 64)}, {"bottomleft": (0, 64)})
+_EQUIP_BTN_CHECKMARK_FRECT_KWARGS: Final[
+    Tuple[Dict[str, tuple[int, int]], Dict[str, tuple[int, int]]]
+] = ({"bottomright": (64, 64)}, {"bottomleft": (0, 64)})
 
 
 class _EquipButton(_IMButton):

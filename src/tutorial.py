@@ -1,4 +1,4 @@
-from typing import Any, Final, Callable
+from typing import Any, Callable, Final
 
 import pygame
 

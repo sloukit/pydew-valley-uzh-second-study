@@ -4,7 +4,7 @@ import urllib
 from abc import abstractmethod
 from collections.abc import Callable
 from os import PathLike as _PathProtocol
-from typing import IO, Protocol, TextIO, TypeVar, Union, Final
+from typing import IO, Final, Protocol, TextIO, TypeVar, Union
 
 from pygame.color import Color
 from pygame.rect import FRect, Rect
@@ -96,7 +96,9 @@ def json_load(stream: TextIO, **kwargs) -> typing.Any:
     return json.load(stream, cls=JSONWithCommentsDecoder, **kwargs)
 
 
-URL: Final[str] = "https://oxpvhqou52.execute-api.eu-central-2.amazonaws.com/default/telemetry"
+URL: Final[str] = (
+    "https://oxpvhqou52.execute-api.eu-central-2.amazonaws.com/default/telemetry"
+)
 _JWT: str | None = None
 
 

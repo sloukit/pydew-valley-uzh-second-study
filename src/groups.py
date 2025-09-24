@@ -3,9 +3,9 @@ import pygame
 from src.camera import Camera
 from src.fblitter import FBLITTER
 from src.settings import (
+    BLUR_FACTOR,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
-    BLUR_FACTOR,
 )
 
 

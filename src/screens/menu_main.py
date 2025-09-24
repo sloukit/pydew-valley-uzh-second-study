@@ -1,7 +1,7 @@
 # import traceback
 import traceback
 from collections.abc import Callable
-from typing import Any, Tuple, Final
+from typing import Any, Final, Tuple
 
 import pygame
 from pygame.mouse import get_pressed as mouse_buttons

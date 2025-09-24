@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Final, Tuple
 
 import pygame
 from pygame.math import Vector2 as vector
@@ -10,7 +11,6 @@ from src.fblitter import FBLITTER
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 from src.support import get_translated_string as get_translated_msg
 from src.support import resource_path
-from typing import Final, Tuple
 
 _SCREEN_CENTER: Final[Tuple[int, int]] = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 

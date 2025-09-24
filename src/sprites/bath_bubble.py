@@ -1,5 +1,6 @@
 from math import radians, sin
 from random import shuffle
+from typing import Final, List
 
 import pygame
 from pygame.sprite import Group
@@ -7,7 +8,6 @@ from pygame.sprite import Group
 from src.fblitter import FBLITTER
 from src.settings import SCREEN_HEIGHT
 from src.sprites.base import Sprite
-from typing import Final, List
 
 _ANGLE_STEP: Final[int] = 15
 _BUBBLE_WAVE_EXTENT: Final[int] = 20

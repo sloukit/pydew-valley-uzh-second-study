@@ -5,7 +5,7 @@ import random
 import sys
 from collections.abc import Generator
 from dataclasses import dataclass
-from typing import Final, Dict
+from typing import Dict, Final
 
 import pygame
 import pygame.gfxdraw

@@ -2,7 +2,7 @@
 
 from functools import lru_cache
 from types import NoneType, UnionType
-from typing import NoReturn, Self, Type, Union, Final
+from typing import Final, NoReturn, Self, Type, Union
 
 import pygame
 
@@ -216,12 +216,16 @@ _EventDefinition.add_to_edef_cache(_EventDefinition("Quit", pygame.QUIT))
 
 OPEN_INVENTORY: Final[int] = create_custom_event_type("OpenInventory")
 
-DIALOG_SHOW: Final[int] = create_custom_event_type("DIALOG_SHOW", dial=str, is_gvt=bool | None)
+DIALOG_SHOW: Final[int] = create_custom_event_type(
+    "DIALOG_SHOW", dial=str, is_gvt=bool | None
+)
 DIALOG_ADVANCE: Final[int] = create_custom_event_type("DIALOG_ADVANCE")
 SHOW_BOX_KEYBINDINGS: Final[int] = create_custom_event_type("SHOW_BOX_KEYBINDINGS")
 SHOW_BATH_INFO: Final[int] = create_custom_event_type("SHOW_BATH_INFO")
 
-START_QUAKE: Final[int] = create_custom_event_type("StartQuake", duration=float, debug=bool)
+START_QUAKE: Final[int] = create_custom_event_type(
+    "StartQuake", duration=float, debug=bool
+)
 
 VOLCANO_ERUPTION: Final[int] = create_custom_event_type("VolcanoEruption")
 

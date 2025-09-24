@@ -1,12 +1,12 @@
 """Implementation of a quake effect."""
 
 from types import MappingProxyType
+from typing import Final, Mapping
 
 import pygame
 
 from src.camera import Camera
 from src.enums import Direction
-from typing import Final, Mapping
 
 _DIRECTIONAL_VECTORS: Final[Mapping[Direction, pygame.Vector2]] = MappingProxyType(
     {
