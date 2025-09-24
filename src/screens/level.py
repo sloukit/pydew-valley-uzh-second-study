@@ -473,7 +473,8 @@ class Level:
 
             self.current_minigame.start()
 
-    def activate_music(self):
+    def activate_music(self, _cutscene=False):
+        # _cutscene is used to prevent the volume from restarting after the volcano cutscene.
         volume = 0.1
         try:
             sound_data = load_data("volume.json")
@@ -483,9 +484,11 @@ class Level:
                 "sfx": 50,
             }
             save_data(sound_data, "volume.json")
+
         volume = sound_data["music"]
         # sfx = sound_data['sfx']
-        self.sounds["music"].set_volume(min((volume / 1000), 0.4))
+        if not _cutscene:
+            self.sounds["music"].set_volume(min((volume / 1000), 0.4))
         self.sounds["music"].play(-1)
 
     # plant collision
@@ -768,6 +771,12 @@ class Level:
             if self.controls.DEBUG_SOCIAL_IDENTITY_ASSESSMENT.click:
                 self.switch_screen(GameState.SOCIAL_IDENTITY_ASSESSMENT)
 
+            if self.controls.DEBUG_END_ASSESSMENT.click:
+                self.switch_screen(GameState.END_ASSESSMENT)
+
+            if self.controls.DEBUG_START_ASSESSMENT.click:
+                self.switch_screen(GameState.START_ASSESSMENT)
+
             if self.controls.DEBUG_NOTIFICATION_MENU.click:
                 self.switch_screen(GameState.NOTIFICATION_MENU)
 
@@ -821,7 +830,7 @@ class Level:
         else:
             animation_name = "outgroup_gathering"
 
-        if sequence_type in _DECIDE_SEQUENCE:
+        if sequence_type in _DECIDE_SEQUENCE:  # there is some vote
             if not self.current_map == Map.TOWN and not self.map_transition:
                 self.prev_player_pos = cast(tuple[int, int], self.player.rect.center)
                 self.prev_map = self.current_map
@@ -847,6 +856,11 @@ class Level:
                     for npc in npcs:
                         npc.has_hat = True
                         npc.has_necklace = True
+                        if (
+                            self.get_round() >= 7
+                            and npc.behaviour_tree_context.adhering_to_measures
+                        ):
+                            npc.has_goggles = True
 
                 other_npcs = [
                     npc
@@ -854,7 +868,7 @@ class Level:
                     if npc.study_group != active_group and not npc.is_dead
                 ]
             if sequence_type == ScriptedSequence.INGROUP_NECKLACE:
-                npc_in_center = random.choice(npcs)
+                npc_in_center = npcs[1]
                 npcs.remove(npc_in_center)
                 npcs.append(self.player)
             else:
@@ -931,11 +945,24 @@ class Level:
     def limit_npcs_amount(self, npcs):
         counter: int = 0
         restricted_npcs = []
+
+        # Try to find an NPC with a necklace first, needed for necklace sequence
+        necklace_npc = next(
+            (npc for npc in npcs if getattr(npc, "has_necklace", False)), None
+        )
+        if necklace_npc:
+            restricted_npcs.append(necklace_npc)
+            counter += 1
+
         for npc in npcs:
-            if counter >= len(npcs) or counter == 4:
+            if counter == 4:
                 break
+            # Skip the necklace NPC if it's already added
+            if npc is necklace_npc:
+                continue
             restricted_npcs.append(npc)
             counter += 1
+
         return restricted_npcs
 
     def end_scripted_sequence(
@@ -1024,28 +1051,57 @@ class Level:
                     total_votes = 0
                     first_item_votes = 0
 
-                for npc in self.game_map.npcs:
-                    if npc.study_group == self.player.study_group and not npc.is_dead:
-                        # each NPC needs to vote
-                        total_votes += 1
-                        buy_item = random.choice(buy_list)
-                        if buy_item == buy_list[0]:
-                            first_item_votes += 1
-                        npc.emote_manager.show_emote(npc, buy_item)
-                # check which option has the majority of votes
-                # in case of draw, Player vote decides
-                if first_item_votes == total_votes / 2:
-                    total_votes += 1
-                    if is_player_active and players_vote == buy_list[0]:
-                        first_item_votes += 1
+                if buy_list[0] == _YES_OR_NO[0]:
+                    for npc in self.game_map.npcs:
+                        if (
+                            npc.study_group == self.player.study_group
+                            and not npc.is_dead
+                        ):
+                            if npc.has_goggles:  # adherent
+                                buy_item = buy_list[0]  # yes to goggles/bath
+                                first_item_votes += 1
+                            else:
+                                buy_item = buy_list[1]
+                            # each NPC needs to vote
+                            total_votes += 1
+                            npc.emote_manager.show_emote(npc, buy_item)
+                    winner_item = (
+                        buy_list[0]
+                        if first_item_votes > total_votes / 2
+                        else buy_list[1]
+                    )
 
-                winner_item = (
-                    buy_list[0] if first_item_votes > total_votes / 2 else buy_list[1]
+                else:  # random choice for veggies
+                    for npc in self.game_map.npcs:
+                        if (
+                            npc.study_group == self.player.study_group
+                            and not npc.is_dead
+                        ):
+                            # each NPC needs to vote
+                            total_votes += 1
+                            buy_item = random.choice(buy_list)
+                            if buy_item == buy_list[0]:
+                                first_item_votes += 1
+                            npc.emote_manager.show_emote(npc, buy_item)
+                    # check which option has the majority of votes
+                    # in case of draw, Player vote decides
+                    if first_item_votes == total_votes / 2:
+                        total_votes += 1
+                        if is_player_active and players_vote == buy_list[0]:
+                            first_item_votes += 1
+
+                    winner_item = (
+                        buy_list[0]
+                        if first_item_votes > total_votes / 2
+                        else buy_list[1]
+                    )
+                payload = {}
+                payload["winner_item"] = winner_item
+                payload["total_votes"] = total_votes
+                payload["winner_votes"] = max(
+                    first_item_votes, total_votes - first_item_votes
                 )
-                if not is_player_active:
-                    payload = {}
-                    payload["winner_item"] = winner_item
-                    self.send_telemetry("groups_decision", payload)
+                self.send_telemetry("groups_decision", payload)
 
                 # restore backup EmoteManager
                 self.player_emote_manager = self.backup_emote_mgr
@@ -1142,7 +1198,6 @@ class Level:
             else:
                 self.volcano_sprite.kill()
 
-            self.volcano_sounds[self.sound_no].set_volume(0.7)
             self.volcano_sounds[self.sound_no].play()
 
             self.volcano_erupt_count += 1
@@ -1159,7 +1214,7 @@ class Level:
             self.volcano_erupt_count = 0
             self.sound_no = 0
 
-            self.activate_music()  # Activating the old music
+            self.activate_music(_cutscene=True)  # Activating the old music
 
             if self.volcano_event:
                 self.intro_shown.pop(Map.VOLCANO)

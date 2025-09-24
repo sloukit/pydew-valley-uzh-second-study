@@ -211,8 +211,8 @@ class _CowHerdingOverlay:
             FBLITTER.schedule_blit(
                 rendered_text,
                 (
-                    SCREEN_WIDTH / 2 - rendered_text.width / 2,
-                    SCREEN_HEIGHT / 3 - rendered_text.height / 2,
+                    SCREEN_WIDTH / 2 - rendered_text.get_width() / 2,
+                    SCREEN_HEIGHT / 3 - rendered_text.get_height() / 2,
                 ),
             )
             # self.display_surface.blit(
@@ -249,8 +249,8 @@ class _CowHerdingOverlay:
         FBLITTER.schedule_blit(
             rendered_text,
             (
-                SCREEN_WIDTH / 2 - rendered_text.width / 2,
-                SCREEN_HEIGHT / 3 - rendered_text.height / 2,
+                SCREEN_WIDTH / 2 - rendered_text.get_width() / 2,
+                SCREEN_HEIGHT / 3 - rendered_text.get_height() / 2,
             ),
         )
         # self.display_surface.blit(

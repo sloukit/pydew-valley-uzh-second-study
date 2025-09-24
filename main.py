@@ -23,12 +23,14 @@ import src.utils  # noqa [ to patch utf-8 on top of file without linting errors 
 from src import client, support, xplat
 from src.enums import (
     CustomCursor,
+    EndAssessmentDimension,
     GameState,
     InventoryResource,
     Map,
     ScriptedSequence,
     SelfAssessmentDimension,
     SocialIdentityAssessmentDimension,
+    StartAssessmentDimension,
 )
 from src.events import (
     DIALOG_ADVANCE,
@@ -47,6 +49,7 @@ from src.npc.behaviour.context import NPCSharedContext
 from src.npc_sickness_mgr import NPCSicknessManager
 from src.overlay.fast_forward import FastForward
 from src.savefile import SaveFile
+from src.screens.end_assessment import EndAssessmentMenu
 from src.screens.inventory import InventoryMenu, prepare_checkmark_for_buttons
 from src.screens.level import Level
 from src.screens.menu_main import MainMenu
@@ -58,6 +61,7 @@ from src.screens.player_task import PlayerTask
 from src.screens.self_assessment_menu import SelfAssessmentMenu
 from src.screens.shop import ShopMenu
 from src.screens.social_identity_assessment import SocialIdentityAssessmentMenu
+from src.screens.start_assessment import StartAssessmentMenu
 from src.screens.switch_to_outgroup_menu import OutgroupMenu
 from src.settings import (
     DEBUG_MODE_VERSION,
@@ -333,6 +337,27 @@ class Game:
             self.player,
         )
 
+        self.end_assessment_menu = EndAssessmentMenu(
+            partial(self.send_telemetry_and_play, "end_assessment"),
+            (
+                EndAssessmentDimension.RISK,
+                EndAssessmentDimension.EFFGOGGLES,
+                EndAssessmentDimension.EFFBATH,
+                EndAssessmentDimension.NORMGOGGLES,
+                EndAssessmentDimension.NORMBATH,
+            ),
+            self.player,
+        )
+
+        self.start_assessment_menu = StartAssessmentMenu(
+            partial(self.send_telemetry_and_play, "start_assessment"),
+            (
+                StartAssessmentDimension.SEFFGOGGLES,
+                StartAssessmentDimension.SEFFBATH,
+            ),
+            self.player,
+        )
+
         self.notification_menu = NotificationMenu(
             self.switch_state,
             "This is a very long Test Message with German characters: üß",
@@ -356,6 +381,8 @@ class Game:
             GameState.OUTGROUP_MENU: self.outgroup_menu,
             GameState.SELF_ASSESSMENT: self.self_assessment_menu,
             GameState.SOCIAL_IDENTITY_ASSESSMENT: self.social_identity_assessment_menu,
+            GameState.END_ASSESSMENT: self.end_assessment_menu,
+            GameState.START_ASSESSMENT: self.start_assessment_menu,
             GameState.NOTIFICATION_MENU: self.notification_menu,
         }
         self.current_state = GameState.MAIN_MENU
@@ -428,6 +455,21 @@ class Game:
             len(self.round_config.get("social_identity_assessment_timestamp", [])) > 0
             and self.round_end_timer
             > self.round_config["social_identity_assessment_timestamp"][0]
+        )
+
+    @property
+    def _can_start_end_assessment_seq(self):
+        return (
+            len(self.round_config.get("end_assessment_timestamp", [])) > 0
+            and self.round_end_timer > self.round_config["end_assessment_timestamp"][0]
+        )
+
+    @property
+    def _can_start_start_assessment_seq(self):
+        return (
+            len(self.round_config.get("start_assessment_timestamp", [])) > 0
+            and self.round_end_timer
+            > self.round_config["start_assessment_timestamp"][0]
         )
 
     @property
@@ -590,7 +632,7 @@ class Game:
             self.npc_sickness_mgr.setup_from_db_data(
                 {"data": None}
             )  # workaround fake npc server response
-            self.set_round(7)
+            self.set_round(1)
             self.check_hat_condition()
         else:  # online deployed version with db access
             # here we check whether a person is allowed to login, bec they need to stay away for 12 hours
@@ -646,7 +688,7 @@ class Game:
                 self.jwt
             )  # load npc status (e.g., previous deaths etc.) from db
 
-            max_complete_level = 8  # debug, remove later
+            # max_complete_level = 6  # debug, remove later
 
             if len(day_completions) > 0:
                 timestamps = [
@@ -1053,6 +1095,8 @@ class Game:
                     ):
                         self.round_config["healthbar"] = True
                         self.round_config["sickness"] = True
+                        self.round_config["inventory_goggles"] = True
+                        self.round_config["accessible_bathhouse"] = True
                         self.npc_sickness_mgr.enable()
                     elif (
                         self.round >= 8  # Bath info available immediately from round 8
@@ -1091,6 +1135,18 @@ class Game:
                             ]
                         )
                         self.switch_state(GameState.SOCIAL_IDENTITY_ASSESSMENT)
+                    elif self._can_start_end_assessment_seq:
+                        # remove first timestamp from list not to repeat infinitely
+                        self.round_config["end_assessment_timestamp"] = (
+                            self.round_config["end_assessment_timestamp"][1:]
+                        )
+                        self.switch_state(GameState.END_ASSESSMENT)
+                    elif self._can_start_start_assessment_seq:
+                        # remove first timestamp from list not to repeat infinitely
+                        self.round_config["start_assessment_timestamp"] = (
+                            self.round_config["start_assessment_timestamp"][1:]
+                        )
+                        self.switch_state(GameState.START_ASSESSMENT)
                     elif self._can_start_hat_sequence:
                         # remove first timestamp from list not to repeat infinitely
                         self.round_config["player_hat_sequence_timestamp"] = (
