@@ -17,7 +17,7 @@ class OutgroupMenu(GeneralMenu):
         send_switch_telemetry: Callable[[], None],
     ):
         options = ["Ja", "Nein"]
-        title = "Möchtest zu den Hornlingen wechseln?\nAchtung: Diese Entscheidung ist endgültig!"
+        title = "Möchtest Du zu den Hornlingen wechseln?\nAchtung: Diese Entscheidung ist endgültig!"
         size = (400, 400)
 
         self.player = player
