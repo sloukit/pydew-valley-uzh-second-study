@@ -247,9 +247,9 @@ end_assessment_q4_left@@trifft überhaupt nicht zu
 end_assessment_q4_right@@trifft genau zu
 end_assessment_q5_left@@trifft überhaupt nicht zu
 end_assessment_q5_right@@trifft genau zu
-end_assessment_q1@@Für wie wahrscheinlich hälst Du es, dass Du dich in der nächsten Runde mit Vulkanseuche anstecken wirst? 
-end_assessment_q2@@Wie wirksam ist deiner Meinung nach das Tragen der Spezialbrille gegen die Ansteckung mit Vulkanseuche?
-end_assessment_q3@@Wie wirksam ist deiner Meinung nach das Bad gegen die Ansteckung mit Vulkanseuche?
+end_assessment_q1@@Für wie wahrscheinlich hälst Du es, dass Du dich in der nächsten Runde mit der Vulkanseuche anstecken wirst? 
+end_assessment_q2@@Wie wirksam ist deiner Meinung nach das Tragen der Spezialbrille gegen die Ansteckung mit der Vulkanseuche?
+end_assessment_q3@@Wie wirksam ist deiner Meinung nach das Bad gegen die Ansteckung mit der Vulkanseuche?
 end_assessment_q4@@Die Rothüte würden es übertrieben finden, wenn ich die Spezialbrille immer trage.
 end_assessment_q5@@Die Rothüte würden es übertrieben finden, wenn ich das Bad täglich nehme.
 
