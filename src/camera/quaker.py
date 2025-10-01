@@ -1,13 +1,14 @@
 """Implementation of a quake effect."""
 
 from types import MappingProxyType
+from typing import Final, Mapping
 
 import pygame
 
 from src.camera import Camera
 from src.enums import Direction
 
-_DIRECTIONAL_VECTORS = MappingProxyType(
+_DIRECTIONAL_VECTORS: Final[Mapping[Direction, pygame.Vector2]] = MappingProxyType(
     {
         Direction.UP: pygame.Vector2(0, -8),
         Direction.DOWN: pygame.Vector2(0, 8),
@@ -21,7 +22,7 @@ _DIRECTIONAL_VECTORS = MappingProxyType(
 )
 
 
-_DIRSWAP_DELAY = 0.03
+_DIRSWAP_DELAY: Final[float] = 0.03
 
 
 class Quaker:

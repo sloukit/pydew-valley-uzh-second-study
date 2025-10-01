@@ -12,10 +12,11 @@ from src.gui.interface.emotes_base import EmoteBoxBase, EmoteManagerBase, EmoteW
 from src.settings import EMOTE_SIZE
 from src.support import draw_aa_line
 from src.timer import Timer
+from typing import Final
 
 
-_TWO_PI = PI * 2
-_HALF_PI = PI / 2
+_TWO_PI: Final[float] = PI * 2
+_HALF_PI: Final[float] = PI / 2
 
 
 class EmoteBox(EmoteBoxBase):

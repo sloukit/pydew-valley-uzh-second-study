@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any
+from typing import Any, Final
 
 import pygame  # noqa
 
@@ -16,8 +16,8 @@ from src.support import parse_crop_types
 
 
 class ShopMenu:
-    SCROLL_AMOUNT = 10
-    MAX_SCROLL = 0
+    SCROLL_AMOUNT: Final[int] = 10
+    MAX_SCROLL: Final[int] = 0
 
     def __init__(
         self,

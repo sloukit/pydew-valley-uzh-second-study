@@ -1,7 +1,7 @@
 # import traceback
 import traceback
 from collections.abc import Callable
-from typing import Any
+from typing import Any, Final, Tuple
 
 import pygame
 from pygame.mouse import get_pressed as mouse_buttons
@@ -19,10 +19,10 @@ from src.settings import (
 )
 from src.support import get_translated_string as get_translated_msg
 
-_SCREEN_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+_SCREEN_CENTER: Final[Tuple[int, int]] = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 # MAX_TOKEN_LEN = 3
-MAX_TOKEN_LEN = 10
-MAX_PLAYERS_NAME_LEN = 16
+MAX_TOKEN_LEN: Final[int] = 10
+MAX_PLAYERS_NAME_LEN: Final[int] = 16
 
 
 class MainMenu(GeneralMenu):

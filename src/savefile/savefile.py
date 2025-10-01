@@ -1,5 +1,6 @@
 import json
 from itertools import chain
+from typing import Final, Tuple
 
 import pygame
 
@@ -16,14 +17,14 @@ from src.settings import (
 )
 from src.support import resource_path
 
-_NONSEED_INVENTORY_DEFAULT_AMOUNT = 20
-_SEED_INVENTORY_DEFAULT_AMOUNT = 5
-_INV_DEFAULT_AMOUNTS = (
+_NONSEED_INVENTORY_DEFAULT_AMOUNT: Final[int] = 20
+_SEED_INVENTORY_DEFAULT_AMOUNT: Final[int] = 5
+_INV_DEFAULT_AMOUNTS: Final[Tuple[int, int]] = (
     _NONSEED_INVENTORY_DEFAULT_AMOUNT,
     _SEED_INVENTORY_DEFAULT_AMOUNT,
 )
-CONVERT_TO_FT = "__FarmingTool__"
-CONVERT_TO_IR = "__InventoryResource__"
+CONVERT_TO_FT: Final[str] = "__FarmingTool__"
+CONVERT_TO_IR: Final[str] = "__InventoryResource__"
 
 
 def _as_farmingtool(o: dict):

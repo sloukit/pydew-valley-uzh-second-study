@@ -97,6 +97,7 @@ This section is continuously updated.
 - [MortalCoder](https://github.com/MortalCoder), Game Musician & Sound Designer
 - [asterli6](https://github.com/asterli6), Game Musician & Sound Designer
 - [dee-a-go](https://github.com/dee-a-go), Game Developer, Game Musician, & Sound Designer
+- [w-saunders](https://github.com/w-saunders), Game Developer & Quality Analyst
 
 
 ## Relevant Links
