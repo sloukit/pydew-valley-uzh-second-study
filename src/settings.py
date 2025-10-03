@@ -32,7 +32,7 @@ GAME_MAP = Map.NEW_FARM
 ENABLE_NPCS = True
 TEST_ANIMALS = True
 
-GAME_LANGUAGE = os.environ.get("GAME_LANGUAGE", "de")
+GAME_LANGUAGE = os.environ.get("GAME_LANGUAGE", "en")
 
 
 DEBUG_MODE_VERSION = 0
