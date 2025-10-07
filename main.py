@@ -528,6 +528,7 @@ class Game:
             > 0
             and self.round_end_timer
             > self.round_config["group_market_active_player_sequence_timestamp"][0]
+            and not self.player.in_outgroup
         )
 
     @property
