@@ -219,7 +219,6 @@ class NPC(NPCBase):
     def assign_outfit_ingroup(
         self, ingroup_40p_hat_necklace_appearance: bool = False
     ) -> None:
-
         if self.study_group == StudyGroup.OUTGROUP:
             self.deactivate_necklace()
             self.deactivate_hat()

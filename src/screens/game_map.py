@@ -747,7 +747,7 @@ class GameMap:
             has_necklace=has_necklace,
             special_features=features,
             npc_id=npc_id,
-            is_v3=self.get_game_version()==3
+            is_v3=self.get_game_version() == 3,
         )
         npc.teleport(pos)
         self._reference_npc_in_mgr(npc_id, npc)

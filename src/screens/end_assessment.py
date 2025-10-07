@@ -192,7 +192,10 @@ class EndAssessmentMenu(AbstractMenu):
         return Text(TextChunk(self.get_question_by_selection(), self.font_title))
 
     def get_question_by_selection(self):
-        if self.current_dimension_index >= 3 and self._player.study_group == StudyGroup.OUTGROUP:
+        if (
+            self.current_dimension_index >= 3
+            and self._player.study_group == StudyGroup.OUTGROUP
+        ):
             description: str = get_translated_msg(
                 f"end_assessment_q{self.current_dimension_index + 1}_outgrp"  # 1 offset for 1-indexing
             )

@@ -31,7 +31,7 @@ from src.enums import (
     SelfAssessmentDimension,
     SocialIdentityAssessmentDimension,
     StartAssessmentDimension,
-    StudyGroup
+    StudyGroup,
 )
 from src.events import (
     DIALOG_ADVANCE,
@@ -599,7 +599,7 @@ class Game:
         # `game_version` is stored in the player database
         self.game_version = response["game_version"]
 
-        if self.game_version ==3:
+        if self.game_version == 3:
             for npc in self.level.game_map.npcs:
                 npc.is_v3 = True
                 npc.deactivate_hat()
@@ -654,7 +654,9 @@ class Game:
                 if any(d["event"] == "outgroup_switch" for d in response["status"]):
                     self.player.study_group = StudyGroup.OUTGROUP
                     self.player.has_outgroup_skin = True
-                    self.level.start_become_outgroup_time = pygame.time.get_ticks()-22500
+                    self.level.start_become_outgroup_time = (
+                        pygame.time.get_ticks() - 22500
+                    )
                     self.level.start_become_outgroup = True
                     self.player.has_necklace = False
                     self.player.has_horn = True

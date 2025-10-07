@@ -311,7 +311,7 @@ class DialogueManager:
         self._tb_list[self._msg_index].add(self.spr_grp)
 
     def _get_current_tb(self):
-        if len(self._tb_list)>self._msg_index:
+        if len(self._tb_list) > self._msg_index:
             return self._tb_list[self._msg_index]
         else:
             return None

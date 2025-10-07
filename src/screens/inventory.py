@@ -7,7 +7,6 @@ from src.enums import (
     FarmingTool,
     InventoryResource,
     GameState,
-    StudyGroup,
     SeedType,
     CustomCursor,
 )

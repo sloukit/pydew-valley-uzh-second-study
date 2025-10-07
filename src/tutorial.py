@@ -2,7 +2,7 @@ from typing import Any
 
 import pygame
 
-from src.enums import StudyGroup, Map
+from src.enums import StudyGroup
 from src.gui.interface.dialog import DialogueManager
 from src.screens.level import Level
 from src.settings import GAME_LANGUAGE, TUTORIAL_TB_LEFT, TUTORIAL_TB_TOP
@@ -299,11 +299,10 @@ class Tutorial:
         # print(not(self.level.current_minigame is None), self.paused_dialog)
         ctb = self.dialogue_manager._get_current_tb()
         if ctb is not None:
-            if not(self.level.current_minigame is None):
+            if self.level.current_minigame is not None:
                 ctb.visible = False
             else:
                 ctb.visible = True
-
 
     def deactivate(self):
         self.dialogue_manager.close_dialogue()
