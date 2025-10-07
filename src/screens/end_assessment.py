@@ -10,7 +10,7 @@ from src.colors import (
     SL_ORANGE_DARK,
     SL_ORANGE_MEDIUM,
 )
-from src.enums import EndAssessmentDimension
+from src.enums import EndAssessmentDimension, StudyGroup
 from src.fblitter import FBLITTER
 from src.gui.menu.abstract_menu import AbstractMenu
 from src.gui.menu.components import AbstractButton
@@ -192,9 +192,15 @@ class EndAssessmentMenu(AbstractMenu):
         return Text(TextChunk(self.get_question_by_selection(), self.font_title))
 
     def get_question_by_selection(self):
-        description: str = get_translated_msg(
-            f"end_assessment_q{self.current_dimension_index + 1}"  # 1 offset for 1-indexing
-        )
+        if self.current_dimension_index >= 3 and self._player.study_group == StudyGroup.OUTGROUP:
+            description: str = get_translated_msg(
+                f"end_assessment_q{self.current_dimension_index + 1}_outgrp"  # 1 offset for 1-indexing
+            )
+
+        else:
+            description: str = get_translated_msg(
+                f"end_assessment_q{self.current_dimension_index + 1}"  # 1 offset for 1-indexing
+            )
         return description.format(name=self._player.name or "")
 
     @staticmethod
