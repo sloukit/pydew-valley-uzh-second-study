@@ -123,10 +123,12 @@ class TBBase(Sprite, AbstractTextBox):
         Sprite.__init__(
             self, (left, top), self.image, (), z=Layer.TEXT_BOX, name=character_name
         )
+        self.visible = True
 
     def draw(self, display_surface: pygame.Surface, rect: pygame.Rect, camera):
-        FBLITTER.schedule_blit(self.image, self.rect)
-        # display_surface.blit(self.image, self.rect)
+        if self.visible:
+            FBLITTER.schedule_blit(self.image, self.rect)
+            # display_surface.blit(self.image, self.rect)
 
     def update(self, *args, **kwargs):
         if not self.timer:
@@ -309,7 +311,10 @@ class DialogueManager:
         self._tb_list[self._msg_index].add(self.spr_grp)
 
     def _get_current_tb(self):
-        return self._tb_list[self._msg_index]
+        if len(self._tb_list) > self._msg_index:
+            return self._tb_list[self._msg_index]
+        else:
+            return None
 
     def _create_gvt_tb(self, cname: str, txt: str, left: int, top: int):
         self._tb_list.append(GvtTextBox(cname, txt, self.font, left, top))

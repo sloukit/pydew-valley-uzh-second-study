@@ -211,6 +211,7 @@ class NPCSicknessManager:
                     self._npcs[target_npc].get_sick(evt_ts, death_evt.timestamp)
             case NPCSicknessStatusChange.DIE:
                 self._npcs[target_npc].die()
+                self.dead_npcs.append(target_npc)
             case NPCSicknessStatusChange.GO_TO_BATHHOUSE:
                 return  # debug: how does it work?
 

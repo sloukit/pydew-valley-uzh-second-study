@@ -31,6 +31,7 @@ from src.enums import (
     SelfAssessmentDimension,
     SocialIdentityAssessmentDimension,
     StartAssessmentDimension,
+    StudyGroup,
 )
 from src.events import (
     DIALOG_ADVANCE,
@@ -528,6 +529,7 @@ class Game:
             > 0
             and self.round_end_timer
             > self.round_config["group_market_active_player_sequence_timestamp"][0]
+            and not self.player.in_outgroup
         )
 
     @property
@@ -597,6 +599,12 @@ class Game:
         # `game_version` is stored in the player database
         self.game_version = response["game_version"]
 
+        if self.game_version == 3:
+            for npc in self.level.game_map.npcs:
+                npc.is_v3 = True
+                npc.deactivate_hat()
+                npc.deactivate_necklace()
+
         if __debug__:  # Only print debug information if running in debug mode
             xplat.log(f"token: {self.token}")
             xplat.log(f"jwt: {self.jwt}")
@@ -643,6 +651,18 @@ class Game:
                 lvls_done = [d for d in response["status"] if d["event"] == "round_end"]
                 max_complete_level = max([d["game_round"] for d in lvls_done])
                 day_completions = [d for d in lvls_done if d["game_round"] % 2 == 0]
+                if any(d["event"] == "outgroup_switch" for d in response["status"]):
+                    self.player.study_group = StudyGroup.OUTGROUP
+                    self.player.has_outgroup_skin = True
+                    self.level.start_become_outgroup_time = (
+                        pygame.time.get_ticks() - 22500
+                    )
+                    self.level.start_become_outgroup = True
+                    self.player.has_necklace = False
+                    self.player.has_horn = True
+                    self.level.finish_become_outgroup = True
+                    self.player.has_hat = False
+                    self.player.image_alpha = 255
 
                 if __debug__:  # Only log() debug information if running in debug mode
                     xplat.log(

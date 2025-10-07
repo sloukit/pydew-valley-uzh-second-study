@@ -202,6 +202,8 @@
     "end_assessment_q3": "In your opinion as Mika {name}, how effective is taking the bath against \ninfection with volcanic plague?",
     "end_assessment_q4": "The Redhats would find it inappropriate if I, as Mika {name}, wore the goggles.",
     "end_assessment_q5": "The Redhats would find it inappropriate if I, as Mika {name}, took the bath.",
+    "end_assessment_q4_outgrp": "The Hornlings would find it inappropriate if I, as Mika {name}, wore the goggles.",
+    "end_assessment_q5_outgrp": "The Hornlings would find it inappropriate if I, as Mika {name}, took the bath.",
     "end_assessment_q1_left": "aaa",
     "end_assessment_q1_right": "bbb",
     "end_assessment_q2_left": "ccc",

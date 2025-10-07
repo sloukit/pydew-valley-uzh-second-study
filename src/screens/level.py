@@ -853,8 +853,8 @@ class Level:
                     npcs = self.limit_npcs_amount(npcs)
                 if sequence_type in _DECIDE_SEQUENCE:
                     for npc in npcs:
-                        npc.has_hat = True
-                        npc.has_necklace = True
+                        npc.activate_hat()
+                        npc.activate_necklace()
                         if (
                             self.get_round() >= 7
                             and npc.behaviour_tree_context.adhering_to_measures
@@ -972,15 +972,15 @@ class Level:
             return False
 
         if sequence_type == ScriptedSequence.PLAYER_HAT:
-            npc.has_hat = True
+            npc.activate_hat()
             self.player.blocked_from_market = False
         elif sequence_type == ScriptedSequence.PLAYER_NECKLACE:
             npc.has_necklace = True
         elif sequence_type == ScriptedSequence.PLAYER_BIRTHDAY:
             pass
         elif sequence_type == ScriptedSequence.INGROUP_NECKLACE:
-            npc.has_hat = True
-            npc.has_necklace = True
+            npc.activate_hat()
+            npc.activate_necklace()
         elif sequence_type == ScriptedSequence.GROUP_MARKET_PASSIVE:
             buy_list = TOMATO_OR_CORN_LIST
             self.end_scripted_sequence_decide(buy_list, is_player_active=False)
