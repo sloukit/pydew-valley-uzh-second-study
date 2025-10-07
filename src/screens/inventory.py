@@ -238,12 +238,12 @@ class InventoryMenu(AbstractMenu):
         buttons_to_display = []
         if player.has_goggles is not None:
             buttons_to_display.append("goggles")
-        match player.study_group:
-            # No items are shown if the player is not in a group yet (StudyGroup.NO_GROUP)
-            case StudyGroup.INGROUP:
-                buttons_to_display.extend({"hat", "necklace"})
-            case StudyGroup.OUTGROUP:
-                buttons_to_display.append("horn")
+        # match player.study_group:
+        #     # No items are shown if the player is not in a group yet (StudyGroup.NO_GROUP)
+        #     case StudyGroup.INGROUP:
+        #         buttons_to_display.extend({"hat", "necklace"})
+        #     case StudyGroup.OUTGROUP:
+        #         buttons_to_display.append("horn")
 
         # Should the player have absolutely no cosmetics on themselves
         # whatsoever, show only one button with "No Equipment" on it

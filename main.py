@@ -599,6 +599,12 @@ class Game:
         # `game_version` is stored in the player database
         self.game_version = response["game_version"]
 
+        if self.game_version ==3:
+            for npc in self.level.game_map.npcs:
+                npc.is_v3 = True
+                npc.deactivate_hat()
+                npc.deactivate_necklace()
+
         if __debug__:  # Only print debug information if running in debug mode
             xplat.log(f"token: {self.token}")
             xplat.log(f"jwt: {self.jwt}")
