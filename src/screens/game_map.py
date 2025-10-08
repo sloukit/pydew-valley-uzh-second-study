@@ -1059,8 +1059,8 @@ class GameMap:
         # in version 3 of the game we remove all hat and necklaces for npcs with special features added in the map
         if self.get_game_version() == 3:
             if npc.study_group == StudyGroup.INGROUP and npc.npc_id in [368, 372]:
-                self.deactivate_necklace()
-                self.deactivate_hat()
+                npc.deactivate_necklace()
+                npc.deactivate_hat()
         # in version 1 and 2 of the game we remove hats for two npcs without special features
         elif self.get_game_version() in [1, 2]:
             if (
@@ -1068,6 +1068,6 @@ class GameMap:
                 and npc.has_hat
                 and self.number_of_hats_to_exclude > 0
             ):
-                self.deactivate_necklace()
-                self.deactivate_hat()
+                npc.deactivate_necklace()
+                npc.deactivate_hat()
                 self.number_of_hats_to_exclude -= 1
