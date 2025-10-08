@@ -3,9 +3,7 @@ from typing import Callable
 
 from src import xplat
 from src.settings import (
-    # API_KEY,
-    # PORT,
-    # SERVER_IP,
+    DEV_MODE,
     SERVER_URL,
     USE_SERVER,
 )
@@ -61,7 +59,7 @@ def send_telemetry(encoded_jwt: str, payload: dict) -> None:
     """Send telemetry to the backend, asynchronously."""
     # TODO: If needed, we can restructure this to do async callbacks
     # as well, in case we need to react to this telemetry being sent.
-    if __debug__:  # Only log() debug information if running in debug mode
+    if DEV_MODE:  # Only log() debug information if running in debug mode
         xplat.log(f"Sending telemetry: {payload}")
     url = f"{SERVER_URL}/telemetry"
     headers = {
@@ -77,6 +75,6 @@ async def _npc_events_server_call(encoded_jwt: str, callback: Callable) -> dict 
 
 
 def get_npc_events(encoded_jwt: str, callback: Callable) -> None:
-    if __debug__:  # Only log() debug information if running in debug mode
+    if DEV_MODE:  # Only log() debug information if running in debug mode
         xplat.log("Retrieving NPC status...")
     asyncio.create_task(_npc_events_server_call(encoded_jwt, callback))

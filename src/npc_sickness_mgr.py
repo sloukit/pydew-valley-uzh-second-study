@@ -14,9 +14,7 @@ from typing import Callable
 from src.client import get_npc_events  # noqa: F401
 from src.enums import NPCSicknessStatusChange
 from src.npc.npc import NPC
-from src.settings import (
-    SICK_INTERVAL,
-)
+from src.settings import DEV_MODE, SICK_INTERVAL
 
 # Number of NPCs per group.
 NPC_POOL_SIZE = 12
@@ -226,7 +224,7 @@ class NPCSicknessManager:
         return dead
 
     def setup_from_db_data(self, received: dict | None):
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             print(received)
 
         if received is None:
@@ -235,7 +233,7 @@ class NPCSicknessManager:
         if received["data"] is None:
             self.compute_event_list()
             return
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             print("=================NPC SICKNESS EVENTS FROM DB=====================")
         for i, db_evt_list in received["data"].items():
             for db_evt in db_evt_list:
@@ -246,7 +244,7 @@ class NPCSicknessManager:
                     NPCSicknessStatusChange(db_evt["change_type"]),
                 )
                 self.evt_list.append(evt)
-                if __debug__:  # Only print debug information if running in debug mode
+                if DEV_MODE:  # Only print debug information if running in debug mode
                     print(str(evt))  # this print the event to the terminal
                 if evt.change_type == NPCSicknessStatusChange.GO_TO_BATHHOUSE:
                     if evt.npc_id < NPC_POOL_SIZE:
@@ -272,12 +270,12 @@ class NPCSicknessManager:
         # Generate random timings for the NPCs to head to the bathhouse for each round.
         self.compute_bathhouse_timings()
 
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             print("=================NPC SICKNESS EVENTS GENERATED=====================")
         # Sort events in reverse, so that we can pop them from the back of the list
         self.evt_list.sort(key=lambda s: (s.round_no, s.timestamp), reverse=True)
         for evt in self.evt_list:
-            if __debug__:  # Only print debug information if running in debug mode
+            if DEV_MODE:  # Only print debug information if running in debug mode
                 print(str(evt))
 
         # Send the status to the server.

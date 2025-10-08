@@ -32,7 +32,7 @@ GAME_MAP = Map.NEW_FARM
 ENABLE_NPCS = True
 TEST_ANIMALS = True
 
-GAME_LANGUAGE = os.environ.get("GAME_LANGUAGE", "en")
+GAME_LANGUAGE = os.environ.get("GAME_LANGUAGE", "de")
 
 
 DEBUG_MODE_VERSION = 0
@@ -78,6 +78,8 @@ if IS_WEB:
 else:
     SERVER_URL = os.getenv("SERVER_URL", "http://127.0.0.0:8888")
     # SERVER_URL = os.getenv("SERVER_URL", "http://localhost:8001")
+
+DEV_MODE = False  # this deactivates all the printing, logging, and dev mode hotkeys
 
 SETUP_PATHFINDING = any((ENABLE_NPCS, TEST_ANIMALS))
 

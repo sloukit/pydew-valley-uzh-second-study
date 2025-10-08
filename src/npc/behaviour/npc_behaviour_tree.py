@@ -16,7 +16,7 @@ from src.npc.behaviour.ai_behaviour_tree_base import (
 )
 from src.npc.behaviour.context import NPCIndividualContext, NPCSharedContext
 from src.npc.utils import pf_move_to, pf_wander
-from src.settings import SCALED_TILE_SIZE
+from src.settings import DEV_MODE, SCALED_TILE_SIZE
 from src.sprites.objects.tree import Tree
 from src.support import distance, near_tiles
 
@@ -93,7 +93,7 @@ def go_to_bathhouse(context: NPCIndividualContext) -> bool:
     return walk_to_pos(
         context,
         (24 + 30 * is_outgrp, 40),
-        lambda: print("Finished" if __debug__ else None),
+        lambda: print("Finished" if DEV_MODE else None),
     )
 
 
@@ -143,7 +143,7 @@ def will_leave_forest_for_bathhouse(context: NPCIndividualContext) -> bool:
 def go_to_bathhouse_forest(context: NPCIndividualContext):
     context.timing_for_bathhouse = NPCSharedContext.get_rnd_timer()
     return walk_to_pos(
-        context, (9, 18), lambda: print("Finished moving") if __debug__ else None
+        context, (9, 18), lambda: print("Finished moving") if DEV_MODE else None
     )
 
 
@@ -185,7 +185,7 @@ def will_leave_to_bathhouse(context: NPCIndividualContext) -> bool:
 
 def go_to_bathhouse_town(context: NPCIndividualContext) -> bool:
     return walk_to_pos(
-        context, (54, 43), lambda: print("Finished moving") if __debug__ else None
+        context, (54, 43), lambda: print("Finished moving") if DEV_MODE else None
     )
 
 

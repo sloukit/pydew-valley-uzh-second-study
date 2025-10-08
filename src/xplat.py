@@ -14,6 +14,7 @@ import urllib.request
 from typing import Callable
 
 from src.exceptions import LoginError
+from src.settings import DEV_MODE
 
 
 class Log:
@@ -166,13 +167,13 @@ window._HTTP_HANDLER.post = function * post(
         async def _emscripten_get(url: str, headers: dict) -> list | dict:
             # TODO: no utf-8 encoding?
             headers_json_encoded = json.dumps(headers)
-            if __debug__:  # Only log() debug information if running in debug mode
+            if DEV_MODE:  # Only log() debug information if running in debug mode
                 log(f"GET {url}: sending...")
 
             response = await platform.jsiter(
                 platform.window._HTTP_HANDLER.get(url, headers_json_encoded)
             )
-            if __debug__:  # Only log() debug information if running in debug mode
+            if DEV_MODE:  # Only log() debug information if running in debug mode
                 log(f"GET {url}: complete")
 
             return json.loads(response)
@@ -183,7 +184,7 @@ window._HTTP_HANDLER.post = function * post(
             # TODO: no utf-8 encoding?
             headers_json_encoded = json.dumps(headers)
             payload_json_encoded = json.dumps(payload)
-            if __debug__:  # Only log() debug information if running in debug mode
+            if DEV_MODE:  # Only log() debug information if running in debug mode
                 log(f"POST {url}: sending...")
             response = await platform.jsiter(
                 platform.window._HTTP_HANDLER.post(
@@ -192,12 +193,12 @@ window._HTTP_HANDLER.post = function * post(
                     payload_json_encoded,
                 )
             )
-            if __debug__:  # Only log() debug information if running in debug mode
+            if DEV_MODE:  # Only log() debug information if running in debug mode
                 log(f"POST {url}: complete")
 
             json_response = json.loads(response)
 
-            if __debug__:  # Only log() debug information if running in debug mode
+            if DEV_MODE:  # Only log() debug information if running in debug mode
                 if json_response.get("error"):
                     log(
                         f"POST {url}: failed. Request: {payload}. Response: {json_response}"
@@ -233,7 +234,7 @@ window._HTTP_HANDLER.post = function * post(
 
     async def post(self, url: str, headers: dict, data: dict) -> dict:
         """Make a POST request to the given URL, return JSON decoded response."""
-        if __debug__:  # Only log() debug information if running in debug mode
+        if DEV_MODE:  # Only log() debug information if running in debug mode
             log(f"POST {url}: {data}")
 
         if headers is None:
