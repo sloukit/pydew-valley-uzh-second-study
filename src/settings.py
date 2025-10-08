@@ -79,7 +79,7 @@ else:
     SERVER_URL = os.getenv("SERVER_URL", "http://127.0.0.0:8888")
     # SERVER_URL = os.getenv("SERVER_URL", "http://localhost:8001")
 
-DEV_MODE = False  # this deactivates all the printing, logging, and dev mode hotkeys
+DEV_MODE = True  # this deactivates all the printing, logging, and dev mode hotkeys
 
 SETUP_PATHFINDING = any((ENABLE_NPCS, TEST_ANIMALS))
 
