@@ -4,6 +4,7 @@ import pygame
 
 from src import settings
 from src.fblitter import FBLITTER
+from src.settings import DEV_MODE
 from src.support import oscilating_lerp
 from src.timer import Timer
 
@@ -39,7 +40,7 @@ class Transition:
         if self.timer.active:
             return
 
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             print("Transition activated")
 
         self.timer.activate()

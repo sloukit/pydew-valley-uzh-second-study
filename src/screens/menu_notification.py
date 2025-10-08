@@ -4,7 +4,7 @@ import pygame
 
 from src.enums import GameState
 from src.gui.menu.general_menu import GeneralMenu
-from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
+from src.settings import DEV_MODE, SCREEN_HEIGHT, SCREEN_WIDTH
 from src.support import get_translated_string as get_translated_msg
 
 _NOTIFICATION_TXT_TOP = SCREEN_HEIGHT / 20 + 75
@@ -44,7 +44,7 @@ class NotificationMenu(GeneralMenu):
         btn.initial_rect.center = btn.rect.center
 
     def button_action(self, text: str):
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             print(text)
         if text == get_translated_msg("ok"):
             self.switch_screen(GameState.PLAY)

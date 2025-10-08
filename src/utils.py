@@ -10,6 +10,7 @@ from pygame.color import Color
 from pygame.rect import FRect, Rect
 
 from src import xplat
+from src.settings import DEV_MODE
 
 _DOUBLE_SLASH = "//"
 
@@ -112,7 +113,7 @@ def get_credentials() -> str:
 def send_telemetry(url: str, jwt: str, data: dict):
     import js  # type: ignore
 
-    if __debug__:  # Only log() debug information if running in debug mode
+    if DEV_MODE:  # Only log() debug information if running in debug mode
         js.console.log("sending telemetry")
         print("sending telemetry")
 
@@ -132,18 +133,18 @@ def send_telemetry(url: str, jwt: str, data: dict):
     try:
         with urllib.request.urlopen(request) as response:
             response_data = response.read().decode("utf-8")
-            if __debug__:  # Only print debug information if running in debug mode
+            if DEV_MODE:  # Only print debug information if running in debug mode
                 print(f"Response status: {response.status}")
                 print(f"Response data: {response_data}")
     except urllib.request.HTTPError as e:
         # TODO: error handling
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             print(f"HTTP Error: {e.code} - {e.reason}")
             js.console.log(f"HTTP Error: {e.code} - {e.reason}")
 
     except urllib.request.URLError as e:
         # TODO: error handling
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             print(f"URL Error: {e.reason}")
             js.console.log(f"URL Error: {e.reason}")
 

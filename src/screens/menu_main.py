@@ -13,9 +13,9 @@ from src.fblitter import FBLITTER
 from src.gui.display_error import DisplayError
 from src.gui.menu.general_menu import GeneralMenu
 from src.settings import (
+    DEV_MODE,
     SCREEN_HEIGHT,
     SCREEN_WIDTH,
-    # USE_SERVER,
 )
 from src.support import get_translated_string as get_translated_msg
 
@@ -144,7 +144,7 @@ class MainMenu(GeneralMenu):
 
     def post_login_callback(self, login_response: dict) -> None:
         """Meant to be used as a callback function post-login."""
-        if __debug__:  # Only log() debug information if running in debug mode
+        if DEV_MODE:  # Only log() debug information if running in debug mode
             xplat.log("post login callback")
         # jwt = login_response["jwt"]
         # Pass the JWT back to the main Game object:
@@ -156,12 +156,12 @@ class MainMenu(GeneralMenu):
         self.input_text = ""
         # get players_name only if used in introduction
         if self.round_config.get("character_introduction_text", ""):
-            if __debug__:  # Only log() debug information if running in debug mode
+            if DEV_MODE:  # Only log() debug information if running in debug mode
                 xplat.log("round config has character introduction")
 
             self.players_name_active = True
         else:
-            if __debug__:  # Only log() debug information if running in debug mode
+            if DEV_MODE:  # Only log() debug information if running in debug mode
                 xplat.log("round config DOES NOT have character introduction")
             self.players_name_active = True
             self.set_players_name("")
@@ -172,7 +172,7 @@ class MainMenu(GeneralMenu):
 
     def error_login_callback(self, login_error: Exception) -> None:
         """Meant to be used as an error callback function post-login."""
-        if __debug__:  # Only log() debug information if running in debug mode
+        if DEV_MODE:  # Only log() debug information if running in debug mode
             xplat.log("error login callback")
             print(login_error)
             traceback.print_exception(

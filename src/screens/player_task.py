@@ -14,7 +14,7 @@ from src.screens.minigames.gui import (
     # _draw_box,
     _ReturnButton,
 )
-from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
+from src.settings import DEV_MODE, SCREEN_HEIGHT, SCREEN_WIDTH
 from src.support import get_translated_string as get_translated_msg
 from src.support import import_font
 
@@ -79,7 +79,7 @@ class PlayerTask(AbstractMenu):
 
             self.allocation_item = " ".join(elements[1:])
         else:
-            if __debug__:  # Only print debug information if running in debug mode
+            if DEV_MODE:  # Only print debug information if running in debug mode
                 print(f"Error! Could not parse allocation items: '{allocation_items}'")
             self.max_allocation = 2
             self.allocation_item = "<GENERIC_ITEM_NAME>"

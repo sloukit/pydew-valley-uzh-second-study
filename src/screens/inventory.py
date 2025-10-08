@@ -11,7 +11,7 @@ from src.enums import (
     CustomCursor,
 )
 from src.gui.menu.components import Button, ImageButton
-from src.settings import SCREEN_WIDTH, SCREEN_HEIGHT
+from src.settings import SCREEN_WIDTH, SCREEN_HEIGHT, DEV_MODE
 from itertools import chain
 from operator import itemgetter
 from typing import Callable, Any
@@ -191,7 +191,7 @@ class InventoryMenu(AbstractMenu):
                 filter(_get_resource_count, self._inventory.items()),
             )
         ):
-            if __debug__:  # Only print debug information if running in debug mode
+            if DEV_MODE:  # Only print debug information if running in debug mode
                 print(ir.name)
 
             calc_img, btn_name = self._prepare_img_for_ir_button(ir, count)
@@ -200,7 +200,7 @@ class InventoryMenu(AbstractMenu):
             btn_rect.x = _LEFT_MARGIN + button_size[0] * column + x_spacing * column
             btn_rect.y = _TOP_MARGIN + (button_size[1] + _SPACING_BETWEEN_ROWS) * row
             if ir.is_seed():
-                if __debug__:  # Only print debug information if running in debug mode
+                if DEV_MODE:  # Only print debug information if running in debug mode
                     print(btn_rect)
                 # Keep track of equip buttons so we can toggle whether they display
                 # a checkmark when equipped
