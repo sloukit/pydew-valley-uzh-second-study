@@ -82,9 +82,9 @@ reset@@Standard
 
 # round end menu
 
-round_end_info@@Runde {round_no} ist fertig. Besitz der Rothüte: ${money} und:
-temp_finish@@Runde {round_no} ist beendet, Sie sind für heute fertig! Sie können sich morgen erneut anmelden. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte: ${money} und:
-whole_finish@@Runde {round_no} ist fertig, damit ist das Spiel abgeschlossen! Bitte füllen Sie jetzt noch den kurzen Fragebogen aus. Sie können dieses Fenster jetzt schliessen. Besitz der Rothüte am Ende: ${money} und:
+round_end_info@@Runde {round_no} ist fertig. Besitz: ${money} und:
+temp_finish@@Runde {round_no} ist beendet, Sie sind für heute fertig! Sie können sich morgen erneut anmelden. Sie können dieses Fenster jetzt schliessen. Besitz: ${money} und:
+whole_finish@@Runde {round_no} ist fertig, damit ist das Spiel abgeschlossen! Bitte füllen Sie jetzt noch den kurzen Fragebogen aus. Sie können dieses Fenster jetzt schliessen. Besitz: ${money} und:
 next_round@@Weiter in die nächste Runde
 outgroup_income_round_end@@Die Hornlinge haben letzte Runde {money}$ verdient.
 ingroup_income_round_end@@Die Rothüte haben letzte Runde {money}$ verdient.
