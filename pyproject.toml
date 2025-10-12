@@ -25,6 +25,7 @@ authors = [
   { name = "MortalCoder" },
   { name = "asterli6" },
   { name = "dee-a-go" },
+  { name = "LittleBread69"},
 ]
 license-files = ["LICEN[CS]E*"]
 requires-python = ">= 3.12.0, <3.13"
