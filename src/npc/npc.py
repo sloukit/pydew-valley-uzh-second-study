@@ -40,6 +40,7 @@ class NPC(NPCBase):
         has_necklace: bool,
         special_features: str | None,
         npc_id: int = 0,
+        is_v3: bool = False,
     ):
         self.tree_sprites = tree_sprites
 
@@ -56,10 +57,16 @@ class NPC(NPCBase):
             emote_manager=emote_manager,
             npc_id=npc_id,
         )
+        self.is_v3 = is_v3
         self.start_tile_pos = self.get_tile_pos()  # capture the NPC start position
         self.soil_area = soil_manager.get_area(self.study_group)
-        self.has_necklace = has_necklace
-        self.has_hat = has_hat
+        self.has_necklace = False
+        self.has_hat = False
+        if has_hat:
+            self.activate_hat()
+        if has_necklace:
+            self.activate_necklace()
+
         self.special_features = special_features
         self.has_horn = False
         self.has_outgroup_skin = False
@@ -110,6 +117,20 @@ class NPC(NPCBase):
         self.die_rate = random.randint(35, 75)
 
         # self.get_sick(None, None) # debug for testing sickness
+
+    def activate_hat(self):
+        if not self.is_v3:
+            self.has_hat = True
+
+    def deactivate_hat(self):
+        self.has_hat = False
+
+    def activate_necklace(self):
+        if not self.is_v3:
+            self.has_necklace = True
+
+    def deactivate_necklace(self):
+        self.has_necklace = False
 
     def set_allowed_seeds(self, allowed_seeds: dict[str]) -> None:
         seed_types = []
@@ -198,8 +219,15 @@ class NPC(NPCBase):
     def assign_outfit_ingroup(
         self, ingroup_40p_hat_necklace_appearance: bool = False
     ) -> None:
+        if self.study_group == StudyGroup.OUTGROUP:
+            self.deactivate_necklace()
+            self.deactivate_hat()
+            self.has_horn = True
+            self.has_outgroup_skin = True
+            return
+
         # 40% of the ingroup NPCs should wear a hat and a necklace, and 60% of the ingroup NPCs should only wear the hat
-        if self.study_group == StudyGroup.INGROUP:
+        else:
             # # if npc has special features set in Tiled map using 'features' custom field - do not change it
             # # it's used in intro scripted sequence
             if self.special_features:
@@ -207,19 +235,14 @@ class NPC(NPCBase):
 
             if ingroup_40p_hat_necklace_appearance:
                 if random.random() <= 0.4:
-                    self.has_necklace = True
-                    self.has_hat = True
+                    self.activate_necklace()
+                    self.activate_hat()
                 else:
-                    self.has_necklace = False
-                    self.has_hat = True
+                    self.deactivate_necklace()
+                    self.activate_hat()
             else:
-                self.has_necklace = False
-                self.has_hat = False
-        else:
-            self.has_necklace = False
-            self.has_hat = False
-            self.has_horn = True
-            self.has_outgroup_skin = True
+                self.deactivate_necklace()
+                self.deactivate_hat()
 
     # NPC recovery
     def recover(self):
@@ -257,8 +280,8 @@ class NPC(NPCBase):
 
     def die(self):
         self.is_dead = True
-        self.has_necklace = False
-        self.has_hat = False
+        self.deactivate_necklace()
+        self.deactivate_hat()
         self.has_horn = False
         self.image = None
         self.remove(self.collision_sprites)

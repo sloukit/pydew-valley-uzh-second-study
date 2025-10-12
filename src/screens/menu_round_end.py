@@ -134,7 +134,8 @@ class RoundMenu(GeneralMenu):
             if item.as_serialised_string() not in self.allowed_crops:
                 continue
             rect = pygame.Rect(basic_rect)
-            item_name = get_translated_msg(item.as_serialised_string())
+            item_name_en = item.as_serialised_string()
+            item_name = get_translated_msg(item_name_en)
             frame_name = item.as_serialised_string()
             icon = self.item_frames[frame_name]
             icon = pygame.transform.scale_by(icon, 0.5)
@@ -143,7 +144,7 @@ class RoundMenu(GeneralMenu):
             self.text_uis.append(item_ui)
             basic_rect = basic_rect.move(0, 60)
 
-            telemetry[item_name] = str(values[index])
+            telemetry[item_name_en] = str(values[index])
 
         self.min_scroll = self.get_min_scroll()
         telemetry["money"] = self.player.money

@@ -41,36 +41,36 @@
         ["EN: Sign", "EN: check map tmx, Interactions layer, custom property: label"]
     ],
     "to_trader_up":[
-        ["EN: Sign", "EN: /\\ | | go up to the Trader"]
+        ["Wegweiser", "Willkommen beim Markt!"]
     ],
     "to_farm_up":[
-        ["EN: Sign", "EN: /\\ | | go up to the Farm"]
+        ["Wegweiser", "Laufe nach oben, um zur Farm zu gelangen."]
     ],
     "to_minigame_up":[
-        ["EN: Sign", "EN: /\\ | | go up to the Mini game"]
+        ["Wegweiser", "Wilkommen beim Spiel Kuh-in-den-Stall!"]
     ],
     "to_bath_down":[
-        ["EN: Sign", "EN: | |\\/ go down to the Bathhouse"]
+        ["Wegweiser", "Laufe nach unten, um zum Badehaus zu gelangen."]
     ],
     "to_forest_down":[
-        ["EN: Sign", "EN: | |\\/ go down to the Forest"]
+        ["Wegweiser", "Laufe nach unten, um in den Wald zu gelangen."]
     ],
     "to_town_down":[
-        ["EN: Sign", "EN: | |\\/ go down to the Town"]
+        ["Wegweiser", "Laufe nach unten, um zur Stadt zu gelangen."]
     ],
     "to_bath_right":[
-        ["EN: Sign", "EN: => go right to the Bathhouse"]
+        ["Wegweiser", "Wilkommen beim Badehaus! Hier kannst Du täglich ein Bad nehmen, um dich vor der Vulkanseuche zu schützen. Achtung: Wenn man das Bad nimmt, wird einem kurz übel."]
     ],
     "to_forest_right":[
-        ["EN: Sign", "EN: => go right to the Forest"]
+        ["Wegweiser", "Laufe nach rechts, um in den Wald zu gelangen."]
     ],
     "to_town_left":[
-        ["EN: Sign", "EN: <= go left to the Town"]
+        ["Wegweiser", "Laufe nach links, um zur Stadt zu gelangen."]
     ],
     "to_town":[
-        ["EN: Sign", "EN: <= go left to the 'in group'=> go right to the Forest | |\\/ go down to the Town"]
+        ["Wegweiser", "Laufe nach links, um zu den Rothüten zu gelangen. Laufe nach rechts, um zu den Hornlingen oder in den Wald zu gelangen. Laufe nach unten, um zur Stadt zu gelangen."]
     ],
     "to_forest":[
-        ["EN: Sign", "EN: => go right to the 'out group'<= go left to the Town | |\\/ go down to the Forest"]
+        ["Wegweiser", "Laufe nach rechts, um zu den Hornlingen zu gelangen. Laufe nach links, um zur Stadt zu gelangen. Laufe nach unten, um in den Wald zu gelangen."]
     ]
 }

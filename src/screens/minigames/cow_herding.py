@@ -199,6 +199,7 @@ class CowHerding(Minigame):
             has_hat=False,
             has_necklace=False,
             special_features=None,
+            is_v3=True,
         )
         self._state.game_map.npcs.append(opponent)
         side_map = {StudyGroup.INGROUP: "L", StudyGroup.OUTGROUP: "R"}

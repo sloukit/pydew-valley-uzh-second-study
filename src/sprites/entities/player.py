@@ -34,6 +34,7 @@ from src.npc.bases.npc_base import NPCBase
 from src.savefile import SaveFile
 from src.settings import (
     DEBUG_MODE_VERSION,
+    DEV_MODE,
     MAX_DT,
     MAX_HP,
     PLAYER_HP_STATE_STR,
@@ -258,7 +259,7 @@ class Player(Character):
             ):
                 proceed = False
 
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             print(current_seed)
         return current_seed
 

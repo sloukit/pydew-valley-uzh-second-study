@@ -219,9 +219,10 @@ class Tutorial:
                 ):
                     if self.game_version < 3:
                         self.switch_to_task(7)
+                        self.tasks_achieved += 1
                     else:
                         self.switch_to_task(8)
-                    self.tasks_achieved += 1
+                        self.tasks_achieved += 2
 
             case 7:
                 # check if the player achieved task "go to the marketplace and buy or sell something"
@@ -233,7 +234,7 @@ class Tutorial:
                     if self.game_version in [1, 2]:
                         self.player.blocked_from_market = True
                     self.switch_to_task(9)
-                    self.tasks_achieved += 1
+                    self.tasks_achieved += 2
 
             case 8:
                 # check if the player achieved task "go to the marketplace and buy or sell something" in version 3
@@ -296,6 +297,13 @@ class Tutorial:
 
     def update(self, game_paused):
         self.check_tasks(game_paused)
+        # print(not(self.level.current_minigame is None), self.paused_dialog)
+        ctb = self.dialogue_manager._get_current_tb()
+        if ctb is not None:
+            if self.level.current_minigame is not None:
+                ctb.visible = False
+            else:
+                ctb.visible = True
 
     def deactivate(self):
         self.dialogue_manager.close_dialogue()

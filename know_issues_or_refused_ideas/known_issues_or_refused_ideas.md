@@ -1,11 +1,12 @@
 # Known Issues And/Or Refused Ideas
 
 This file contains:
- - Issues that were found but that won't be fixed.
- - Issues linked to game states that aren't achievable without modifying game conditions. (i. e. Cheat Engine, changing values in the code before executing, not respecting the rules.)
- - Issues linked to incorrect dependencies or linked to a wrong interpreter.
- - Propositions that were refused.
- - Propositions that were put aside for a late version.
+
+- Issues that were found but that won't be fixed.
+- Issues linked to game states that aren't achievable without modifying game conditions. (i. e. Cheat Engine, changing values in the code before executing, not respecting the rules.)
+- Issues linked to incorrect dependencies or linked to a wrong interpreter.
+- Propositions that were refused.
+- Propositions that were put aside for a later version.
 
 Before posting a [new issue (in the issues tab of the Github repo)](https://github.com/sloukit/pydew-valley-uzh-second-study/issues), please check that it wasn't already added to this document's [Issues Section](#issues).
 
@@ -18,7 +19,8 @@ Before posting a [new feature request (in the issues tab of the Github repo)](ht
 To see more information, check [#84](https://github.com/sloukit/pydew-valley-uzh-second-study/issues/84)
 
 Typical output log on Windows:
-```py
+
+```python
 Traceback (most recent call last):
   File "C:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\main.py", line 1166, in <module>
     asyncio.run(game.run())
@@ -45,7 +47,8 @@ KeyError: <Map.VOLCANO: 'volcano'>
 ### Apply Damage function returns AttributeError
 
 Typical output log on Windows:
-```py
+
+```python
 Traceback (most recent call last):
   File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\main.py", line 1154, in <module>
     asyncio.run(game.run())
@@ -60,12 +63,13 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^
   File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\main.py", line 972, in run
     self.level.update(dt, self.current_state == GameState.PLAY)
-  File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\src\screens\level.py", line 1383, in update        
+  File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\src\screens\level.py", line 1383, in update
     self.handle_controls()
   File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\src\screens\level.py", line 755, in handle_controls    self.overlay.health_bar.apply_damage(1)
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AttributeError: 'HealthProgressBar' object has no attribute 'apply_damage'
 ```
+
 This happens on token `000` when the player presses `pygame.K_2`.
 
 **Reason of Refusal:** This state is only achievable in debug mode.
@@ -73,7 +77,8 @@ This happens on token `000` when the player presses `pygame.K_2`.
 ### Apply Health function returns AttributeError
 
 Typical output log on Windows:
-```py
+
+```python
 Traceback (most recent call last):
   File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\main.py", line 1154, in <module>
     asyncio.run(game.run())
@@ -88,7 +93,7 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^
   File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\main.py", line 972, in run
     self.level.update(dt, self.current_state == GameState.PLAY)
-  File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\src\screens\level.py", line 1383, in update        
+  File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\src\screens\level.py", line 1383, in update
     self.handle_controls()
   File "c:\Users\{username}\Documents\Github\pydew-valley-uzh-second-study\src\screens\level.py", line 752, in handle_controls    self.overlay.health_bar.apply_health(1)
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -98,6 +103,30 @@ AttributeError: 'HealthProgressBar' object has no attribute 'apply_health'
 This happens on token `000` when the player presses `pygame.K_1`.
 
 **Reason of Refusal:** This state is only achievable in debug mode.
+
+### Using Python3.11 (or Pypy3.11) returns a SyntaxError
+
+Typical output log on MacOS:
+
+```python
+pygame-ce 2.5.5 (SDL 2.32.6, Python 3.11.13)
+Traceback (most recent call last):
+  File "/Users/{user}/Documents/GitHub/pydew-valley-uzh-second-study/main.py", line 23, in <module>
+    from src import client, support, xplat
+  File "<frozen importlib._bootstrap>", line 1232, in _handle_fromlist
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/Users/{user}/Documents/GitHub/pydew-valley-uzh-second-study/src/client.py", line 5, in <module>
+    from src.settings import (
+  File "/Users/{user}/Documents/GitHub/pydew-valley-uzh-second-study/src/settings.py", line 11
+    type Coordinate = tuple[int | float, int | float]
+         ^^^^^^^^^^
+SyntaxError: invalid syntax
+```
+
+This happens when the user uses the wrong version of Python.
+In the above-mentioned traceback, PyPy3.11 was used.
+
+**Reason of Refusal:** As written [in the README.md](../README.md), only Python3.12 is supported and PyPy is strictly unsupported. Any version inferior to 3.12 is incompatible.
 
 ## Features
 

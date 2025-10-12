@@ -52,6 +52,7 @@ from src.screens.minigames.cow_herding import CowHerding, CowHerdingState
 from src.settings import (
     DEBUG_MODE_VERSION,
     DEFAULT_ANIMATION_NAME,
+    DEV_MODE,
     EMOTES_LIST,
     GAME_MAP,
     SCALED_TILE_SIZE,
@@ -715,7 +716,7 @@ class Level:
             self.volcano(True)
 
         elif event.type == SHOW_BATH_INFO:
-            if __debug__:
+            if DEV_MODE:
                 print(
                     f"SHOW_BATH_INFO event received: enabled={self.overlay.bath_info.enabled}, visible={self.overlay.bath_info.visible}"
                 )
@@ -736,19 +737,19 @@ class Level:
         return False
 
     def handle_controls(self):
-        if self.controls.ADVANCE_DIALOG.click:
+        if DEV_MODE and self.controls.ADVANCE_DIALOG.click:
             post_event(DIALOG_ADVANCE)
 
         if self.controls.SHOW_BOX_KEYBINDINGS.click:
             post_event(SHOW_BOX_KEYBINDINGS)
 
         # TODO: move this back into the debug controls if check once testing is done
-        if self.controls.DEBUG_END_ROUND.click:
+        if DEV_MODE and self.controls.DEBUG_END_ROUND.click:
             self.switch_screen(GameState.ROUND_END)
 
         # Bath info display available in all game modes (not just debug)
         if self.controls.SHOW_BATH_INFO.click:
-            if __debug__:
+            if DEV_MODE:
                 print(
                     f"B key pressed: bath_info enabled={self.overlay.bath_info.enabled}"
                 )
@@ -855,8 +856,8 @@ class Level:
                     npcs = self.limit_npcs_amount(npcs)
                 if sequence_type in _DECIDE_SEQUENCE:
                     for npc in npcs:
-                        npc.has_hat = True
-                        npc.has_necklace = True
+                        npc.activate_hat()
+                        npc.activate_necklace()
                         if (
                             self.get_round() >= 7
                             and npc.behaviour_tree_context.adhering_to_measures
@@ -974,15 +975,15 @@ class Level:
             return False
 
         if sequence_type == ScriptedSequence.PLAYER_HAT:
-            npc.has_hat = True
+            npc.activate_hat()
             self.player.blocked_from_market = False
         elif sequence_type == ScriptedSequence.PLAYER_NECKLACE:
             npc.has_necklace = True
         elif sequence_type == ScriptedSequence.PLAYER_BIRTHDAY:
             pass
         elif sequence_type == ScriptedSequence.INGROUP_NECKLACE:
-            npc.has_hat = True
-            npc.has_necklace = True
+            npc.activate_hat()
+            npc.activate_necklace()
         elif sequence_type == ScriptedSequence.GROUP_MARKET_PASSIVE:
             buy_list = TOMATO_OR_CORN_LIST
             self.end_scripted_sequence_decide(buy_list, is_player_active=False)
@@ -1287,7 +1288,7 @@ class Level:
                     or self.round_config["accessible_bathhouse"]
                 ):
                     if (
-                        __debug__
+                        DEV_MODE
                     ):  # Only print debug information if running in debug mode
                         print(f"Player hit warp: {warp_hitbox.name}")
 

@@ -31,6 +31,7 @@ from src.enums import (
     SelfAssessmentDimension,
     SocialIdentityAssessmentDimension,
     StartAssessmentDimension,
+    StudyGroup,
 )
 from src.events import (
     DIALOG_ADVANCE,
@@ -65,6 +66,7 @@ from src.screens.start_assessment import StartAssessmentMenu
 from src.screens.switch_to_outgroup_menu import OutgroupMenu
 from src.settings import (
     DEBUG_MODE_VERSION,
+    DEV_MODE,
     EMOTE_SIZE,
     GAME_LANGUAGE,
     GVT_TB_SIZE,
@@ -79,7 +81,6 @@ from src.settings import (
     AniFrames,
     MapDict,
     SoundDict,
-    # SERVER_URL,
 )
 from src.sickness import SicknessManager
 from src.sprites.setup import setup_entity_assets
@@ -87,13 +88,13 @@ from src.support import get_translated_string as get_translated_msg
 from src.tutorial import Tutorial
 
 # memory cleaning settings
-if __debug__:  # Only print debug information if running in debug mode
+if DEV_MODE:  # Only print debug information if running in debug mode
     print(f"gc.get_threshold: {gc.get_threshold()}")
     print("setting new threshold:")
 allocs, g1, g2 = gc.get_threshold()
 # gc.set_threshold(50000, g1, g2)
 
-if __debug__:  # Only print debug information if running in debug mode
+if DEV_MODE:  # Only print debug information if running in debug mode
     print(f"gc.get_threshold: {gc.get_threshold()}")
 
 
@@ -528,6 +529,7 @@ class Game:
             > 0
             and self.round_end_timer
             > self.round_config["group_market_active_player_sequence_timestamp"][0]
+            and not self.player.in_outgroup
         )
 
     @property
@@ -586,7 +588,7 @@ class Game:
             self.send_telemetry("players_name", {"players_name": players_name})
 
     def set_token(self, response: dict[str, Any]) -> dict[str, Any]:
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             xplat.log("Login successful!")
             xplat.log(f"Response content: {response}")
 
@@ -597,12 +599,18 @@ class Game:
         # `game_version` is stored in the player database
         self.game_version = response["game_version"]
 
-        if __debug__:  # Only print debug information if running in debug mode
+        if self.game_version == 3:
+            for npc in self.level.game_map.npcs:
+                npc.is_v3 = True
+                npc.deactivate_hat()
+                npc.deactivate_necklace()
+
+        if DEV_MODE:  # Only print debug information if running in debug mode
             xplat.log(f"token: {self.token}")
             xplat.log(f"jwt: {self.jwt}")
 
         if not USE_SERVER:  # offline dev / debug version
-            if __debug__:  # Only print debug information if running in debug mode
+            if DEV_MODE:  # Only print debug information if running in debug mode
                 xplat.log("Not using server!")
             # token 100-379 triggers game version 1,
             # token 380-659 triggers game version 2,
@@ -626,7 +634,7 @@ class Game:
 
             self.npc_sickness_mgr.adherence = bool(token_int % 10)
 
-            if __debug__:  # Only print debug information if running in debug mode
+            if DEV_MODE:  # Only print debug information if running in debug mode
                 xplat.log(f"NPC adherence is set to {bool(token_int % 10)}")
 
             self.npc_sickness_mgr.setup_from_db_data(
@@ -643,8 +651,20 @@ class Game:
                 lvls_done = [d for d in response["status"] if d["event"] == "round_end"]
                 max_complete_level = max([d["game_round"] for d in lvls_done])
                 day_completions = [d for d in lvls_done if d["game_round"] % 2 == 0]
+                if any(d["event"] == "outgroup_switch" for d in response["status"]):
+                    self.player.study_group = StudyGroup.OUTGROUP
+                    self.player.has_outgroup_skin = True
+                    self.level.start_become_outgroup_time = (
+                        pygame.time.get_ticks() - 22500
+                    )
+                    self.level.start_become_outgroup = True
+                    self.player.has_necklace = False
+                    self.player.has_horn = True
+                    self.level.finish_become_outgroup = True
+                    self.player.has_hat = False
+                    self.player.image_alpha = 255
 
-                if __debug__:  # Only log() debug information if running in debug mode
+                if DEV_MODE:  # Only log() debug information if running in debug mode
                     xplat.log(
                         "Max completed level so far: {}".format(max_complete_level)
                     )
@@ -666,7 +686,7 @@ class Game:
                         default=None,
                     )["data"]
                 )
-                if __debug__:  # Only print debug information if running in debug mode
+                if DEV_MODE:  # Only print debug information if running in debug mode
                     print(latest_inventory)
                 for k in latest_inventory:
                     if k != "money":
@@ -678,7 +698,7 @@ class Game:
                 self.player.money = int(latest_inventory["money"])
 
             else:
-                if __debug__:  # Only log() debug information if running in debug mode
+                if DEV_MODE:  # Only log() debug information if running in debug mode
                     xplat.log("First login ever with this token, start level 1!")
 
             self.npc_sickness_mgr.adherence = response[
@@ -707,7 +727,7 @@ class Game:
                     )
                 else:
                     if (
-                        __debug__
+                        DEV_MODE
                     ):  # Only log() debug information if running in debug mode
                         xplat.log(
                             f"Login successful: Time since last level completion: {time_difference:.2f} hours"
@@ -715,7 +735,7 @@ class Game:
             self.set_round(max_complete_level + 1)
             self.check_hat_condition()  # in levels above 2, the player should wear a hat unless it's version 3
 
-        if __debug__:  # Only log() debug information if running in debug mode
+        if DEV_MODE:  # Only log() debug information if running in debug mode
             xplat.log(f"Game version {self.game_version}")
         self.send_telemetry("player_login", {"token": self.token})
 
@@ -741,7 +761,7 @@ class Game:
         if round_no <= len(self.rounds_config[self.game_version]):
             self.round_config = self.rounds_config[self.game_version][round_no - 1]
         else:
-            if __debug__:  # Only print debug information if running in debug mode
+            if DEV_MODE:  # Only print debug information if running in debug mode
                 print(
                     f"ERROR: No config found for round {round_no}! Using config for round 1."
                 )
@@ -763,13 +783,13 @@ class Game:
 
         self.round_end_timer = 0.0
         self.ROUND_END_TIME_IN_MINUTES = self.round_config["level_duration"] / 60  # 15
-        if __debug__:  # Only print debug information if running in debug mode
+        if DEV_MODE:  # Only print debug information if running in debug mode
             print(self.round_config["level_name_text"])
 
     def increment_round(self) -> None:
         if self.round < 13:
             self.set_round(self.round + 1)
-            if __debug__:  # Only print debug information if running in debug mode
+            if DEV_MODE:  # Only print debug information if running in debug mode
                 print("incremented round to {}".format(self.round))
 
     def switch_state(self, state: GameState) -> None:
