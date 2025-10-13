@@ -2,7 +2,7 @@
 
 from functools import lru_cache
 from types import NoneType, UnionType
-from typing import NoReturn, Self, Type, Union
+from typing import Final, NoReturn, Self, Type, Union
 
 import pygame
 
@@ -214,15 +214,19 @@ def post_event(code: int, **attrs: Union[Type, SpecialForm]):  # pyright: ignore
 # Adding this to the event definition cache so we can easily post quit events
 _EventDefinition.add_to_edef_cache(_EventDefinition("Quit", pygame.QUIT))
 
-OPEN_INVENTORY = create_custom_event_type("OpenInventory")
+OPEN_INVENTORY: Final[int] = create_custom_event_type("OpenInventory")
 
-DIALOG_SHOW = create_custom_event_type("DIALOG_SHOW", dial=str, is_gvt=bool | None)
-DIALOG_ADVANCE = create_custom_event_type("DIALOG_ADVANCE")
-SHOW_BOX_KEYBINDINGS = create_custom_event_type("SHOW_BOX_KEYBINDINGS")
-SHOW_BATH_INFO = create_custom_event_type("SHOW_BATH_INFO")
+DIALOG_SHOW: Final[int] = create_custom_event_type(
+    "DIALOG_SHOW", dial=str, is_gvt=bool | None
+)
+DIALOG_ADVANCE: Final[int] = create_custom_event_type("DIALOG_ADVANCE")
+SHOW_BOX_KEYBINDINGS: Final[int] = create_custom_event_type("SHOW_BOX_KEYBINDINGS")
+SHOW_BATH_INFO: Final[int] = create_custom_event_type("SHOW_BATH_INFO")
 
-START_QUAKE = create_custom_event_type("StartQuake", duration=float, debug=bool)
+START_QUAKE: Final[int] = create_custom_event_type(
+    "StartQuake", duration=float, debug=bool
+)
 
-VOLCANO_ERUPTION = create_custom_event_type("VolcanoEruption")
+VOLCANO_ERUPTION: Final[int] = create_custom_event_type("VolcanoEruption")
 
-SET_CURSOR = create_custom_event_type("SET_CURSOR", cursor=CustomCursor)
+SET_CURSOR: Final[int] = create_custom_event_type("SET_CURSOR", cursor=CustomCursor)

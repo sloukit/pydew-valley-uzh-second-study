@@ -1,5 +1,6 @@
 from enum import Enum, IntEnum, StrEnum, nonmember, auto  # noqa
 from random import randint
+from typing import Final, Tuple
 
 
 class SicknessGravity(IntEnum):
@@ -84,7 +85,7 @@ class _SerialisableEnum(IntEnum):
 class InventoryResource(_SerialisableEnum):
     """All stored items in the inventory."""
 
-    _SERIALISABLE_STRINGS = nonmember(
+    _SERIALISABLE_STRINGS: Final[Tuple[str, ...]] = nonmember(
         (
             "wood",
             "apple",
@@ -123,7 +124,7 @@ class InventoryResource(_SerialisableEnum):
     )
     # All item worths in the game. When traders buy things off you, they pay you for half the worth.
     # If YOU buy something from THEM, then you have to pay the FULL worth, though.
-    _ITEM_WORTHS = nonmember(
+    _ITEM_WORTHS: Final[Tuple[int, ...]] = nonmember(
         (
             8,  # WOOD
             4,  # APPLE
@@ -212,7 +213,7 @@ class InventoryResource(_SerialisableEnum):
 class FarmingTool(_SerialisableEnum):
     """Notably used to distinguish the different farming tools (including seeds) in-code."""
 
-    _SERIALISABLE_STRINGS = nonmember(
+    _SERIALISABLE_STRINGS: Final[Tuple[str, ...]] = nonmember(
         (
             "none",
             "axe",
@@ -253,7 +254,7 @@ class FarmingTool(_SerialisableEnum):
     WHEAT_SEED = 15
     BROCCOLI_SEED = 16
 
-    _AS_IRS = nonmember(
+    _AS_IRS: Final[Tuple[int]] = nonmember(
         {
             CORN_SEED: InventoryResource.CORN_SEED,
             TOMATO_SEED: InventoryResource.TOMATO_SEED,
@@ -271,7 +272,7 @@ class FarmingTool(_SerialisableEnum):
         }
     )
 
-    _AS_NS_IRS = nonmember(
+    _AS_NS_IRS: Final[Tuple[int]] = nonmember(
         {
             CORN_SEED: InventoryResource.CORN,
             TOMATO_SEED: InventoryResource.TOMATO,
@@ -328,7 +329,7 @@ class FarmingTool(_SerialisableEnum):
 
 
 class SeedType(IntEnum):
-    _AS_FTS = nonmember(
+    _AS_FTS: Final[Tuple[int, ...]] = nonmember(
         (
             FarmingTool.CORN_SEED,
             FarmingTool.TOMATO_SEED,
@@ -346,7 +347,7 @@ class SeedType(IntEnum):
         )
     )
 
-    _AS_IRS = nonmember(
+    _AS_IRS: Final[Tuple[int, ...]] = nonmember(
         (
             InventoryResource.CORN_SEED,
             InventoryResource.TOMATO_SEED,
@@ -364,7 +365,7 @@ class SeedType(IntEnum):
         )
     )
 
-    _AS_NS_IRS = nonmember(
+    _AS_NS_IRS: Final[Tuple[int, ...]] = nonmember(
         (
             InventoryResource.CORN,
             InventoryResource.TOMATO,
@@ -435,7 +436,7 @@ class Direction(IntEnum):
         return _OPPOSITES[self]  # noqa
 
 
-_OPPOSITES = (
+_OPPOSITES: Final[Tuple[Direction, ...]] = (
     Direction.DOWN,
     Direction.LEFT,
     Direction.UP,

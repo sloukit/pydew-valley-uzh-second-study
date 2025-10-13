@@ -14,7 +14,7 @@ from src.gui.menu.components import Button, ImageButton
 from src.settings import SCREEN_WIDTH, SCREEN_HEIGHT, DEV_MODE
 from itertools import chain
 from operator import itemgetter
-from typing import Callable, Any
+from typing import Callable, Any, Final, Tuple, Dict
 from src.controls import Controls
 
 
@@ -28,7 +28,9 @@ class _IMButton(ImageButton):
         return self._name
 
 
-_EQUIP_BTN_CHECKMARK_FRECT_KWARGS = ({"bottomright": (64, 64)}, {"bottomleft": (0, 64)})
+_EQUIP_BTN_CHECKMARK_FRECT_KWARGS: Final[
+    Tuple[Dict[str, tuple[int, int]], Dict[str, tuple[int, int]]]
+] = ({"bottomright": (64, 64)}, {"bottomleft": (0, 64)})
 
 
 class _EquipButton(_IMButton):
@@ -84,10 +86,10 @@ def prepare_checkmark_for_buttons(surf: pygame.Surface):
     _EquipButton.set_checkmark_surf(surf)
 
 
-_SPACING_BETWEEN_ROWS = 20
-_TOP_MARGIN = 200
-_LEFT_MARGIN = 40
-_BUTTON_SIZE = (80, 80)
+_SPACING_BETWEEN_ROWS: Final[int] = 20
+_TOP_MARGIN: Final[int] = 200
+_LEFT_MARGIN: Final[int] = 40
+_BUTTON_SIZE: Final[Tuple[int, int]] = (80, 80)
 
 _AVAILABLE_TOOLS = ("axe", "hoe", "water")
 _get_resource_count = itemgetter(1)

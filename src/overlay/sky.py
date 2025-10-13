@@ -1,4 +1,5 @@
 import random
+from typing import Dict, Final, Tuple
 
 import pygame
 
@@ -21,7 +22,7 @@ class Sky:
             (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA
         )
         # color
-        self.colors = {
+        self.colors: Final[Dict[str, Tuple[int, int, int]]] = {
             "6": (215, 235, 255),
             "12": (255, 255, 255),
             "18": (255, 240, 234),
@@ -34,7 +35,7 @@ class Sky:
         self.color = self.get_color()
 
         # volcanic settings
-        self.volcanic_color = (165, 124, 82, 100)
+        self.volcanic_color: Final[Tuple[int, int, int, int]] = (165, 124, 82, 100)
 
     def get_color(self):
         # get time
