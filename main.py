@@ -1034,11 +1034,12 @@ class Game:
             return True
         elif event.type == DIALOG_ADVANCE:
             if self.dialogue_manager.showing_dialogue:
-                if not self.last_intro_txt_rendered:
+                if not self.last_intro_txt_rendered and DEV_MODE:
                     if self.dialogue_manager.current_tb_finished_advancing:
                         self.level.cutscene_animation.force_to_next()
                     self.show_intro_msg()
-                self.dialogue_manager.advance(self.last_intro_txt_rendered)
+                if self.last_intro_txt_rendered or DEV_MODE:
+                    self.dialogue_manager.advance(self.last_intro_txt_rendered)
                 if not self.dialogue_manager.showing_dialogue:
                     self.player.blocked = False
             return True

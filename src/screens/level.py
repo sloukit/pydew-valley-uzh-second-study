@@ -735,7 +735,7 @@ class Level:
         return False
 
     def handle_controls(self):
-        if DEV_MODE and self.controls.ADVANCE_DIALOG.click:
+        if self.controls.ADVANCE_DIALOG.click:
             post_event(DIALOG_ADVANCE)
 
         if self.controls.SHOW_BOX_KEYBINDINGS.click:
