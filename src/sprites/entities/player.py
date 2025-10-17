@@ -370,6 +370,18 @@ class Player(Character):
             self.has_hat = False
             self.has_necklace = False
 
+    def activate_hat(self):
+        self.has_hat = True
+
+    def deactivate_hat(self):
+        self.has_hat = False
+
+    def activate_necklace(self):
+        self.has_necklace = True
+
+    def deactivate_necklace(self):
+        self.has_necklace = False
+
     def move(self, dt: float):
         self.hitbox_rect.update(
             (
