@@ -3,7 +3,7 @@ import random
 import warnings
 from collections.abc import Callable
 from functools import partial
-from typing import Any, cast
+from typing import Any, Final, Tuple, cast
 
 import pygame
 
@@ -80,18 +80,20 @@ from src.support import (
     save_data,
 )
 
-_TO_PLAYER_SPEED_INCREASE_THRESHOLD = 200
-_DECIDE_SEQUENCE = (
+_TO_PLAYER_SPEED_INCREASE_THRESHOLD: Final[int] = 200
+_DECIDE_SEQUENCE: Final[Tuple[ScriptedSequence, ScriptedSequence]] = (
     ScriptedSequence.GROUP_MARKET_PASSIVE,
     ScriptedSequence.GROUP_MARKET_ACTIVE,
 )
-_RESTRICT_NPC_SEQ = (
+_RESTRICT_NPC_SEQ: Final[
+    Tuple[ScriptedSequence, ScriptedSequence, ScriptedSequence, ScriptedSequence]
+] = (
     ScriptedSequence.PLAYER_HAT,
     ScriptedSequence.PLAYER_NECKLACE,
     ScriptedSequence.INGROUP_NECKLACE,
     ScriptedSequence.PLAYER_BIRTHDAY,
 )
-_YES_OR_NO = ("checkmark", "cross")
+_YES_OR_NO: Final[Tuple[str, str]] = ("checkmark", "cross")
 
 
 class Level:

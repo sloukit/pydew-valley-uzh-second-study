@@ -1,5 +1,5 @@
 import asyncio
-from typing import Callable
+from typing import Callable, Dict, Final
 
 from src import xplat
 from src.settings import (
@@ -12,13 +12,13 @@ from src.settings import (
 #     import requests  # type: ignore[import-untyped]
 
 
-BAD_API_KEY = "9"
+BAD_API_KEY: Final[str] = "9"
 
-PLAY_TOKEN = "321"
-BAD_PLAY_TOKEN_1 = "9"
-BAD_PLAY_TOKEN_2 = "zzz"
+PLAY_TOKEN: Final[str] = "321"
+BAD_PLAY_TOKEN_1: Final[str] = "9"
+BAD_PLAY_TOKEN_2: Final[str] = "zzz"
 
-DUMMY_TELEMETRY_DATA = {"self_assessment": "ok"}
+DUMMY_TELEMETRY_DATA: Final[Dict[str, str]] = {"self_assessment": "ok"}
 
 
 def authn(

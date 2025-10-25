@@ -5,6 +5,7 @@ import random
 import sys
 from collections.abc import Generator
 from dataclasses import dataclass
+from typing import Dict, Final
 
 import pygame
 import pygame.gfxdraw
@@ -95,7 +96,7 @@ def load_translations_old(lang: str = None) -> dict[str, str]:  # noqa
 
 
 # Language translations for game text/labels:
-TR: dict[str, str] = load_translations()
+TR: Final[Dict[str, str]] = load_translations()
 
 
 def get_translated_string(text: str) -> str:

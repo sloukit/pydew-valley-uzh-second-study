@@ -4,7 +4,7 @@ import urllib
 from abc import abstractmethod
 from collections.abc import Callable
 from os import PathLike as _PathProtocol
-from typing import IO, Protocol, TextIO, TypeVar, Union
+from typing import IO, Final, Protocol, TextIO, TypeVar, Union
 
 from pygame.color import Color
 from pygame.rect import FRect, Rect
@@ -12,7 +12,7 @@ from pygame.rect import FRect, Rect
 from src import xplat
 from src.settings import DEV_MODE
 
-_DOUBLE_SLASH = "//"
+_DOUBLE_SLASH: Final[str] = "//"
 
 
 # originally authored by pydew-j
@@ -97,7 +97,9 @@ def json_load(stream: TextIO, **kwargs) -> typing.Any:
     return json.load(stream, cls=JSONWithCommentsDecoder, **kwargs)
 
 
-URL: str = "https://oxpvhqou52.execute-api.eu-central-2.amazonaws.com/default/telemetry"
+URL: Final[str] = (
+    "https://oxpvhqou52.execute-api.eu-central-2.amazonaws.com/default/telemetry"
+)
 _JWT: str | None = None
 
 

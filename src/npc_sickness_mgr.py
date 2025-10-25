@@ -9,7 +9,7 @@ For adhering NPCs, it will also be decided when the NPCs go to the bathhouse thi
 import asyncio  # noqa: F401
 from dataclasses import dataclass
 from random import choice, randint, random, sample
-from typing import Callable
+from typing import Callable, Final
 
 from src.client import get_npc_events  # noqa: F401
 from src.enums import NPCSicknessStatusChange
@@ -17,22 +17,22 @@ from src.npc.npc import NPC
 from src.settings import DEV_MODE, SICK_INTERVAL
 
 # Number of NPCs per group.
-NPC_POOL_SIZE = 12
+NPC_POOL_SIZE: Final[int] = 12
 
 # Used to sample NPC IDs when selecting which NPCs adhere or not.
-INGRP_IDS = set(range(NPC_POOL_SIZE))
-OUTGRP_IDS = set(range(NPC_POOL_SIZE, NPC_POOL_SIZE * 2))
+INGRP_IDS: Final[set[int]] = set(range(NPC_POOL_SIZE))
+OUTGRP_IDS: Final[set[int]] = set(range(NPC_POOL_SIZE, NPC_POOL_SIZE * 2))
 
 # adherent / non-adherent setting: how many adherent ingroup npc
-ADH_NPC_INGRP = [
+ADH_NPC_INGRP: Final[list[int]] = [
     int(0.2 * NPC_POOL_SIZE),
     int(0.8 * NPC_POOL_SIZE),
 ]  # share of adhering npc if ingroup is adherent
 
 # Halve the NPC count for NPC adherence in the outgroup.
-_MAXIMUM_DEATH_COUNT = NPC_POOL_SIZE // 2
+_MAXIMUM_DEATH_COUNT: Final[int] = NPC_POOL_SIZE // 2
 
-_DEATH_LIKELIHOOD = 0.5  # per round, non-adhering have two dice rolls
+_DEATH_LIKELIHOOD: Final[float] = 0.5  # per round, non-adhering have two dice rolls
 
 
 @dataclass
